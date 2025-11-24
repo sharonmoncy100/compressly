@@ -40,7 +40,7 @@ body{
 .app-wrap{
   max-width:1024px;
   margin:0 auto;
-  padding:18px;
+  padding:16px;
 }
 
 /* Card */
@@ -66,11 +66,11 @@ body{
 .btn:active{ transform:scale(.99); }
 .btn:focus{ outline:none; box-shadow:0 0 0 6px rgba(79,70,229,0.07); }
 
-/* Chips - made darker readable */
+/* Chips - darker readable */
 .chip{ font-size:0.78rem; padding:0.22rem 0.55rem; border-radius:8px; background:#f1f5f9; color:#0f1724; font-weight:600; }
 
 /* Preview small */
-.preview-wrap{ width:96px; height:96px; border-radius:10px; overflow:hidden; background:#fbfdff; display:flex; align-items:center; justify-content:center; border:1px solid rgba(15,23,42,0.04); }
+.preview-wrap{ width:88px; height:88px; border-radius:10px; overflow:hidden; background:#fbfdff; display:flex; align-items:center; justify-content:center; border:1px solid rgba(15,23,42,0.04); }
 @media(min-width:768px){ .preview-wrap{ width:128px; height:128px; } }
 
 /* Right card image */
@@ -82,25 +82,45 @@ body{
 .progress-fill{ height:6px; border-radius:999px; transition:width .18s ease; background:linear-gradient(90deg,var(--accent-from),var(--accent-to)); }
 
 /* control label slightly larger */
-.control-label{ font-size:0.95rem; color:var(--muted); font-weight:600; }
+.control-label{ font-size:0.97rem; color:var(--muted); font-weight:600; }
 
 /* compress button styling */
 .compress-btn{
-  padding:0.6rem 0.9rem;
+  padding:0.5rem 0.8rem;
   border-radius:10px;
   font-weight:700;
   background:linear-gradient(90deg,var(--accent-from),var(--accent-to));
   color:white;
   box-shadow: 0 8px 20px rgba(79,70,229,0.12);
   transition: transform .12s, box-shadow .12s;
+  font-size:0.95rem;
 }
 .compress-btn:active{ transform:translateY(1px) scale(.997); box-shadow: 0 6px 14px rgba(79,70,229,0.10); }
 
-/* footer visible */
-.site-footer{ font-size:0.95rem; color:var(--muted); margin-top:14px; }
+/* compact choose button variant */
+.choose-compact{ padding:0.45rem 0.6rem; font-size:0.92rem; border-radius:8px; }
 
-/* reduced spacing for mobile */
+/* info cards white and visible */
+.info-card{ background: #ffffff; color:var(--fg); border-radius:10px; border:1px solid rgba(15,23,42,0.06); padding:12px; }
+@media (prefers-color-scheme: dark){ .info-card{ background:#0b1220 } }
+
+/* spacing tweak - push info section down a bit */
+.info-section { margin-top:18px; }
+
+/* header icon spacing */
+.header-left { display:flex; align-items:center; gap:12px; }
+
+/* Make header and uploader responsive - prevent overflow on mobile */
+.header-wrap { padding-right:8px; overflow:hidden; }
+
+/* narrower select control (on larger screens) */
+.output-select { max-width:240px; }
+
+/* reduce the dashed area width on mobile by using full width but compact contents */
 @media (max-width:640px){
   .app-wrap{ padding:12px; }
   .container-card{ border-radius:10px; }
+  .preview-wrap{ width:76px; height:76px; }
+  .header-left { gap:8px; }
+  .output-select { max-width: 100%; }
 }

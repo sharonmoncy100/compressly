@@ -10,7 +10,6 @@ function humanFileSize(bytes) {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   return (bytes / Math.pow(1024, i)).toFixed(i ? 1 : 0) + " " + ["B", "KB", "MB", "GB"][i];
 }
-
 function mimeToExt(mime) {
   if (!mime) return "jpg";
   const part = mime.split("/")[1] || "jpeg";
@@ -29,16 +28,18 @@ function Spinner({ className = "" }) {
   );
 }
 
-/* Small download icon */
-function DownloadIcon(){ return (
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline-block align-middle -mt-[2px]">
-    <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M8 11l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M21 21H3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);}
+/* Download icon */
+function DownloadIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline-block align-middle -mt-[2px]">
+      <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M8 11l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M21 21H3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  );
+}
 
-export default function App(){
+export default function App() {
   const inputRef = useRef();
   const [file, setFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
@@ -46,8 +47,8 @@ export default function App(){
 
   const [outURL, setOutURL] = useState("");
   const [outSize, setOutSize] = useState(0);
-  const [outMime, setOutMime] = useState(""); // <-- track produced blob mime
-  const [outFilename, setOutFilename] = useState(""); // <-- track download filename
+  const [outMime, setOutMime] = useState("");
+  const [outFilename, setOutFilename] = useState("");
 
   const [quality, setQuality] = useState(0.82);
   const [targetKB, setTargetKB] = useState("");
@@ -56,56 +57,56 @@ export default function App(){
   const [lastNote, setLastNote] = useState("");
   const [progressPct, setProgressPct] = useState(0);
 
-  useEffect(()=> {
-    return ()=> {
-      if(previewURL) URL.revokeObjectURL(previewURL);
-      if(outURL) URL.revokeObjectURL(outURL);
+  useEffect(() => {
+    return () => {
+      if (previewURL) URL.revokeObjectURL(previewURL);
+      if (outURL) URL.revokeObjectURL(outURL);
     };
   }, [previewURL, outURL]);
 
-  function resetAll(){
+  function resetAll() {
     setFile(null); setPreviewURL(""); setOriginalSize(0);
-    if (outURL) { URL.revokeObjectURL(outURL); }
+    if (outURL) URL.revokeObjectURL(outURL);
     setOutURL(""); setOutSize(0); setOutMime(""); setOutFilename("");
     setTargetKB(""); setLastNote(""); setProgressPct(0);
   }
 
-  function handleFiles(files){
-    if(!files || files.length===0) return;
+  function handleFiles(files) {
+    if (!files || files.length === 0) return;
     const f = files[0];
     setFile(f);
     setOriginalSize(f.size);
-    if(previewURL) URL.revokeObjectURL(previewURL);
+    if (previewURL) URL.revokeObjectURL(previewURL);
     setPreviewURL(URL.createObjectURL(f));
-    if (outURL) { URL.revokeObjectURL(outURL); }
+    if (outURL) URL.revokeObjectURL(outURL);
     setOutURL(""); setOutSize(0); setOutMime(""); setOutFilename(""); setLastNote("");
   }
 
-  function isWebPSupported(){
+  function isWebPSupported() {
     const canvas = document.createElement("canvas");
-    if(!canvas.getContext) return false;
-    return canvas.toDataURL("image/webp").indexOf("data:image/webp")===0;
+    if (!canvas.getContext) return false;
+    return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0;
   }
 
-  async function createImageElement(blob){
-    return new Promise((resolve,reject)=>{
+  async function createImageElement(blob) {
+    return new Promise((resolve, reject) => {
       const url = URL.createObjectURL(blob);
       const img = new Image();
-      img.onload = ()=> { URL.revokeObjectURL(url); resolve(img); };
-      img.onerror = (e)=> { URL.revokeObjectURL(url); reject(e); };
+      img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+      img.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
       img.src = url;
     });
   }
 
-  async function canvasToBlob(canvas, mime, q){
-    return await new Promise((resolve)=> canvas.toBlob(b=>resolve(b), mime, q));
+  async function canvasToBlob(canvas, mime, q) {
+    return await new Promise((resolve) => canvas.toBlob(b => resolve(b), mime, q));
   }
 
-  async function compressWithQualityAndSize(originalFile, opts){
+  async function compressWithQualityAndSize(originalFile, opts) {
     const { quality, mime, maxWidth } = opts;
     const img = await createImageElement(originalFile);
     let width = img.width, height = img.height;
-    if(maxWidth && width > maxWidth){
+    if (maxWidth && width > maxWidth) {
       const r = maxWidth / width;
       width = Math.round(width * r);
       height = Math.round(height * r);
@@ -118,83 +119,76 @@ export default function App(){
     return blob;
   }
 
-  // helper to set out states after we have a blob
   function handleResultBlob(blob, preferredMime) {
     if (!blob) return;
     if (outURL) URL.revokeObjectURL(outURL);
     const url = URL.createObjectURL(blob);
     setOutURL(url);
     setOutSize(blob.size);
-    // prefer the blob.type; if missing, fall back to preferredMime
     const actualMime = blob.type || preferredMime || "image/jpeg";
     setOutMime(actualMime);
-    // build a friendly filename: compressly-originalname.ext
     const baseName = file ? file.name.replace(/\.[^/.]+$/, "") : "image";
     const ext = mimeToExt(actualMime);
     setOutFilename(`compressly-${baseName}.${ext}`);
   }
 
-  async function runCompress(){
-    if(!file) return;
+  async function runCompress() {
+    if (!file) return;
     setProcessing(true); setOutURL(""); setOutSize(0); setOutMime(""); setOutFilename(""); setLastNote(""); setProgressPct(4);
-    try{
+    try {
       let mime;
-      if(format==="auto") mime = isWebPSupported()? "image/webp":"image/jpeg";
-      else if(format==="webp") mime = "image/webp";
-      else if(format==="jpeg") mime = "image/jpeg";
-      else if(format==="png") mime = "image/png";
+      if (format === "auto") mime = isWebPSupported() ? "image/webp" : "image/jpeg";
+      else if (format === "webp") mime = "image/webp";
+      else if (format === "jpeg") mime = "image/jpeg";
+      else if (format === "png") mime = "image/png";
       else mime = file.type || "image/jpeg";
 
-      // if browser lacks webp support but user selected webp, fallback to jpeg
-      if (mime === "image/webp" && !isWebPSupported()) {
-        mime = "image/jpeg";
-      }
+      if (mime === "image/webp" && !isWebPSupported()) mime = "image/jpeg";
 
-      if(targetKB && Number(targetKB)>0){
-        const targetBytes = Math.max(8*1024, Math.round(Number(targetKB)*1024));
-        let low=0.05, high=0.98, bestBlob=null, bestSize=Infinity, bestQ=low;
+      if (targetKB && Number(targetKB) > 0) {
+        const targetBytes = Math.max(8 * 1024, Math.round(Number(targetKB) * 1024));
+        let low = 0.05, high = 0.98, bestBlob = null, bestSize = Infinity, bestQ = low;
         const Q_ITER = 10;
-        for(let i=0;i<Q_ITER;i++){
-          const mid = (low+high)/2;
-          setLastNote(`Trying quality ${Math.round(mid*100)}%`);
-          setProgressPct(6 + Math.round((i/Q_ITER)*35));
-          const blob = await compressWithQualityAndSize(file, {quality:mid, mime});
-          if(!blob) break;
+        for (let i = 0; i < Q_ITER; i++) {
+          const mid = (low + high) / 2;
+          setLastNote(`Trying quality ${Math.round(mid * 100)}%`);
+          setProgressPct(6 + Math.round((i / Q_ITER) * 35));
+          const blob = await compressWithQualityAndSize(file, { quality: mid, mime });
+          if (!blob) break;
           const s = blob.size;
-          if(s <= targetBytes){
-            bestBlob = blob; bestSize = s; bestQ = mid; low = mid;
-          } else { high = mid; }
+          if (s <= targetBytes) { bestBlob = blob; bestSize = s; bestQ = mid; low = mid; }
+          else { high = mid; }
         }
-        if(bestBlob && bestSize <= targetBytes){
+        if (bestBlob && bestSize <= targetBytes) {
           handleResultBlob(bestBlob, mime);
-          setLastNote(`Hit target at ${Math.round(bestQ*100)}%`);
+          setLastNote(`Hit target at ${Math.round(bestQ * 100)}%`);
           setProcessing(false); setProgressPct(100); return;
         }
 
         setLastNote("Quality couldn't reach target — downscaling...");
         setProgressPct(45);
         const imgEl = await createImageElement(file);
-        let maxWidth = imgEl.width; let attempts=0; const MAX_ATT=6; let finalBlob=null;
-        while(attempts<MAX_ATT){
-          maxWidth = Math.round(maxWidth * (attempts===0?0.9:0.82));
-          if(maxWidth < 200) break;
-          let l=0.05,h=0.98, localBest=null;
-          for(let j=0;j<8;j++){
-            const mid=(l+h)/2;
-            setLastNote(`Downscale ${attempts+1}/${MAX_ATT} — w:${maxWidth}px`);
-            setProgressPct(45 + Math.round(((attempts*8 + j)/(MAX_ATT*8))*40));
-            const blob = await compressWithQualityAndSize(file, {quality:mid, mime, maxWidth});
-            if(!blob) break;
-            if(blob.size <= targetBytes){ localBest = blob; l = mid; }
+        let maxWidth = imgEl.width; let attempts = 0; const MAX_ATT = 6; let finalBlob = null;
+        while (attempts < MAX_ATT) {
+          maxWidth = Math.round(maxWidth * (attempts === 0 ? 0.9 : 0.82));
+          if (maxWidth < 200) break;
+          let l = 0.05, h = 0.98, localBest = null;
+          for (let j = 0; j < 8; j++) {
+            const mid = (l + h) / 2;
+            setLastNote(`Downscale ${attempts + 1}/${MAX_ATT} — w:${maxWidth}px`);
+            setProgressPct(45 + Math.round(((attempts * 8 + j) / (MAX_ATT * 8)) * 40));
+            const blob = await compressWithQualityAndSize(file, { quality: mid, mime, maxWidth });
+            if (!blob) break;
+            if (blob.size <= targetBytes) { localBest = blob; l = mid; }
             else { h = mid; }
           }
-          if(localBest){ finalBlob = localBest; break; }
-          const aggressive = await compressWithQualityAndSize(file, {quality:0.12, mime, maxWidth});
-          if(aggressive && aggressive.size <= targetBytes){ finalBlob = aggressive; break; }
+          if (localBest) { finalBlob = localBest; break; }
+          const aggressive = await compressWithQualityAndSize(file, { quality: 0.12, mime, maxWidth });
+          if (aggressive && aggressive.size <= targetBytes) { finalBlob = aggressive; break; }
           attempts++;
         }
 
-        if(finalBlob){
+        if (finalBlob) {
           handleResultBlob(finalBlob, mime);
           setLastNote("Reached target with downscale+quality.");
           setProcessing(false); setProgressPct(100); return;
@@ -202,40 +196,30 @@ export default function App(){
 
         setLastNote("Couldn't meet exact target — returning best possible.");
         setProgressPct(90);
-        const lastBlob = await compressWithQualityAndSize(file, {quality:0.12, mime, maxWidth:Math.round((imgEl?.width||1000)*0.6)}).catch(()=>null);
-        if(lastBlob){ handleResultBlob(lastBlob, mime); }
+        const lastBlob = await compressWithQualityAndSize(file, { quality: 0.12, mime, maxWidth: Math.round((imgEl?.width || 1000) * 0.6) }).catch(() => null);
+        if (lastBlob) { handleResultBlob(lastBlob, mime); }
         else {
-          const fallback = await compressWithQualityAndSize(file, {quality, mime}).catch(()=>null);
-          if(fallback){ handleResultBlob(fallback, mime); }
+          const fallback = await compressWithQualityAndSize(file, { quality, mime }).catch(() => null);
+          if (fallback) { handleResultBlob(fallback, mime); }
         }
         setProcessing(false); setProgressPct(100); return;
       }
 
-      // no target: compress once with chosen quality
       setLastNote("Compressing...");
       setProgressPct(12);
-      const resultBlob = await compressWithQualityAndSize(file, {quality, mime});
-      if(resultBlob){
-        handleResultBlob(resultBlob, mime);
-        setLastNote("");
-        setProgressPct(100);
-      } else {
-        setLastNote("Compression failed.");
-        setProgressPct(0);
-      }
-    } catch(err){
+      const resultBlob = await compressWithQualityAndSize(file, { quality, mime });
+      if (resultBlob) { handleResultBlob(resultBlob, mime); setLastNote(""); setProgressPct(100); }
+      else { setLastNote("Compression failed."); setProgressPct(0); }
+    } catch (err) {
       console.error(err); setLastNote("Error while compressing. See console."); setProgressPct(0);
     } finally {
-      setProcessing(false); setTimeout(()=>setProgressPct(0), 600);
+      setProcessing(false); setTimeout(() => setProgressPct(0), 600);
     }
   }
 
-  // compute reduction %
-  const reductionPercent = originalSize && outSize ? Math.round(((originalSize - outSize)/originalSize)*100) : 0;
+  const reductionPercent = originalSize && outSize ? Math.round(((originalSize - outSize) / originalSize) * 100) : 0;
 
-  // choose download href and filename
   const downloadHref = outURL || previewURL || "";
-  // if outFilename set use it, else fallback to original name (sanitized) or generic .jpg
   const downloadName =
     outFilename ||
     (file ? `${file.name.replace(/\.[^/.]+$/, "")}.${mimeToExt(file.type || "image/jpeg")}` : `compressly.${mimeToExt(outMime || "image/jpeg")}`);
@@ -243,57 +227,56 @@ export default function App(){
   return (
     <div className="min-h-screen" style={{ background: "linear-gradient(180deg,#ffffff,#fbfdff)" }}>
       <div className="app-wrap">
-        {/* header */}
-        <header className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-4">
-            <img src={`${IconImg}`} alt="Compressly" className="w-5 h-5 object-contain" />
-            <div>
-              <div className="text-xl font-semibold leading-tight">Compressly</div>
+        {/* header (responsive) */}
+        <header className="flex items-center justify-between mb-3 header-wrap">
+          <div className="header-left">
+            <img src={`${IconImg}`} alt="Compressly" className="w-6 h-6 object-contain" />
+            <div style={{ minWidth: 0 }}>
+              <div className="text-xl font-semibold leading-tight truncate">Compressly</div>
             </div>
           </div>
 
-          <nav className="hidden md:flex items-center gap-4 text-sm">
+          <nav className="hidden md:flex items-center gap-3 text-sm">
             <a className="text-slate-600 hover:text-slate-900" href="#">Home</a>
-            <a className="text-slate-600 hover:text-slate-900" href="#" onClick={e=>{e.preventDefault(); alert("Help")}}>Help</a>
+            <a className="text-slate-600 hover:text-slate-900" href="#" onClick={e => { e.preventDefault(); alert("Help"); }}>Help</a>
           </nav>
         </header>
 
         <main className="grid grid-cols-1 md:grid-cols-12 gap-4">
           {/* left: uploader */}
-          <section className="md:col-span-8 container-card p-4 soft-shadow frost">
+          <section className="md:col-span-8 container-card p-3 soft-shadow frost">
             <div
-              onDrop={(e)=>{ e.preventDefault(); if(e.dataTransfer?.files) handleFiles(e.dataTransfer.files); }}
-              onDragOver={(e)=>e.preventDefault()}
-              className="border-2 border-dashed border-slate-100 rounded-lg p-4 flex flex-col md:flex-row gap-3 items-center"
+              onDrop={(e) => { e.preventDefault(); if (e.dataTransfer?.files) handleFiles(e.dataTransfer.files); }}
+              onDragOver={(e) => e.preventDefault()}
+              className="border-2 border-dashed border-slate-100 rounded-lg p-3 flex flex-col md:flex-row gap-3 items-start"
             >
-              <div className="flex-1">
-                <h2 className="text-base font-medium">Drop an image or click to upload</h2>
-                <p className="small-muted mt-1">Processed locally — no uploads.</p>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-base font-medium truncate">Drop an image or click to upload</h2>
+                <p className="small-muted mt-1 truncate">Processed locally — no uploads.</p>
 
-                <div className="mt-3 flex items-center gap-2">
-                  <button onClick={()=>inputRef.current?.click()} className="compress-btn flex items-center gap-2 text-sm">
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <button onClick={() => inputRef.current?.click()} className="compress-btn choose-compact flex items-center gap-2 text-sm">
                     <img src={UploadImg} alt="upload" className="w-3.5 h-3.5 opacity-90" />
-                    Choose Image
+                    <span className="truncate">Choose Image</span>
                   </button>
 
-                  <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={(e)=>handleFiles(e.target.files)} />
+                  <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFiles(e.target.files)} />
 
                   <button onClick={resetAll} disabled={!file} className="px-2 py-1 border rounded-md text-sm disabled:opacity-60">Reset</button>
 
-                  <div className="ml-2 flex gap-2 items-center">
-                    <div className="chip">Private</div>
-                    <div className="chip">Client-side</div>
-                  </div>
+                  {/* removed Private / Client-side chips per request */}
                 </div>
+
+                <div className="mt-0 text-xs small-muted">{/* reserved for subtle hints if needed */}</div>
               </div>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
                 <div className="preview-wrap">
                   {previewURL ? <img src={previewURL} alt="preview" className="object-contain w-full h-full" /> : <div className="text-slate-300 text-sm">No preview</div>}
                 </div>
 
-                <div className="text-xs small-muted">
-                  <div className="font-medium">{file ? file.name : "No file selected"}</div>
+                <div className="text-xs small-muted" style={{ minWidth: 0 }}>
+                  <div className="font-medium truncate" style={{ maxWidth: 160 }}>{file ? file.name : "No file selected"}</div>
                   <div className="mt-1">{file ? humanFileSize(originalSize) : ""}</div>
                 </div>
               </div>
@@ -303,28 +286,30 @@ export default function App(){
             <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
               <div>
                 <label className="control-label">Output</label>
-                <select value={format} onChange={(e)=>setFormat(e.target.value)} className="mt-1 w-full px-2 py-1 border rounded-md text-sm">
-                  <option value="jpeg">JPEG (recommended)</option>
-                  <option value="webp">WebP (smaller)</option>
-                  <option value="png">PNG (lossless)</option>
-                  <option value="auto">Auto (WebP if supported)</option>
-                </select>
+                <div>
+                  <select value={format} onChange={(e) => setFormat(e.target.value)} className="mt-1 w-full px-2 py-1 border rounded-md text-sm output-select">
+                    <option value="jpeg">JPEG (recommended)</option>
+                    <option value="webp">WebP (smaller)</option>
+                    <option value="png">PNG (lossless)</option>
+                    <option value="auto">Auto (WebP if supported)</option>
+                  </select>
+                </div>
               </div>
 
               <div>
                 <label className="control-label">Quality</label>
                 <div className="mt-1 flex items-center gap-2">
-                  <input type="range" min="0.05" max="0.98" step="0.01" value={quality} onChange={(e)=>setQuality(Number(e.target.value))} className="w-full" />
-                  <div className="w-8 text-right text-xs small-muted">{Math.round(quality*100)}%</div>
+                  <input type="range" min="0.05" max="0.98" step="0.01" value={quality} onChange={(e) => setQuality(Number(e.target.value))} className="w-full" />
+                  <div className="w-8 text-right text-xs small-muted">{Math.round(quality * 100)}%</div>
                 </div>
               </div>
 
               <div>
                 <label className="control-label">Target (KB)</label>
                 <div className="mt-1 flex gap-2">
-                  <input value={targetKB} onChange={(e)=>setTargetKB(e.target.value.replace(/[^\d]/g,""))} placeholder="e.g.,100" className="px-2 py-1 border rounded-md w-full text-sm" />
+                  <input value={targetKB} onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))} placeholder="e.g.,100" className="px-2 py-1 border rounded-md w-full text-sm" />
                   <button onClick={runCompress} disabled={!file || processing} className="compress-btn disabled:opacity-60 text-sm flex items-center gap-2">
-                    {processing ? <Spinner/> : null}
+                    {processing ? <Spinner /> : null}
                     <span>{processing ? "Processing" : "Compress"}</span>
                   </button>
                 </div>
@@ -348,7 +333,7 @@ export default function App(){
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-sm font-medium">{file ? file.name : "No file selected"}</div>
+                      <div className="text-sm font-medium truncate" style={{ maxWidth: 160 }}>{file ? file.name : "No file selected"}</div>
                       <div className="text-xs small-muted mt-1">{file ? humanFileSize(originalSize) : ""}</div>
                     </div>
 
@@ -359,25 +344,25 @@ export default function App(){
                   </div>
 
                   <div className="mt-2 flex flex-wrap gap-2 items-center">
-                    <div className="chip text-xs">Reduction: <span style={{color:"#0f1724"}} className="font-medium ml-1">{reductionPercent}%</span></div>
-                    <div className="chip text-xs">Format: <span style={{color:"#0f1724"}} className="font-medium ml-1">{outMime ? mimeToExt(outMime) : format}</span></div>
+                    <div className="chip text-xs">Reduction: <span style={{ color: "#0f1724" }} className="font-medium ml-1">{reductionPercent}%</span></div>
+                    <div className="chip text-xs">Format: <span style={{ color: "#0f1724" }} className="font-medium ml-1">{outMime ? mimeToExt(outMime) : format}</span></div>
                   </div>
 
                   <div className="mt-3 flex gap-2">
                     <a href={downloadHref} download={downloadName} className={`px-3 py-1.5 rounded-md ${outURL ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-700"} btn text-sm flex items-center gap-2`} aria-disabled={!downloadHref}>
-                      <DownloadIcon/> <span>{outURL || previewURL ? `Download (${outSize ? humanFileSize(outSize) : ""})` : "Download"}</span>
+                      <DownloadIcon /> <span>{outURL || previewURL ? `Download (${outSize ? humanFileSize(outSize) : ""})` : "Download"}</span>
                     </a>
 
-                    <button onClick={async()=>{ if(outURL) window.open(outURL, "_blank"); }} disabled={!outURL} className="px-2 py-1 border rounded-md text-sm disabled:opacity-60">Open</button>
+                    <button onClick={async () => { if (outURL) window.open(outURL, "_blank"); }} disabled={!outURL} className="px-2 py-1 border rounded-md text-sm disabled:opacity-60">Open</button>
 
-                    <button onClick={async()=>{
-                      if(!outURL) return;
-                      try{
-                        const b = await fetch(outURL).then(r=>r.blob());
+                    <button onClick={async () => {
+                      if (!outURL) return;
+                      try {
+                        const b = await fetch(outURL).then(r => r.blob());
                         const reader = new FileReader();
-                        reader.onload = ()=>{ navigator.clipboard.writeText(reader.result); alert("Data URL copied"); };
+                        reader.onload = () => { navigator.clipboard.writeText(reader.result); alert("Data URL copied"); };
                         reader.readAsDataURL(b);
-                      }catch(e){ console.error(e); alert("Copy failed"); }
+                      } catch (e) { console.error(e); alert("Copy failed"); }
                     }} disabled={!outURL} className="px-2 py-1 border rounded-md text-sm disabled:opacity-60">Copy</button>
                   </div>
 
@@ -392,14 +377,14 @@ export default function App(){
             </div>
           </aside>
 
-          {/* informational cards */}
-          <section className="md:col-span-12 mt-2 grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="p-2 container-card border border-slate-100">
+          {/* informational cards - moved down and white */}
+          <section className="md:col-span-12 info-section grid grid-cols-1 md:grid-cols-3 gap-3">
+            <div className="info-card">
               <div className="font-medium text-sm">Outputs</div>
               <div className="mt-2 small-muted">JPEG for compatibility, WebP for smallest size, PNG when lossless is required.</div>
             </div>
 
-            <div className="p-2 container-card border border-slate-100">
+            <div className="info-card">
               <div className="font-medium text-sm">How to use</div>
               <ol className="mt-2 list-decimal ml-4 small-muted space-y-1 text-sm">
                 <li>Choose image (or drag & drop).</li>
@@ -408,7 +393,7 @@ export default function App(){
               </ol>
             </div>
 
-            <div className="p-2 container-card border border-slate-100">
+            <div className="info-card">
               <div className="font-medium text-sm">Why Compressly?</div>
               <ul className="mt-2 ml-4 small-muted space-y-1 text-sm">
                 <li>No uploads — processed in your browser for privacy.</li>
@@ -418,9 +403,13 @@ export default function App(){
           </section>
         </main>
 
-        <footer className="mt-5 text-center">
-          <div className="site-footer">Made by Leosh ads · © Compressly 2025</div>
-        </footer>
+       <footer className="mt-5 text-center">
+  <div className="text-[#0f1724] font-semibold">
+  Made by Leosh ads · © Compressly 2025
+</div>
+
+</footer>
+
       </div>
     </div>
   );
