@@ -1,0 +1,12 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        { "type": "host", "value": "compressly.in" }
+      ],
+      "destination": "https://www.compressly.in/:path*",
+      "permanent": true
+    }
+  ]
+}
