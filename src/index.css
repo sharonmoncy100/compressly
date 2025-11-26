@@ -1,8 +1,10 @@
 /* ---------- (full file — replace your current index.css) ---------- */
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 /* =========================
    Theme variables & base
@@ -10,20 +12,23 @@
 :root{
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 
+
   /* core surface / foreground vars */
   --bg: #ffffff;
-  --surface: #ffffff;      /* main surface for cards/controls */
-  --surface-2: #fbfdff;    /* subtle secondary surface (gradients) */
+  --surface: #ffffff;       /* main surface for cards/controls */
+  --surface-2: #fbfdff;     /* subtle secondary surface (gradients) */
   --card: #ffffff;
   --muted: #6b7280;
   --fg: #0f1724;
   --accent-from: #4f46e5;
   --accent-to: #ec4899;
 
+
   /* select / placeholder specific */
   --select-text: var(--fg);
   --select-placeholder: #9ca3af;
 }
+
 
 @media (prefers-color-scheme: dark){
   :root{
@@ -34,10 +39,12 @@
     --muted:#9ca3af;
     --fg:rgba(255,255,255,0.92);
 
+
     --select-text: rgba(255,255,255,0.94);
     --select-placeholder: #9ca3af;
   }
 }
+
 
 html,body,#root{height:100%}
 body{
@@ -51,6 +58,7 @@ body{
   font-size:15px;
 }
 
+
 /* reduce side gap on mobile so app is wider on small screens */
 .app-wrap{
   max-width:1024px;
@@ -61,6 +69,7 @@ body{
   .app-wrap{ padding:10px; } /* smaller padding -> wider usable area */
 }
 
+
 /* container card */
 .container-card{
   background:var(--card);
@@ -68,11 +77,13 @@ body{
   border:1px solid rgba(15,23,42,0.04);
 }
 
+
 /* shadows */
 .soft-shadow{ box-shadow: 0 10px 30px rgba(15,23,42,0.06); }
 @media (prefers-color-scheme: dark){
   .soft-shadow{ box-shadow: 0 8px 26px rgba(2,6,23,0.6); }
 }
+
 
 /* frosted hero — uses surface for improved theming */
 .frost{
@@ -83,17 +94,21 @@ body{
   .frost{ background: linear-gradient(180deg, rgba(11,18,32,0.92), rgba(7,16,33,0.96)); }
 }
 
+
 /* text utilities */
 .small-muted, .kv { color:var(--muted); font-size:0.92rem; line-height:1.4; }
 .kv{ font-size:0.92rem; }
+
 
 /* button base */
 .btn{ transition: transform .12s, box-shadow .12s; border-radius:10px; font-weight:600; }
 .btn:active{ transform:scale(.99); }
 .btn:focus{ outline:none; box-shadow:0 0 0 6px rgba(79,70,229,0.07); }
 
+
 /* chips */
 .chip{ font-size:0.78rem; padding:0.22rem 0.55rem; border-radius:8px; background:#f1f5f9; color:#0f1724; font-weight:600; }
+
 
 /* preview / thumbnails */
 .preview-wrap{
@@ -103,6 +118,7 @@ body{
 }
 @media(min-width:768px){ .preview-wrap{ width:128px; height:128px; } }
 
+
 .result-thumb{
   width:80px; height:80px; border-radius:8px; overflow:hidden;
   background:var(--surface); border:1px solid rgba(15,23,42,0.04);
@@ -110,12 +126,15 @@ body{
 }
 @media(min-width:768px){ .result-thumb{ width:112px; height:112px } }
 
+
 /* progress bar */
 .progress-track{ background:rgba(15,23,42,0.04); height:7px; border-radius:999px; overflow:hidden; }
 .progress-fill{ height:7px; border-radius:999px; transition:width .18s ease; background:linear-gradient(90deg,var(--accent-from),var(--accent-to)); }
 
+
 /* labels & controls */
 .control-label{ display:block; margin-bottom:6px; color:var(--muted); font-weight:700; letter-spacing:0.15px; font-size:0.97rem; }
+
 
 /* compress button */
 .compress-btn{
@@ -125,8 +144,10 @@ body{
 }
 .compress-btn:active{ transform:translateY(1px) scale(.997); box-shadow: 0 6px 14px rgba(79,70,229,0.10); }
 
+
 /* choose-compact */
 .choose-compact{ padding:0.45rem 0.6rem; font-size:0.92rem; border-radius:8px; }
+
 
 /* uploader — uses surface variables */
 .uploader{
@@ -143,9 +164,11 @@ body{
 }
 .uploader:hover{ transform: translateY(-2px); box-shadow: 0 18px 50px rgba(15,23,42,0.08); border-color: rgba(15,23,42,0.08); }
 
+
 @media (prefers-color-scheme: dark){
   .uploader{ border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 28px rgba(2,6,23,0.6); }
 }
+
 
 /* upload hint — use fg so it's readable on top of surface */
 .upload-hint{
@@ -155,6 +178,7 @@ body{
   opacity:0.92;
 }
 .upload-hint svg{ margin-top:1px; flex-shrink:0; stroke:currentColor; fill:none; }
+
 
 /* responsive uploader */
 @media (max-width: 768px){
@@ -167,6 +191,7 @@ body{
   .uploader{ flex-direction: row; align-items: center; }
 }
 
+
 /* Fancy native select */
 .fancy-select{
   position: relative; display:block; width:100%; max-width:320px;
@@ -174,6 +199,7 @@ body{
   background: linear-gradient(180deg, var(--surface), var(--surface-2));
   border: 1px solid rgba(15,23,42,0.06); box-shadow: inset 0 -1px 0 rgba(15,23,42,0.02);
 }
+
 
 .fancy-select__native{
   -webkit-appearance:none; -moz-appearance:none; appearance:none;
@@ -186,8 +212,10 @@ body{
 }
 .fancy-select__native:focus{ outline:none; box-shadow: 0 0 0 6px rgba(79,70,229,0.06); border-radius:10px; }
 
+
 /* style options where allowed */
 .fancy-select__native option{ color: var(--select-text); background: linear-gradient(180deg, var(--surface), var(--surface-2)); }
+
 
 /* disabled / placeholder look */
 .fancy-select__native:disabled,
@@ -196,16 +224,20 @@ body{
   -webkit-text-fill-color: var(--select-placeholder) !important;
 }
 
+
 /* arrow color uses theme */
 .fancy-select__arrow{ position:absolute; right:10px; top:50%; transform:translateY(-50%); pointer-events:none; color:var(--select-text); display:flex; align-items:center; opacity:.9; }
 
+
 @media (max-width:640px){ .fancy-select{ max-width:100%; } }
+
 
 /* Safari fallback */
 @supports (-webkit-appearance: none) {
   .fancy-select__native { padding-right: 2.6rem; }
   .fancy-select__native::-webkit-text-fill-color { color: var(--select-text); }
 }
+
 
 /* Info cards — make text visible and contrasty in dark + light */
 .info-section{ margin-top:22px; }
@@ -218,12 +250,14 @@ body{
 .info-card .small-muted{ color: var(--muted); } /* smaller secondary text */
 .info-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 44px rgba(14,20,40,0.06); }
 
+
 /* chip adjustments */
 .chip{
   font-size:0.78rem; padding:.28rem .6rem; border-radius:999px;
   background: linear-gradient(180deg,#eef2ff,#f5f7ff); color:#0f1724; font-weight:600;
   border: 1px solid rgba(15,23,42,0.03);
 }
+
 
 /* Reset button, links & anchors */
 .reset-btn{
@@ -238,54 +272,27 @@ body{
   .reset-btn { border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
 }
 
+
 /* anchors that look like buttons */
 a.btn{ color:inherit !important; text-decoration:none !important; display:inline-flex; align-items:center; gap:.45rem; }
 a.btn:visited, a.btn:active, a.btn:focus { color:inherit !important; text-decoration:none !important; }
 a[aria-disabled="true"]{ pointer-events:none; opacity:.6; }
 
+
 /* strong download look */
 a.btn.bg-indigo-600{ box-shadow: 0 8px 20px rgba(79,70,229,0.12); }
 
+
 /* footer */
-footer{ margin-top:36px; padding-bottom:18px; }
+footer{ margin-top:36px; padding-bottom:18px; text-align:center;}
 footer .text-\[\#0f1724\] { letter-spacing: 0.2px; }
 
-/* small polish */
-.fancy-select__native:focus { box-shadow: 0 0 0 6px rgba(79,70,229,0.06); outline:none; }
-
-/* final safety: small-muted consistency */
-.small-muted{ color:var(--muted); font-size:0.92rem; line-height:1.4; }
-
-footer .brand-text { letter-spacing: 0.2px; color: var(--fg); }
-/* Force light for everyone, ignore system preference */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #ffffff;
-    --surface: #ffffff;
-    --surface-2: #fbfdff; /* good for me now */
-    --card: #ffffff;
-    --muted: #6b7280;
-    --fg: #0f1724;
-    --select-text: #0f1724;
-  }
-
-  body {
-    background: var(--bg) !important;
-    color: var(--fg) !important;
-  }
-}
-/* Footer centering & style */
-footer{
-  margin-top:36px;
-  padding-bottom:18px;
-  text-align:center;            /* center the content */
-}
 
 footer .brand-text{
-  display:block;                /* ensure it's a block so text-align works */
+  display:block;
   width:100%;
   text-align:center;
-  color:var(--fg);              /* match theme */
+  color:var(--fg);
   font-weight:600;
   font-size:0.95rem;
   letter-spacing:0.2px;
@@ -310,65 +317,67 @@ html { scroll-behavior: smooth; }
 /* small spacing tweak for about section on mobile */
 #about { scroll-margin-top: 80px; } /* avoids header overlap when jumping */
 @media (max-width:640px) { #about { padding-left: 8px; padding-right: 8px; } }
-/* Inline result thumbnail and actions — keep tiny and mobile-friendly */
-.result-actions {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  flex-wrap: wrap;            /* if screen is tiny, actions wrap instead of overflowing */
+
+/* force light mode ignoring system dark mode */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #fbfdff; /* good for me now */
+    --card: #ffffff;
+    --muted: #6b7280;
+    --fg: #0f1724;
+    --select-text: #0f1724;
+  }
+
+
+  body {
+    background: var(--bg) !important;
+    color: var(--fg) !important;
+  }
 }
 
-/* the tiny thumbnail next to buttons */
-.result-actions .result-thumb-inline {
-  width: 32px;                /* tiny */
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
-  border-radius: 6px;
-  object-fit: contain;
-  border: 1px solid rgba(15,23,42,0.06);
-}
 
-/* slightly larger on small+ screens */
-@media (min-width: 640px) {
-  .result-actions .result-thumb-inline { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
-}
-
-/* on very small screens hide the thumbnail so actions always fit */
-@media (max-width: 420px) {
-  .result-actions .result-thumb-inline { display: none; }
-}
-
-/* ensure buttons don't expand weirdly and keep compact */
-.result-actions .btn,
-.result-actions button,
-.result-actions a {
-  flex: 0 0 auto;
-}
 /* Inline result thumbnail and actions — tiny and mobile-friendly */
 .result-actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: wrap;            /* buttons wrap instead of overflowing */
 }
 
-.result-actions .result-thumb-inline {
-  width: 32px;
-  height: 32px;
-  min-width: 32px;
-  min-height: 32px;
+/* tiny thumbnail */
+.result-thumb-inline {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
   border-radius: 6px;
   object-fit: contain;
-  border: 1px solid rgba(15,23,42,0.06);
+  border: 1px solid rgba(15,23,42,0.10);
 }
 
-/* slightly larger on small+ screens */
+/* slightly bigger on tablets/desktops */
 @media (min-width: 640px) {
-  .result-actions .result-thumb-inline { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+  .result-thumb-inline {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+  }
 }
 
-/* ensure buttons don't expand weirdly and keep compact */
+/* phones: keep thumbnail but shrink more */
+@media (max-width: 420px) {
+  .result-thumb-inline {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    min-height: 24px;
+  }
+}
+
+/* keep buttons compact */
 .result-actions .btn,
 .result-actions button,
 .result-actions a {
