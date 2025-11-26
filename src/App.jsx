@@ -156,8 +156,7 @@ export default function App() {
 
     let width = img.width, height = img.height;
 
-    // Prevent huge canvases that crash browsers
-    const MAX_DIM = 8192; // reduce if needed for low-memory devices
+    const MAX_DIM = 8192;
     if (width > MAX_DIM || height > MAX_DIM) {
       const scale = MAX_DIM / Math.max(width, height);
       width = Math.round(width * scale);
@@ -176,11 +175,9 @@ export default function App() {
     const ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0, width, height);
 
-    // try toBlob
     let blob = await canvasToBlob(canvas, mime, quality);
     if (blob) return blob;
 
-    // fallback to toDataURL
     try {
       const dataURL = canvas.toDataURL(mime, quality);
       blob = dataURLToBlob(dataURL);
@@ -189,7 +186,6 @@ export default function App() {
       console.error("compressWithQualityAndSize: toDataURL fallback failed", err);
     }
 
-    // last resort: null -> caller must handle
     return null;
   }
 
@@ -287,7 +283,6 @@ export default function App() {
         setProcessing(false); setProgressPct(100); return;
       }
 
-      // no targetKB — just compress once
       setLastNote("Compressing...");
       setProgressPct(12);
       const resultBlob = await compressWithQualityAndSize(file, { quality, mime });
@@ -305,6 +300,10 @@ export default function App() {
   }
 
   const reductionPercent = originalSize && outSize ? Math.round(((originalSize - outSize) / originalSize) * 100) : 0;
+
+  // display name/size: prefer processed values if available
+  const displayName = outFilename || (file ? file.name : "No file selected");
+  const displaySize = outSize || originalSize;
 
   const downloadHref = outURL || previewURL || "";
   const downloadName =
@@ -360,6 +359,7 @@ export default function App() {
                   {previewURL ? <img src={previewURL} alt="preview" className="object-contain w-full h-full" /> : <div className="text-slate-300 text-sm">No preview</div>}
                 </div>
 
+                {/* keep uploader preview name minimal to avoid repetition */}
                 <div className="text-xs small-muted" style={{ minWidth: 0 }}>
                   <div className="font-medium truncate" style={{ maxWidth: 160 }}>{file ? file.name : "No file selected"}</div>
                   <div className="mt-1">{file ? humanFileSize(originalSize) : ""}</div>
@@ -427,9 +427,7 @@ export default function App() {
           <aside className="md:col-span-4">
             <div className="container-card rounded-lg p-3 soft-shadow">
               <div className="flex items-start gap-3">
-                {/* Small neutral box (keeps layout tidy) instead of a large image */}
                 <div className="result-thumb" aria-hidden style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  {/* show a tiny icon instead of big image to keep the panel compact */}
                   <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-slate-400">
                     <rect x="3" y="3" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.2" />
                     <circle cx="8.5" cy="9.5" r="1.6" fill="currentColor" />
@@ -440,8 +438,9 @@ export default function App() {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      <div className="text-sm font-medium truncate" style={{ maxWidth: 160 }}>{file ? file.name : "No file selected"}</div>
-                      <div className="text-xs small-muted mt-1">{file ? humanFileSize(originalSize) : ""}</div>
+                      {/* show processed name/size when available, otherwise original */}
+                      <div className="text-sm font-medium truncate" style={{ maxWidth: 160 }}>{displayName}</div>
+                      <div className="text-xs small-muted mt-1">{displaySize ? humanFileSize(displaySize) : ""}</div>
                     </div>
 
                     <div className="text-right">
@@ -509,7 +508,7 @@ export default function App() {
             </div>
           </aside>
 
-          {/* informational cards - moved down and white */}
+          {/* informational cards */}
           <section className="md:col-span-12 info-section grid grid-cols-1 md:grid-cols-3 gap-3">
             <div className="info-card">
               <div className="font-medium text-sm">Outputs</div>
@@ -528,20 +527,36 @@ export default function App() {
             <div className="info-card">
               <div className="font-medium text-sm">Why Compressly?</div>
               <ul className="mt-2 ml-4 small-muted space-y-1 text-sm">
-                <li>No uploads — processed in your browser for privacy.</li>
-                <li>Fast client-side compression — instant results without servers.</li>
+                <li>No uploads - processed in your browser for privacy.</li>
+                <li>Fast client-side compression - instant results without servers.</li>
               </ul>
             </div>
           </section>
 
-          {/* About section target (footer link points here) */}
-          <section id="about" className="md:col-span-12 container-card p-4 soft-shadow mt-6">
-            <div className="font-medium text-sm">About Compressly</div>
-            <div className="mt-2 small-muted text-sm">
-              Compressly compresses images directly in your browser — no uploads, no tracking.
-              Use it to reduce JPG/PNG/WebP sizes for web forms and faster pages. Built by Leosh ads.
-            </div>
-          </section>
+          {/* About section */}
+        <section id="about" className="md:col-span-12 container-card p-4 soft-shadow mt-6">
+  <div className="font-medium text-base">About Compressly:</div>
+
+  <div className="mt-2 small-muted text-sm leading-relaxed">
+    <strong>Compressly</strong> is a fast, private image compression tool that runs entirely in your
+    browser - no uploads, no accounts, and no tracking. It reduces JPG, PNG, and WebP files
+    to smaller sizes for web forms, emails, online applications, and faster page performance.
+
+    <br /><br />
+
+    You can set a custom quality level or enter an exact target size in KB. Compressly uses
+    smart compression techniques — including quality adjustment and optional downscaling —
+    to help you stay under strict file-size limits required by many portals and government forms.
+
+    <br /><br />
+
+    Designed to be mobile-friendly and privacy-first, Compressly gives fast results even on
+    low-end devices and slow networks, making it ideal for everyday use.
+
+    <br /><br />
+  </div>
+</section>
+
         </main>
 
         <footer>

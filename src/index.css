@@ -345,3 +345,32 @@ html { scroll-behavior: smooth; }
 .result-actions a {
   flex: 0 0 auto;
 }
+/* Inline result thumbnail and actions — tiny and mobile-friendly */
+.result-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.result-actions .result-thumb-inline {
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 6px;
+  object-fit: contain;
+  border: 1px solid rgba(15,23,42,0.06);
+}
+
+/* slightly larger on small+ screens */
+@media (min-width: 640px) {
+  .result-actions .result-thumb-inline { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+}
+
+/* ensure buttons don't expand weirdly and keep compact */
+.result-actions .btn,
+.result-actions button,
+.result-actions a {
+  flex: 0 0 auto;
+}
