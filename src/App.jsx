@@ -4,7 +4,17 @@ import React, { useRef, useState, useEffect } from "react";
 const IconImg = new URL("./assets/icon.png", import.meta.url).href;
 const UploadImg = new URL("./assets/upload.png", import.meta.url).href;
 
-/* Helper */
+/* Helper: show human-friendly size (1024 base) and also show exact bytes */
+function humanFileSizeShort(bytes) {
+  if (!bytes && bytes !== 0) return "0 B";
+  const kb = bytes / 1024;
+  if (kb < 1) return `${bytes} B`;
+  if (kb < 1024) return `${kb.toFixed(1)} KB (${bytes} bytes)`;
+  const mb = kb / 1024;
+  return `${mb.toFixed(2)} MB (${bytes} bytes)`;
+}
+
+/* original lightweight humanFileSize (kept for other UI uses) */
 function humanFileSize(bytes) {
   if (!bytes) return "0 B";
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
@@ -90,33 +100,97 @@ export default function App() {
 
   async function createImageElement(blob) {
     return new Promise((resolve, reject) => {
-      const url = URL.createObjectURL(blob);
-      const img = new Image();
-      img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
-      img.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
-      img.src = url;
+      try {
+        const url = URL.createObjectURL(blob);
+        const img = new Image();
+        img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
+        img.onerror = (e) => {
+          URL.revokeObjectURL(url);
+          console.error("createImageElement: image load error", e);
+          reject(new Error("Image failed to load — file may be corrupted or unsupported."));
+        };
+        img.src = url;
+      } catch (err) {
+        console.error("createImageElement: unexpected", err);
+        reject(err);
+      }
     });
   }
 
   async function canvasToBlob(canvas, mime, q) {
-    return await new Promise((resolve) => canvas.toBlob(b => resolve(b), mime, q));
+    return await new Promise((resolve) => {
+      let finished = false;
+      try {
+        canvas.toBlob((b) => {
+          finished = true;
+          if (!b) {
+            console.warn("canvasToBlob: toBlob returned null");
+            resolve(null);
+          } else {
+            resolve(b);
+          }
+        }, mime, q);
+      } catch (err) {
+        console.error("canvasToBlob: exception", err);
+        resolve(null);
+      }
+      setTimeout(() => { if (!finished) { console.warn("canvasToBlob: timeout"); resolve(null); } }, 3000);
+    });
+  }
+
+  function dataURLToBlob(dataURL) {
+    const parts = dataURL.split(',');
+    const meta = parts[0];
+    const b64 = parts[1] || "";
+    const binary = atob(b64);
+    const len = binary.length;
+    const u8 = new Uint8Array(len);
+    for (let i = 0; i < len; i++) u8[i] = binary.charCodeAt(i);
+    const m = (meta.match(/:(.*?);/) || [])[1] || 'image/png';
+    return new Blob([u8], { type: m });
   }
 
   async function compressWithQualityAndSize(originalFile, opts) {
     const { quality, mime, maxWidth } = opts;
     const img = await createImageElement(originalFile);
+
     let width = img.width, height = img.height;
+
+    // Prevent huge canvases that crash browsers
+    const MAX_DIM = 8192; // reduce if needed for low-memory devices
+    if (width > MAX_DIM || height > MAX_DIM) {
+      const scale = MAX_DIM / Math.max(width, height);
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+      console.warn(`compressWithQualityAndSize: downscaled big image to ${width}x${height}`);
+    }
+
     if (maxWidth && width > maxWidth) {
       const r = maxWidth / width;
       width = Math.round(width * r);
       height = Math.round(height * r);
     }
+
     const canvas = document.createElement("canvas");
     canvas.width = width; canvas.height = height;
     const ctx = canvas.getContext("2d");
     ctx.drawImage(img, 0, 0, width, height);
-    const blob = await canvasToBlob(canvas, mime, quality);
-    return blob;
+
+    // try toBlob
+    let blob = await canvasToBlob(canvas, mime, quality);
+    if (blob) return blob;
+
+    // fallback to toDataURL
+    try {
+      const dataURL = canvas.toDataURL(mime, quality);
+      blob = dataURLToBlob(dataURL);
+      if (blob && blob.size > 0) return blob;
+    } catch (err) {
+      console.error("compressWithQualityAndSize: toDataURL fallback failed", err);
+    }
+
+    // last resort: null -> caller must handle
+    return null;
   }
 
   function handleResultBlob(blob, preferredMime) {
@@ -134,7 +208,9 @@ export default function App() {
 
   async function runCompress() {
     if (!file) return;
-    setProcessing(true); setOutURL(""); setOutSize(0); setOutMime(""); setOutFilename(""); setLastNote(""); setProgressPct(4);
+    setProcessing(true);
+    setOutURL(""); setOutSize(0); setOutMime(""); setOutFilename(""); setLastNote(""); setProgressPct(4);
+
     try {
       let mime;
       if (format === "auto") mime = isWebPSupported() ? "image/webp" : "image/jpeg";
@@ -149,16 +225,21 @@ export default function App() {
         const targetBytes = Math.max(8 * 1024, Math.round(Number(targetKB) * 1024));
         let low = 0.05, high = 0.98, bestBlob = null, bestSize = Infinity, bestQ = low;
         const Q_ITER = 10;
+
         for (let i = 0; i < Q_ITER; i++) {
           const mid = (low + high) / 2;
           setLastNote(`Trying quality ${Math.round(mid * 100)}%`);
           setProgressPct(6 + Math.round((i / Q_ITER) * 35));
           const blob = await compressWithQualityAndSize(file, { quality: mid, mime });
-          if (!blob) break;
+          if (!blob) {
+            console.warn("runCompress: blob null during quality search");
+            break;
+          }
           const s = blob.size;
           if (s <= targetBytes) { bestBlob = blob; bestSize = s; bestQ = mid; low = mid; }
           else { high = mid; }
         }
+
         if (bestBlob && bestSize <= targetBytes) {
           handleResultBlob(bestBlob, mime);
           setLastNote(`Hit target at ${Math.round(bestQ * 100)}%`);
@@ -169,6 +250,7 @@ export default function App() {
         setProgressPct(45);
         const imgEl = await createImageElement(file);
         let maxWidth = imgEl.width; let attempts = 0; const MAX_ATT = 6; let finalBlob = null;
+
         while (attempts < MAX_ATT) {
           maxWidth = Math.round(maxWidth * (attempts === 0 ? 0.9 : 0.82));
           if (maxWidth < 200) break;
@@ -205,15 +287,20 @@ export default function App() {
         setProcessing(false); setProgressPct(100); return;
       }
 
+      // no targetKB — just compress once
       setLastNote("Compressing...");
       setProgressPct(12);
       const resultBlob = await compressWithQualityAndSize(file, { quality, mime });
       if (resultBlob) { handleResultBlob(resultBlob, mime); setLastNote(""); setProgressPct(100); }
-      else { setLastNote("Compression failed."); setProgressPct(0); }
+      else { setLastNote("Compression failed — try lower quality or smaller image."); setProgressPct(0); }
     } catch (err) {
-      console.error(err); setLastNote("Error while compressing. See console."); setProgressPct(0);
+      console.error("runCompress: unexpected", err);
+      const msg = err?.message || String(err);
+      setLastNote(`Error while compressing: ${msg}. Try a different image.`);
+      setProgressPct(0);
     } finally {
-      setProcessing(false); setTimeout(() => setProgressPct(0), 600);
+      setProcessing(false);
+      setTimeout(() => setProgressPct(0), 600);
     }
   }
 
@@ -228,15 +315,13 @@ export default function App() {
     <div className="min-h-screen" style={{ background: "linear-gradient(180deg,#ffffff,#fbfdff)" }}>
       <div className="app-wrap">
         {/* header (responsive) */}
-       
-       <header className="flex items-center justify-between mb-3 header-wrap">
-  <div className="header-left flex items-center gap-2">
-    <img src={`${IconImg}`} alt="Compressly" className="w-6 h-6 object-contain" />
-    {/* hide textual title on very small screens to avoid duplication */}
-    <div style={{ minWidth: 0 }} className="hidden sm:block">
-      <div className="text-xl font-semibold leading-tight truncate">Compressly</div>
-    </div>
-  </div>
+        <header className="flex items-center justify-between mb-3 header-wrap">
+          <div className="header-left flex items-center gap-2">
+            <img src={`${IconImg}`} alt="Compressly" className="w-6 h-6 object-contain" />
+            <div style={{ minWidth: 0 }} className="hidden sm:block">
+              <div className="text-xl font-semibold leading-tight truncate">Compressly</div>
+            </div>
+          </div>
 
           <nav className="hidden md:flex items-center gap-3 text-sm">
             <a className="text-slate-600 hover:text-slate-900" href="#">Home</a>
@@ -253,10 +338,8 @@ export default function App() {
               className="uploader rounded-lg p-4 flex flex-col md:flex-row gap-4 items-start"
             >
               <div className="flex-1 min-w-0">
-                {/*added Drop an image title*/}
                 <h2 className="text-base font-medium truncate">Drop an image or click to upload</h2>
-{/* single descriptive line — removed duplicate hint */}
-<p className="small-muted mt-1">Processed locally — no uploads.</p>
+                <p className="small-muted mt-1">Processed locally — no uploads.</p>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <button onClick={() => inputRef.current?.click()} className="compress-btn choose-compact flex items-center gap-2 text-sm">
@@ -267,10 +350,9 @@ export default function App() {
                   <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFiles(e.target.files)} />
 
                   <button onClick={resetAll} disabled={!file} className="reset-btn btn px-3 py-1 text-sm disabled:opacity-60">Reset</button>
-
                 </div>
 
-                <div className="mt-0 text-xs small-muted">{/* reserved for subtle hints if needed */}</div>
+                <div className="mt-0 text-xs small-muted"></div>
               </div>
 
               <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
@@ -287,32 +369,30 @@ export default function App() {
 
             {/* controls */}
             <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-              {/* REPLACED OUTPUT SELECTOR */}
-             <div>
-  <label className="control-label" htmlFor="output-format">Output</label>
-  <div className="mt-1">
-    <div className="fancy-select">
-      <select
-        id="output-format"
-        aria-label="Output format"
-        value={format}
-        onChange={(e) => setFormat(e.target.value)}
-        className="fancy-select__native"
-      >
-        <option value="jpeg">JPEG (recommended)</option>
-        <option value="webp">WebP (smaller)</option>
-        <option value="png">PNG (lossless)</option>
-        <option value="auto">Auto (WebP if supported)</option>
-      </select>
-      <div className="fancy-select__arrow" aria-hidden>
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </div>
-    </div>
-  </div>
-</div>
-
+              <div>
+                <label className="control-label" htmlFor="output-format">Output</label>
+                <div className="mt-1">
+                  <div className="fancy-select">
+                    <select
+                      id="output-format"
+                      aria-label="Output format"
+                      value={format}
+                      onChange={(e) => setFormat(e.target.value)}
+                      className="fancy-select__native"
+                    >
+                      <option value="jpeg">JPEG (recommended)</option>
+                      <option value="webp">WebP (smaller)</option>
+                      <option value="png">PNG (lossless)</option>
+                      <option value="auto">Auto (WebP if supported)</option>
+                    </select>
+                    <div className="fancy-select__arrow" aria-hidden>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
               <div>
                 <label className="control-label">Quality</label>
@@ -336,7 +416,10 @@ export default function App() {
 
             <div className="mt-3">
               <div className="progress-track"><div className="progress-fill" style={{ width: `${Math.min(100, progressPct)}%` }} /></div>
-              <div className="mt-2 text-xs small-muted flex justify-between"><div>Tip: Use WebP + Target for smallest files.</div><div>{lastNote}</div></div>
+              <div className="mt-2 text-xs small-muted flex justify-between">
+                <div>Tip: Use WebP + Target for smallest files.</div>
+                <div style={{ minWidth: 140, textAlign: "right" }}>{lastNote}</div>
+              </div>
             </div>
           </section>
 
@@ -344,8 +427,14 @@ export default function App() {
           <aside className="md:col-span-4">
             <div className="container-card rounded-lg p-3 soft-shadow">
               <div className="flex items-start gap-3">
-                <div className="result-thumb">
-                  {outURL ? <img src={outURL} alt="result" className="object-contain w-full h-full" /> : (previewURL ? <img src={previewURL} alt="preview" className="object-contain w-full h-full" /> : <div className="text-slate-300 text-sm">No preview</div>)}
+                {/* Small neutral box (keeps layout tidy) instead of a large image */}
+                <div className="result-thumb" aria-hidden style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {/* show a tiny icon instead of big image to keep the panel compact */}
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-slate-400">
+                    <rect x="3" y="3" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.2" />
+                    <circle cx="8.5" cy="9.5" r="1.6" fill="currentColor" />
+                    <path d="M3 17l4-4 3 3 5-6 4 4" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                 </div>
 
                 <div className="flex-1">
@@ -355,11 +444,9 @@ export default function App() {
                       <div className="text-xs small-muted mt-1">{file ? humanFileSize(originalSize) : ""}</div>
                     </div>
 
-                   <div className="text-right">
-  <div className="text-base font-semibold">{outSize ? humanFileSize(outSize) : "—"}</div>
-  <div className="text-xs small-muted" aria-hidden style={{ opacity: 0.7 }}>Result</div>
-</div>
-
+                    <div className="text-right">
+                      <div className="text-base font-semibold">{outSize ? humanFileSizeShort(outSize) : "—"}</div>
+                    </div>
                   </div>
 
                   <div className="mt-2 flex flex-wrap gap-2 items-center">
@@ -367,22 +454,48 @@ export default function App() {
                     <div className="chip text-xs">Format: <span style={{ color: "#0f1724" }} className="font-medium ml-1">{outMime ? mimeToExt(outMime) : format}</span></div>
                   </div>
 
-                  <div className="mt-3 flex gap-2">
-                    <a href={downloadHref} download={downloadName} className={`px-3 py-1.5 rounded-md ${outURL ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-700"} btn text-sm flex items-center gap-2`} aria-disabled={!downloadHref}>
+                  <div className="mt-3 result-actions">
+                    {outURL ? (
+                      <img
+                        src={outURL}
+                        alt="thumb"
+                        className="result-thumb-inline"
+                        aria-hidden
+                      />
+                    ) : null}
+
+                    <a
+                      href={downloadHref}
+                      download={downloadName}
+                      className={`px-3 py-1.5 rounded-md ${outURL ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-700"} btn text-sm flex items-center gap-2`}
+                      aria-disabled={!downloadHref}
+                    >
                       <DownloadIcon /> <span>{outURL || previewURL ? `Download (${outSize ? humanFileSize(outSize) : ""})` : "Download"}</span>
                     </a>
 
-                    <button onClick={async () => { if (outURL) window.open(outURL, "_blank"); }} disabled={!outURL} className="px-2 py-1 border rounded-md text-sm disabled:opacity-60">Open</button>
+                    <button
+                      onClick={async () => { if (outURL) window.open(outURL, "_blank"); }}
+                      disabled={!outURL}
+                      className="px-2 py-1 border rounded-md text-sm disabled:opacity-60"
+                    >
+                      Open
+                    </button>
 
-                    <button onClick={async () => {
-                      if (!outURL) return;
-                      try {
-                        const b = await fetch(outURL).then(r => r.blob());
-                        const reader = new FileReader();
-                        reader.onload = () => { navigator.clipboard.writeText(reader.result); alert("Data URL copied"); };
-                        reader.readAsDataURL(b);
-                      } catch (e) { console.error(e); alert("Copy failed"); }
-                    }} disabled={!outURL} className="px-2 py-1 border rounded-md text-sm disabled:opacity-60">Copy</button>
+                    <button
+                      onClick={async () => {
+                        if (!outURL) return;
+                        try {
+                          const b = await fetch(outURL).then(r => r.blob());
+                          const reader = new FileReader();
+                          reader.onload = () => { navigator.clipboard.writeText(reader.result); alert("Data URL copied"); };
+                          reader.readAsDataURL(b);
+                        } catch (e) { console.error(e); alert("Copy failed"); }
+                      }}
+                      disabled={!outURL}
+                      className="px-2 py-1 border rounded-md text-sm disabled:opacity-60"
+                    >
+                      Copy
+                    </button>
                   </div>
 
                   <div className="mt-3 text-xs small-muted">Tip: If target isn't reached try lowering quality or choosing WebP.</div>
@@ -420,20 +533,26 @@ export default function App() {
               </ul>
             </div>
           </section>
+
+          {/* About section target (footer link points here) */}
+          <section id="about" className="md:col-span-12 container-card p-4 soft-shadow mt-6">
+            <div className="font-medium text-sm">About Compressly</div>
+            <div className="mt-2 small-muted text-sm">
+              Compressly compresses images directly in your browser — no uploads, no tracking.
+              Use it to reduce JPG/PNG/WebP sizes for web forms and faster pages. Built by Leosh ads.
+            </div>
+          </section>
         </main>
-        
 
-<footer>
-  <div className="brand-text">Made by Leosh ads · © Compressly 2025</div>
+        <footer>
+          <div className="brand-text">Made by Leosh ads · © Compressly 2025</div>
 
-  <div className="about-link">
-    <a href="#about" className="small-muted text-sm hover:underline">
-      About Compressly
-    </a>
-  </div>
-</footer>
-
-
+          <div className="about-link">
+            <a href="#about" className="small-muted text-sm hover:underline">
+              About Compressly
+            </a>
+          </div>
+        </footer>
       </div>
     </div>
   );

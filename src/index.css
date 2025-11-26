@@ -310,3 +310,38 @@ html { scroll-behavior: smooth; }
 /* small spacing tweak for about section on mobile */
 #about { scroll-margin-top: 80px; } /* avoids header overlap when jumping */
 @media (max-width:640px) { #about { padding-left: 8px; padding-right: 8px; } }
+/* Inline result thumbnail and actions — keep tiny and mobile-friendly */
+.result-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;            /* if screen is tiny, actions wrap instead of overflowing */
+}
+
+/* the tiny thumbnail next to buttons */
+.result-actions .result-thumb-inline {
+  width: 32px;                /* tiny */
+  height: 32px;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 6px;
+  object-fit: contain;
+  border: 1px solid rgba(15,23,42,0.06);
+}
+
+/* slightly larger on small+ screens */
+@media (min-width: 640px) {
+  .result-actions .result-thumb-inline { width: 40px; height: 40px; min-width: 40px; min-height: 40px; }
+}
+
+/* on very small screens hide the thumbnail so actions always fit */
+@media (max-width: 420px) {
+  .result-actions .result-thumb-inline { display: none; }
+}
+
+/* ensure buttons don't expand weirdly and keep compact */
+.result-actions .btn,
+.result-actions button,
+.result-actions a {
+  flex: 0 0 auto;
+}
