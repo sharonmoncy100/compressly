@@ -325,7 +325,7 @@ export default function App() {
               <div>
                 <label className="control-label">Target (KB)</label>
                 <div className="mt-1 flex gap-2">
-                  <input value={targetKB} onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))} placeholder="e.g.,100" className="px-2 py-1 border rounded-md w-full text-sm" />
+                  <input value={targetKB} onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))} placeholder="Enter size in KB (e.g., 100)" className="px-2 py-1 border rounded-md w-full text-sm" />
                   <button onClick={runCompress} disabled={!file || processing} className="compress-btn disabled:opacity-60 text-sm flex items-center gap-2">
                     {processing ? <Spinner /> : null}
                     <span>{processing ? "Processing" : "Compress"}</span>
@@ -355,10 +355,11 @@ export default function App() {
                       <div className="text-xs small-muted mt-1">{file ? humanFileSize(originalSize) : ""}</div>
                     </div>
 
-                    <div className="text-right">
-                      <div className="text-base font-semibold">{outSize ? humanFileSize(outSize) : "—"}</div>
-                      <div className="text-xs small-muted">Result</div>
-                    </div>
+                   <div className="text-right">
+  <div className="text-base font-semibold">{outSize ? humanFileSize(outSize) : "—"}</div>
+  <div className="text-xs small-muted" aria-hidden style={{ opacity: 0.7 }}>Result</div>
+</div>
+
                   </div>
 
                   <div className="mt-2 flex flex-wrap gap-2 items-center">
@@ -420,9 +421,16 @@ export default function App() {
             </div>
           </section>
         </main>
+        
 
- <footer>
+<footer>
   <div className="brand-text">Made by Leosh ads · © Compressly 2025</div>
+
+  <div className="about-link">
+    <a href="#about" className="small-muted text-sm hover:underline">
+      About Compressly
+    </a>
+  </div>
 </footer>
 
 

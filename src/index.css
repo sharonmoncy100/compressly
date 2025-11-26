@@ -257,3 +257,56 @@ footer .text-\[\#0f1724\] { letter-spacing: 0.2px; }
 .small-muted{ color:var(--muted); font-size:0.92rem; line-height:1.4; }
 
 footer .brand-text { letter-spacing: 0.2px; color: var(--fg); }
+/* Force light for everyone, ignore system preference */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #fbfdff; /* good for me now */
+    --card: #ffffff;
+    --muted: #6b7280;
+    --fg: #0f1724;
+    --select-text: #0f1724;
+  }
+
+  body {
+    background: var(--bg) !important;
+    color: var(--fg) !important;
+  }
+}
+/* Footer centering & style */
+footer{
+  margin-top:36px;
+  padding-bottom:18px;
+  text-align:center;            /* center the content */
+}
+
+footer .brand-text{
+  display:block;                /* ensure it's a block so text-align works */
+  width:100%;
+  text-align:center;
+  color:var(--fg);              /* match theme */
+  font-weight:600;
+  font-size:0.95rem;
+  letter-spacing:0.2px;
+}
+@media (max-width:640px){
+  footer .brand-text{ font-size:0.86rem; font-weight:600; }
+}
+
+footer .about-link {
+  margin-top: 6px;
+  text-align: center;
+}
+
+footer .about-link a {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+/* allow smooth scrolling when clicking #about */
+html { scroll-behavior: smooth; }
+
+/* small spacing tweak for about section on mobile */
+#about { scroll-margin-top: 80px; } /* avoids header overlap when jumping */
+@media (max-width:640px) { #about { padding-left: 8px; padding-right: 8px; } }
