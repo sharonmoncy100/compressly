@@ -325,7 +325,7 @@ export default function App() {
               <div>
                 <label className="control-label">Target (KB)</label>
                 <div className="mt-1 flex gap-2">
-                  <input value={targetKB} onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))} placeholder="Enter size in KB (e.g., 100)" className="px-2 py-1 border rounded-md w-full text-sm" />
+                  <input value={targetKB} onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))} placeholder="Enter size in KB/MB" className="px-2 py-1 border rounded-md w-full text-sm" />
                   <button onClick={runCompress} disabled={!file || processing} className="compress-btn disabled:opacity-60 text-sm flex items-center gap-2">
                     {processing ? <Spinner /> : null}
                     <span>{processing ? "Processing" : "Compress"}</span>
