@@ -248,11 +248,19 @@ export default function App() {
             <div
               onDrop={(e) => { e.preventDefault(); if (e.dataTransfer?.files) handleFiles(e.dataTransfer.files); }}
               onDragOver={(e) => e.preventDefault()}
-              className="border-2 border-dashed border-slate-100 rounded-lg p-3 flex flex-col md:flex-row gap-3 items-start"
+              className="uploader rounded-lg p-4 flex flex-col md:flex-row gap-4 items-start"
             >
               <div className="flex-1 min-w-0">
+                {/*added Drop an image title*/}
                 <h2 className="text-base font-medium truncate">Drop an image or click to upload</h2>
-                <p className="small-muted mt-1 truncate">Processed locally — no uploads.</p>
+              <div className="upload-hint mt-1 flex items-center gap-2 text-sm small-muted">
+
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="opacity-80" aria-hidden="true">
+              <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6"/>
+              </svg>
+              <span>Drop files here or click Choose Image</span>
+              </div>
+              <p className="small-muted mt-1 truncate">Processed locally — no uploads.</p>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <button onClick={() => inputRef.current?.click()} className="compress-btn choose-compact flex items-center gap-2 text-sm">
@@ -262,9 +270,8 @@ export default function App() {
 
                   <input ref={inputRef} type="file" accept="image/*" className="hidden" onChange={(e) => handleFiles(e.target.files)} />
 
-                  <button onClick={resetAll} disabled={!file} className="px-2 py-1 border rounded-md text-sm disabled:opacity-60">Reset</button>
+                  <button onClick={resetAll} disabled={!file} className="reset-btn btn px-3 py-1 text-sm disabled:opacity-60">Reset</button>
 
-                  {/* removed Private / Client-side chips per request */}
                 </div>
 
                 <div className="mt-0 text-xs small-muted">{/* reserved for subtle hints if needed */}</div>
@@ -284,17 +291,32 @@ export default function App() {
 
             {/* controls */}
             <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
-              <div>
-                <label className="control-label">Output</label>
-                <div>
-                  <select value={format} onChange={(e) => setFormat(e.target.value)} className="mt-1 w-full px-2 py-1 border rounded-md text-sm output-select">
-                    <option value="jpeg">JPEG (recommended)</option>
-                    <option value="webp">WebP (smaller)</option>
-                    <option value="png">PNG (lossless)</option>
-                    <option value="auto">Auto (WebP if supported)</option>
-                  </select>
-                </div>
-              </div>
+              {/* REPLACED OUTPUT SELECTOR */}
+             <div>
+  <label className="control-label" htmlFor="output-format">Output</label>
+  <div className="mt-1">
+    <div className="fancy-select">
+      <select
+        id="output-format"
+        aria-label="Output format"
+        value={format}
+        onChange={(e) => setFormat(e.target.value)}
+        className="fancy-select__native"
+      >
+        <option value="jpeg">JPEG (recommended)</option>
+        <option value="webp">WebP (smaller)</option>
+        <option value="png">PNG (lossless)</option>
+        <option value="auto">Auto (WebP if supported)</option>
+      </select>
+      <div className="fancy-select__arrow" aria-hidden>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+          <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>
+
 
               <div>
                 <label className="control-label">Quality</label>
@@ -404,8 +426,8 @@ export default function App() {
         </main>
 
        <footer className="mt-5 text-center">
-  <div className="text-[#0f1724] font-semibold">
-  Made by Leosh ads · © Compressly 2025
+ <div className="text-[#0f1724] font-semibold">
+ Made by Leosh ads · © Compressly 2025
 </div>
 
 </footer>
