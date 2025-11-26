@@ -1,3 +1,5 @@
+/* ---------- (full file — replace your current index.css) ---------- */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -49,35 +51,36 @@ body{
   font-size:15px;
 }
 
-/* =========================
-   Layout helpers
-   ========================= */
+/* reduce side gap on mobile so app is wider on small screens */
 .app-wrap{
   max-width:1024px;
   margin:0 auto;
   padding:16px;
 }
+@media (max-width:640px){
+  .app-wrap{ padding:10px; } /* smaller padding -> wider usable area */
+}
 
+/* container card */
 .container-card{
   background:var(--card);
   border-radius:12px;
   border:1px solid rgba(15,23,42,0.04);
 }
 
+/* shadows */
 .soft-shadow{ box-shadow: 0 10px 30px rgba(15,23,42,0.06); }
 @media (prefers-color-scheme: dark){
   .soft-shadow{ box-shadow: 0 8px 26px rgba(2,6,23,0.6); }
 }
 
-/* minimal frosted hero — now uses surface vars for consistent theming */
+/* frosted hero — uses surface for improved theming */
 .frost{
   background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(255,255,255,0.96));
   backdrop-filter: blur(4px);
 }
-@media (prefers-color-scheme: dark) {
-  .frost{
-    background: linear-gradient(180deg, rgba(11,18,32,0.92), rgba(7,16,33,0.96));
-  }
+@media (prefers-color-scheme: dark){
+  .frost{ background: linear-gradient(180deg, rgba(11,18,32,0.92), rgba(7,16,33,0.96)); }
 }
 
 /* text utilities */
@@ -92,9 +95,7 @@ body{
 /* chips */
 .chip{ font-size:0.78rem; padding:0.22rem 0.55rem; border-radius:8px; background:#f1f5f9; color:#0f1724; font-weight:600; }
 
-/* =========================
-   Preview / thumbnails
-   ========================= */
+/* preview / thumbnails */
 .preview-wrap{
   width:88px; height:88px; border-radius:10px; overflow:hidden;
   background:var(--surface-2); display:flex; align-items:center; justify-content:center;
@@ -109,15 +110,11 @@ body{
 }
 @media(min-width:768px){ .result-thumb{ width:112px; height:112px } }
 
-/* =========================
-   Progress bar
-   ========================= */
+/* progress bar */
 .progress-track{ background:rgba(15,23,42,0.04); height:7px; border-radius:999px; overflow:hidden; }
 .progress-fill{ height:7px; border-radius:999px; transition:width .18s ease; background:linear-gradient(90deg,var(--accent-from),var(--accent-to)); }
 
-/* =========================
-   Labels & controls
-   ========================= */
+/* labels & controls */
 .control-label{ display:block; margin-bottom:6px; color:var(--muted); font-weight:700; letter-spacing:0.15px; font-size:0.97rem; }
 
 /* compress button */
@@ -128,13 +125,10 @@ body{
 }
 .compress-btn:active{ transform:translateY(1px) scale(.997); box-shadow: 0 6px 14px rgba(79,70,229,0.10); }
 
-/* compact choose variant */
+/* choose-compact */
 .choose-compact{ padding:0.45rem 0.6rem; font-size:0.92rem; border-radius:8px; }
 
-/* =========================
-   Uploader (polished)
-   ========================= */
-/* use surface variables so uploader matches light/dark */
+/* uploader — uses surface variables */
 .uploader{
   background: linear-gradient(180deg, var(--surface-2), var(--surface));
   border: 1px solid rgba(15,23,42,0.06);
@@ -153,33 +147,32 @@ body{
   .uploader{ border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 28px rgba(2,6,23,0.6); }
 }
 
-/* upload hint: make sure text and icon use theme colors */
+/* upload hint — use fg so it's readable on top of surface */
 .upload-hint{
   display:inline-flex; align-items:center; gap:.6rem;
-  color:var(--fg); /* stronger text so readable on surface */
+  color:var(--fg);
   font-size:0.95rem;
   opacity:0.92;
 }
 .upload-hint svg{ margin-top:1px; flex-shrink:0; stroke:currentColor; fill:none; }
 
-/* responsive uploader stacking */
+/* responsive uploader */
 @media (max-width: 768px){
   .uploader{ flex-direction: column; align-items: stretch; min-height: auto; padding:.85rem; gap:.85rem; }
   .uploader .preview-wrap{ margin-top:8px; align-self:flex-start; }
+  /* reduce uploader heading size on mobile */
+  .uploader h2{ font-size:1rem; }
 }
 @media (min-width: 769px){
   .uploader{ flex-direction: row; align-items: center; }
 }
 
-/* =========================
-   Fancy native select (accessible & styled)
-   ========================= */
+/* Fancy native select */
 .fancy-select{
   position: relative; display:block; width:100%; max-width:320px;
   border-radius:10px; overflow:hidden;
   background: linear-gradient(180deg, var(--surface), var(--surface-2));
-  border: 1px solid rgba(15,23,42,0.06);
-  box-shadow: inset 0 -1px 0 rgba(15,23,42,0.02);
+  border: 1px solid rgba(15,23,42,0.06); box-shadow: inset 0 -1px 0 rgba(15,23,42,0.02);
 }
 
 .fancy-select__native{
@@ -193,55 +186,46 @@ body{
 }
 .fancy-select__native:focus{ outline:none; box-shadow: 0 0 0 6px rgba(79,70,229,0.06); border-radius:10px; }
 
-/* options / dropdown text where browsers allow styling */
-.fancy-select__native option{
-  color: var(--select-text);
-  background: linear-gradient(180deg, var(--surface), var(--surface-2));
-}
+/* style options where allowed */
+.fancy-select__native option{ color: var(--select-text); background: linear-gradient(180deg, var(--surface), var(--surface-2)); }
 
-/* placeholder / disabled look */
+/* disabled / placeholder look */
 .fancy-select__native:disabled,
 .fancy-select__native[aria-disabled="true"] {
   color: var(--select-placeholder) !important;
   -webkit-text-fill-color: var(--select-placeholder) !important;
 }
 
-/* arrow color now uses theme */
+/* arrow color uses theme */
 .fancy-select__arrow{ position:absolute; right:10px; top:50%; transform:translateY(-50%); pointer-events:none; color:var(--select-text); display:flex; align-items:center; opacity:.9; }
 
-/* small-screen select sizing */
 @media (max-width:640px){ .fancy-select{ max-width:100%; } }
 
-/* ensure visibility across browsers (Safari fix) */
-.fancy-select__native{ color:var(--select-text) !important; -webkit-text-fill-color:var(--select-text) !important; }
-
-/* macOS Safari specific improvements (best-effort) */
+/* Safari fallback */
 @supports (-webkit-appearance: none) {
   .fancy-select__native { padding-right: 2.6rem; }
   .fancy-select__native::-webkit-text-fill-color { color: var(--select-text); }
 }
 
-/* =========================
-   Info cards & chips (polished)
-   ========================= */
+/* Info cards — make text visible and contrasty in dark + light */
 .info-section{ margin-top:22px; }
 .info-card{
-  background: linear-gradient(180deg,var(--surface),#f8fbff);
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
   border:none; box-shadow: 0 10px 30px rgba(14,20,40,0.04);
   padding:16px; border-radius:12px; transition: transform .12s ease, box-shadow .12s ease;
+  color: var(--fg); /* ensures headings are readable */
 }
+.info-card .small-muted{ color: var(--muted); } /* smaller secondary text */
 .info-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 44px rgba(14,20,40,0.06); }
 
+/* chip adjustments */
 .chip{
   font-size:0.78rem; padding:.28rem .6rem; border-radius:999px;
   background: linear-gradient(180deg,#eef2ff,#f5f7ff); color:#0f1724; font-weight:600;
   border: 1px solid rgba(15,23,42,0.03);
 }
 
-/* =========================
-   Reset button, links & anchors
-   ========================= */
-/* Reset button now uses surface variables so it's readable in dark */
+/* Reset button, links & anchors */
 .reset-btn{
   border-radius:10px; padding:.45rem .65rem; border:1px solid rgba(15,23,42,0.08);
   background: linear-gradient(180deg,var(--surface),var(--surface-2));
@@ -250,7 +234,6 @@ body{
 }
 .reset-btn:active{ transform:translateY(1px); }
 .reset-btn:disabled{ opacity:.55; box-shadow:none; cursor:not-allowed; }
-
 @media (prefers-color-scheme: dark){
   .reset-btn { border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
 }
@@ -260,17 +243,17 @@ a.btn{ color:inherit !important; text-decoration:none !important; display:inline
 a.btn:visited, a.btn:active, a.btn:focus { color:inherit !important; text-decoration:none !important; }
 a[aria-disabled="true"]{ pointer-events:none; opacity:.6; }
 
-/* stronger look for enabled download */
+/* strong download look */
 a.btn.bg-indigo-600{ box-shadow: 0 8px 20px rgba(79,70,229,0.12); }
 
-/* =========================
-   Footer & misc
-   ========================= */
+/* footer */
 footer{ margin-top:36px; padding-bottom:18px; }
-footer .text-[#0f1724]{ letter-spacing:0.2px; }
+footer .text-\[\#0f1724\] { letter-spacing: 0.2px; }
 
-/* small accessibility / polish */
+/* small polish */
 .fancy-select__native:focus { box-shadow: 0 0 0 6px rgba(79,70,229,0.06); outline:none; }
 
 /* final safety: small-muted consistency */
 .small-muted{ color:var(--muted); font-size:0.92rem; line-height:1.4; }
+
+footer .brand-text { letter-spacing: 0.2px; color: var(--fg); }

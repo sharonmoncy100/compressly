@@ -228,13 +228,15 @@ export default function App() {
     <div className="min-h-screen" style={{ background: "linear-gradient(180deg,#ffffff,#fbfdff)" }}>
       <div className="app-wrap">
         {/* header (responsive) */}
-        <header className="flex items-center justify-between mb-3 header-wrap">
-          <div className="header-left">
-            <img src={`${IconImg}`} alt="Compressly" className="w-6 h-6 object-contain" />
-            <div style={{ minWidth: 0 }}>
-              <div className="text-xl font-semibold leading-tight truncate">Compressly</div>
-            </div>
-          </div>
+       
+       <header className="flex items-center justify-between mb-3 header-wrap">
+  <div className="header-left flex items-center gap-2">
+    <img src={`${IconImg}`} alt="Compressly" className="w-6 h-6 object-contain" />
+    {/* hide textual title on very small screens to avoid duplication */}
+    <div style={{ minWidth: 0 }} className="hidden sm:block">
+      <div className="text-xl font-semibold leading-tight truncate">Compressly</div>
+    </div>
+  </div>
 
           <nav className="hidden md:flex items-center gap-3 text-sm">
             <a className="text-slate-600 hover:text-slate-900" href="#">Home</a>
@@ -253,14 +255,8 @@ export default function App() {
               <div className="flex-1 min-w-0">
                 {/*added Drop an image title*/}
                 <h2 className="text-base font-medium truncate">Drop an image or click to upload</h2>
-              <div className="upload-hint mt-1 flex items-center gap-2 text-sm small-muted">
-
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="opacity-80" aria-hidden="true">
-              <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6"/>
-              </svg>
-              <span>Drop files here or click Choose Image</span>
-              </div>
-              <p className="small-muted mt-1 truncate">Processed locally — no uploads.</p>
+{/* single descriptive line — removed duplicate hint */}
+<p className="small-muted mt-1">Processed locally — no uploads.</p>
 
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <button onClick={() => inputRef.current?.click()} className="compress-btn choose-compact flex items-center gap-2 text-sm">
@@ -425,12 +421,10 @@ export default function App() {
           </section>
         </main>
 
-       <footer className="mt-5 text-center">
- <div className="text-[#0f1724] font-semibold">
- Made by Leosh ads · © Compressly 2025
-</div>
-
+ <footer>
+  <div className="brand-text">Made by Leosh ads · © Compressly 2025</div>
 </footer>
+
 
       </div>
     </div>
