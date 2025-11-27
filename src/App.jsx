@@ -504,10 +504,14 @@ export default function App() {
               </div>
             </div>
 
-            <div className="mt-3 container-card p-3 soft-shadow text-xs">
+            <div className="container-card soft-shadow quick-help-card">
               <div className="text-sm font-medium">Quick help</div>
-              <div className="text-xs small-muted mt-2">For forms: Many forms require ≤100KB — use Target (KB) + JPEG. For web: WebP gives smaller files and faster pages.</div>
+              <div className="text-xs small-muted">
+                For forms: Many forms require ≤100KB — use Target (KB) + JPEG. For web: WebP gives smaller files and faster pages.
+              </div>
             </div>
+
+ 
           </aside>
 
           {/* informational cards */}

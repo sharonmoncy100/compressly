@@ -1,17 +1,14 @@
 /* ---------- (full file — replace your current index.css) ---------- */
 
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 
 /* =========================
    Theme variables & base
    ========================= */
 :root{
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-
 
   /* core surface / foreground vars */
   --bg: #ffffff;
@@ -23,12 +20,10 @@
   --accent-from: #4f46e5;
   --accent-to: #ec4899;
 
-
   /* select / placeholder specific */
   --select-text: var(--fg);
   --select-placeholder: #9ca3af;
 }
-
 
 @media (prefers-color-scheme: dark){
   :root{
@@ -39,12 +34,10 @@
     --muted:#9ca3af;
     --fg:rgba(255,255,255,0.92);
 
-
     --select-text: rgba(255,255,255,0.94);
     --select-placeholder: #9ca3af;
   }
 }
-
 
 html,body,#root{height:100%}
 body{
@@ -58,7 +51,6 @@ body{
   font-size:15px;
 }
 
-
 /* reduce side gap on mobile so app is wider on small screens */
 .app-wrap{
   max-width:1024px;
@@ -66,9 +58,8 @@ body{
   padding:16px;
 }
 @media (max-width:640px){
-  .app-wrap{ padding:10px; } /* smaller padding -> wider usable area */
+  .app-wrap{ padding:10px; }
 }
-
 
 /* container card */
 .container-card{
@@ -77,13 +68,11 @@ body{
   border:1px solid rgba(15,23,42,0.04);
 }
 
-
 /* shadows */
 .soft-shadow{ box-shadow: 0 10px 30px rgba(15,23,42,0.06); }
 @media (prefers-color-scheme: dark){
   .soft-shadow{ box-shadow: 0 8px 26px rgba(2,6,23,0.6); }
 }
-
 
 /* frosted hero — uses surface for improved theming */
 .frost{
@@ -94,21 +83,17 @@ body{
   .frost{ background: linear-gradient(180deg, rgba(11,18,32,0.92), rgba(7,16,33,0.96)); }
 }
 
-
 /* text utilities */
 .small-muted, .kv { color:var(--muted); font-size:0.92rem; line-height:1.4; }
 .kv{ font-size:0.92rem; }
-
 
 /* button base */
 .btn{ transition: transform .12s, box-shadow .12s; border-radius:10px; font-weight:600; }
 .btn:active{ transform:scale(.99); }
 .btn:focus{ outline:none; box-shadow:0 0 0 6px rgba(79,70,229,0.07); }
 
-
 /* chips */
 .chip{ font-size:0.78rem; padding:0.22rem 0.55rem; border-radius:8px; background:#f1f5f9; color:#0f1724; font-weight:600; }
-
 
 /* preview / thumbnails */
 .preview-wrap{
@@ -118,7 +103,6 @@ body{
 }
 @media(min-width:768px){ .preview-wrap{ width:128px; height:128px; } }
 
-
 .result-thumb{
   width:80px; height:80px; border-radius:8px; overflow:hidden;
   background:var(--surface); border:1px solid rgba(15,23,42,0.04);
@@ -126,15 +110,12 @@ body{
 }
 @media(min-width:768px){ .result-thumb{ width:112px; height:112px } }
 
-
 /* progress bar */
 .progress-track{ background:rgba(15,23,42,0.04); height:7px; border-radius:999px; overflow:hidden; }
 .progress-fill{ height:7px; border-radius:999px; transition:width .18s ease; background:linear-gradient(90deg,var(--accent-from),var(--accent-to)); }
 
-
 /* labels & controls */
 .control-label{ display:block; margin-bottom:6px; color:var(--muted); font-weight:700; letter-spacing:0.15px; font-size:0.97rem; }
-
 
 /* compress button */
 .compress-btn{
@@ -144,10 +125,8 @@ body{
 }
 .compress-btn:active{ transform:translateY(1px) scale(.997); box-shadow: 0 6px 14px rgba(79,70,229,0.10); }
 
-
 /* choose-compact */
 .choose-compact{ padding:0.45rem 0.6rem; font-size:0.92rem; border-radius:8px; }
-
 
 /* uploader — uses surface variables */
 .uploader{
@@ -164,11 +143,9 @@ body{
 }
 .uploader:hover{ transform: translateY(-2px); box-shadow: 0 18px 50px rgba(15,23,42,0.08); border-color: rgba(15,23,42,0.08); }
 
-
 @media (prefers-color-scheme: dark){
   .uploader{ border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 28px rgba(2,6,23,0.6); }
 }
-
 
 /* upload hint — use fg so it's readable on top of surface */
 .upload-hint{
@@ -179,18 +156,15 @@ body{
 }
 .upload-hint svg{ margin-top:1px; flex-shrink:0; stroke:currentColor; fill:none; }
 
-
 /* responsive uploader */
 @media (max-width: 768px){
   .uploader{ flex-direction: column; align-items: stretch; min-height: auto; padding:.85rem; gap:.85rem; }
   .uploader .preview-wrap{ margin-top:8px; align-self:flex-start; }
-  /* reduce uploader heading size on mobile */
   .uploader h2{ font-size:1rem; }
 }
 @media (min-width: 769px){
   .uploader{ flex-direction: row; align-items: center; }
 }
-
 
 /* Fancy native select */
 .fancy-select{
@@ -199,7 +173,6 @@ body{
   background: linear-gradient(180deg, var(--surface), var(--surface-2));
   border: 1px solid rgba(15,23,42,0.06); box-shadow: inset 0 -1px 0 rgba(15,23,42,0.02);
 }
-
 
 .fancy-select__native{
   -webkit-appearance:none; -moz-appearance:none; appearance:none;
@@ -212,44 +185,43 @@ body{
 }
 .fancy-select__native:focus{ outline:none; box-shadow: 0 0 0 6px rgba(79,70,229,0.06); border-radius:10px; }
 
-
-/* style options where allowed */
 .fancy-select__native option{ color: var(--select-text); background: linear-gradient(180deg, var(--surface), var(--surface-2)); }
 
-
-/* disabled / placeholder look */
 .fancy-select__native:disabled,
 .fancy-select__native[aria-disabled="true"] {
   color: var(--select-placeholder) !important;
   -webkit-text-fill-color: var(--select-placeholder) !important;
 }
 
-
-/* arrow color uses theme */
 .fancy-select__arrow{ position:absolute; right:10px; top:50%; transform:translateY(-50%); pointer-events:none; color:var(--select-text); display:flex; align-items:center; opacity:.9; }
-
 
 @media (max-width:640px){ .fancy-select{ max-width:100%; } }
 
-
-/* Safari fallback */
 @supports (-webkit-appearance: none) {
   .fancy-select__native { padding-right: 2.6rem; }
   .fancy-select__native::-webkit-text-fill-color { color: var(--select-text); }
 }
 
-
-/* Info cards — make text visible and contrasty in dark + light */
-.info-section{ margin-top:22px; }
+/* Info cards — professional spacing and consistent padding */
+.info-section{ 
+  margin-top:24px; 
+}
 .info-card{
   background: linear-gradient(180deg, var(--surface), var(--surface-2));
-  border:none; box-shadow: 0 10px 30px rgba(14,20,40,0.04);
-  padding:16px; border-radius:12px; transition: transform .12s ease, box-shadow .12s ease;
-  color: var(--fg); /* ensures headings are readable */
+  border:none; 
+  box-shadow: 0 10px 30px rgba(14,20,40,0.04);
+  padding:18px;
+  border-radius:12px; 
+  transition: transform .12s ease, box-shadow .12s ease;
+  color: var(--fg);
 }
-.info-card .small-muted{ color: var(--muted); } /* smaller secondary text */
+.info-card .small-muted{ color: var(--muted); }
 .info-card:hover{ transform: translateY(-6px); box-shadow: 0 18px 44px rgba(14,20,40,0.06); }
 
+@media (max-width:640px){
+  .info-card{ padding:14px; }
+  .info-section{ margin-top:20px; }
+}
 
 /* chip adjustments */
 .chip{
@@ -257,7 +229,6 @@ body{
   background: linear-gradient(180deg,#eef2ff,#f5f7ff); color:#0f1724; font-weight:600;
   border: 1px solid rgba(15,23,42,0.03);
 }
-
 
 /* Reset button, links & anchors */
 .reset-btn{
@@ -272,21 +243,21 @@ body{
   .reset-btn { border: 1px solid rgba(255,255,255,0.04); box-shadow: 0 6px 18px rgba(0,0,0,0.6); }
 }
 
-
 /* anchors that look like buttons */
 a.btn{ color:inherit !important; text-decoration:none !important; display:inline-flex; align-items:center; gap:.45rem; }
 a.btn:visited, a.btn:active, a.btn:focus { color:inherit !important; text-decoration:none !important; }
 a[aria-disabled="true"]{ pointer-events:none; opacity:.6; }
 
-
 /* strong download look */
 a.btn.bg-indigo-600{ box-shadow: 0 8px 20px rgba(79,70,229,0.12); }
 
-
-/* footer */
-footer{ margin-top:36px; padding-bottom:18px; text-align:center;}
+/* footer - professional spacing */
+footer{ 
+  margin-top:40px;
+  padding-bottom:20px;
+  text-align:center;
+}
 footer .text-\[\#0f1724\] { letter-spacing: 0.2px; }
-
 
 footer .brand-text{
   display:block;
@@ -299,10 +270,11 @@ footer .brand-text{
 }
 @media (max-width:640px){
   footer .brand-text{ font-size:0.86rem; font-weight:600; }
+  footer{ margin-top:32px; padding-bottom:16px; }
 }
 
 footer .about-link {
-  margin-top: 6px;
+  margin-top: 8px;
   text-align: center;
 }
 
@@ -311,25 +283,30 @@ footer .about-link a {
   font-size: 0.85rem;
 }
 
-/* allow smooth scrolling when clicking #about */
+/* smooth scrolling and about section spacing */
 html { scroll-behavior: smooth; }
 
-/* small spacing tweak for about section on mobile */
-#about { scroll-margin-top: 80px; } /* avoids header overlap when jumping */
-@media (max-width:640px) { #about { padding-left: 8px; padding-right: 8px; } }
+#about { 
+  scroll-margin-top: 80px;
+  padding: 20px;
+}
+@media (max-width:640px) { 
+  #about { 
+    padding: 14px;
+  } 
+}
 
 /* force light mode ignoring system dark mode */
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #ffffff;
     --surface: #ffffff;
-    --surface-2: #fbfdff; /* good for me now */
+    --surface-2: #fbfdff;
     --card: #ffffff;
     --muted: #6b7280;
     --fg: #0f1724;
     --select-text: #0f1724;
   }
-
 
   body {
     background: var(--bg) !important;
@@ -337,13 +314,12 @@ html { scroll-behavior: smooth; }
   }
 }
 
-
 /* Inline result thumbnail and actions — tiny and mobile-friendly */
 .result-actions {
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  flex-wrap: wrap;            /* buttons wrap instead of overflowing */
+  flex-wrap: wrap;
 }
 
 /* tiny thumbnail */
@@ -357,7 +333,6 @@ html { scroll-behavior: smooth; }
   border: 1px solid rgba(15,23,42,0.10);
 }
 
-/* slightly bigger on tablets/desktops */
 @media (min-width: 640px) {
   .result-thumb-inline {
     width: 36px;
@@ -367,7 +342,6 @@ html { scroll-behavior: smooth; }
   }
 }
 
-/* phones: keep thumbnail but shrink more */
 @media (max-width: 420px) {
   .result-thumb-inline {
     width: 24px;
@@ -383,3 +357,22 @@ html { scroll-behavior: smooth; }
 .result-actions a {
   flex: 0 0 auto;
 }
+
+/* Quick help card – spacing so it doesn't feel attached */
+.quick-help-card {
+  margin-top: 20px;           /* gap above quick help */
+  padding: 16px;              /* inner padding */
+  font-size: 0.9rem;
+}
+
+.quick-help-card .text-sm.font-medium {
+  margin-bottom: 8px;         /* space between title and text */
+}
+
+@media (max-width:640px){
+  .quick-help-card {
+    margin-top: 18px;
+    padding: 14px;
+  }
+}
+
