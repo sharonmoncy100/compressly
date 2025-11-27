@@ -1,4 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/react";
+
 
 /* Vite-safe asset URLs */
 const IconImg = new URL("./assets/icon.png", import.meta.url).href;
@@ -568,6 +570,8 @@ export default function App() {
             </a>
           </div>
         </footer>
+          {/* Vercel Speed Insights — collects real user metrics for your deployment */}
+        <SpeedInsights />
       </div>
     </div>
   );
