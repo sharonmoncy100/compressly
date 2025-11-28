@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
-
 /* Vite-safe asset URLs */
 const IconImg = new URL("./assets/icon.png", import.meta.url).href;
 const UploadImg = new URL("./assets/upload.png", import.meta.url).href;
@@ -44,11 +43,226 @@ function Spinner({ className = "" }) {
 function DownloadIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="inline-block align-middle -mt-[2px]">
-      <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M8 11l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M21 21H3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M12 3v12" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8 11l4 4 4-4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M21 21H3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
+}
+
+/* Utility: createImageBitmap wrapper with fallback to Image */
+async function decodeImage(blob) {
+  if (typeof createImageBitmap === "function") {
+    try {
+      const imgBitmap = await createImageBitmap(blob);
+      return { bitmap: imgBitmap, width: imgBitmap.width, height: imgBitmap.height, isBitmap: true };
+    } catch (err) {
+      // fallback below
+    }
+  }
+
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = () => {
+      URL.revokeObjectURL(url);
+      resolve({ img, width: img.width, height: img.height, isBitmap: false });
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      reject(new Error("Image decode failed"));
+    };
+    img.src = url;
+  });
+}
+
+/* Helper: produce a blob from canvas, with timeout & fallback to toDataURL */
+async function canvasToBlobWithFallback(canvas, mime, quality) {
+  const b = await new Promise((resolve) => {
+    let called = false;
+    try {
+      canvas.toBlob((blob) => {
+        if (!called) { called = true; resolve(blob); }
+      }, mime, quality);
+    } catch (err) {
+      resolve(null);
+    }
+    setTimeout(() => { if (!called) resolve(null); }, 2500);
+  });
+
+  if (b && b.size > 0) return b;
+
+  try {
+    const dataUrl = canvas.toDataURL(mime, quality);
+    const parts = dataUrl.split(",");
+    const meta = parts[0];
+    const raw = parts[1];
+    const binary = atob(raw);
+    const len = binary.length;
+    const u8 = new Uint8Array(len);
+    for (let i = 0; i < len; i++) u8[i] = binary.charCodeAt(i);
+    const m = (meta.match(/:(.*?);/) || [])[1] || mime || "image/png";
+    return new Blob([u8], { type: m });
+  } catch (err) {
+    return null;
+  }
+}
+
+/* draw helper */
+function drawImageScaled(ctx, source, sx, sy, sWidth, sHeight, dWidth, dHeight) {
+  if (source instanceof ImageBitmap || source instanceof HTMLImageElement) {
+    ctx.drawImage(source, 0, 0, source.width || sWidth, source.height || sHeight, 0, 0, dWidth, dHeight);
+  } else {
+    ctx.drawImage(source, 0, 0, dWidth, dHeight);
+  }
+}
+
+/* Robust canvas create + draw with progressive halving */
+async function renderScaled(sourceObj, targetW, targetH) {
+  const canvas = document.createElement("canvas");
+  canvas.width = targetW;
+  canvas.height = targetH;
+  const ctx = canvas.getContext("2d");
+
+  if (sourceObj.isBitmap && sourceObj.bitmap) {
+    drawImageScaled(ctx, sourceObj.bitmap, 0, 0, sourceObj.width, sourceObj.height, targetW, targetH);
+    return canvas;
+  }
+
+  let sw = sourceObj.width, sh = sourceObj.height;
+  let tmpCanvas = document.createElement("canvas");
+  let tmpCtx = tmpCanvas.getContext("2d");
+  tmpCanvas.width = sw;
+  tmpCanvas.height = sh;
+
+  if (sourceObj.isBitmap && sourceObj.bitmap) tmpCtx.drawImage(sourceObj.bitmap, 0, 0);
+  else tmpCtx.drawImage(sourceObj.img, 0, 0, sw, sh);
+
+  while (sw / 2 > targetW) {
+    const nw = Math.round(sw / 2);
+    const nh = Math.round(sh / 2);
+    const nc = document.createElement("canvas");
+    nc.width = nw; nc.height = nh;
+    const nctx = nc.getContext("2d");
+    nctx.drawImage(tmpCanvas, 0, 0, sw, sh, 0, 0, nw, nh);
+    tmpCanvas = nc;
+    sw = nw; sh = nh;
+    await new Promise(r => setTimeout(r, 0));
+  }
+
+  ctx.drawImage(tmpCanvas, 0, 0, sw, sh, 0, 0, targetW, targetH);
+  return canvas;
+}
+
+/* Main fast compressor with aggressive options */
+async function compressFileOptimized(fileBlob, opts = {}) {
+  const { mime = "image/jpeg", quality = 0.82, targetBytes = 0, maxWidth = 0, progress = () => { } } = opts;
+
+  const src = await decodeImage(fileBlob);
+  let srcW = src.width, srcH = src.height;
+
+  const ABS_MAX = 8192;
+  if (srcW > ABS_MAX || srcH > ABS_MAX) {
+    const scale = ABS_MAX / Math.max(srcW, srcH);
+    srcW = Math.round(srcW * scale);
+    srcH = Math.round(srcH * scale);
+  }
+
+  let initialW = srcW;
+  if (maxWidth && initialW > maxWidth) {
+    const r = maxWidth / initialW;
+    initialW = Math.round(initialW * r);
+  }
+  const aspect = srcH / srcW;
+  let targetW = initialW;
+  let targetH = Math.round(targetW * aspect);
+
+  progress(10, "Preparing image");
+  if (!targetBytes || targetBytes <= 0) {
+    const canvas = await renderScaled(src, targetW, targetH);
+    progress(40, "Encoding image");
+    const out = await canvasToBlobWithFallback(canvas, mime, quality);
+    return out;
+  }
+
+  // AGGRESSIVE QUALITY SEARCH
+  progress(15, "Searching quality");
+  const Q_ITER = 10;
+  let lowQ = 0.02, highQ = Math.min(0.98, quality || 0.98);
+  let bestBlob = null;
+  let bestSize = Infinity;
+
+  for (let i = 0; i < Q_ITER; i++) {
+    const q = (lowQ + highQ) / 2;
+    progress(15 + Math.round((i / Q_ITER) * 20), `Trying quality ${Math.round(q * 100)}%`);
+    const canvas = await renderScaled(src, targetW, targetH);
+    const blob = await canvasToBlobWithFallback(canvas, mime, q);
+    if (!blob) continue;
+    const s = blob.size;
+    if (s <= targetBytes) {
+      bestBlob = blob;
+      bestSize = s;
+      lowQ = q;
+    } else {
+      highQ = q;
+    }
+    if (bestBlob && Math.abs(bestSize - targetBytes) / targetBytes < 0.06) break;
+    await new Promise(r => setTimeout(r, 0));
+  }
+
+  if (bestBlob && bestSize <= (targetBytes * 1.03)) {
+    progress(90, "Finalizing");
+    return bestBlob;
+  }
+
+  // MORE DOWNSCALES, MORE AGGRESSIVE FACTOR
+  progress(40, "Downscaling to reach target");
+  const MAX_DOWNS = 8;
+  let currentW = targetW;
+
+  for (let attempt = 0; attempt < MAX_DOWNS; attempt++) {
+    const factor = attempt === 0 ? 0.88 : 0.78;
+    currentW = Math.round(currentW * factor);
+    if (currentW < 200) break;
+    const currentH = Math.round(currentW * aspect);
+    let foundLocal = null;
+
+    for (let qIter = 0; qIter < 5; qIter++) {
+      const q = 0.12 + (0.86 * (1 - qIter / 5));
+      progress(
+        50 + Math.round((attempt / MAX_DOWNS) * 30) + Math.round((qIter / 5) * 10),
+        `Downscale ${attempt + 1}/${MAX_DOWNS} — q ${Math.round(q * 100)}%`
+      );
+      const canvas = await renderScaled(src, currentW, currentH);
+      const blob = await canvasToBlobWithFallback(canvas, mime, q);
+      if (!blob) continue;
+      if (blob.size <= targetBytes) {
+        foundLocal = blob;
+        break;
+      }
+      if (blob.size < bestSize) {
+        bestBlob = blob;
+        bestSize = blob.size;
+      }
+      await new Promise(r => setTimeout(r, 0));
+    }
+
+    if (foundLocal) {
+      progress(90, "Finalizing");
+      return foundLocal;
+    }
+  }
+
+  if (bestBlob) {
+    progress(92, "Returning best possible");
+    return bestBlob;
+  }
+
+  progress(95, "Final encode");
+  const finalW = Math.max(400, Math.round(initialW * 0.6));
+  const finalCanvas = await renderScaled(src, finalW, Math.round(finalW * aspect));
+  const finalBlob = await canvasToBlobWithFallback(finalCanvas, mime, 0.12);
+  return finalBlob;
 }
 
 export default function App() {
@@ -100,97 +314,6 @@ export default function App() {
     return canvas.toDataURL("image/webp").indexOf("data:image/webp") === 0;
   }
 
-  async function createImageElement(blob) {
-    return new Promise((resolve, reject) => {
-      try {
-        const url = URL.createObjectURL(blob);
-        const img = new Image();
-        img.onload = () => { URL.revokeObjectURL(url); resolve(img); };
-        img.onerror = (e) => {
-          URL.revokeObjectURL(url);
-          console.error("createImageElement: image load error", e);
-          reject(new Error("Image failed to load — file may be corrupted or unsupported."));
-        };
-        img.src = url;
-      } catch (err) {
-        console.error("createImageElement: unexpected", err);
-        reject(err);
-      }
-    });
-  }
-
-  async function canvasToBlob(canvas, mime, q) {
-    return await new Promise((resolve) => {
-      let finished = false;
-      try {
-        canvas.toBlob((b) => {
-          finished = true;
-          if (!b) {
-            console.warn("canvasToBlob: toBlob returned null");
-            resolve(null);
-          } else {
-            resolve(b);
-          }
-        }, mime, q);
-      } catch (err) {
-        console.error("canvasToBlob: exception", err);
-        resolve(null);
-      }
-      setTimeout(() => { if (!finished) { console.warn("canvasToBlob: timeout"); resolve(null); } }, 3000);
-    });
-  }
-
-  function dataURLToBlob(dataURL) {
-    const parts = dataURL.split(',');
-    const meta = parts[0];
-    const b64 = parts[1] || "";
-    const binary = atob(b64);
-    const len = binary.length;
-    const u8 = new Uint8Array(len);
-    for (let i = 0; i < len; i++) u8[i] = binary.charCodeAt(i);
-    const m = (meta.match(/:(.*?);/) || [])[1] || 'image/png';
-    return new Blob([u8], { type: m });
-  }
-
-  async function compressWithQualityAndSize(originalFile, opts) {
-    const { quality, mime, maxWidth } = opts;
-    const img = await createImageElement(originalFile);
-
-    let width = img.width, height = img.height;
-
-    const MAX_DIM = 8192;
-    if (width > MAX_DIM || height > MAX_DIM) {
-      const scale = MAX_DIM / Math.max(width, height);
-      width = Math.round(width * scale);
-      height = Math.round(height * scale);
-      console.warn(`compressWithQualityAndSize: downscaled big image to ${width}x${height}`);
-    }
-
-    if (maxWidth && width > maxWidth) {
-      const r = maxWidth / width;
-      width = Math.round(width * r);
-      height = Math.round(height * r);
-    }
-
-    const canvas = document.createElement("canvas");
-    canvas.width = width; canvas.height = height;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, width, height);
-
-    let blob = await canvasToBlob(canvas, mime, quality);
-    if (blob) return blob;
-
-    try {
-      const dataURL = canvas.toDataURL(mime, quality);
-      blob = dataURLToBlob(dataURL);
-      if (blob && blob.size > 0) return blob;
-    } catch (err) {
-      console.error("compressWithQualityAndSize: toDataURL fallback failed", err);
-    }
-
-    return null;
-  }
-
   function handleResultBlob(blob, preferredMime) {
     if (!blob) return;
     if (outURL) URL.revokeObjectURL(outURL);
@@ -219,81 +342,30 @@ export default function App() {
 
       if (mime === "image/webp" && !isWebPSupported()) mime = "image/jpeg";
 
-      if (targetKB && Number(targetKB) > 0) {
-        const targetBytes = Math.max(8 * 1024, Math.round(Number(targetKB) * 1024));
-        let low = 0.05, high = 0.98, bestBlob = null, bestSize = Infinity, bestQ = low;
-        const Q_ITER = 10;
+      const targetBytes = targetKB && Number(targetKB) > 0 ? Math.max(8 * 1024, Math.round(Number(targetKB) * 1024)) : 0;
 
-        for (let i = 0; i < Q_ITER; i++) {
-          const mid = (low + high) / 2;
-          setLastNote(`Trying quality ${Math.round(mid * 100)}%`);
-          setProgressPct(6 + Math.round((i / Q_ITER) * 35));
-          const blob = await compressWithQualityAndSize(file, { quality: mid, mime });
-          if (!blob) {
-            console.warn("runCompress: blob null during quality search");
-            break;
-          }
-          const s = blob.size;
-          if (s <= targetBytes) { bestBlob = blob; bestSize = s; bestQ = mid; low = mid; }
-          else { high = mid; }
-        }
+      const progressCb = (pct, note) => {
+        setProgressPct(Math.min(98, pct));
+        setLastNote(note || "");
+      };
 
-        if (bestBlob && bestSize <= targetBytes) {
-          handleResultBlob(bestBlob, mime);
-          setLastNote(`Hit target at ${Math.round(bestQ * 100)}%`);
-          setProcessing(false); setProgressPct(100); return;
-        }
+      // more aggressive mobile-friendly max width
+      const maxWidth = 1200;
 
-        setLastNote("Quality couldn't reach target — downscaling...");
-        setProgressPct(45);
-        const imgEl = await createImageElement(file);
-        let maxWidth = imgEl.width; let attempts = 0; const MAX_ATT = 6; let finalBlob = null;
-
-        while (attempts < MAX_ATT) {
-          maxWidth = Math.round(maxWidth * (attempts === 0 ? 0.9 : 0.82));
-          if (maxWidth < 200) break;
-          let l = 0.05, h = 0.98, localBest = null;
-          for (let j = 0; j < 8; j++) {
-            const mid = (l + h) / 2;
-            setLastNote(`Downscale ${attempts + 1}/${MAX_ATT} — w:${maxWidth}px`);
-            setProgressPct(45 + Math.round(((attempts * 8 + j) / (MAX_ATT * 8)) * 40));
-            const blob = await compressWithQualityAndSize(file, { quality: mid, mime, maxWidth });
-            if (!blob) break;
-            if (blob.size <= targetBytes) { localBest = blob; l = mid; }
-            else { h = mid; }
-          }
-          if (localBest) { finalBlob = localBest; break; }
-          const aggressive = await compressWithQualityAndSize(file, { quality: 0.12, mime, maxWidth });
-          if (aggressive && aggressive.size <= targetBytes) { finalBlob = aggressive; break; }
-          attempts++;
-        }
-
-        if (finalBlob) {
-          handleResultBlob(finalBlob, mime);
-          setLastNote("Reached target with downscale+quality.");
-          setProcessing(false); setProgressPct(100); return;
-        }
-
-        setLastNote("Couldn't meet exact target — returning best possible.");
-        setProgressPct(90);
-        const lastBlob = await compressWithQualityAndSize(file, { quality: 0.12, mime, maxWidth: Math.round((imgEl?.width || 1000) * 0.6) }).catch(() => null);
-        if (lastBlob) { handleResultBlob(lastBlob, mime); }
-        else {
-          const fallback = await compressWithQualityAndSize(file, { quality, mime }).catch(() => null);
-          if (fallback) { handleResultBlob(fallback, mime); }
-        }
-        setProcessing(false); setProgressPct(100); return;
+      const blob = await compressFileOptimized(file, { mime, quality, targetBytes, maxWidth, progress: progressCb });
+      if (!blob) {
+        setLastNote("Compression failed — try smaller image or lower quality.");
+        setProgressPct(0);
+        setProcessing(false);
+        return;
       }
 
-      setLastNote("Compressing...");
-      setProgressPct(12);
-      const resultBlob = await compressWithQualityAndSize(file, { quality, mime });
-      if (resultBlob) { handleResultBlob(resultBlob, mime); setLastNote(""); setProgressPct(100); }
-      else { setLastNote("Compression failed — try lower quality or smaller image."); setProgressPct(0); }
+      handleResultBlob(blob, mime);
+      setLastNote("");
+      setProgressPct(100);
     } catch (err) {
       console.error("runCompress: unexpected", err);
-      const msg = err?.message || String(err);
-      setLastNote(`Error while compressing: ${msg}. Try a different image.`);
+      setLastNote(`Error while compressing: ${err?.message || String(err)}.`);
       setProgressPct(0);
     } finally {
       setProcessing(false);
@@ -303,7 +375,6 @@ export default function App() {
 
   const reductionPercent = originalSize && outSize ? Math.round(((originalSize - outSize) / originalSize) * 100) : 0;
 
-  // display name/size: prefer processed values if available
   const displayName = outFilename || (file ? file.name : "No file selected");
   const displaySize = outSize || originalSize;
 
@@ -318,7 +389,7 @@ export default function App() {
         {/* header (responsive) */}
         <header className="flex items-center justify-between mb-3 header-wrap">
           <div className="header-left flex items-center gap-2">
-            <img src={`${IconImg}`} alt="Compressly" className="w-6 h-6 object-contain" />
+            <img src={IconImg} alt="Compressly" className="w-6 h-6 object-contain" />
             <div style={{ minWidth: 0 }} className="hidden sm:block">
               <div className="text-xl font-semibold leading-tight truncate">Compressly</div>
             </div>
@@ -361,7 +432,6 @@ export default function App() {
                   {previewURL ? <img src={previewURL} alt="preview" className="object-contain w-full h-full" /> : <div className="text-slate-300 text-sm">No preview</div>}
                 </div>
 
-                {/* keep uploader preview name minimal to avoid repetition */}
                 <div className="text-xs small-muted" style={{ minWidth: 0 }}>
                   <div className="font-medium truncate" style={{ maxWidth: 160 }}>{file ? file.name : "No file selected"}</div>
                   <div className="mt-1">{file ? humanFileSize(originalSize) : ""}</div>
@@ -389,7 +459,7 @@ export default function App() {
                     </select>
                     <div className="fancy-select__arrow" aria-hidden>
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-                        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </div>
                   </div>
@@ -440,7 +510,6 @@ export default function App() {
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
                     <div>
-                      {/* show processed name/size when available, otherwise original */}
                       <div className="text-sm font-medium truncate" style={{ maxWidth: 160 }}>{displayName}</div>
                       <div className="text-xs small-muted mt-1">{displaySize ? humanFileSize(displaySize) : ""}</div>
                     </div>
@@ -507,11 +576,9 @@ export default function App() {
             <div className="container-card soft-shadow quick-help-card">
               <div className="text-sm font-medium">Quick help</div>
               <div className="text-xs small-muted">
-                For forms: Many forms require ≤100KB — use Target (KB) + JPEG. For web: WebP gives smaller files and faster pages.
+                For forms: Many forms require ≤100KB - use Target (KB) + JPEG. For web: WebP gives smaller files and faster pages.
               </div>
             </div>
-
- 
           </aside>
 
           {/* informational cards */}
@@ -540,29 +607,28 @@ export default function App() {
           </section>
 
           {/* About section */}
-        <section id="about" className="md:col-span-12 container-card p-4 soft-shadow mt-6">
-  <div className="font-medium text-base">About Compressly:</div>
+          <section id="about" className="md:col-span-12 container-card p-4 soft-shadow mt-6">
+            <div className="font-medium text-base">About Compressly:</div>
 
-  <div className="mt-2 small-muted text-sm leading-relaxed">
-    <strong>Compressly</strong> is a fast, private image compression tool that runs entirely in your
-    browser - no uploads, no accounts, and no tracking. It reduces JPG, PNG, and WebP files
-    to smaller sizes for web forms, emails, online applications, and faster page performance.
+            <div className="mt-2 small-muted text-sm leading-relaxed">
+              <strong>Compressly</strong> is a fast, private image compression tool that runs entirely in your
+              browser - no uploads, no accounts, and no tracking. It reduces JPG, PNG, and WebP files
+              to smaller sizes for web forms, emails, online applications, and faster page performance.
 
-    <br /><br />
+              <br /><br />
 
-    You can set a custom quality level or enter an exact target size in KB. Compressly uses
-    smart compression techniques — including quality adjustment and optional downscaling —
-    to help you stay under strict file-size limits required by many portals and government forms.
+              You can set a custom quality level or enter an exact target size in KB. Compressly uses
+              smart compression techniques - including quality adjustment and optional downscaling -
+              to help you stay under strict file-size limits required by many portals and government forms.
 
-    <br /><br />
+              <br /><br />
 
-    Designed to be mobile-friendly and privacy-first, Compressly gives fast results even on
-    low-end devices and slow networks, making it ideal for everyday use.
+              Designed to be mobile-friendly and privacy-first, Compressly gives fast results even on
+              low-end devices and slow networks, making it ideal for everyday use.
 
-    <br /><br />
-  </div>
-</section>
-
+              <br /><br />
+            </div>
+          </section>
         </main>
 
         <footer>
@@ -574,7 +640,7 @@ export default function App() {
             </a>
           </div>
         </footer>
-          {/* Vercel Speed Insights — collects real user metrics for your deployment */}
+
         <SpeedInsights />
       </div>
     </div>
