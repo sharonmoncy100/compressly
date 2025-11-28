@@ -499,13 +499,22 @@ export default function App() {
           <aside className="md:col-span-4">
             <div className="container-card rounded-lg p-3 soft-shadow">
               <div className="flex items-start gap-3">
-                <div className="result-thumb" aria-hidden style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-slate-400">
-                    <rect x="3" y="3" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.2" />
-                    <circle cx="8.5" cy="9.5" r="1.6" fill="currentColor" />
-                    <path d="M3 17l4-4 3 3 5-6 4 4" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
+                <div className="result-thumb" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                  {outURL ? (
+                    <img
+                      src={outURL}
+                      alt="result preview"
+                      className="w-full h-full object-contain rounded-md"
+                    />
+                  ) : (
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" className="text-slate-400">
+                      <rect x="3" y="4" width="18" height="14" rx="2" stroke="currentColor" strokeWidth="1.3" />
+                      <path d="M7 13l3-3 4 5 3-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                      <circle cx="9" cy="9" r="1.4" fill="currentColor" />
+                    </svg>
+                  )}
                 </div>
+
 
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
@@ -525,15 +534,6 @@ export default function App() {
                   </div>
 
                   <div className="mt-3 result-actions">
-                    {outURL ? (
-                      <img
-                        src={outURL}
-                        alt="thumb"
-                        className="result-thumb-inline"
-                        aria-hidden
-                      />
-                    ) : null}
-
                     <a
                       href={downloadHref}
                       download={downloadName}
@@ -542,6 +542,7 @@ export default function App() {
                     >
                       <DownloadIcon /> <span>{outURL || previewURL ? `Download (${outSize ? humanFileSize(outSize) : ""})` : "Download"}</span>
                     </a>
+
 
                     <button
                       onClick={async () => { if (outURL) window.open(outURL, "_blank"); }}

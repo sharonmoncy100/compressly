@@ -315,6 +315,7 @@ html { scroll-behavior: smooth; }
 }
 
 /* Inline result thumbnail and actions — tiny and mobile-friendly */
+/* Inline result thumbnail and actions — tiny and mobile-friendly */
 .result-actions {
   display: flex;
   gap: 0.5rem;
@@ -322,32 +323,24 @@ html { scroll-behavior: smooth; }
   flex-wrap: wrap;
 }
 
-/* tiny thumbnail */
+/* slightly larger thumbnail and closer to left */
 .result-thumb-inline {
-  width: 28px;
-  height: 28px;
-  min-width: 28px;
-  min-height: 28px;
+  width: 40px;
+  height: 40px;
+  min-width: 40px;
+  min-height: 40px;
   border-radius: 6px;
   object-fit: contain;
   border: 1px solid rgba(15,23,42,0.10);
 }
 
+/* a bit bigger on larger screens */
 @media (min-width: 640px) {
   .result-thumb-inline {
-    width: 36px;
-    height: 36px;
-    min-width: 36px;
-    min-height: 36px;
-  }
-}
-
-@media (max-width: 420px) {
-  .result-thumb-inline {
-    width: 24px;
-    height: 24px;
-    min-width: 24px;
-    min-height: 24px;
+    width: 48px;
+    height: 48px;
+    min-width: 48px;
+    min-height: 48px;
   }
 }
 
@@ -357,6 +350,7 @@ html { scroll-behavior: smooth; }
 .result-actions a {
   flex: 0 0 auto;
 }
+
 
 /* Quick help card – spacing so it doesn't feel attached */
 .quick-help-card {
