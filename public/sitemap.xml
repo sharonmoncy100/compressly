@@ -6,21 +6,20 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
+<url>
+  <loc>https://www.compressly.in/compress-jpg-online.html</loc>
+  <priority>0.90</priority>
+</url>
 
-    <url>
-    <loc>https://www.compressly.in/compress-image-to-100kb.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.compressly.in/compress-jpg-online.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.compressly.in/compress-png-online.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
+<url>
+  <loc>https://www.compressly.in/compress-png-online.html</loc>
+  <priority>0.90</priority>
+</url>
+
+<url>
+  <loc>https://www.compressly.in/compress-image-to-100kb.html</loc>
+  <priority>0.95</priority>
+</url>
+
 
 </urlset>
