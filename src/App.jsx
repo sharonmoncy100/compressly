@@ -945,27 +945,25 @@ export default function App() {
           >
             <div className="font-medium text-base">About Compressly:</div>
 
-            <div className="mt-2 small-muted text-sm leading-relaxed">
-              <strong>Compressly</strong> is a fast, private image compression
-              tool that runs entirely in your browser - no uploads, no accounts,
-              and no tracking. It reduces JPG, PNG, and WebP files to smaller
-              sizes for web forms, emails, online applications, and faster page
-              performance.
-              <br />
-              <br />
-              You can set a custom quality level or enter an exact target size
-              in KB. Compressly uses smart compression techniques - including
-              quality adjustment and optional downscaling - to help you stay
-              under strict file-size limits required by many portals and
-              government forms.
-              <br />
-              <br />
-              Designed to be mobile-friendly and privacy-first, Compressly gives
-              fast results even on low-end devices and slow networks, making it
-              ideal for everyday use.
-              <br />
-              <br />
-            </div>
+      {/* About section content (SEO-rich) */}
+<div className="mt-2 small-muted text-sm leading-relaxed">
+  <strong>Compressly</strong> is a free, privacy-first image compressor that runs entirely in your browser - no uploads, no accounts, and no tracking. Compressly reduces JPG, PNG and WebP images to much smaller sizes while keeping visual quality, helping you meet file-size limits for web forms, email attachments, government portals, and job application uploads.
+  <br /><br />
+  Key features:
+  <ul>
+    <li>Fast client-side compression - everything happens locally in your browser.</li>
+    <li>Target-size compression (for example: compress image to 100 KB) with smart quality search and adaptive downscaling.</li>
+    <li>Support for JPEG, PNG and WebP formats, plus easy download and copy options.</li>
+    <li>Mobile-friendly and tuned for low-end phones - perfect for users with limited bandwidth.</li>
+  </ul>
+  <br />
+  How to use: choose an image, pick a format or enter a target size (KB), press <strong>Compress</strong>, then <strong>Download</strong>. Use WebP + Target for the smallest files.
+  <br /><br />
+  Compressly is ideal for anyone who needs to quickly reduce image file sizes: students submitting forms, job applicants, bloggers, small business owners, and web developers aiming to speed up page load times.
+  <br /><br />
+  Learn more: try the quick links below to compress a JPEG or compress an image to 100 KB.
+</div>
+
           </section>
         </main>
 
@@ -979,6 +977,14 @@ export default function App() {
               About Compressly
             </a>
           </div>
+          <div className="about-link">
+            <a href="/compress-image-to-100kb.html" className="small-muted text-sm hover:underline">Compress to 100 KB</a>
+            <span style={{ marginLeft: 12 }} />
+            <a href="/compress-jpg-online.html" className="small-muted text-sm hover:underline">Compress JPG online</a>
+            <span style={{ marginLeft: 12 }} />
+            <a href="/compress-png-online.html" className="small-muted text-sm hover:underline">Compress PNG online</a>
+          </div>
+
         </footer>
 
         <SpeedInsights />
