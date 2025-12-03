@@ -3,7 +3,6 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 
 /* Vite-safe asset URLs */
 const IconImg = new URL("./assets/icon.png", import.meta.url).href;
-const UploadImg = new URL("./assets/upload.png", import.meta.url).href;
 
 /* Helper: show human-friendly size (1024 base) and also show exact bytes */
 function humanFileSizeShort(bytes) {
@@ -511,7 +510,7 @@ export default function App() {
       ? Math.round(((originalSize - outSize) / originalSize) * 100)
       : 0;
 
-  const displayName = outFilename || (file ? file.name : "No file selected");
+  const displayName = outFilename || (file ? file.name : "");
   const displaySize = outSize || originalSize;
 
   const downloadHref = outURL || previewURL || "";
@@ -569,10 +568,29 @@ export default function App() {
               className="theme-toggle-btn"
               aria-label="Toggle light/dark mode"
             >
-              <span className="theme-toggle-icon">
-                {theme === "light" ? "🌙" : "☀️"}
-              </span>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                {/* outer circle */}
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                  fill={theme === "light" ? "#111827" : "#f9fafb"}
+                  stroke={theme === "light" ? "#111827" : "#f9fafb"}
+                  strokeWidth="1.2"
+                />
+                {/* half cut-out */}
+                <path
+                  d="M12 3a9 9 0 0 0 0 18z"
+                  fill={theme === "light" ? "#f9fafb" : "#111827"}
+                />
+              </svg>
             </button>
+
           </div>
         </header>
 
@@ -585,27 +603,23 @@ export default function App() {
                 if (e.dataTransfer?.files) handleFiles(e.dataTransfer.files);
               }}
               onDragOver={(e) => e.preventDefault()}
-              className="uploader rounded-lg flex flex-col md:flex-row gap-4 items-start"
+              className="uploader rounded-lg flex flex-col gap-4 items-start"
             >
-              <div className="flex-1 min-w-0">
-                <h2 className="text-base font-medium truncate">
-                  Drop an image or click to upload
+              <div className="flex-1 w-full text-center">
+                <h2 className="text-base font-medium">
+                  Drop images here to start compressing
                 </h2>
-                <p className="small-muted mt-1">
-                  Processed locally — no uploads.
+                <p className="small-muted mt-2">
+                  Free online image compressor - reduce JPG, PNG and WebP file
+                  size in your browser.
                 </p>
 
-                <div className="mt-3 flex flex-wrap items-center gap-2">
+                <div className="mt-5 flex flex-col items-center gap-2">
                   <button
                     onClick={() => inputRef.current?.click()}
-                    className="primary-btn flex items-center gap-2 text-sm"
+                    className="primary-upload-btn"
                   >
-                    <img
-                      src={UploadImg}
-                      alt="upload"
-                      className="w-3.5 h-3.5 opacity-90"
-                    />
-                    <span className="truncate">Choose image</span>
+                    Select Image
                   </button>
 
                   <input
@@ -616,38 +630,45 @@ export default function App() {
                     onChange={(e) => handleFiles(e.target.files)}
                   />
 
-                  <button
-                    onClick={resetAll}
-                    disabled={!file}
-                    className="reset-btn btn px-3 py-1 text-sm disabled:opacity-60"
-                  >
-                    Reset
-                  </button>
+                  <div className="small-muted text-xs">
+                    Drag &amp; drop or click Select Image to upload.
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
-                <div className="preview-wrap">
-                  {previewURL ? (
-                    <img
-                      src={previewURL}
-                      alt="preview"
-                      className="object-contain w-full h-full"
-                    />
-                  ) : (
-                    <div className="text-slate-300 text-sm">No preview</div>
-                  )}
-                </div>
-
-                <div className="text-xs small-muted" style={{ minWidth: 0 }}>
-                  <div
-                    className="font-medium truncate"
-                    style={{ maxWidth: 160 }}
-                  >
-                    {file ? file.name : "No file selected"}
+              {/* preview + meta stacked below for consistent padding */}
+              <div className="w-full flex items-center justify-center mt-4">
+                <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
+                  <div className="preview-wrap">
+                    {previewURL ? (
+                      <img
+                        src={previewURL}
+                        alt=""
+                        className="object-contain w-full h-full"
+                      />
+                    ) : null}
                   </div>
-                  <div className="mt-1">
-                    {file ? humanFileSize(originalSize) : ""}
+
+                  <div className="text-xs small-muted" style={{ minWidth: 0 }}>
+                    {displayName && (
+                      <div
+                        className="font-medium truncate"
+                        style={{ maxWidth: 180 }}
+                      >
+                        {displayName}
+                      </div>
+                    )}
+                    {displaySize ? (
+                      <div className="mt-1">{humanFileSize(displaySize)}</div>
+                    ) : null}
+
+                    <button
+                      onClick={resetAll}
+                      disabled={!file}
+                      className="reset-btn btn px-3 py-1 text-sm disabled:opacity-60 mt-2"
+                    >
+                      Reset
+                    </button>
                   </div>
                 </div>
               </div>
@@ -660,7 +681,7 @@ export default function App() {
                   Output
                 </label>
                 <div className="mt-1">
-                  <div className="fancy-select">
+                  <div className="fancy-select fancy-select--strong">
                     <select
                       id="output-format"
                       aria-label="Output format"
@@ -725,7 +746,7 @@ export default function App() {
                   <button
                     onClick={runCompress}
                     disabled={!file || processing}
-                    className="primary-btn w-auto disabled:opacity-60 text-sm flex items-center gap-2"
+                    className="primary-upload-btn compress-btn-main disabled:opacity-60 text-sm flex items-center gap-2"
                   >
                     {processing ? <Spinner /> : null}
                     <span>{processing ? "Processing" : "Compress"}</span>
@@ -753,19 +774,19 @@ export default function App() {
           {/* right: result */}
           <aside className="md:col-span-4">
             <div className="container-card rounded-lg p-3 result-card">
-              <div className="flex items-start gap-3">
-                <div
-                  className="result-thumb"
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
+              <div className="result-header flex items-start gap-3">
+                <button
+                  type="button"
+                  className="result-thumb result-thumb--clickable"
+                  onClick={() => {
+                    if (outURL) window.open(outURL, "_blank");
                   }}
+                  disabled={!outURL}
                 >
                   {outURL ? (
                     <img
                       src={outURL}
-                      alt="result preview"
+                      alt="Compressed image preview"
                       className="w-full h-full object-contain rounded-md"
                     />
                   ) : (
@@ -795,27 +816,35 @@ export default function App() {
                       <circle cx="9" cy="9" r="1.4" fill="currentColor" />
                     </svg>
                   )}
-                </div>
+                </button>
 
                 <div className="flex-1">
-                  <div className="flex items-center justify-between">
+                  <div className="result-meta flex items-center justify-between">
                     <div>
                       <div
                         className="text-sm font-medium truncate"
-                        style={{ maxWidth: 160 }}
+                        style={{ maxWidth: 200 }}
                       >
-                        {displayName}
+                        {displayName || "Compressed image"}
                       </div>
-                      <div className="text-xs small-muted mt-1">
-                        {displaySize ? humanFileSize(displaySize) : ""}
-                      </div>
+                      {(outSize || displaySize) && (
+                        <div className="text-xs small-muted mt-1">
+                          {outSize
+                            ? `Final size: ${humanFileSize(outSize)}`
+                            : `Original size: ${humanFileSize(displaySize)}`}
+                        </div>
+                      )}
+
                     </div>
 
                     <div className="text-right">
-                      <div className="text-base font-semibold">
-                        {outSize ? humanFileSizeShort(outSize) : "—"}
-                      </div>
+                      {outSize ? (
+                        <div className="text-base font-semibold">
+                          {humanFileSizeShort(outSize)}
+                        </div>
+                      ) : null}
                     </div>
+
                   </div>
 
                   <div className="mt-2 flex flex-wrap gap-2 items-center">
@@ -852,41 +881,19 @@ export default function App() {
                       <DownloadIcon />{" "}
                       <span>
                         {outURL || previewURL
-                          ? `Download (${outSize ? humanFileSize(outSize) : ""})`
+                          ? `Download`
                           : "Download"}
                       </span>
                     </a>
 
                     <button
-                      onClick={async () => {
+                      onClick={() => {
                         if (outURL) window.open(outURL, "_blank");
                       }}
                       disabled={!outURL}
-                      className="px-2 py-1 border rounded-md text-sm disabled:opacity-60"
+                      className="open-link px-2 py-1 border rounded-md text-sm disabled:opacity-60"
                     >
-                      Open
-                    </button>
-
-                    <button
-                      onClick={async () => {
-                        if (!outURL) return;
-                        try {
-                          const b = await fetch(outURL).then((r) => r.blob());
-                          const reader = new FileReader();
-                          reader.onload = () => {
-                            navigator.clipboard.writeText(reader.result);
-                            alert("Data URL copied");
-                          };
-                          reader.readAsDataURL(b);
-                        } catch (e) {
-                          console.error(e);
-                          alert("Copy failed");
-                        }
-                      }}
-                      disabled={!outURL}
-                      className="px-2 py-1 border rounded-md text-sm disabled:opacity-60"
-                    >
-                      Copy
+                      Open in new tab
                     </button>
                   </div>
 
@@ -908,35 +915,67 @@ export default function App() {
           </aside>
 
           {/* informational cards */}
-          <section className="md:col-span-12 info-section grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div className="info-card minimal-card">
-              <div className="font-medium text-sm">Outputs</div>
-              <div className="mt-2 small-muted">
-                JPEG for compatibility, WebP for smallest size, PNG when
-                lossless is required.
+          {/* FAQ section */}
+          <section className="md:col-span-12 mt-4">
+            <div className="faq-card container-card">
+              <div className="faq-item faq-item--blue">
+                <div className="faq-stripe" />
+                <div className="faq-content">
+                  <h3 className="faq-q">
+                    Is it really free to compress images with Compressly?
+                  </h3>
+                  <p className="faq-a">
+                    Yes, Compressly is completely free to use with no accounts,
+                    watermarks or hidden limits. You can compress as many JPG, PNG
+                    and WebP images as you need for web, forms and email.
+                  </p>
+                </div>
+              </div>
+
+              <div className="faq-item faq-item--green">
+                <div className="faq-stripe" />
+                <div className="faq-content">
+                  <h3 className="faq-q">
+                    How secure is it to compress images online?
+                  </h3>
+                  <p className="faq-a">
+                    All compression happens locally in your browser, so your images
+                    are never uploaded to a server. This keeps personal photos and
+                    documents private on your own device.
+                  </p>
+                </div>
+              </div>
+
+              <div className="faq-item faq-item--purple">
+                <div className="faq-stripe" />
+                <div className="faq-content">
+                  <h3 className="faq-q">
+                    What is the maximum file size I can compress?
+                  </h3>
+                  <p className="faq-a">
+                    Compressly is tuned for everyday photos, screenshots and form
+                    uploads. Very large files may take longer, but most images from
+                    phones and cameras work great.
+                  </p>
+                </div>
+              </div>
+
+              <div className="faq-item faq-item--orange">
+                <div className="faq-stripe" />
+                <div className="faq-content">
+                  <h3 className="faq-q">
+                    Can I compress images for government or job portals?
+                  </h3>
+                  <p className="faq-a">
+                    Yes, you can quickly reduce file size to meet KB limits used by
+                    government sites, job portals and college forms while keeping the
+                    image readable.
+                  </p>
+                </div>
               </div>
             </div>
-
-            <div className="info-card minimal-card">
-              <div className="font-medium text-sm">How to use</div>
-              <ol className="mt-2 list-decimal ml-4 small-muted space-y-1 text-sm">
-                <li>Choose image (or drag & drop).</li>
-                <li>Pick format / quality or enter target KB.</li>
-                <li>Press Compress → Download result.</li>
-              </ol>
-            </div>
-
-            <div className="info-card minimal-card">
-              <div className="font-medium text-sm">Why Compressly?</div>
-              <ul className="mt-2 ml-4 small-muted space-y-1 text-sm">
-                <li>No uploads - processed in your browser for privacy.</li>
-                <li>
-                  Fast client-side compression - instant results without
-                  servers.
-                </li>
-              </ul>
-            </div>
           </section>
+
 
           {/* About section */}
           <section
@@ -945,49 +984,74 @@ export default function App() {
           >
             <div className="font-medium text-base">About Compressly:</div>
 
-      {/* About section content (SEO-rich) */}
-<div className="mt-2 small-muted text-sm leading-relaxed">
-  <strong>Compressly</strong> is a free, privacy-first image compressor that runs entirely in your browser - no uploads, no accounts, and no tracking. Compressly reduces JPG, PNG and WebP images to much smaller sizes while keeping visual quality, helping you meet file-size limits for web forms, email attachments, government portals, and job application uploads.
-  <br /><br />
-  Key features:
-  <ul>
-    <li>Fast client-side compression - everything happens locally in your browser.</li>
-    <li>Target-size compression (for example: compress image to 100 KB) with smart quality search and adaptive downscaling.</li>
-    <li>Support for JPEG, PNG and WebP formats, plus easy download and copy options.</li>
-    <li>Mobile-friendly and tuned for low-end phones - perfect for users with limited bandwidth.</li>
-  </ul>
-  <br />
-  How to use: choose an image, pick a format or enter a target size (KB), press <strong>Compress</strong>, then <strong>Download</strong>. Use WebP + Target for the smallest files.
-  <br /><br />
-  Compressly is ideal for anyone who needs to quickly reduce image file sizes: students submitting forms, job applicants, bloggers, small business owners, and web developers aiming to speed up page load times.
-  <br /><br />
-  Learn more: try the quick links below to compress a JPEG or compress an image to 100 KB.
-</div>
-
+            {/* About section content (SEO-rich) */}
+            <div className="mt-2 small-muted text-sm leading-relaxed">
+              <strong>Compressly</strong> is a free, privacy-first image
+              compressor that runs entirely in your browser - no uploads, no
+              accounts, and no tracking. Compressly reduces JPG, PNG and WebP
+              images to much smaller sizes while keeping visual quality,
+              helping you meet file-size limits for web forms, email
+              attachments, government portals, and job application uploads.
+              <br />
+              <br />
+              Key features:
+              <ul>
+                <li>
+                  Fast client-side compression - everything happens locally in
+                  your browser.
+                </li>
+                <li>
+                  Target-size compression (for example: compress image to 100
+                  KB) with smart quality search and adaptive downscaling.
+                </li>
+                <li>
+                  Support for JPEG, PNG and WebP formats, plus easy download
+                  options.
+                </li>
+                <li>
+                  Mobile-friendly and tuned for low-end phones - perfect for
+                  users with limited bandwidth.
+                </li>
+              </ul>
+              <br />
+              How to use: choose an image, pick a format or enter a target size
+              (KB), press <strong>Compress</strong>, then{" "}
+              <strong>Download</strong>. Use WebP + Target for the smallest
+              files.
+              <br />
+              <br />
+              Compressly is ideal for anyone who needs to quickly reduce image
+              file sizes: students submitting forms, job applicants, bloggers,
+              small business owners, and web developers aiming to speed up page
+              load times.
+              <br />
+              <br />
+              Learn more: try the quick links below to compress a JPEG or
+              compress an image to 100 KB.
+            </div>
           </section>
         </main>
 
         <footer>
-          <div className="brand-text">
-            Made by Leosh ads · © Compressly 2025
+          <div className="footer-inner">
+            <div className="brand-text">
+              Made by Leosh ads · © Compressly 2025
+            </div>
+
+            <div className="footer-links">
+              <a href="#about">About Compressly</a>
+              <span>•</span>
+              <a href="/compress-image-to-100kb.html">Compress to 100 KB</a>
+              <span>•</span>
+              <a href="/compress-jpg-online.html">Compress JPG online</a>
+              <span>•</span>
+              <a href="/compress-png-online.html">Compress PNG online</a>
+            </div>
           </div>
 
-          <div className="about-link">
-            <a href="#about" className="small-muted text-sm hover:underline">
-              About Compressly
-            </a>
-          </div>
-          <div className="about-link">
-            <a href="/compress-image-to-100kb.html" className="small-muted text-sm hover:underline">Compress to 100 KB</a>
-            <span style={{ marginLeft: 12 }} />
-            <a href="/compress-jpg-online.html" className="small-muted text-sm hover:underline">Compress JPG online</a>
-            <span style={{ marginLeft: 12 }} />
-            <a href="/compress-png-online.html" className="small-muted text-sm hover:underline">Compress PNG online</a>
-          </div>
-
+          <SpeedInsights />
         </footer>
 
-        <SpeedInsights />
       </div>
     </div>
   );
