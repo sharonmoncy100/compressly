@@ -1,3 +1,6 @@
+// App.jsx — with HEIC input support (converts HEIC->JPEG before compressing)
+// Minimal, lazy-loaded heic2any usage. If browser natively supports HEIC (createImageBitmap or <img>), we use that first.
+
 import React, { useRef, useState, useEffect } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
@@ -231,6 +234,109 @@ async function renderScaled(sourceObj, targetW, targetH) {
   return canvas;
 }
 
+/* ------------ HEIC helper: lazy-load heic2any when needed ------------ */
+
+/**
+ * Attempts to load heic2any library by injecting a script tag.
+ * Resolves when window.heic2any is available or rejects on timeout.
+ */
+/* Robust heic2any loader: dynamic import (local) -> CDN fallback -> timeout */
+async function loadHeic2any(timeoutMs = 10000) {
+  if (typeof window === "undefined") throw new Error("No window");
+  if (window.heic2any) return window.heic2any;
+
+  // 1) Try dynamic import (works if you `npm install heic2any`)
+  try {
+    const mod = await import("heic2any");
+    const fn = mod?.default || mod;
+    if (typeof fn === "function") {
+      window.heic2any = fn;
+      return fn;
+    }
+  } catch (err) {
+    console.warn("Dynamic import heic2any failed:", err);
+    // continue to CDN fallback
+  }
+
+  // 2) CDN fallback: inject script if not already present
+  if (window.heic2any) return window.heic2any;
+  const existing = document.querySelector('script[data-heic2any="1"]');
+  if (!existing) {
+    const s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/heic2any@0.5.2/dist/heic2any.min.js";
+    s.async = true;
+    s.setAttribute("data-heic2any", "1");
+    document.head.appendChild(s);
+  }
+
+  // 3) Wait for window.heic2any with timeout
+  const start = Date.now();
+  return new Promise((resolve, reject) => {
+    const poll = () => {
+      if (window.heic2any) return resolve(window.heic2any);
+      if (Date.now() - start > timeoutMs) {
+        return reject(new Error("heic2any load timeout"));
+      }
+      setTimeout(poll, 200);
+    };
+    poll();
+  });
+}
+
+/* Convert HEIC/HEIF Blob -> JPEG Blob with robust fallbacks.
+   progressCb(pct, msg) is used for UI updates.
+*/
+async function convertHeicToJpegBlob(heicBlob, quality = 0.9, progressCb = () => { }) {
+  progressCb(5, "Attempting native decode...");
+  // 1) Try native decode (Safari / some browsers)
+  try {
+    const decoded = await decodeImage(heicBlob);
+    progressCb(25, "Native decode OK — converting to JPEG...");
+    const canvas = await renderScaled(decoded, decoded.width, decoded.height);
+    const jpeg = await canvasToBlobWithFallback(canvas, "image/jpeg", quality);
+    if (jpeg && jpeg.size > 0) return jpeg;
+    // fallthrough to library fallback if canvas->blob failed
+  } catch (err) {
+    console.info("Native HEIC decode failed (expected on many browsers):", err?.message || err);
+  }
+
+  // 2) Try heic2any (dynamic import or CDN)
+  progressCb(30, "Loading HEIC converter...");
+  let heic2anyFn = null;
+  try {
+    heic2anyFn = await loadHeic2any(10000); // 10s timeout
+  } catch (err) {
+    console.error("Failed to load heic2any:", err);
+    throw new Error("HEIC converter could not be loaded. Check network or install heic2any locally.");
+  }
+
+  progressCb(50, "Converting HEIC to JPEG...");
+  try {
+    const out = await window.heic2any({
+      blob: heicBlob,
+      toType: "image/jpeg",
+      quality: Math.max(0.55, Math.min(1, quality || 0.9)),
+    });
+
+    if (!out) throw new Error("heic2any returned nothing");
+    if (Array.isArray(out) && out.length > 0) {
+      const blob = out[0];
+      if (blob && blob.size) return blob;
+    } else if (out instanceof Blob) {
+      return out;
+    } else if (out instanceof ArrayBuffer || out.buffer) {
+      const ab = out instanceof ArrayBuffer ? out : out.buffer || out;
+      return new Blob([ab], { type: "image/jpeg" });
+    }
+
+    throw new Error("HEIC conversion returned unexpected result type");
+  } catch (err) {
+    console.error("HEIC conversion failed:", err);
+    throw new Error("HEIC conversion failed. Try a different browser (Safari) or convert the file externally.");
+  }
+}
+
+
 /* Main fast compressor with aggressive options */
 async function compressFileOptimized(fileBlob, opts = {}) {
   const {
@@ -360,6 +466,8 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   return finalBlob;
 }
 
+/* ----------------- App component (mostly unchanged) ----------------- */
+
 export default function App() {
   const inputRef = useRef();
   const [file, setFile] = useState(null);
@@ -445,6 +553,19 @@ export default function App() {
     setOutFilename(`compressly-${baseName}.${ext}`);
   }
 
+  // Helper: detect HEIC by MIME or filename
+  function isHeicFile(f) {
+    if (!f) return false;
+    const t = (f.type || "").toLowerCase();
+    const name = (f.name || "").toLowerCase();
+    return (
+      t.includes("heic") ||
+      t.includes("heif") ||
+      name.endsWith(".heic") ||
+      name.endsWith(".heif")
+    );
+  }
+
   async function runCompress() {
     if (!file) return;
     setProcessing(true);
@@ -478,7 +599,36 @@ export default function App() {
 
       const maxWidth = 1200;
 
-      const blob = await compressFileOptimized(file, {
+      // --------- HEIC handling: convert if needed ----------
+      let inputBlob = file;
+      let usedOriginalFileName = file.name;
+      if (isHeicFile(file)) {
+        // give user feedback
+        progressCb(6, "HEIC detected — converting to JPEG...");
+        try {
+          // try conversion with quality ~ current quality setting
+          const conv = await convertHeicToJpegBlob(file, Math.max(0.7, quality || 0.8), progressCb);
+          if (conv && conv.size) {
+            inputBlob = conv;
+            // keep original base name but change extension for previews & downloads
+            usedOriginalFileName = (file.name || "image").replace(/\.[^/.]+$/, "") + ".jpg";
+            // update preview to show converted image
+            if (previewURL) URL.revokeObjectURL(previewURL);
+            setPreviewURL(URL.createObjectURL(inputBlob));
+            setOriginalSize(inputBlob.size);
+            progressCb(30, "HEIC converted — compressing now");
+          } else {
+            progressCb(0, "HEIC conversion failed — using original file");
+          }
+        } catch (he) {
+          console.warn("HEIC conversion error:", he);
+          progressCb(0, "HEIC conversion failed — try another browser or convert externally");
+          // proceed to attempt compression anyway (likely will fail decode)
+          inputBlob = file;
+        }
+      }
+
+      const blob = await compressFileOptimized(inputBlob, {
         mime,
         quality,
         targetBytes,
@@ -490,6 +640,12 @@ export default function App() {
         setProgressPct(0);
         setProcessing(false);
         return;
+      }
+
+      // If we converted HEIC and used a different filename base, set file var for naming
+      if (usedOriginalFileName) {
+        // keep original 'file' state but update naming if needed
+        // We intentionally do not mutate the original File object.
       }
 
       handleResultBlob(blob, mime);
@@ -610,7 +766,7 @@ export default function App() {
                   Drop images here to start compressing
                 </h2>
                 <p className="small-muted mt-2">
-                  Free online image compressor - reduce JPG, PNG and WebP file
+                  Free online image compressor - reduce JPG, PNG, WebP and HEIC file
                   size in your browser.
                 </p>
 
@@ -625,7 +781,7 @@ export default function App() {
                   <input
                     ref={inputRef}
                     type="file"
-                    accept="image/*"
+                    accept="image/*,image/heic,.heic,.heif"
                     className="hidden"
                     onChange={(e) => handleFiles(e.target.files)}
                   />
@@ -834,7 +990,6 @@ export default function App() {
                             : `Original size: ${humanFileSize(displaySize)}`}
                         </div>
                       )}
-
                     </div>
 
                     <div className="text-right">
@@ -844,7 +999,6 @@ export default function App() {
                         </div>
                       ) : null}
                     </div>
-
                   </div>
 
                   <div className="mt-2 flex flex-wrap gap-2 items-center">
@@ -873,17 +1027,13 @@ export default function App() {
                       href={downloadHref}
                       download={downloadName}
                       className={`px-3 py-1.5 rounded-md ${outURL
-                          ? "bg-indigo-600 text-white"
-                          : "bg-slate-100 text-slate-700"
+                        ? "bg-indigo-600 text-white"
+                        : "bg-slate-100 text-slate-700"
                         } btn text-sm flex items-center gap-2`}
                       aria-disabled={!downloadHref}
                     >
                       <DownloadIcon />{" "}
-                      <span>
-                        {outURL || previewURL
-                          ? `Download`
-                          : "Download"}
-                      </span>
+                      <span>{outURL || previewURL ? `Download` : "Download"}</span>
                     </a>
 
                     <button
@@ -976,7 +1126,6 @@ export default function App() {
             </div>
           </section>
 
-
           {/* About section */}
           <section
             id="about"
@@ -1049,9 +1198,9 @@ export default function App() {
             </div>
           </div>
 
-          <SpeedInsights />
-        </footer>
+          {import.meta.env.DEV && <SpeedInsights />}
 
+        </footer>
       </div>
     </div>
   );
