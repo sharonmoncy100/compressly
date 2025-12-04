@@ -566,6 +566,154 @@ export default function App() {
     );
   }
 
+  // Attempt to create a preview URL for a file (HEIC-aware)
+  // returns { previewBlob, previewURL } or throws
+  async function generatePreviewForFile(file, progressCb = () => { }) {
+    // Quick path for common image types
+    if (!isHeicFile(file)) {
+      return { previewBlob: file, previewURL: URL.createObjectURL(file) };
+    }
+
+    // It's HEIC/HEIF — try native decode first
+    progressCb(5, "Checking native HEIC support...");
+    try {
+      const decoded = await decodeImage(file);
+      const canvas = await renderScaled(decoded, decoded.width, decoded.height);
+      const jb = await canvasToBlobWithFallback(
+        canvas,
+        "image/jpeg",
+        Math.max(0.8, quality || 0.8)
+      );
+      if (jb && jb.size) {
+        return { previewBlob: jb, previewURL: URL.createObjectURL(jb) };
+      }
+      // else fall through to library fallback
+    } catch (err) {
+      // native decode likely not supported — continue
+      console.info("Native HEIC decode unavailable", err?.message || err);
+    }
+
+    // Load heic2any on demand (dynamic import -> CDN fallback)
+    progressCb(20, "Loading HEIC converter...");
+    let heic2anyFn = null;
+    try {
+      const mod = await import("heic2any");
+      heic2anyFn = mod?.default || mod;
+    } catch (e) {
+      // dynamic import failed — inject CDN script and poll for window.heic2any
+      if (!window.heic2any) {
+        const existing = document.querySelector('script[data-heic2any="1"]');
+        if (!existing) {
+          const s = document.createElement("script");
+          s.src =
+            "https://cdn.jsdelivr.net/npm/heic2any@0.5.2/dist/heic2any.min.js";
+          s.async = true;
+          s.setAttribute("data-heic2any", "1");
+          document.head.appendChild(s);
+        }
+        // wait up to 8s
+        const start = Date.now();
+        await new Promise((resolve, reject) => {
+          (function poll() {
+            if (window.heic2any) return resolve();
+            if (Date.now() - start > 8000)
+              return reject(new Error("heic2any load timeout"));
+            setTimeout(poll, 200);
+          })();
+        });
+        heic2anyFn = window.heic2any;
+      } else {
+        heic2anyFn = window.heic2any;
+      }
+    }
+
+    if (!heic2anyFn) throw new Error("HEIC converter unavailable");
+
+    progressCb(45, "Converting HEIC for preview...");
+    const out = await heic2anyFn({
+      blob: file,
+      toType: "image/jpeg",
+      quality: Math.max(0.7, Math.min(0.95, quality || 0.85)),
+    });
+
+    // heic2any can return Blob, ArrayBuffer, or array of Blobs
+    let blob = null;
+    if (!out) throw new Error("HEIC conversion returned nothing");
+    if (out instanceof Blob) blob = out;
+    else if (Array.isArray(out) && out.length) blob = out[0];
+    else if (out instanceof ArrayBuffer || out.buffer) {
+      const ab = out instanceof ArrayBuffer ? out : out.buffer || out;
+      blob = new Blob([ab], { type: "image/jpeg" });
+    }
+
+    if (!blob || !blob.size) throw new Error("HEIC conversion failed");
+
+    return { previewBlob: blob, previewURL: URL.createObjectURL(blob) };
+  }
+
+  // Updated handleFiles: creates preview for HEIC files (lazy loads converter only when needed)
+  async function handleFiles(files) {
+    if (!files || files.length === 0) return;
+    const f = files[0];
+
+    // revoke old urls and clear previous outputs
+    if (previewURL) {
+      try {
+        URL.revokeObjectURL(previewURL);
+      } catch { }
+    }
+    if (outURL) {
+      try {
+        URL.revokeObjectURL(outURL);
+      } catch { }
+    }
+    setOutURL("");
+    setOutSize(0);
+    setOutMime("");
+    setOutFilename("");
+    setLastNote("");
+    setProgressPct(6);
+    setFile(f);
+
+    // If not HEIC, set preview directly
+    if (!isHeicFile(f)) {
+      setOriginalSize(f.size || 0);
+      const url = URL.createObjectURL(f);
+      setPreviewURL(url);
+      setProgressPct(0);
+      return;
+    }
+
+    // For HEIC: generate preview (native decode or convert to jpeg)
+    try {
+      const { previewBlob, previewURL: purl } = await generatePreviewForFile(
+        f,
+        (pct, note) => {
+          setProgressPct(Math.min(98, pct));
+          setLastNote(note || "");
+        }
+      );
+      setPreviewURL(purl);
+      setOriginalSize(previewBlob.size || f.size || 0);
+      // keep file as original so runCompress still converts later if needed
+      setProgressPct(0);
+      setLastNote("");
+    } catch (err) {
+      console.warn("Preview generation failed:", err);
+      // fallback to raw preview (may not render in some browsers)
+      try {
+        const url = URL.createObjectURL(f);
+        setPreviewURL(url);
+        setOriginalSize(f.size || 0);
+      } catch {
+        setPreviewURL("");
+        setOriginalSize(0);
+      }
+      setLastNote("HEIC preview unavailable - will try conversion when compressing.");
+      setProgressPct(0);
+    }
+  }
+
   async function runCompress() {
     if (!file) return;
     setProcessing(true);
@@ -1232,6 +1380,8 @@ export default function App() {
               <a href="/compress-jpg-online.html">Compress JPG online</a>
               <span>•</span>
               <a href="/compress-png-online.html">Compress PNG online</a>
+              <span>•</span>
+              <a href="/privacy.html">Privacy</a>
             </div>
           </div>
 
