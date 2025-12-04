@@ -795,17 +795,35 @@ export default function App() {
               {/* preview + meta stacked below for consistent padding */}
               <div className="w-full flex items-center justify-center mt-4">
                 <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
-                  <div className="preview-wrap">
-                    {previewURL ? (
+                  {/* clickable preview: opens compressed image if available */}
+                  <button
+                    type="button"
+                    className="preview-wrap result-thumb--clickable"
+                    onClick={() => {
+                      if (outURL) {
+                        window.open(outURL, "_blank");
+                      } else if (previewURL) {
+                        window.open(previewURL, "_blank");
+                      }
+                    }}
+                    disabled={!outURL && !previewURL}
+                  >
+                    {outURL ? (
+                      <img
+                        src={outURL}
+                        alt="Compressed image preview"
+                        className="object-contain w-full h-full"
+                      />
+                    ) : previewURL ? (
                       <img
                         src={previewURL}
-                        alt=""
+                        alt="Original image preview"
                         className="object-contain w-full h-full"
                       />
                     ) : null}
-                  </div>
+                  </button>
 
-                  <div className="text-xs small-muted" style={{ minWidth: 0 }}>
+                  <div className="text-xs small-muted flex flex-col items-start" style={{ minWidth: 0 }}>
                     {displayName && (
                       <div
                         className="font-medium truncate"
@@ -818,16 +836,34 @@ export default function App() {
                       <div className="mt-1">{humanFileSize(displaySize)}</div>
                     ) : null}
 
-                    <button
-                      onClick={resetAll}
-                      disabled={!file}
-                      className="reset-btn btn px-3 py-1 text-sm disabled:opacity-60 mt-2"
-                    >
-                      Reset
-                    </button>
+                    {outURL ? (
+                      <div className="mt-2 flex items-center gap-4">
+                        {outURL ? (
+                          <a
+                            href={downloadHref}
+                            download={downloadName}
+                            className="uploader-download-pill"
+                          >
+                            Download
+                          </a>
+                        ) : null}
+
+                        {outURL ? (
+                          <button
+                            onClick={resetAll}
+                            className="uploader-reset-pill"
+                          >
+                            Reset
+                          </button>
+                        ) : null}
+                      </div>
+
+                    ) : null}
                   </div>
+
                 </div>
               </div>
+
             </div>
 
             {/* controls */}
@@ -890,15 +926,16 @@ export default function App() {
 
               <div>
                 <label className="control-label">Target (KB)</label>
-                <div className="mt-1 flex gap-2">
+                <div className="mt-1 flex gap-3">
                   <input
                     value={targetKB}
                     onChange={(e) =>
                       setTargetKB(e.target.value.replace(/[^\d]/g, ""))
                     }
                     placeholder="Enter size in KB/MB"
-                    className="px-2 py-1 border rounded-md w-full text-sm"
+                    className="px-2 py-1 w-full text-sm target-input"
                   />
+
                   <button
                     onClick={runCompress}
                     disabled={!file || processing}
