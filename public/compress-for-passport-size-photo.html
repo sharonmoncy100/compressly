@@ -3,201 +3,353 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Resize & Compress to Passport Size (35x45 mm / 2x2 inch) - Compressly</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
 
+    <title>Passport Photo - Resize & Compress to 35 x 45 mm (100 KB) | Compressly</title>
     <meta name="description"
-        content="Resize and compress photos to passport size (35x45 mm or 2x2 inch). Tips for pixels, formats and KB for Indian passport, visa and form uploads. Browser-only and private." />
+        content="Resize and compress passport photos (35 x 45 mm / 2 x 2 in) for Indian portals. Tips for pixels, formats and KB limits (100 KB, 200 KB). Browser-only, private." />
     <link rel="canonical" href="https://www.compressly.in/compress-for-passport-size-photo.html" />
     <meta name="robots" content="index, follow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta property="og:title" content="Resize & Compress to Passport Size - Compressly" />
-    <meta property="og:description"
-        content="Make passport photos the correct size and file weight for Indian passport and visa uploads. Fast in-browser resizing and compression." />
-    <meta property="og:url" content="https://www.compressly.in/compress-for-passport-size-photo.html" />
+    <!-- Social preview (optional - upload image to /public/assets/social-passport.png) -->
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Compressly" />
+<meta property="og:title" content="Passport Photo - Resize & Compress to 35 x 45 mm | Compressly" />
+<meta property="og:description"
+    content="Create passport-size photos that meet Indian portal rules. Resize, compress and download — all in your browser with Compressly." />
+<meta property="og:url" content="https://www.compressly.in/compress-for-passport-size-photo.html" />
+<meta property="og:image" content="https://www.compressly.in/social-passport.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Passport Photo - Resize & Compress to 35 x 45 mm | Compressly" />
+<meta name="twitter:description"
+    content="Create passport-size photos that meet Indian portal rules. Resize, compress and download — all in your browser with Compressly." />
+<meta name="twitter:image" content="https://www.compressly.in/social-passport.png" />
+
 
     <script type="application/ld+json">
   {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "Passport Photo - Resize & Compress to 35 x 45 mm",
+    "url": "https://www.compressly.in/compress-for-passport-size-photo.html",
+    "description": "Resize and compress passport photos (35 x 45 mm / 2 x 2 in) for Indian portals. Tips for pixels, formats and KB limits (100 KB, 200 KB). Browser-only, private."
+  }
+  </script>
+
+    <!-- FAQ schema to help appear in rich results -->
+    <script type="application/ld+json">
+  {
     "@context":"https://schema.org",
-    "@type":"WebPage",
-    "name":"Compress for Passport Size Photo - Compressly",
-    "description":"Resize and compress photos to passport size (35x45 mm or 2x2 inch). Tips for pixels, formats and KB for Indian passport, visa and form uploads.",
-    "url":"https://www.compressly.in/compress-for-passport-size-photo.html"
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"What pixel size should I use for 35 x 45 mm passport photo?",
+        "acceptedAnswer":{"@type":"Answer","text":"A safe digital target is around 350 x 450 px or 413 x 531 px (35 x 45 mm at 300 DPI). Follow the portal's exact pixel requirements if given."}
+      },
+      {
+        "@type":"Question",
+        "name":"What file size should I aim for?",
+        "acceptedAnswer":{"@type":"Answer","text":"Most Indian portals accept 100 KB or 200 KB. If a portal asks for less, try 50 KB but check visual quality first."}
+      },
+      {
+        "@type":"Question",
+        "name":"Which format is best for passport photos?",
+        "acceptedAnswer":{"@type":"Answer","text":"JPEG (JPG) is the most widely accepted format. Use WebP only if the portal explicitly supports it; use PNG only when transparency is required."}
+      }
+    ]
   }
   </script>
 
     <style>
+        :root {
+            --bg: #ffffff;
+            --fg: #0f1724;
+            --muted: #475569;
+            --accent: #4f46e5;
+            --card: #ffffff;
+            --radius: 12px;
+            --maxw: 980px;
+        }
+
+        html,
         body {
-            font-family: Inter, Arial, sans-serif;
-            color: #0f1724;
+            height: 100%;
             margin: 0;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            color: var(--fg);
+            background: linear-gradient(180deg, #ffffff, #fbfdff);
+        }
+
+        .wrap {
+            max-width: var(--maxw);
+            margin: 18px auto;
             padding: 20px;
-            max-width: 920px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
-        a {
-            color: #4f46e5;
-            text-decoration: none;
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 10px;
         }
 
-        header {
-            margin-bottom: 14px;
+        .hero {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: linear-gradient(180deg, var(--card), #fbfcff);
+            padding: 18px;
+            border-radius: var(--radius);
+            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
         }
 
-        h1 {
+        .hero h1 {
+            margin: 0;
             font-size: 22px;
-            margin: 6px 0;
+            line-height: 1.15;
+        }
+
+        .hero p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 15px;
+        }
+
+        .cta-row {
+            margin-top: 12px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent), #ec4899);
+            color: #fff;
+            box-shadow: 0 8px 22px rgba(79, 70, 229, 0.12);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 1px solid rgba(15, 23, 42, 0.06);
+            color: var(--fg);
+            padding: 9px 12px;
+            border-radius: 8px;
+        }
+
+        main {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            box-shadow: 0 6px 18px rgba(14, 20, 40, 0.03);
         }
 
         h2 {
+            margin: 0 0 10px 0;
             font-size: 18px;
-            margin-top: 18px;
         }
 
         p,
         li {
-            color: #374151;
-            line-height: 1.6;
+            color: var(--muted);
+            font-size: 15px;
+            line-height: 1.6
         }
 
-        .cta {
-            display: inline-block;
-            background: #4f46e5;
-            color: #fff;
-            padding: 10px 14px;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-top: 10px;
+        ul {
+            padding-left: 18px;
+            margin-top: 6px
         }
 
-        .box {
+        ol {
+            padding-left: 18px;
+            margin-top: 6px
+        }
+
+        .note {
             background: #f8fafc;
             border: 1px solid #e6eefc;
             padding: 12px;
-            border-radius: 8px;
-            margin-top: 12px;
-            color: #374151;
+            border-radius: 10px;
+            color: var(--muted);
         }
 
-        .related {
-            margin-top: 16px;
+        .chips {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
+            margin-top: 10px
         }
 
         .chip {
             padding: 8px 12px;
-            background: linear-gradient(180deg, #eef2ff, #f5f7ff);
             border-radius: 999px;
+            background: linear-gradient(180deg, #eef2ff, #f5f7ff);
             font-weight: 600;
             color: #0f1724;
+            text-decoration: none
         }
 
         .faq {
-            margin-top: 12px;
-            border: 1px solid #e6eefc;
-            padding: 12px;
-            border-radius: 8px;
-            background: #fff;
+            margin-top: 8px
         }
 
         footer {
-            margin-top: 36px;
-            color: #6b7280;
-            font-size: 14px;
+            margin-top: 28px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        /* responsive */
+        @media(min-width:880px) {
+            .hero {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center
+            }
+
+            .hero .left {
+                flex: 1
+            }
+
+            .hero .right {
+                flex: 0 0 240px;
+                text-align: right
+            }
         }
     </style>
 </head>
 
 <body>
+    <div class="wrap">
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/" style="color:var(--muted);text-decoration:none">Home</a> &nbsp;›&nbsp;
+            <span>Passport photo - resize & compress</span>
+        </nav>
 
-    <header>
-        <a href="/">Home</a>
-        <h1>Resize & compress to passport size photo (35 x 45 mm / 2 x 2 in)</h1>
-        <p class="small">Practical guide for creating passport and visa photos that meet size and file-weight
-            requirements for Indian portals. Fast, private, in-browser.</p>
-    </header>
+        <header class="hero" role="banner">
+            <div class="left">
+                <h1>Passport photo - resize & compress to 35 x 45 mm (2 x 2 in)</h1>
+                <p>Prepare passport and visa photos for Indian portals — correct pixel sizes, file-weight tips (100 KB,
+                    200 KB) and an instant browser tool. No uploads, private and fast.</p>
 
-    <main>
-        <p>
-            Many Indian passport and visa portals ask for a passport photo with specific physical size (35 x 45 mm or 2
-            x 2 inch) and a file-size limit. The exact pixel dimensions and allowed KB vary by portal — check the portal
-            instructions first. The steps below give safe, commonly accepted values and how to produce them with
-            Compressly.
-        </p>
-
-        <h2>Common physical & digital examples</h2>
-        <ul>
-            <li><strong>Physical print:</strong> 35 x 45 mm (common for Indian passport)</li>
-            <li><strong>Common digital pixel examples (approx.):</strong>
-                <ul>
-                    <li>35 x 45 mm at 300 DPI ≈ 413 x 531 px (good-quality upload)</li>
-                    <li>2 x 2 inch at 300 DPI ≈ 600 x 600 px</li>
-                    <li>Many portals accept 350 x 450 px — check portal recommendations</li>
-                </ul>
-            </li>
-            <li><strong>Typical file-size limits:</strong> many portals require ≤100 KB; some allow up to 200 KB. Very
-                old portals may ask for ≤50 KB. Always check the portal guidelines before final upload.</li>
-            <li><strong>Preferred formats:</strong> JPG / JPEG (recommended), PNG only if explicitly required, WebP when
-                the portal supports modern formats.</li>
-        </ul>
-
-        <h2>How to create a passport-size image that meets portal rules</h2>
-        <ol>
-            <li>Crop to the required physical/digital aspect ratio (35:45). If the portal gives pixel values, use those
-                exactly.</li>
-            <li>Resize to the target pixel dimensions (for example 413 x 531 px or 600 x 600 px at 300 DPI) using an
-                image editor or Compressly's downscale options.</li>
-            <li>Choose JPEG (or WebP if supported). Use the Target (KB) box with a safe value — for many Indian portals
-                try <strong>100 KB</strong>.</li>
-            <li>Compress and inspect the image visually. If quality is OK, download and upload to the portal. If
-                rejected, slightly reduce target KB or downscale further.</li>
-        </ol>
-
-        <div class="box">
-            <strong>Quick practical rule:</strong> If you need to be conservative, produce both a <strong>high-quality
-                copy</strong> (keep original backup) and a <strong>compressed copy</strong> (100 KB or smaller) for
-            upload.
-        </div>
-
-        <a class="cta" href="/">Open Compressor</a>
-
-        <h2>Portal examples & notes (always check the portal)</h2>
-        <p>
-            Different portals use different rules. For example, a university or government portal may require a small
-            file (≤100 KB) while passport/visa agencies may ask for higher resolution. When in doubt, follow the portal
-            instructions and use our Target (KB) box to match the requested size.
-        </p>
-
-        <div class="faq">
-            <p><strong>Q:</strong> Which image format is safest for passport uploads?<br />
-                <strong>A:</strong> JPEG is the safest and most widely accepted. Use WebP only if the portal explicitly
-                supports it.
-            </p>
-
-            <p><strong>Q:</strong> Should I use high DPI (300) for digital upload?<br />
-                <strong>A:</strong> DPI matters for printing. For online uploads, pixel dimensions are important. Use
-                higher pixel dimensions if the portal asks for high resolution.
-            </p>
-        </div>
-
-        <div class="links">
-            <h2>Related pages</h2>
-            <div class="related">
-                <a class="chip" href="/compress-passport-photo-india.html">Passport photo - India</a>
-                <a class="chip" href="/compress-image-to-100kb.html">Compress to 100 KB</a>
-                <a class="chip" href="/compress-photo-for-kerala-psc.html">Kerala PSC photo</a>
-                <a class="chip" href="/compress-image-to-50kb.html">Compress to 50 KB</a>
+                <div class="cta-row">
+                    <a class="btn btn-primary" href="/" title="Open Compressly - compress image now">Open compressor -
+                        Compress now</a>
+                    <a class="btn btn-ghost" href="/compress-image-to-100kb.html" title="Compress to 100 KB">Compress to
+                        100 KB</a>
+                </div>
             </div>
-        </div>
-    </main>
 
-    <footer>
-        <div class="small">© Compressly - compressly.in</div>
-    </footer>
+            <div class="right" aria-hidden>
+                <!-- small helpful stats / reassurance -->
+                <div
+                    style="background:linear-gradient(180deg,#fff,#fbfdff);padding:12px;border-radius:10px;border:1px solid rgba(15,23,42,0.04);display:inline-block">
+                    <div style="font-weight:800;font-size:18px">Fast & Private</div>
+                    <div style="color:var(--muted);font-size:13px">Compress in your browser — no uploads</div>
+                </div>
+            </div>
+        </header>
+
+        <main>
+            <section class="card" aria-labelledby="examples">
+                <h2 id="examples">Common physical & digital examples</h2>
+                <ul>
+                    <li><strong>Physical print:</strong> 35 x 45 mm (standard for Indian passport photos)</li>
+                    <li><strong>Digital pixel examples (approx):</strong>
+                        <ul>
+                            <li>35 x 45 mm at 300 DPI ≈ 413 x 531 px (good-quality upload)</li>
+                            <li>2 x 2 in at 300 DPI ≈ 600 x 600 px</li>
+                            <li>Many Indian portals accept 350 x 450 px — always check portal instructions</li>
+                        </ul>
+                    </li>
+                    <li><strong>Typical file-size limits:</strong> common limits are ≤100 KB; some portals accept up to
+                        200 KB. Legacy portals may require ≤50 KB.</li>
+                    <li><strong>Preferred formats:</strong> JPG/JPEG (recommended). Use PNG only for strict
+                        transparency, WebP if the portal supports it.</li>
+                </ul>
+            </section>
+
+            <section class="card" aria-labelledby="howto">
+                <h2 id="howto">How to create a passport-size image that meets portal rules</h2>
+                <ol>
+                    <li>Crop to the required aspect ratio (35:45). If the portal gives exact pixels, use those values.
+                    </li>
+                    <li>Resize to the target pixels (e.g., 413 x 531 px or 350 x 450 px) using an editor or Compressly's
+                        downscale option.</li>
+                    <li>Choose JPEG (or WebP if explicitly supported). Use the Target (KB) box — try <strong>100
+                            KB</strong> for most Indian portals.</li>
+                    <li>Compress, visually inspect and download. If rejected, slightly lower the target KB or downscale
+                        further.</li>
+                </ol>
+
+                <div class="note" role="note"><strong>Quick rule:</strong> keep the original high-quality copy. Produce
+                    one compressed copy (100 KB) for upload and a backup high-res copy for records.</div>
+            </section>
+
+            <section class="card" aria-labelledby="portalnotes">
+                <h2 id="portalnotes">Portal notes & troubleshooting</h2>
+                <p>Portals can reject images for many reasons besides file size — common checks include pixel
+                    dimensions, aspect ratio, filename characters and background color. If your upload fails:</p>
+                <ul>
+                    <li>Confirm the portal's exact pixel and format requirements</li>
+                    <li>Rename the file to a simple name (example: passport-photo.jpg)</li>
+                    <li>Ensure the image background matches the portal requirement (plain white or light)</li>
+                    <li>If the portal doesn't accept WebP, convert to JPEG before upload</li>
+                </ul>
+            </section>
+
+            <section class="card faq" aria-labelledby="faq">
+                <h2 id="faq">FAQ</h2>
+                <p><strong>Q: Which image format is safest for passport uploads?</strong><br />
+                    A: JPEG is the most widely accepted. Use WebP only if the portal explicitly supports it.</p>
+
+                <p><strong>Q: Should I use 300 DPI for uploads?</strong><br />
+                    A: DPI matters more for printing. For online portals, match pixel dimensions required by the portal
+                    (e.g., 350 x 450 px).</p>
+            </section>
+
+            <section class="card" aria-labelledby="related">
+                <h2 id="related">Related pages & quick tools</h2>
+                <div class="chips">
+                    <a class="chip" href="/compress-image-to-100kb.html">Compress to 100 KB</a>
+                    <a class="chip" href="/compress-image-to-50kb.html">Compress to 50 KB</a>
+                    <a class="chip" href="/compress-jpg-online.html">Compress JPG online</a>
+                    <a class="chip" href="/compress-png-online.html">Compress PNG online</a>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div style="display:flex;justify-content:center;gap:10px;align-items:center;flex-wrap:wrap;margin-top:14px">
+                <small style="color:var(--muted)">© Compressly - compressly.in</small>
+            </div>
+        </footer>
+    </div>
 </body>
 
 </html>
