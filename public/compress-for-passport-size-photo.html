@@ -303,24 +303,33 @@
 
         /* Responsive */
 
-        @media (max-width: 640px) {
-            .wrap {
-                padding-inline: 12px;
-            }
+    @media (max-width: 640px) {
+  .wrap {
+    padding-inline: 12px;
+  }
 
-            .hero {
-                padding: 16px 14px 14px;
-            }
+  .hero {
+    padding: 14px 12px 12px;
+  }
 
-            .cta-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
+  .cta-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
 
-            .btn {
-                width: 100%;
-            }
-        }
+  .btn {
+    width: 100%;
+    padding: 7px 12px;
+    font-size: 13px;
+    border-radius: 999px;
+  }
+
+  .btn-primary {
+    box-shadow: 0 4px 10px rgba(11, 102, 209, 0.25);
+  }
+}
+
     </style>
 </head>
 
