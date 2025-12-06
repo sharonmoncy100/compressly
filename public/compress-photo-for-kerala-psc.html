@@ -15,7 +15,7 @@
     <meta name="geo.region" content="IN-KL" />
     <meta name="geo.placename" content="Kerala" />
 
-    <!-- Open Graph (absolute URLs required for social preview) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="Compressly" />
     <meta property="og:title" content="Compress Photo for Kerala PSC (KPSC Thulasi) - Make ≤100 KB" />
@@ -52,57 +52,57 @@
             background: linear-gradient(180deg, #ffffff, #fbfdff);
             font-family: Inter, system-ui, Arial, sans-serif;
             color: var(--fg);
-            -webkit-font-smoothing: antialiased
+            -webkit-font-smoothing: antialiased;
         }
 
         .wrap {
             max-width: var(--maxw);
             margin: 18px auto;
-            padding: 16px
+            padding: 16px;
         }
 
         a {
             color: var(--accent);
-            text-decoration: none
+            text-decoration: none;
         }
 
         header {
-            margin-bottom: 12px
+            margin-bottom: 12px;
         }
 
         .breadcrumb {
             font-size: 13px;
             color: var(--muted);
-            margin-bottom: 8px
+            margin-bottom: 8px;
         }
 
         h1 {
             font-size: 20px;
             margin: 0 0 8px;
-            line-height: 1.15
+            line-height: 1.15;
         }
 
         p.lead {
             margin: 0;
             color: var(--muted);
-            font-size: 15px
+            font-size: 15px;
         }
 
         .hero {
             background: var(--card);
-            border-radius: 12px;
+            border-radius: var(--radius);
             padding: 14px;
             border: 1px solid rgba(15, 23, 42, 0.04);
             display: flex;
             flex-direction: column;
-            gap: 10px
+            gap: 10px;
         }
 
         .cta-row {
             display: flex;
             gap: 20px;
             flex-wrap: wrap;
-            margin-top: 20px
+            margin-top: 20px;
         }
 
         .btn {
@@ -114,12 +114,12 @@
             font-weight: 700;
             border: none;
             cursor: pointer;
-            text-decoration: none
+            text-decoration: none;
         }
 
         .btn-primary {
-            background:rgba(20, 114, 223, 0.938);
-            color: #fff
+            background: rgba(20, 114, 223, 0.94);
+            color: #fff;
         }
 
         .btn-ghost {
@@ -127,32 +127,32 @@
             border: 1px solid rgba(15, 23, 42, 0.06);
             color: var(--fg);
             padding: 9px 12px;
-            border-radius: 8px
+            border-radius: 8px;
         }
 
         main {
             margin-top: 14px;
             display: grid;
-            gap: 14px
+            gap: 14px;
         }
 
         .card {
             background: var(--card);
             padding: 14px;
             border-radius: 10px;
-            border: 1px solid rgba(15, 23, 42, 0.04)
+            border: 1px solid rgba(15, 23, 42, 0.04);
         }
 
         h2 {
             font-size: 16px;
-            margin: 6px 0
+            margin: 6px 0;
         }
 
         ul,
         ol {
             color: var(--muted);
             line-height: 1.6;
-            margin: 8px 0 8px 18px
+            margin: 8px 0 8px 18px;
         }
 
         .note {
@@ -160,14 +160,14 @@
             border: 1px solid #e6eefc;
             padding: 10px;
             border-radius: 8px;
-            color: var(--muted)
+            color: var(--muted);
         }
 
         .chips {
             display: flex;
             gap: 8px;
             flex-wrap: wrap;
-            margin-top: 10px
+            margin-top: 10px;
         }
 
         .chip {
@@ -176,56 +176,56 @@
             border-radius: 999px;
             font-weight: 700;
             color: #0f1724;
-            text-decoration: none
+            text-decoration: none;
         }
 
         footer {
             margin-top: 18px;
             color: var(--muted);
             font-size: 13px;
-            text-align: center
+            text-align: center;
         }
 
         code {
             background: #f3f4f6;
             padding: 2px 6px;
             border-radius: 4px;
-            font-family: monospace
+            font-family: monospace;
         }
 
-        @media(min-width:880px) {
+        @media (min-width: 880px) {
             .hero {
                 flex-direction: row;
                 justify-content: space-between;
-                align-items: center
+                align-items: center;
             }
 
             .hero .left {
-                flex: 1
+                flex: 1;
             }
 
             .hero .right {
                 flex: 0 0 220px;
-                text-align: right
+                text-align: right;
             }
         }
     </style>
 
-        <!--this prevents local host count in google analytics-->
-        <script>
-            if (location.hostname === "localhost") {
-                window['ga-disable-G-K9Z1H2JLZQ'] = true;
-            }
-        </script>
-        
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
-        <script>
-            window.dataLayer = window.dataLayer || [];
-            function gtag() { dataLayer.push(arguments); }
-            gtag('js', new Date());
-            gtag('config', 'G-K9Z1H2JLZQ');
-        </script>
+    <!-- prevent localhost hits in GA -->
+    <script>
+        if (location.hostname === "localhost") {
+            window['ga-disable-G-K9Z1H2JLZQ'] = true;
+        }
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K9Z1H2JLZQ');
+    </script>
 </head>
 
 <body>
@@ -237,43 +237,51 @@
         <header class="hero" role="banner">
             <div class="left">
                 <h1>Compress photo for Kerala PSC (KPSC Thulasi) - Make it ≤100 KB</h1>
-                <p class="lead">Short, practical steps to resize and compress your photo for Kerala PSC application
-                    forms (KPSC Thulasi). This is aimed at applicants in Kerala - Thiruvananthapuram, Kochi, Kozhikode
-                    and other districts.</p>
+                <p class="lead">
+                    Short, practical steps to resize and compress your photo for Kerala PSC application
+                    forms (KPSC Thulasi). This is aimed at applicants in Kerala – Thiruvananthapuram, Kochi, Kozhikode
+                    and other districts.
+                </p>
 
                 <div class="cta-row">
                     <a class="btn btn-primary" href="https://www.compressly.in/"
-                        title="Open Compressly - compress image now">Open compressor - Compress now</a>
-                    <a class="btn btn-ghost" href="/compress-image-to-100kb.html" title="Compress to 100 KB">Quick:
-                        Compress to 100 KB</a>
+                        title="Open Compressly - compress image now">
+                        Open compressor - Compress now
+                    </a>
+                    <a class="btn btn-ghost" href="/compress-image-to-100kb.html" title="Compress to 100 KB">
+                        Quick: Compress to 100 KB
+                    </a>
                 </div>
             </div>
-
-          
         </header>
 
         <main>
             <section class="card" aria-labelledby="why">
                 <h2 id="why">Why this matters for Kerala PSC</h2>
-                <p style="color:var(--muted)">Kerala PSC online forms (KPSC Thulasi) may reject images that exceed
+                <p style="color:var(--muted)">
+                    Kerala PSC online forms (KPSC Thulasi) may reject images that exceed
                     file-size or pixel limits. A rejected photo can delay an application. This guide gives exact,
-                    no-nonsense steps to create a compliant photo quickly.</p>
+                    no-nonsense steps to create a compliant photo quickly.
+                </p>
             </section>
 
             <section class="card" aria-labelledby="quick-steps">
                 <h2 id="quick-steps">Quick steps - make a Kerala PSC photo ≤100 KB (2 minutes)</h2>
                 <ol>
                     <li><strong>Open Compressly</strong> using the "Open compressor" button above.</li>
-                    <li><strong>Choose your photo</strong> (JPG or PNG). If it's already a passport portrait, use that.
+                    <li><strong>Choose your photo</strong> (JPG or PNG). If it is already a passport portrait, use that.
                     </li>
                     <li><strong>Set Output</strong>: choose <em>JPEG</em> for maximum compatibility.</li>
                     <li><strong>Target (KB)</strong>: enter <strong>100</strong> in the Target (KB) box and press
-                        <strong>Compress</strong>.</li>
+                        <strong>Compress</strong>.
+                    </li>
                     <li><strong>Inspect</strong>: preview the result. If facial details are acceptable, download and
                         upload to the KPSC form. If not, try target 90 KB or slightly lower quality.</li>
                 </ol>
-                <div class="note">Tip: If the portal specifies pixel dimensions, crop to the required ratio (35:45)
-                    first, then compress to the KB target.</div>
+                <div class="note">
+                    Tip: If the portal specifies pixel dimensions, crop to the required ratio (35:45)
+                    first, then compress to the KB target.
+                </div>
             </section>
 
             <section class="card" aria-labelledby="pixels">
@@ -291,9 +299,9 @@
             <section class="card" aria-labelledby="troubleshoot">
                 <h2 id="troubleshoot">If the portal rejects your photo</h2>
                 <ul>
-                    <li>Double-check pixel dimensions and aspect ratio - match portal instructions exactly.</li>
+                    <li>Double-check pixel dimensions and aspect ratio – match portal instructions exactly.</li>
                     <li>Try a slightly smaller target (90 KB or 80 KB) while checking visual quality.</li>
-                    <li>Rename file and re-upload - some forms are picky about characters.</li>
+                    <li>Rename file and re-upload – some forms are picky about characters.</li>
                     <li>Convert WebP to JPG before upload if the portal is older.</li>
                 </ul>
             </section>
@@ -301,14 +309,22 @@
             <section class="card" aria-labelledby="faq">
                 <h2 id="faq">FAQ</h2>
                 <div style="margin-top:8px;color:var(--muted)">
-                    <p><strong>Q: Will Compressly upload my photo?</strong><br />A: No - compression runs entirely in
-                        your browser. Your images are not sent to Compressly's servers.</p>
+                    <p>
+                        <strong>Q: Will Compressly upload my photo?</strong><br />
+                        A: No – compression runs entirely in your browser. Your images are not sent to Compressly’s
+                        servers.
+                    </p>
 
-                    <p><strong>Q: What if KPSC requires 200 KB?</strong><br />A: Set the Target (KB) box to 200 and
-                        compress. Always keep a high-quality original copy as a backup.</p>
+                    <p>
+                        <strong>Q: What if KPSC requires 200 KB?</strong><br />
+                        A: Set the Target (KB) box to 200 and compress. Always keep a high-quality original copy as a
+                        backup.
+                    </p>
 
-                    <p><strong>Q: Can I use this for other Kerala exams?</strong><br />A: Yes - same steps work for most
-                        Kerala state exams and many university/college portals. Check the portal for exact pixel limits.
+                    <p>
+                        <strong>Q: Can I use this for other Kerala exams?</strong><br />
+                        A: Yes – the same steps work for most Kerala state exams and many university/college portals.
+                        Check the portal for exact pixel limits.
                     </p>
                 </div>
             </section>
@@ -320,7 +336,7 @@
                     <a class="chip" href="/compress-image-to-50kb.html">Compress to 50 KB</a>
                     <a class="chip" href="/compress-jpg-online.html">Compress JPG online</a>
                     <a class="chip" href="/compress-png-online.html">Compress PNG online</a>
-                    <a class="chip" href="/privacy.html">Privacy (no uploads)</a>
+                
                 </div>
             </section>
         </main>
@@ -336,23 +352,32 @@
     <!-- FAQ structured data -->
     <script type="application/ld+json">
   {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
       {
-        "@type":"Question",
-        "name":"How do I make my photo 100 KB for Kerala PSC?",
-        "acceptedAnswer":{"@type":"Answer","text":"Open Compressly, upload your photo, select JPEG, enter 100 in Target (KB) and press Compress. Inspect the preview and download when satisfied."}
+        "@type": "Question",
+        "name": "How do I make my photo 100 KB for Kerala PSC?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Open Compressly, upload your photo, select JPEG, enter 100 in Target (KB) and press Compress. Inspect the preview and download when satisfied."
+        }
       },
       {
-        "@type":"Question",
-        "name":"Does Compressly upload my photo to a server?",
-        "acceptedAnswer":{"@type":"Answer","text":"No. All compression is done locally in the browser - your files never leave your device unless you download or share them."}
+        "@type": "Question",
+        "name": "Does Compressly upload my photo to a server?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. All compression is done locally in the browser - your files never leave your device unless you download or share them."
+        }
       },
       {
-        "@type":"Question",
-        "name":"What pixel size should I use?",
-        "acceptedAnswer":{"@type":"Answer","text":"A safe digital size for passport-style uploads is 350 x 450 px. If the portal requests specific pixels, use those exact values."}
+        "@type": "Question",
+        "name": "What pixel size should I use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A safe digital size for passport-style uploads is 350 x 450 px. If the portal requests specific pixels, use those exact values."
+        }
       }
     ]
   }

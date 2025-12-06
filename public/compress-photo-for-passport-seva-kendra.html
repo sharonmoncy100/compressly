@@ -4,7 +4,6 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-
     <title>Compress Photo for Passport Seva Kendra - Make Passport Photo ≤100 KB | Compressly</title>
     <meta name="description"
         content="Quick practical guide to resize and compress passport photos for Passport Seva Kendra (PSK) and online passport application in India. Exact pixel tips, KB targets and a fast in-browser compressor." />
@@ -27,12 +26,34 @@
         content="Fast guide to make passport photos ≤100 KB for Passport Seva Kendra and online passport forms. Private in-browser tool." />
     <meta name="twitter:image" content="https://www.compressly.in/social-passport.png" />
 
-    <!-- Optional locality hint -->
+    <!-- locality hint -->
     <meta name="geo.region" content="IN" />
     <meta name="geo.placename" content="India" />
 
-  
- 
+    <!-- FAQ structured data (keeps matching visible FAQ) -->
+    <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+      {
+        "@type":"Question",
+        "name":"How do I make my photo 100 KB for Passport Seva Kendra?",
+        "acceptedAnswer":{"@type":"Answer","text":"Open Compressly, upload your photo, select JPEG, enter 100 in Target (KB) and press Compress. Inspect the preview and download when satisfied."}
+      },
+      {
+        "@type":"Question",
+        "name":"Does Compressly upload my photo to a server?",
+        "acceptedAnswer":{"@type":"Answer","text":"No. Compression and resizing are performed locally in your browser - files are not uploaded to Compressly."}
+      },
+      {
+        "@type":"Question",
+        "name":"What pixel size should I use for passport uploads?",
+        "acceptedAnswer":{"@type":"Answer","text":"A safe digital size is 350 x 450 px. If the portal specifies exact pixels (for example for a print), use those values."}
+      }
+    ]
+  }
+  </script>
 
     <style>
         :root {
@@ -49,9 +70,9 @@
         body {
             height: 100%;
             margin: 0;
-            background: #fff;
-            font-family: Inter, system-ui, Arial, sans-serif;
+            background: var(--bg);
             color: var(--fg);
+            font-family: Inter, system-ui, Arial, sans-serif;
             -webkit-font-smoothing: antialiased
         }
 
@@ -83,7 +104,7 @@
         }
 
         h1 {
-            margin: 10;
+            margin: 5;
             font-size: 20px;
             line-height: 1.15
         }
@@ -96,9 +117,9 @@
 
         .cta-row {
             display: flex;
-            gap: 20px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-top: 15px
+            margin-top: 12px
         }
 
         .btn {
@@ -112,9 +133,9 @@
         }
 
         .btn-primary {
-            background: #1f6feb;
+            background: var(--accent);
             color: #fff;
-            border-color: #1f6feb
+            border-color: var(--accent)
         }
 
         .btn-simple {
@@ -185,7 +206,67 @@
             font-family: monospace
         }
 
-        @media(min-width:880px) {
+        /* Accordion (FAQ visible) */
+        .faq-accordion {
+            display: block;
+            gap: 12px;
+        }
+
+        .faq-item {
+            margin-bottom: 8px;
+        }
+
+        .faq-q {
+            width: 100%;
+            text-align: left;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid rgba(15, 23, 42, 0.04);
+            cursor: pointer;
+            font-weight: 700;
+            color: var(--fg);
+        }
+
+        .faq-q:focus {
+            outline: 3px solid rgba(31, 111, 235, 0.12);
+            outline-offset: 3px;
+        }
+
+        .faq-q .faq-icon {
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--muted);
+            transition: transform .15s ease;
+        }
+
+        .faq-a {
+            padding: 12px;
+            background: transparent;
+            border-left: 3px solid rgba(31, 111, 235, 0.08);
+            border-radius: 6px;
+            margin-top: 8px;
+            color: var(--muted);
+        }
+
+        .faq-a p {
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .faq-q[aria-expanded="false"] .faq-icon {
+            transform: rotate(0deg);
+        }
+
+        .faq-q[aria-expanded="true"] .faq-icon {
+            transform: rotate(45deg);
+        }
+
+        @media (min-width:880px) {
             .hero {
                 flex-direction: row;
                 justify-content: space-between;
@@ -197,17 +278,45 @@
             }
 
             .hero .right {
-                flex: 0 0 240px;
+                flex: 0 0 220px;
                 text-align: right
             }
         }
+
+        @media (max-width:480px) {
+            .faq-q {
+                padding: 10px;
+                font-size: 15px
+            }
+
+            .faq-a {
+                padding: 10px;
+                font-size: 14px
+            }
+        }
     </style>
+
+    <!-- prevent localhost hits in GA -->
+    <script>
+        if (location.hostname === "localhost") {
+            window['ga-disable-G-K9Z1H2JLZQ'] = true;
+        }
+    </script>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K9Z1H2JLZQ');
+    </script>
 </head>
 
 <body>
     <div class="wrap">
         <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a href="https://www.compressly.in/">Home</a> &nbsp;›&nbsp; <span>Passport Seva Kendra photo</span>
+            <a href="https://www.compressly.in/">Home</a> &nbsp;-&nbsp; <span>Passport Seva Kendra photo</span>
         </nav>
 
         <header class="hero" role="banner">
@@ -224,8 +333,6 @@
                         title="Passport photo guide">Passport photo guide</a>
                 </div>
             </div>
-
-           
         </header>
 
         <main>
@@ -283,20 +390,44 @@
                 </ul>
             </section>
 
+            <!-- Visible FAQ (accordion) -->
             <section class="card" aria-labelledby="faq">
                 <h2 id="faq">FAQ</h2>
-                <div style="margin-top:8px;color:var(--muted)">
-                    <p><strong>Q: Will Compressly upload my photo?</strong><br />A: No. Compression happens entirely in
-                        your browser. Your image file never leaves your device unless you download or share it
-                        intentionally.</p>
 
-                    <p><strong>Q: What KB should I use for passport?</strong><br />A: Many users aim for ≤100 KB for
-                        safe compatibility. If your portal requests a different KB, set that value in Compressly's
-                        Target (KB) box.</p>
+                <div class="faq-accordion" id="faq-accordion">
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false" aria-controls="faq1" id="faq1-btn" type="button">
+                            <span class="faq-q-text">How do I make my photo 100 KB for Passport Seva Kendra?</span>
+                            <span class="faq-icon" aria-hidden>+</span>
+                        </button>
+                        <div id="faq1" class="faq-a" role="region" aria-labelledby="faq1-btn" hidden>
+                            <p>Open Compressly, upload your photo, select <strong>JPEG</strong>, enter
+                                <strong>100</strong> in Target (KB) and press <strong>Compress</strong>. Inspect the
+                                preview and download when satisfied.</p>
+                        </div>
+                    </div>
 
-                    <p><strong>Q: Can I use this for other government forms?</strong><br />A: Yes - the same steps work
-                        for most Indian government portals and exam forms. Check the portal's pixel requirement and use
-                        the Target (KB) box to meet file-size limits.</p>
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false" aria-controls="faq2" id="faq2-btn" type="button">
+                            <span class="faq-q-text">Does Compressly upload my photo to a server?</span>
+                            <span class="faq-icon" aria-hidden>+</span>
+                        </button>
+                        <div id="faq2" class="faq-a" role="region" aria-labelledby="faq2-btn" hidden>
+                            <p>No. Compression and resizing are performed locally in your browser - files are not
+                                uploaded to Compressly.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <button class="faq-q" aria-expanded="false" aria-controls="faq3" id="faq3-btn" type="button">
+                            <span class="faq-q-text">What pixel size should I use for passport uploads?</span>
+                            <span class="faq-icon" aria-hidden>+</span>
+                        </button>
+                        <div id="faq3" class="faq-a" role="region" aria-labelledby="faq3-btn" hidden>
+                            <p>A safe digital size is <strong>350 x 450 px</strong>. If the portal specifies exact
+                                pixels (for print or high-quality scans), use those values.</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -307,7 +438,6 @@
                     <a class="chip" href="/compress-passport-photo-india.html">Passport photo - India</a>
                     <a class="chip" href="/compress-image-for-exam-forms.html">Compress for exam forms</a>
                     <a class="chip" href="/convert-png-to-webp-online.html">Convert PNG to WebP</a>
-                    
                 </div>
             </section>
         </main>
@@ -320,30 +450,50 @@
         </footer>
     </div>
 
-    <!-- FAQ structured data -->
-    <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"FAQPage",
-    "mainEntity":[
-      {
-        "@type":"Question",
-        "name":"How do I make my photo 100 KB for Passport Seva Kendra?",
-        "acceptedAnswer":{"@type":"Answer","text":"Open Compressly, upload your photo, select JPEG, enter 100 in Target (KB) and press Compress. Inspect preview and download when satisfied."}
-      },
-      {
-        "@type":"Question",
-        "name":"Does Compressly upload my photo to a server?",
-        "acceptedAnswer":{"@type":"Answer","text":"No. Compression and resizing are performed locally in your browser - files are not uploaded to Compressly."}
-      },
-      {
-        "@type":"Question",
-        "name":"What pixel size should I use for passport uploads?",
-        "acceptedAnswer":{"@type":"Answer","text":"A safe digital size is 350 x 450 px. If the portal specifies exact pixels (for example for a print), use those values."}
-      }
-    ]
-  }
-  </script>
+    <!-- Accordion JS (accessible, tiny) -->
+    <script>
+        (function () {
+            const accordion = document.getElementById('faq-accordion');
+            if (!accordion) return;
+            const buttons = accordion.querySelectorAll('.faq-q');
+
+            function openItem(btn) {
+                const id = btn.getAttribute('aria-controls');
+                const panel = document.getElementById(id);
+                if (!panel) return;
+                btn.setAttribute('aria-expanded', 'true');
+                panel.hidden = false;
+            }
+            function closeItem(btn) {
+                const id = btn.getAttribute('aria-controls');
+                const panel = document.getElementById(id);
+                if (!panel) return;
+                btn.setAttribute('aria-expanded', 'false');
+                panel.hidden = true;
+            }
+            function toggle(btn) {
+                const expanded = btn.getAttribute('aria-expanded') === 'true';
+                if (expanded) { closeItem(btn); return; }
+                buttons.forEach(b => { if (b !== btn) closeItem(b); });
+                openItem(btn);
+            }
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => toggle(btn));
+                btn.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const idx = Array.prototype.indexOf.call(buttons, btn);
+                        const next = e.key === 'ArrowDown' ? buttons[idx + 1] : buttons[idx - 1];
+                        if (next) next.focus();
+                    }
+                });
+            });
+
+            // optional: open first by default - uncomment if you want it open on load
+            // if (buttons[0]) openItem(buttons[0]);
+        })();
+    </script>
 </body>
 
 </html>
