@@ -210,6 +210,22 @@
             }
         }
     </style>
+
+        <!--this prevents local host count in google analytics-->
+        <script>
+            if (location.hostname === "localhost") {
+                window['ga-disable-G-K9Z1H2JLZQ'] = true;
+            }
+        </script>
+        
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag() { dataLayer.push(arguments); }
+            gtag('js', new Date());
+            gtag('config', 'G-K9Z1H2JLZQ');
+        </script>
 </head>
 
 <body>
