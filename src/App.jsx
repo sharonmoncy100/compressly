@@ -841,7 +841,7 @@ export default function App() {
        <Header IconImg={IconImg} theme={theme} toggleTheme={toggleTheme} /> 
 
         <h1 className="page-h1 text-lg sm:text-xl font-semibold mb-3 tracking-tight">
-          Free Online Image Compressor - Compress JPG, PNG, WebP & HEIC
+          Compressly - Free Online Image Compressor (JPG, PNG, WebP, HEIC)
         </h1>
 
 
