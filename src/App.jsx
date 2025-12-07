@@ -833,26 +833,25 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen"
-      style={{ background: "linear-gradient(180deg,#ffffff,#fbfdff)" }}
+      className="min-h-screen app-bg"
+      
     >
       <div className="app-wrap">
         {/* header */}
        <Header IconImg={IconImg} theme={theme} toggleTheme={toggleTheme} /> 
 
-        <h1 className="text-base sm:text-lg font-medium text-slate-800 mb-2 md:mb-3 text-left tracking-tight">
+        <h1 className="page-h1 text-lg sm:text-xl font-semibold mb-3 tracking-tight">
           Free Online Image Compressor - Compress JPG, PNG, WebP & HEIC
         </h1>
 
 
-
-        {/* Section: Upload & Compress */}
         <section aria-labelledby="uploader-heading" className="md:col-span-12">
-          <h2 id="uploader-heading" className="text-sm sm:text-base font-medium text-slate-700 mb-2">
+          <h2 id="uploader-heading" className="page-h2 text-base sm:text-lg font-semibold mb-2">
             Upload & Compress Images
           </h2>
 
         </section>
+
 
         <main className="grid grid-cols-1 md:grid-cols-12 gap-4">
           {/* left: uploader */}
@@ -939,7 +938,7 @@ export default function App() {
                       >
                         {displayName || "Compressed image"}
                       </div>
-                      {(outSize || displaySize) && (
+                      {(outSize || displaySize) > 0 && (
                         <div className="text-xs small-muted mt-1">
                           {outSize
                             ? `Final size: ${humanFileSize(outSize)}`
@@ -982,14 +981,14 @@ export default function App() {
                     <a
                       href={downloadHref}
                       download={downloadName}
-                      className={`px-3 py-1.5 rounded-md ${outURL
+                      className={`px-2 py-1.5 rounded-md ${outURL
                         ? "bg-indigo-600 text-white"
                         : "bg-slate-100 text-slate-700"
                         } btn text-sm flex items-center gap-2`}
                       aria-disabled={!downloadHref}
                     >
-                      <DownloadIcon />{" "}
-                      <span>{outURL || previewURL ? `Download` : "Download"}</span>
+                      <DownloadIcon />
+                      Download
                     </a>
 
                     <button
@@ -997,16 +996,13 @@ export default function App() {
                         if (outURL) window.open(outURL, "_blank");
                       }}
                       disabled={!outURL}
-                      className="open-link px-2 py-1 border rounded-md text-sm disabled:opacity-60"
+                      className="open-link btn px-2 py-1.5 border rounded-md text-sm disabled:opacity-60"
                     >
                       Open in new tab
                     </button>
                   </div>
 
-                  <div className="mt-3 text-xs small-muted">
-                    Tip: If target isn't reached try lowering quality or
-                    choosing WebP.
-                  </div>
+                  
                 </div>
               </div>
             </div>

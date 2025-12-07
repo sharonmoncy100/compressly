@@ -62,9 +62,9 @@ export default function Uploader({
                 className="uploader rounded-lg flex flex-col gap-4 items-start"
             >
                 <div className="flex-1 w-full text-center">
-                    <h2 className="text-base font-medium">
+                    <h3 className="text-base font-medium">
                         Drop images here to start compressing
-                    </h2>
+                    </h3>
                     <p className="small-muted mt-2">
                         Free online image compressor - reduce JPG, PNG, WebP and HEIC file
                         size in your browser.
@@ -210,9 +210,8 @@ export default function Uploader({
                 <div className="progress-track">
                     <div className="progress-fill" style={{ width: `${Math.min(100, progressPct)}%` }} />
                 </div>
-                <div className="mt-2 text-xs small-muted flex justify-between">
-                    <div>Tip: Use WebP + Target for smallest files.</div>
-                    <div style={{ minWidth: 140, textAlign: "right" }}>{lastNote}</div>
+                <div className="mt-2 text-xs small-muted text-right">
+                    {lastNote}
                 </div>
             </div>
         </section>
