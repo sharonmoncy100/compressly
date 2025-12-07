@@ -840,6 +840,20 @@ export default function App() {
         {/* header */}
        <Header IconImg={IconImg} theme={theme} toggleTheme={toggleTheme} /> 
 
+        <h1 className="text-base sm:text-lg font-medium text-slate-800 mb-2 md:mb-3 text-left tracking-tight">
+          Free Online Image Compressor - Compress JPG, PNG, WebP & HEIC
+        </h1>
+
+
+
+        {/* Section: Upload & Compress */}
+        <section aria-labelledby="uploader-heading" className="md:col-span-12">
+          <h2 id="uploader-heading" className="text-sm sm:text-base font-medium text-slate-700 mb-2">
+            Upload & Compress Images
+          </h2>
+
+        </section>
+
         <main className="grid grid-cols-1 md:grid-cols-12 gap-4">
           {/* left: uploader */}
           <Uploader
@@ -868,6 +882,9 @@ export default function App() {
 
           {/* right: result */}
           <aside className="md:col-span-4">
+            <h2 id="result-heading" className="text-sm font-semibold text-slate-800 mb-2">
+              Compressed Result
+            </h2>
             <div className="container-card rounded-lg p-3 result-card">
               <div className="result-header flex items-start gap-3">
                 <button
@@ -1003,9 +1020,13 @@ export default function App() {
             </div>
           </aside>
 
+
           {/* informational cards */}
           {/* FAQ section */}
-          <section className="md:col-span-12 mt-4">
+          <section className="md:col-span-12 mt-4" aria-labelledby="faq-heading">
+            <h2 id="faq-heading" className="text-lg sm:text-xl font-semibold text-slate-900 mb-3">
+              Frequently Asked Questions
+            </h2>
             <div className="faq-card container-card">
               <div className="faq-item faq-item--blue">
                 <div className="faq-stripe" />
@@ -1064,13 +1085,13 @@ export default function App() {
               </div>
             </div>
           </section>
+          
 
           {/* About section */}
-          <section
-            id="about"
-            className="md:col-span-12 container-card p-4 soft-shadow mt-6 about-card"
-          >
-            <div className="font-medium text-base">About Compressly:</div>
+          <section id="about" className="md:col-span-12 container-card p-4 soft-shadow mt-6 about-card" aria-labelledby="about-heading">
+            <h2 id="about-heading" className="text-lg sm:text-xl font-semibold text-slate-900">
+              About Compressly
+            </h2>
 
             {/* About section content (SEO-rich) */}
             <div className="mt-2 small-muted text-sm leading-relaxed">
