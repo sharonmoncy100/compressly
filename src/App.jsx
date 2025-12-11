@@ -1156,7 +1156,7 @@ export default function App() {
             </div>
           </div>
 
-          {import.meta.env.DEV && <SpeedInsights />}
+          <SpeedInsights />
 
         </footer>
       </div>
