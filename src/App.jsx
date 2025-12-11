@@ -838,19 +838,21 @@ export default function App() {
     >
       <div className="app-wrap">
         {/* header */}
-       <Header IconImg={IconImg} theme={theme} toggleTheme={toggleTheme} /> 
+        <Header IconImg={IconImg} theme={theme} toggleTheme={toggleTheme} />
 
-        <h1 className="page-h1 text-lg sm:text-xl font-semibold mb-3 tracking-tight">
-          Compressly - Free Online Image Compressor (JPG, PNG, WebP, HEIC)
-        </h1>
+        {/* Headline wrapper: KEEP H1 in DOM first (SEO), but visually show H2 above */}
+        <div className="hero-headings">
+          <h1 className="page-h1">
+            Free Online Image Compressor - Compress JPG, PNG, WebP & HEIC
+          </h1>
 
+          <section aria-labelledby="uploader-heading" className="hero-section md:col-span-12">
+            <h2 id="uploader-heading" className="page-h2">
+              Upload & Compress Images
+            </h2>
+          </section>
+        </div>
 
-        <section aria-labelledby="uploader-heading" className="md:col-span-12">
-          <h2 id="uploader-heading" className="page-h2 text-base sm:text-lg font-semibold mb-2">
-            Upload & Compress Images
-          </h2>
-
-        </section>
 
 
         <main className="grid grid-cols-1 md:grid-cols-12 gap-4">
@@ -1156,7 +1158,7 @@ export default function App() {
             </div>
           </div>
 
-          <SpeedInsights />
+          <SpeedInsights sampleRate={0.2} />
 
         </footer>
       </div>

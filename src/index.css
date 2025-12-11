@@ -99,29 +99,43 @@ html[data-theme="dark"] .frost{
 /* -------------------------
   Page-level headings (scoped)
   ------------------------- */
-.page-h1 {
-  color: var(--fg);
-  font-weight: 700;
-  font-size: 2.25rem;
-  line-height: 1.2;
-  margin-bottom: 1.5rem;
-  letter-spacing: -0.02em;
-  text-shadow: none;
+.hero-headings {
+  display: flex;
+  flex-direction: column-reverse; /* show H2 above H1 visually */
+  align-items: center;
+  gap: 0.25rem;
+  text-align: center;
+  margin-bottom: 0.75rem;
 }
 
+/* Keep section spacing consistent when used elsewhere */
+.hero-section { width: 100%; }
+
+/* Visual style for the (visually-prominent) H2 */
 .page-h2 {
-  color: var(--muted);
-  font-weight: 600;
-  font-size: 1.5rem;
-  line-height: 1.35;
-  margin-bottom: 1rem;
+  color: var(--fg);        /* dark/black color */
+  font-weight: 700;
+  font-size: 1.6rem;       /* large hero size */
+  line-height: 1.15;
+  margin: 0;               /* spacing handled by container */
   letter-spacing: -0.01em;
-  text-shadow: none;
 }
 
+/* H1 stays the semantic title (in DOM) but is visually quieter */
+.page-h1 {
+  color: var(--muted);     /* muted color */
+  font-weight: 600;
+  font-size: 1.05rem;      /* smaller than page-h2 */
+  line-height: 1.25;
+  margin: 6px;               /* spacing handled by container */
+  letter-spacing: -0.02em;
+}
+
+/* Responsive adjustments - smaller screens: keep hierarchy but scale down */
 @media (max-width: 640px) {
-  .page-h1 { font-size: 1.75rem; margin-bottom: 1.2rem; }
-  .page-h2 { font-size: 1.25rem; margin-bottom: 0.8rem; }
+  .hero-headings { gap: 0.15rem; margin-bottom: 0.6rem; }
+  .page-h2 { font-size: 1.25rem; }
+  .page-h1 { font-size: 0.98rem; }
 }
 
 
