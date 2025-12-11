@@ -116,8 +116,8 @@ html[data-theme="dark"] .frost{
   color: var(--fg);        /* dark/black color */
   font-weight: 700;
   font-size: 1.6rem;       /* large hero size */
-  line-height: 1.15;
-  margin: 0;               /* spacing handled by container */
+  line-height: 2;
+  margin: 5px;               /* spacing handled by container */
   letter-spacing: -0.01em;
 }
 
@@ -127,7 +127,7 @@ html[data-theme="dark"] .frost{
   font-weight: 600;
   font-size: 1.05rem;      /* smaller than page-h2 */
   line-height: 1.25;
-  margin: 6px;               /* spacing handled by container */
+  margin: 0;               /* spacing handled by container */
   letter-spacing: -0.02em;
 }
 
@@ -310,6 +310,7 @@ html[data-theme="dark"] .chip{
 /* labels & controls */
 .control-label{
   display:block;
+  margin-top:12px;
   margin-bottom:6px;
   color:var(--muted);
   font-weight:700;
@@ -690,20 +691,49 @@ html { scroll-behavior: smooth; }
 
 
 /* header underline + spacing */
+/* header underline + spacing + background */
+/* header: simple, professional bar */
+/* header: flat, rectangular, very light */
+/* header underline + spacing */
+/* white header with visible underline */
 .header-wrap{
-  padding-bottom: 4px;
-  border-bottom: 1px solid rgba(15,23,42,0.04);
+  margin: 0 0 10px 0;
+  padding: 8px 12px;
+  background: var(--card);
+  border-bottom: 1px solid rgba(15,23,42,0.06);
 }
+
 html[data-theme="dark"] .header-wrap{
-  border-bottom-color:rgba(148,163,184,0.2);
+  background: var(--card);
+  border-bottom-color: rgba(148,163,184,0.12);
 }
+
 @media (max-width: 640px) {
   .header-wrap {
     margin-bottom: 10px;
-    padding-bottom: 6px;
+    padding-bottom: 10px;
   }
 }
 
+/* inner header layout to control wrapping on small screens */
+.header-inner{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+
+/* header left / right helpers to control shrinking on small screens */
+.header-left{ flex: 0 1 auto; display:flex; align-items:center; gap:12px; min-width:0; }
+.header-right{ flex: 0 0 auto; display:flex; align-items:center; gap:8px; }
+
+@media (max-width:420px){
+  .header-wrap{ padding-left:10px; padding-right:10px; }
+  .header-inner{ gap:8px; }
+  .header-left img{ width:36px; height:36px; }
+  .theme-toggle-btn{ width:30px; height:30px; }
+}
 
 /* theme toggle button */
 .theme-toggle-btn{
@@ -777,7 +807,7 @@ input[type="range"]::-moz-range-thumb {
 
 /* FAQ stripe list – aligned like reference */
 .faq-card{
-  margin-top: 18px;
+  margin-top: 3px;
   padding: 12px 0;
   border-radius: 12px;
 }
@@ -926,4 +956,25 @@ input[type="range"]::-moz-range-thumb {
   border-color:rgba(148,163,184,0.9);
   transform:translateY(-1px);
 }
+/* FORCE logo size */
+.header-left img {
+  width: 40px !important;
+  height: 50px !important;
+  margin-right: -12px;
+}
 
+/* Force Compressly title to be big & bold */
+.compressly-title {
+  font-size: 16.5px;      /* ~text-2xl */
+  font-weight: 700;     /* extra-bold */
+  color: #0f172a;       /* strong slate / near-black */
+  letter-spacing: -0.015em;
+}
+@media (min-width: 640px) {
+  .compressly-title {
+    font-size: 18px;
+  }
+}
+html[data-theme="dark"] .compressly-title {
+  color: #e5e7eb;
+}

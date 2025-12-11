@@ -883,7 +883,7 @@ export default function App() {
 
           {/* right: result */}
           <aside className="md:col-span-4">
-            <h2 id="result-heading" className="text-sm font-semibold text-slate-800 mb-2">
+            <h2 id="result-heading" className="page-h2">
               Compressed Result
             </h2>
             <div className="container-card rounded-lg p-3 result-card">
@@ -1022,7 +1022,7 @@ export default function App() {
           {/* informational cards */}
           {/* FAQ section */}
           <section className="md:col-span-12 mt-4" aria-labelledby="faq-heading">
-            <h2 id="faq-heading" className="text-lg sm:text-xl font-semibold text-slate-900 mb-3">
+            <h2 id="faq-heading" className="page-h2">
               Frequently Asked Questions
             </h2>
             <div className="faq-card container-card">
@@ -1087,7 +1087,7 @@ export default function App() {
 
           {/* About section */}
           <section id="about" className="md:col-span-12 container-card p-4 soft-shadow mt-6 about-card" aria-labelledby="about-heading">
-            <h2 id="about-heading" className="text-lg sm:text-xl font-semibold text-slate-900">
+            <h2 id="about-heading" className="page-h2">
               About Compressly
             </h2>
 
