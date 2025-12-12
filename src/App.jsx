@@ -902,33 +902,7 @@ export default function App() {
                       alt="Compressed image preview"
                       className="w-full h-full object-contain rounded-md"
                     />
-                  ) : (
-                    <svg
-                      width="30"
-                      height="30"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      className="text-slate-400"
-                    >
-                      <rect
-                        x="3"
-                        y="4"
-                        width="18"
-                        height="14"
-                        rx="2"
-                        stroke="currentColor"
-                        strokeWidth="1.3"
-                      />
-                      <path
-                        d="M7 13l3-3 4 5 3-4"
-                        stroke="currentColor"
-                        strokeWidth="1.2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <circle cx="9" cy="9" r="1.4" fill="currentColor" />
-                    </svg>
-                  )}
+                  ) : null}
                 </button>
 
                 <div className="flex-1">

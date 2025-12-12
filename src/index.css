@@ -294,7 +294,7 @@ html[data-theme="dark"] .chip{
 
 /* progress bar */
 .progress-track{
-  background:rgba(15,23,42,0.04);
+  background:rgba(15,23,42,0.08);
   height:7px;
   border-radius:999px;
   overflow:hidden;
@@ -303,7 +303,11 @@ html[data-theme="dark"] .chip{
   height:7px;
   border-radius:999px;
   transition:width .18s ease;
-  background:linear-gradient(90deg,var(--accent-from),var(--accent-to));
+  background:linear-gradient(90deg,#0b66d1,#2563eb);
+  box-shadow:0 0 12px rgba(11,102,209,0.4);
+}
+html[data-theme="dark"] .progress-fill{
+  box-shadow:0 0 16px rgba(37,99,235,0.5);
 }
 
 
@@ -322,7 +326,7 @@ html[data-theme="dark"] .chip{
 /* outer shell of uploader */
 .uploader-shell{
   background: var(--card);
-  border-radius: 14px;
+  border-radius: 12px;
   border: 1px solid rgba(148,163,184,0.25);
   padding: 18px;
 }
@@ -853,7 +857,7 @@ input[type="range"]::-moz-range-thumb {
   margin:0;
   font-size:0.9rem;
   color:var(--muted);
-  line-height:1.55;
+  line-height:1.5;
 }
 
 @media (max-width:640px){
