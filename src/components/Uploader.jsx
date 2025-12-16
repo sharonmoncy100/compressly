@@ -162,16 +162,26 @@ export default function Uploader({
                             >
                                 <option value="jpeg">JPEG (recommended)</option>
                                 <option value="webp">WebP (smaller)</option>
-                                <option value="png">PNG (lossless)</option>
+                                <option value="png">PNG (Photo - lossless)</option>
+                                <option value="png-optimized">PNG (Logo & Text - smaller)</option>
                                 <option value="auto">Auto (WebP if supported)</option>
-                            </select>
 
+                            </select>
+                          
                             <div className="fancy-select__arrow" aria-hidden>
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                                     <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
                                 </svg>
                             </div>
                         </div>
+                        {format === "png-optimized" && (
+                            <div className="mt-1 text-xs small-muted">
+                                Note: PNG files are already compressed. For logos and text,
+                                size reductions of 20-40% are normal. For photos, use JPEG or WebP
+                                for better compression.
+
+                            </div>
+                        )}
                     </div>
                 </div>
 

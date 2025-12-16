@@ -539,9 +539,14 @@ a.btn.bg-indigo-600{
 
 /* reduce visual congestion between chips and actions on small screens */
 @media (max-width:640px){
-  .result-actions .btn{ padding:0.45rem 0.8rem; }
-  .result-actions .open-link{ padding:0.45rem 0.8rem; margin-left:9px; }
+  .result-actions .btn{
+    padding:0.45rem 0.8rem;
+  }
+  .result-actions .open-link{
+    padding:0.45rem 0.8rem;
+  }
 }
+
 
 /* meta row: subtle divider and spacing to separate name/size from chips/actions */
 .result-meta{
@@ -556,20 +561,25 @@ a.btn.bg-indigo-600{
 
 
 /* Open button style */
+/* Secondary action: Open in new tab (de-emphasized) */
 .open-link{
   border-radius:999px;
   padding:0.45rem 0.9rem;
   font-size:0.7rem;
-  border:1px solid rgba(148,163,184,0.7);
-  background:linear-gradient(180deg,var(--surface),var(--surface-2));
-  color:var(--fg);
-  transition: box-shadow .12s ease, transform .08s ease, border-color .12s ease;
-  margin-left:0; /* remove left margin for flush alignment */
+  border:1px solid rgba(148,163,184,0.6);
+  background:transparent;
+  color:var(--muted);
+  font-weight:500;
+  opacity:0.85;
+  transition:all .12s ease;
 }
+
 .open-link:hover:enabled{
-  border-color:#2563eb;
-  box-shadow:0 6px 18px rgba(15,23,42,0.16);
-  transform:translateY(-1px);
+  opacity:1;
+  color:var(--fg);
+  border-color:rgba(15,23,42,0.35);
+  box-shadow:none;
+  transform:none;
 }
 
 

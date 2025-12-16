@@ -338,7 +338,18 @@ async function convertHeicToJpegBlob(heicBlob, quality = 0.9, progressCb = () =>
   }
 }
 
+function quantizeImageData(imageData, levels = 32) {
+  const data = imageData.data;
+  const step = Math.max(1, Math.floor(256 / levels));
 
+  for (let i = 0; i < data.length; i += 4) {
+    data[i] = Math.round(data[i] / step) * step; // R
+    data[i + 1] = Math.round(data[i + 1] / step) * step; // G
+    data[i + 2] = Math.round(data[i + 2] / step) * step; // B
+    // alpha untouched
+  }
+  return imageData;
+}
 /* Main fast compressor with aggressive options */
 async function compressFileOptimized(fileBlob, opts = {}) {
   const {
@@ -347,7 +358,10 @@ async function compressFileOptimized(fileBlob, opts = {}) {
     targetBytes = 0,
     maxWidth = 0,
     progress = () => { },
+    pngOptimized = false
   } = opts;
+
+
 
   const src = await decodeImage(fileBlob);
   let srcW = src.width,
@@ -372,10 +386,19 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   progress(10, "Preparing image");
   if (!targetBytes || targetBytes <= 0) {
     const canvas = await renderScaled(src, targetW, targetH);
+
+    if (pngOptimized && mime === "image/png") {
+      const ctx = canvas.getContext("2d");
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const levels = Math.max(8, Math.round(quality * 48));
+      ctx.putImageData(quantizeImageData(imgData, levels), 0, 0);
+    }
+
     progress(40, "Encoding image");
-    const out = await canvasToBlobWithFallback(canvas, mime, quality);
-    return out;
+    return await canvasToBlobWithFallback(canvas, mime, quality);
   }
+
+
 
   // AGGRESSIVE QUALITY SEARCH
   progress(15, "Searching quality");
@@ -392,7 +415,16 @@ async function compressFileOptimized(fileBlob, opts = {}) {
       `Trying quality ${Math.round(q * 100)}%`
     );
     const canvas = await renderScaled(src, targetW, targetH);
+
+    if (pngOptimized && mime === "image/png") {
+      const ctx = canvas.getContext("2d");
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      const levels = Math.max(8, Math.round(q * 48));
+      ctx.putImageData(quantizeImageData(imgData, levels), 0, 0);
+    }
+
     const blob = await canvasToBlobWithFallback(canvas, mime, q);
+
     if (!blob) continue;
     const s = blob.size;
     if (s <= targetBytes) {
@@ -519,6 +551,10 @@ export default function App() {
     setTargetKB("");
     setLastNote("");
     setProgressPct(0);
+    if (inputRef?.current) {
+      inputRef.current.value = "";
+    }
+
   }
 
   function handleFiles(files) {
@@ -534,6 +570,9 @@ export default function App() {
     setOutMime("");
     setOutFilename("");
     setLastNote("");
+    if (inputRef?.current) {
+      inputRef.current.value = "";
+    }
   }
 
   function isWebPSupported() {
@@ -717,6 +756,7 @@ export default function App() {
   }
 
   async function runCompress() {
+    
     if (!file) return;
     setProcessing(true);
     setOutURL("");
@@ -727,21 +767,41 @@ export default function App() {
     setProgressPct(4);
 
     try {
-      let mime;
-      if (format === "auto")
-        mime = isWebPSupported() ? "image/webp" : "image/jpeg";
-      else if (format === "webp") mime = "image/webp";
-      else if (format === "jpeg") mime = "image/jpeg";
-      else if (format === "png") mime = "image/png";
-      else mime = file.type || "image/jpeg";
-
-      if (mime === "image/webp" && !isWebPSupported()) mime = "image/jpeg";
-
       const targetBytes =
         targetKB && Number(targetKB) > 0
           ? Math.max(8 * 1024, Math.round(Number(targetKB) * 1024))
           : 0;
 
+      let mime;
+      const isPNG = (file.type === "image/png" || file.name.toLowerCase().endsWith(".png"));
+
+      if (format === "auto") {
+        // If PNG + very low target, prefer JPEG/WebP automatically
+        if (isPNG && targetBytes && targetBytes < 80 * 1024) {
+          mime = isWebPSupported() ? "image/webp" : "image/jpeg";
+          setLastNote("PNG converted to smaller format to reach target size");
+        } else {
+          mime = isWebPSupported() ? "image/webp" : "image/jpeg";
+        }
+      } else if (format === "png") {
+        // PNG cannot reach very small sizes – auto fallback
+        if (targetBytes && targetBytes < 80 * 1024) {
+          mime = isWebPSupported() ? "image/webp" : "image/jpeg";
+          setLastNote("PNG cannot reach very small sizes. Converted automatically.");
+        } else {
+          mime = "image/png";
+        }
+      } else if (format === "webp") {
+        mime = "image/webp";
+      } else if (format === "jpeg") {
+        mime = "image/jpeg";
+      } else {
+        mime = file.type || "image/jpeg";
+      }
+
+      if (mime === "image/webp" && !isWebPSupported()) mime = "image/jpeg";
+
+  
       const progressCb = (pct, note) => {
         setProgressPct(Math.min(98, pct));
         setLastNote(note || "");
@@ -784,6 +844,7 @@ export default function App() {
         targetBytes,
         maxWidth,
         progress: progressCb,
+        pngOptimized: format === "png-optimized"
       });
       if (!blob) {
         setLastNote("Compression failed — try smaller image or lower quality.");
