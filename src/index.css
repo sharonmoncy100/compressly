@@ -667,18 +667,7 @@ html { scroll-behavior: smooth; }
   flex-wrap: wrap;   /* prevents squeezing on mobile */
 }
 
-/* Mobile UX improvement: full-width action buttons */
-@media (max-width: 480px) {
-  .result-actions {
-    gap: 8px;
-  }
 
-  .result-actions a,
-  .result-actions button {
-    width: 100%;
-    justify-content: center;
-  }
-}
 
 .result-actions .btn,
 .result-actions button,
@@ -1006,3 +995,45 @@ input[type="range"]::-moz-range-thumb {
 html[data-theme="dark"] .compressly-title {
   color: #e5e7eb;
 }
+/* --- Result actions: compact, mobile-safe --- */
+.result-actions {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Desktop */
+@media (min-width: 641px) {
+  .result-actions {
+    justify-content: flex-start;
+  }
+}
+
+/* Mobile: visually centered inside padded card */
+@media (max-width: 640px) {
+   .result-actions {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .result-actions a,
+  .result-actions button {
+    width: auto;
+    padding: 0.32rem 0.6rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+}
+.result-card {
+  box-sizing: border-box;
+}
+
+
+/* Secondary action styling */
+.open-link {
+  opacity: 0.8;
+  font-size: 0.75rem;
+}
+

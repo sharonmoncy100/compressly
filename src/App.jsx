@@ -13,11 +13,11 @@ const IconImg = new URL("./assets/icon.png", import.meta.url).href;
 function humanFileSizeShort(bytes) {
   if (!bytes && bytes !== 0) return "0 B";
   const kb = bytes / 1024;
-  if (kb < 1) return `${bytes} B`;
-  if (kb < 1024) return `${kb.toFixed(1)} KB (${bytes} bytes)`;
+  if (kb < 1024) return `${Math.round(kb)} KB`;
   const mb = kb / 1024;
-  return `${mb.toFixed(2)} MB (${bytes} bytes)`;
+  return `${mb.toFixed(2)} MB`;
 }
+
 
 /* original lightweight humanFileSize (kept for other UI uses) */
 function humanFileSize(bytes) {
@@ -194,6 +194,12 @@ async function renderScaled(sourceObj, targetW, targetH) {
   const ctx = canvas.getContext("2d");
 
   if (sourceObj.isBitmap && sourceObj.bitmap) {
+    ctx.save();
+
+    if (sourceObj.blurPx > 0) {
+      ctx.filter = `blur(${sourceObj.blurPx}px)`;
+    }
+
     drawImageScaled(
       ctx,
       sourceObj.bitmap,
@@ -204,8 +210,11 @@ async function renderScaled(sourceObj, targetW, targetH) {
       targetW,
       targetH
     );
+
+    ctx.restore();
     return canvas;
   }
+
 
   let sw = sourceObj.width,
     sh = sourceObj.height;
@@ -232,8 +241,19 @@ async function renderScaled(sourceObj, targetW, targetH) {
     await new Promise((r) => setTimeout(r, 0));
   }
 
+  // Apply blur ONLY if defined (JPEG low-KB smoothing)
+  ctx.save();
+
+  if (sourceObj.blurPx && sourceObj.blurPx > 0) {
+    ctx.filter = `blur(${sourceObj.blurPx}px)`;
+  }
+
   ctx.drawImage(tmpCanvas, 0, 0, sw, sh, 0, 0, targetW, targetH);
+
+  ctx.restore();
+
   return canvas;
+
 }
 
 /* ------------ HEIC helper: lazy-load heic2any when needed ------------ */
@@ -364,6 +384,24 @@ async function compressFileOptimized(fileBlob, opts = {}) {
 
 
   const src = await decodeImage(fileBlob);
+  // --- Detect compression pressure (KB per pixel) ---
+  const totalPixels = src.width * src.height;
+  const kbPerPixel = targetBytes > 0 ? targetBytes / totalPixels : Infinity;
+
+  // Decide blur strength for JPEG photos
+  let blurPx = 0;
+
+  // JPEG photo smoothing zone
+  if (mime === "image/jpeg" && !pngOptimized && targetBytes > 0) {
+    if (kbPerPixel < 0.025) blurPx = 1.4;      // extreme compression
+    else if (kbPerPixel < 0.035) blurPx = 1.1; // 20–30 KB zone
+    else if (kbPerPixel < 0.055) blurPx = 0.8; // 30–40 KB zone
+    else if (kbPerPixel < 0.08) blurPx = 0.45; // light smoothing
+  }
+  blurPx = Math.min(blurPx, 1.5);
+  src.blurPx = blurPx;
+
+
   let srcW = src.width,
     srcH = src.height;
 
@@ -983,11 +1021,7 @@ export default function App() {
                         </div>
                       </div>
 
-                      <div className="text-right">
-                        <div className="text-base font-semibold">
-                          {humanFileSizeShort(outSize)}
-                        </div>
-                      </div>
+                     
                     </div>
 
                     <div className="mt-2 mb-2 flex flex-wrap gap-2 items-center">
