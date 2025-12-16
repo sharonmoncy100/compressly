@@ -112,7 +112,14 @@ export default function Uploader({
 
                         <div className="text-xs small-muted flex flex-col items-start" style={{ minWidth: 0 }}>
                             {displayName && (
-                                <div className="font-medium truncate" style={{ maxWidth: 180 }}>
+                                <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
+                                    {outURL ? "Compressed image" : "Original image"}
+                                </div>
+                            )}
+
+                            {displayName && (
+                                
+                                <div className="font-medium truncate" style={{ maxWidth: 200 }}>
                                     {displayName}
                                 </div>
                             )}

@@ -513,7 +513,7 @@ a[aria-disabled="true"]{
 
 /* strong download look */
 a.btn.bg-indigo-600{
-  box-shadow: 0 8px 20px rgba(79,70,229,0.12);
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
 }
 
 
@@ -540,7 +540,7 @@ a.btn.bg-indigo-600{
 /* reduce visual congestion between chips and actions on small screens */
 @media (max-width:640px){
   .result-actions .btn{ padding:0.45rem 0.8rem; }
-  .result-actions .open-link{ padding:0.45rem 0.8rem; margin-left:0; }
+  .result-actions .open-link{ padding:0.45rem 0.8rem; margin-left:9px; }
 }
 
 /* meta row: subtle divider and spacing to separate name/size from chips/actions */
@@ -559,7 +559,7 @@ a.btn.bg-indigo-600{
 .open-link{
   border-radius:999px;
   padding:0.45rem 0.9rem;
-  font-size:0.85rem;
+  font-size:0.7rem;
   border:1px solid rgba(148,163,184,0.7);
   background:linear-gradient(180deg,var(--surface),var(--surface-2));
   color:var(--fg);
@@ -650,12 +650,26 @@ html { scroll-behavior: smooth; }
 
 
 /* Inline result actions */
-.result-actions{
-  display:flex;
-  gap:0.5rem;
-  align-items:center; /* center controls for consistent vertical alignment */
-  flex-wrap:wrap;
+.result-actions {
+  display: flex;
+  gap: 10px;          /* space BETWEEN buttons */
+  margin-top: 10px;  /* space FROM reduction / format chips */
+  flex-wrap: wrap;   /* prevents squeezing on mobile */
 }
+
+/* Mobile UX improvement: full-width action buttons */
+@media (max-width: 480px) {
+  .result-actions {
+    gap: 8px;
+  }
+
+  .result-actions a,
+  .result-actions button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
 .result-actions .btn,
 .result-actions button,
 .result-actions a{

@@ -887,101 +887,83 @@ export default function App() {
               Compressed Result
             </h2>
             <div className="container-card rounded-lg p-3 result-card">
-              <div className="result-header flex items-start gap-3">
-                <button
-                  type="button"
-                  className="result-thumb result-thumb--clickable"
-                  onClick={() => {
-                    if (outURL) window.open(outURL, "_blank");
-                  }}
-                  disabled={!outURL}
-                >
-                  {outURL ? (
+
+              {!outURL ? (
+                /* BEFORE compression */
+                <div className="text-sm small-muted text-center py-6">
+                  Select an image and click <strong>Compress</strong> to see the result here.
+                </div>
+              ) : (
+                /* AFTER compression */
+                <div className="result-header flex items-start gap-3">
+                  <button
+                    type="button"
+                    className="result-thumb result-thumb--clickable"
+                    onClick={() => window.open(outURL, "_blank")}
+                  >
                     <img
                       src={outURL}
                       alt="Compressed image preview"
                       className="w-full h-full object-contain rounded-md"
                     />
-                  ) : null}
-                </button>
+                  </button>
 
-                <div className="flex-1">
-                  <div className="result-meta flex items-center justify-between">
-                    <div>
-                      <div
-                        className="text-sm font-medium truncate"
-                        style={{ maxWidth: 200 }}
-                      >
-                        {displayName || "Compressed image"}
-                      </div>
-                      {(outSize || displaySize) > 0 && (
-                        <div className="text-xs small-muted mt-1">
-                          {outSize
-                            ? `Final size: ${humanFileSize(outSize)}`
-                            : `Original size: ${humanFileSize(displaySize)}`}
+                  <div className="flex-1">
+                    <div className="result-meta flex items-center justify-between">
+                      <div>
+                        <div
+                          className="text-sm font-medium truncate"
+                          style={{ maxWidth: 200 }}
+                        >
+                          {displayName}
                         </div>
-                      )}
-                    </div>
+                        <div className="text-xs small-muted mt-1">
+                          Final size: {humanFileSize(outSize)}
+                        </div>
+                      </div>
 
-                    <div className="text-right">
-                      {outSize ? (
+                      <div className="text-right">
                         <div className="text-base font-semibold">
                           {humanFileSizeShort(outSize)}
                         </div>
-                      ) : null}
+                      </div>
                     </div>
-                  </div>
 
-                  <div className="mt-2 flex flex-wrap gap-2 items-center">
-                    <div className="chip text-xs">
-                      Reduction:{" "}
-                      <span
-                        style={{ color: "#0f1724" }}
-                        className="font-medium ml-1"
+                    <div className="mt-2 mb-2 flex flex-wrap gap-2 items-center">
+                      <div className="chip text-xs">
+                        Reduction:
+                        <span className="font-medium ml-1">{reductionPercent}%</span>
+                      </div>
+                      <div className="chip text-xs">
+                        Format:
+                        <span className="font-medium ml-1">
+                          {mimeToExt(outMime)}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 result-actions">
+                      <a
+                        href={outURL}
+                        download={downloadName}
+                        className="btn bg-indigo-600 text-white text-sm flex items-center gap-2"
                       >
-                        {reductionPercent}%
-                      </span>
-                    </div>
-                    <div className="chip text-xs">
-                      Format:{" "}
-                      <span
-                        style={{ color: "#0f1724" }}
-                        className="font-medium ml-1"
+                        Download
+                      </a>
+
+                      <button
+                        onClick={() => window.open(outURL, "_blank")}
+                        className="open-link btn text-sm"
                       >
-                        {outMime ? mimeToExt(outMime) : format}
-                      </span>
+                        Open in new tab
+                      </button>
                     </div>
                   </div>
-
-                  <div className="mt-3 result-actions">
-                    <a
-                      href={downloadHref}
-                      download={downloadName}
-                      className={`px-2 py-1.5 rounded-md ${outURL
-                        ? "bg-indigo-600 text-white"
-                        : "bg-slate-100 text-slate-700"
-                        } btn text-sm flex items-center gap-2`}
-                      aria-disabled={!downloadHref}
-                    >
-                      <DownloadIcon />
-                      Download
-                    </a>
-
-                    <button
-                      onClick={() => {
-                        if (outURL) window.open(outURL, "_blank");
-                      }}
-                      disabled={!outURL}
-                      className="open-link btn px-2 py-1.5 border rounded-md text-sm disabled:opacity-60"
-                    >
-                      Open in new tab
-                    </button>
-                  </div>
-
-                  
                 </div>
-              </div>
+              )}
+
             </div>
+
 
             <div className="container-card quick-help-card minimal-card">
               <div className="text-sm font-medium">Quick help</div>
