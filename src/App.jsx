@@ -388,22 +388,72 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   const totalPixels = src.width * src.height;
   const kbPerPixel = targetBytes > 0 ? targetBytes / totalPixels : Infinity;
 
+  // --- Smart downscaling for impossible KB targets ---
+  let scaleFactor = 1;
+
+  if (mime === "image/jpeg" && targetBytes > 0 && !pngOptimized) {
+    if (kbPerPixel < 0.02) scaleFactor = 0.5;      // 20–30 KB zone (very harsh)
+    else if (kbPerPixel < 0.03) scaleFactor = 0.6; // ~30 KB
+    else if (kbPerPixel < 0.045) scaleFactor = 0.7;
+    else if (kbPerPixel < 0.065) scaleFactor = 0.8;
+  }
+
+  // ---- HARD resize source ONCE if scaleFactor < 1 ----
+  let workingSrc = src;
+
+  if (scaleFactor < 1) {
+    const scaledCanvas = await renderScaled(
+      src,
+      Math.round(src.width * scaleFactor),
+      Math.round(src.height * scaleFactor)
+    );
+
+    const scaledBlob = await canvasToBlobWithFallback(
+      scaledCanvas,
+      "image/png",
+      1
+    );
+
+    workingSrc = await decodeImage(scaledBlob);
+  }
+
+  // Hard clamp long edge for human photos
+  const LONG_EDGE_MAX = 1000;
+
+  if (mime === "image/jpeg") {
+    const longEdge = Math.max(workingSrc.width, workingSrc.height);
+    if (longEdge > LONG_EDGE_MAX) {
+      const r = LONG_EDGE_MAX / longEdge;
+      const clampCanvas = await renderScaled(
+        workingSrc,
+        Math.round(workingSrc.width * r),
+        Math.round(workingSrc.height * r)
+      );
+      workingSrc = await decodeImage(
+        await canvasToBlobWithFallback(clampCanvas, "image/png", 1)
+      );
+    }
+  }
+
+
   // Decide blur strength for JPEG photos
   let blurPx = 0;
 
   // JPEG photo smoothing zone
+  // Minimal smoothing ONLY for extreme JPEG targets
   if (mime === "image/jpeg" && !pngOptimized && targetBytes > 0) {
-    if (kbPerPixel < 0.025) blurPx = 1.4;      // extreme compression
-    else if (kbPerPixel < 0.035) blurPx = 1.1; // 20–30 KB zone
-    else if (kbPerPixel < 0.055) blurPx = 0.8; // 30–40 KB zone
-    else if (kbPerPixel < 0.08) blurPx = 0.45; // light smoothing
+    if (kbPerPixel < 0.02) blurPx = 0.6;   // extreme ~20 KB
+    else if (kbPerPixel < 0.03) blurPx = 0.35; // ~30 KB
+    else blurPx = 0; // NO blur above this
   }
-  blurPx = Math.min(blurPx, 1.5);
-  src.blurPx = blurPx;
+
+  blurPx = Math.min(blurPx, 0.6);
+  workingSrc.blurPx = blurPx;
 
 
-  let srcW = src.width,
-    srcH = src.height;
+  let srcW = workingSrc.width;
+  let srcH = workingSrc.height;
+
 
   const ABS_MAX = 8192;
   if (srcW > ABS_MAX || srcH > ABS_MAX) {
@@ -423,7 +473,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
 
   progress(10, "Preparing image");
   if (!targetBytes || targetBytes <= 0) {
-    const canvas = await renderScaled(src, targetW, targetH);
+    const canvas = await renderScaled(workingSrc, targetW, targetH);
 
     if (pngOptimized && mime === "image/png") {
       const ctx = canvas.getContext("2d");
@@ -452,7 +502,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
       15 + Math.round((i / Q_ITER) * 20),
       `Trying quality ${Math.round(q * 100)}%`
     );
-    const canvas = await renderScaled(src, targetW, targetH);
+    const canvas = await renderScaled(workingSrc, targetW, targetH);
 
     if (pngOptimized && mime === "image/png") {
       const ctx = canvas.getContext("2d");
@@ -502,7 +552,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
         Math.round((qIter / 5) * 10),
         `Downscale ${attempt + 1}/${MAX_DOWNS} — q ${Math.round(q * 100)}%`
       );
-      const canvas = await renderScaled(src, currentW, currentH);
+      const canvas = await renderScaled(workingSrc, currentW, currentH);
       const blob = await canvasToBlobWithFallback(canvas, mime, q);
       if (!blob) continue;
       if (blob.size <= targetBytes) {
@@ -530,7 +580,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   progress(95, "Final encode");
   const finalW = Math.max(400, Math.round(initialW * 0.6));
   const finalCanvas = await renderScaled(
-    src,
+    workingSrc,
     finalW,
     Math.round(finalW * aspect)
   );
