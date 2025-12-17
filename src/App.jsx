@@ -397,6 +397,9 @@ async function compressFileOptimized(fileBlob, opts = {}) {
     else if (kbPerPixel < 0.045) scaleFactor = 0.7;
     else if (kbPerPixel < 0.065) scaleFactor = 0.8;
   }
+  if (mime === "image/jpeg" && kbPerPixel < 0.018) {
+    scaleFactor *= 0.85;
+  }
 
   // ---- HARD resize source ONCE if scaleFactor < 1 ----
   let workingSrc = src;
@@ -496,6 +499,12 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   let bestBlob = null;
   let bestSize = Infinity;
 
+  const isExtremeJPEG = (
+    mime === "image/jpeg" &&
+    targetBytes > 0 &&
+    kbPerPixel < 0.018
+  );
+
   for (let i = 0; i < Q_ITER; i++) {
     const q = (lowQ + highQ) / 2;
     progress(
@@ -503,6 +512,16 @@ async function compressFileOptimized(fileBlob, opts = {}) {
       `Trying quality ${Math.round(q * 100)}%`
     );
     const canvas = await renderScaled(workingSrc, targetW, targetH);
+    if (isExtremeJPEG) {
+      const ctx = canvas.getContext("2d");
+
+      ctx.save();
+      ctx.filter = "saturate(0.85)"; 
+      ctx.drawImage(canvas, 0, 0);
+      ctx.restore();
+    }
+
+  
 
     if (pngOptimized && mime === "image/png") {
       const ctx = canvas.getContext("2d");
@@ -510,6 +529,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
       const levels = Math.max(8, Math.round(q * 48));
       ctx.putImageData(quantizeImageData(imgData, levels), 0, 0);
     }
+   
 
     const blob = await canvasToBlobWithFallback(canvas, mime, q);
 
