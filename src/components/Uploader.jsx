@@ -119,7 +119,7 @@ export default function Uploader({
 
                             {displayName && (
                                 
-                                <div className="font-medium truncate" style={{ maxWidth: 200 }}>
+                                <div className="font-medium truncate" style={{ maxWidth: 180 }}>
                                     {displayName}
                                 </div>
                             )}

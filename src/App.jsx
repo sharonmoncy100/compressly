@@ -388,17 +388,17 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   const totalPixels = src.width * src.height;
   const kbPerPixel = targetBytes > 0 ? targetBytes / totalPixels : Infinity;
 
-  // --- Smart downscaling for impossible KB targets ---
+  // --- Smart downscaling for impossible KB targets (tuned for face photos) ---
   let scaleFactor = 1;
 
   if (mime === "image/jpeg" && targetBytes > 0 && !pngOptimized) {
-    if (kbPerPixel < 0.02) scaleFactor = 0.5;      // 20–30 KB zone (very harsh)
-    else if (kbPerPixel < 0.03) scaleFactor = 0.6; // ~30 KB
-    else if (kbPerPixel < 0.045) scaleFactor = 0.7;
-    else if (kbPerPixel < 0.065) scaleFactor = 0.8;
-  }
-  if (mime === "image/jpeg" && kbPerPixel < 0.018) {
-    scaleFactor *= 0.85;
+    if (kbPerPixel < 0.015) {
+      scaleFactor = 0.6;   // ~20–25 KB (extreme)
+    } else if (kbPerPixel < 0.022) {
+      scaleFactor = 0.72;  // ~30–40 KB
+    } else if (kbPerPixel < 0.05) {
+      scaleFactor = 0.85;  // ~50–70 KB
+    }
   }
 
   // ---- HARD resize source ONCE if scaleFactor < 1 ----
@@ -444,14 +444,39 @@ async function compressFileOptimized(fileBlob, opts = {}) {
 
   // JPEG photo smoothing zone
   // Minimal smoothing ONLY for extreme JPEG targets
+  // Minimal smoothing ONLY for extreme JPEG targets
   if (mime === "image/jpeg" && !pngOptimized && targetBytes > 0) {
-    if (kbPerPixel < 0.02) blurPx = 0.6;   // extreme ~20 KB
-    else if (kbPerPixel < 0.03) blurPx = 0.35; // ~30 KB
-    else blurPx = 0; // NO blur above this
+    if (kbPerPixel < 0.015) blurPx = 0.55;   // ~20–25 KB
+    else if (kbPerPixel < 0.022) blurPx = 0.3; // ~30–40 KB
+    else blurPx = 0; // NO blur above ~40 KB
   }
+
 
   blurPx = Math.min(blurPx, 0.6);
   workingSrc.blurPx = blurPx;
+
+  // ---------- EARLY EXIT (clean encode, no aggressive loops) ----------
+  if (!pngOptimized && mime === "image/jpeg" && targetBytes > 0) {
+    progress(18, "Checking optimal encode");
+
+    const testCanvas = await renderScaled(
+      workingSrc,
+      workingSrc.width,
+      workingSrc.height
+    );
+
+    const testBlob = await canvasToBlobWithFallback(
+      testCanvas,
+      mime,
+      quality
+    );
+
+    if (testBlob && testBlob.size <= targetBytes * 1.03) {
+      progress(90, "Finalizing");
+      return testBlob;
+    }
+  }
+  // ---------------------------------------------------------------
 
 
   let srcW = workingSrc.width;
@@ -512,14 +537,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
       `Trying quality ${Math.round(q * 100)}%`
     );
     const canvas = await renderScaled(workingSrc, targetW, targetH);
-    if (isExtremeJPEG) {
-      const ctx = canvas.getContext("2d");
-
-      ctx.save();
-      ctx.filter = "saturate(0.85)"; 
-      ctx.drawImage(canvas, 0, 0);
-      ctx.restore();
-    }
+ 
 
   
 
@@ -864,6 +882,24 @@ export default function App() {
   }
 
   async function runCompress() {
+    let smoothTimer = null;
+
+    const startSmoothProgress = () => {
+      let fake = 10;
+      setProgressPct(fake);
+      smoothTimer = setInterval(() => {
+        fake += Math.random() * 2.5 + 0.5;
+        setProgressPct((p) => Math.min(85, Math.max(p, fake)));
+      }, 160);
+    };
+
+    const stopSmoothProgress = () => {
+      if (smoothTimer) {
+        clearInterval(smoothTimer);
+        smoothTimer = null;
+      }
+    };
+
     
     if (!file) return;
     setProcessing(true);
@@ -873,6 +909,8 @@ export default function App() {
     setOutFilename("");
     setLastNote("");
     setProgressPct(4);
+    startSmoothProgress();
+
 
     try {
       const targetBytes =
@@ -945,6 +983,8 @@ export default function App() {
           inputBlob = file;
         }
       }
+   
+
 
       const blob = await compressFileOptimized(inputBlob, {
         mime,
@@ -954,6 +994,8 @@ export default function App() {
         progress: progressCb,
         pngOptimized: format === "png-optimized"
       });
+      stopSmoothProgress();
+
       if (!blob) {
         setLastNote("Compression failed — try smaller image or lower quality.");
         setProgressPct(0);
@@ -975,6 +1017,7 @@ export default function App() {
       setLastNote(`Error while compressing: ${err?.message || String(err)}.`);
       setProgressPct(0);
     } finally {
+      stopSmoothProgress();
       setProcessing(false);
       setTimeout(() => setProgressPct(0), 600);
     }
