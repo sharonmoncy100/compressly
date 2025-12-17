@@ -388,18 +388,31 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   const totalPixels = src.width * src.height;
   const kbPerPixel = targetBytes > 0 ? targetBytes / totalPixels : Infinity;
 
+  function estimateQualityFromKB(kbPerPixel) {
+    if (kbPerPixel > 0.15) return 0.9;
+    if (kbPerPixel > 0.10) return 0.82;
+    if (kbPerPixel > 0.07) return 0.75;
+    if (kbPerPixel > 0.05) return 0.68;
+    if (kbPerPixel > 0.035) return 0.6;
+    return 0.5;
+  }
+  let estimatedQ = quality;
+
+  if (targetBytes > 0 && mime === "image/jpeg" && !pngOptimized) {
+    estimatedQ = estimateQualityFromKB(kbPerPixel);
+  }
+
+
   // --- Smart downscaling for impossible KB targets (tuned for face photos) ---
   let scaleFactor = 1;
 
+  // Resize ONLY for extreme targets
   if (mime === "image/jpeg" && targetBytes > 0 && !pngOptimized) {
-    if (kbPerPixel < 0.015) {
-      scaleFactor = 0.6;   // ~20–25 KB (extreme)
-    } else if (kbPerPixel < 0.022) {
-      scaleFactor = 0.72;  // ~30–40 KB
-    } else if (kbPerPixel < 0.05) {
-      scaleFactor = 0.85;  // ~50–70 KB
+    if (kbPerPixel < 0.012) {
+      scaleFactor = 0.8; // gentler resize for portraits
     }
   }
+
 
   // ---- HARD resize source ONCE if scaleFactor < 1 ----
   let workingSrc = src;
@@ -519,8 +532,9 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   // AGGRESSIVE QUALITY SEARCH
   progress(15, "Searching quality");
   const Q_ITER = 10;
-  let lowQ = 0.02,
-    highQ = Math.min(0.98, quality || 0.98);
+  let lowQ = Math.max(0.1, estimatedQ - 0.15);
+  let highQ = Math.min(0.95, estimatedQ + 0.15);
+
   let bestBlob = null;
   let bestSize = Infinity;
 
@@ -917,6 +931,27 @@ export default function App() {
         targetKB && Number(targetKB) > 0
           ? Math.max(8 * 1024, Math.round(Number(targetKB) * 1024))
           : 0;
+
+      // Smoothly sync quality slider with Target KB (JPEG only)
+      if (targetBytes > 0 && format === "jpeg") {
+        const kb = targetBytes / 1024;
+
+        // Clamp target range we care about
+        const minKB = 20;
+        const maxKB = 300;
+
+        const clampedKB = Math.min(maxKB, Math.max(minKB, kb));
+
+        // Linear quality estimation
+        // 20 KB  → 0.60
+        // 300 KB → 0.92
+        const estimatedQ =
+          0.6 + ((clampedKB - minKB) / (maxKB - minKB)) * (0.92 - 0.6);
+
+        setQuality(Math.round(estimatedQ * 100) / 100);
+      }
+
+
 
       let mime;
       const isPNG = (file.type === "image/png" || file.name.toLowerCase().endsWith(".png"));
