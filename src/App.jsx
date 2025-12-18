@@ -710,13 +710,14 @@ export default function App() {
     window.localStorage.setItem("compressly-theme", theme);
   }, [theme]);
 
-  useEffect(
-    () => () => {
-      if (previewURL) URL.revokeObjectURL(previewURL);
-      if (outURL) URL.revokeObjectURL(outURL);
-    },
-    [previewURL, outURL]
-  );
+
+  useEffect(() => {
+    if (file && !previewURL) {
+      const url = URL.createObjectURL(file);
+      setPreviewURL(url);
+    }
+  }, [file, previewURL]);
+
 
   function resetAll() {
     setFile(null);
@@ -1033,7 +1034,7 @@ export default function App() {
             // keep original base name but change extension for previews & downloads
             usedOriginalFileName = (file.name || "image").replace(/\.[^/.]+$/, "") + ".jpg";
             // update preview to show converted image
-            if (previewURL) URL.revokeObjectURL(previewURL);
+           
             setPreviewURL(URL.createObjectURL(inputBlob));
             setOriginalSize(inputBlob.size);
             progressCb(30, "HEIC converted — compressing now");

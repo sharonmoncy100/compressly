@@ -4,20 +4,32 @@ import React from "react";
 function Spinner({ className = "" }) {
     return (
         <svg
-            className={`animate-spin ${className}`}
-            width="16"
-            height="16"
+            className={className}
+            width="18"
+            height="18"
             viewBox="0 0 24 24"
             fill="none"
             aria-hidden
+            style={{
+                animation: "spin 0.8s linear infinite"
+            }}
         >
+            <style>
+                {`
+          @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+          }
+        `}
+            </style>
+
             <circle
                 cx="12"
                 cy="12"
                 r="10"
                 stroke="currentColor"
                 strokeWidth="3"
-                strokeOpacity="0.12"
+                strokeOpacity="0.15"
             />
             <path
                 d="M22 12a10 10 0 0 1-10 10"
@@ -28,6 +40,7 @@ function Spinner({ className = "" }) {
         </svg>
     );
 }
+
 
 export default function Uploader({
     inputRef,
@@ -93,7 +106,7 @@ export default function Uploader({
                         {/* clickable preview: opens compressed image if available */}
                         <button
                             type="button"
-                            className="preview-wrap result-thumb--clickable"
+                            className="preview-wrap result-thumb--clickable relative"
                             onClick={() => {
                                 if (outURL) {
                                     window.open(outURL, "_blank");
@@ -104,11 +117,27 @@ export default function Uploader({
                             disabled={!outURL && !previewURL}
                         >
                             {outURL ? (
-                                <img src={outURL} alt="Compressed image preview" className="object-contain w-full h-full" />
+                                <img
+                                    src={outURL}
+                                    alt="Compressed image preview"
+                                    className="object-contain w-full h-full"
+                                />
                             ) : previewURL ? (
-                                <img src={previewURL} alt="Original image preview" className="object-contain w-full h-full" />
+                                <img
+                                    src={previewURL}
+                                    alt="Original image preview"
+                                    className={`object-contain w-full h-full ${processing ? "opacity-70" : ""
+                                        }`}
+                                />
                             ) : null}
+
+                            {processing && (
+                                <div className="absolute inset-0 flex items-center justify-center bg-white/60">
+                                    <Spinner className="w-5 h-5 text-slate-700" />
+                                </div>
+                            )}
                         </button>
+
 
                         <div className="text-xs small-muted flex flex-col items-start" style={{ minWidth: 0 }}>
                             {displayName && (
