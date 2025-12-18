@@ -434,7 +434,8 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   }
 
   // Hard clamp long edge for human photos
-  const LONG_EDGE_MAX = 1000;
+  const LONG_EDGE_MAX = targetBytes > 120 * 1024 ? 1600 : 1000;
+
 
   if (mime === "image/jpeg") {
     const longEdge = Math.max(workingSrc.width, workingSrc.height);
@@ -536,7 +537,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   let highQ = Math.min(0.95, estimatedQ + 0.15);
 
   let bestBlob = null;
-  let bestSize = Infinity;
+  let bestSize = 0;
 
   const isExtremeJPEG = (
     mime === "image/jpeg" &&
@@ -567,22 +568,38 @@ async function compressFileOptimized(fileBlob, opts = {}) {
 
     if (!blob) continue;
     const s = blob.size;
-    if (s <= targetBytes) {
+    // Keep the largest result that is <= targetBytes (exam-safe)
+    if (s <= targetBytes && s > bestSize) {
       bestBlob = blob;
       bestSize = s;
-      lowQ = q;
-    } else {
-      highQ = q;
     }
-    if (bestBlob && Math.abs(bestSize - targetBytes) / targetBytes < 0.06)
-      break;
+
+
+    // Guide binary search
+    if (s > targetBytes) {
+      highQ = q;
+    } else {
+      lowQ = q;
+    }
+
+   
     await new Promise((r) => setTimeout(r, 0));
   }
 
-  if (bestBlob && bestSize <= targetBytes * 1.03) {
-    progress(90, "Finalizing");
-    return bestBlob;
+  if (bestBlob) {
+    // Prefer <= target (exam-safe)
+    if (bestSize <= targetBytes) {
+      progress(90, "Finalizing");
+      return bestBlob;
+    }
+
+    // Fallback: very close (rare)
+    if (bestSize <= targetBytes * 1.02) {
+      progress(90, "Finalizing");
+      return bestBlob;
+    }
   }
+
 
   // MORE DOWNSCALES, MORE AGGRESSIVE FACTOR
   progress(40, "Downscaling to reach target");
@@ -951,6 +968,13 @@ export default function App() {
         setQuality(Math.round(estimatedQ * 100) / 100);
       }
 
+      // If user increases target KB, reset aggressive assumptions
+      if (targetBytes > 0 && originalSize > 0) {
+        if (targetBytes > originalSize * 0.9) {
+          // Target is close to original — no need for aggressive compression
+          setQuality(0.9);
+        }
+      }
 
 
       let mime;
