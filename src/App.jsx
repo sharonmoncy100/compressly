@@ -677,6 +677,28 @@ export default function App() {
   const [lastNote, setLastNote] = useState("");
   const [progressPct, setProgressPct] = useState(0);
 
+  // Auto-sync quality slider when Target KB is edited (JPEG only)
+  // Runs ONLY when targetKB or format changes
+  useEffect(() => {
+    if (!targetKB || format !== "jpeg") return;
+
+    const kb = Number(targetKB);
+    if (!kb) return;
+
+    const minKB = 20;
+    const maxKB = 300;
+
+    const clampedKB = Math.min(maxKB, Math.max(minKB, kb));
+
+    // Linear mapping:
+    // 20 KB  → ~60%
+    // 300 KB → ~92%
+    const estimatedQ =
+      0.6 + ((clampedKB - minKB) / (maxKB - minKB)) * (0.92 - 0.6);
+
+    setQuality(Math.round(estimatedQ * 100) / 100);
+  }, [targetKB, format]);
+
   // compact theme switcher (localStorage + data-theme)
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "light";
@@ -949,24 +971,7 @@ export default function App() {
           ? Math.max(8 * 1024, Math.round(Number(targetKB) * 1024))
           : 0;
 
-      // Smoothly sync quality slider with Target KB (JPEG only)
-      if (targetBytes > 0 && format === "jpeg") {
-        const kb = targetBytes / 1024;
 
-        // Clamp target range we care about
-        const minKB = 20;
-        const maxKB = 300;
-
-        const clampedKB = Math.min(maxKB, Math.max(minKB, kb));
-
-        // Linear quality estimation
-        // 20 KB  → 0.60
-        // 300 KB → 0.92
-        const estimatedQ =
-          0.6 + ((clampedKB - minKB) / (maxKB - minKB)) * (0.92 - 0.6);
-
-        setQuality(Math.round(estimatedQ * 100) / 100);
-      }
 
       // If user increases target KB, reset aggressive assumptions
       if (targetBytes > 0 && originalSize > 0) {
