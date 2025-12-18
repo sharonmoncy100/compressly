@@ -961,9 +961,16 @@ export default function App() {
     setOutSize(0);
     setOutMime("");
     setOutFilename("");
-    setLastNote("");
+    setLastNote("Preparing image…");
     setProgressPct(4);
     startSmoothProgress();
+
+    /* 🔴 ADD THESE TWO LINES */
+    setProgressPct(45);
+    setLastNote("Processing image… this may take a few seconds...");
+
+    /* 🔴 ADD THIS LINE */
+    await new Promise(r => setTimeout(r, 0));
 
 
     try {
