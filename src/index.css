@@ -302,9 +302,9 @@ html[data-theme="dark"] .chip{
 .progress-fill{
   height:7px;
   border-radius:999px;
-  transition:width .18s ease;
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   background:linear-gradient(90deg,#0b66d1,#2563eb);
-  box-shadow:0 0 12px rgba(11,102,209,0.4);
+  box-shadow: 0 0 10px rgba(11,102,209,0.35);
 }
 html[data-theme="dark"] .progress-fill{
   box-shadow:0 0 16px rgba(37,99,235,0.5);
@@ -780,47 +780,66 @@ html[data-theme="dark"] .header-wrap{
 html[data-theme="dark"] .theme-toggle-btn{
   border-color:rgba(148,163,184,0.5);
   box-shadow:0 6px 18px rgba(0,0,0,0.8);
-}
-
-/* Quality slider – modern blue track */
+}/* ---- Quality slider: clean professional look ---- */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
-  height: 6px;
+  height: 4px;
   border-radius: 999px;
-  background: linear-gradient(90deg,#0b66d1,#22c1c3);
+  background: rgba(148,163,184,0.35);
   outline: none;
 }
 
-/* WebKit thumb */
+/* Dark mode track */
+html[data-theme="dark"] input[type="range"] {
+  background: rgba(148,163,184,0.45);
+}
+
+/* ---- Slider thumb (WebKit) ---- */
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #ffffff;
-  border: 2px solid #0b66d1;
-  box-shadow: 0 0 0 3px rgba(11,102,209,0.18);
+  border: 2px solid #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
   cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
-/* Firefox track + thumb */
-input[type="range"]::-moz-range-track {
-  height: 6px;
-  border-radius: 999px;
-  background: linear-gradient(90deg,#0b66d1,#22c1c3);
+/* Active (dragging) */
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 5px rgba(37,99,235,0.18);
 }
+
+/* ---- Slider thumb (Firefox) ---- */
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(148,163,184,0.35);
+}
+
 input[type="range"]::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   background: #ffffff;
-  border: 2px solid #0b66d1;
-  box-shadow: 0 0 0 3px rgba(11,102,209,0.18);
+  border: 2px solid #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
   cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
+
+input[type="range"]:active::-moz-range-thumb {
+  transform: scale(1.12);
+  box-shadow: 0 0 0 5px rgba(37,99,235,0.18);
+}
+
+
 
 /* FAQ stripe list – aligned like reference */
 .faq-card{

@@ -1,7 +1,7 @@
 import React from "react";
 
 /* tiny local Spinner to avoid importing from App */
-function Spinner({ className = "" }) {
+function Spinner({ className = "", color }) {
     return (
         <svg
             className={className}
@@ -11,7 +11,8 @@ function Spinner({ className = "" }) {
             fill="none"
             aria-hidden
             style={{
-                animation: "spin 0.8s linear infinite"
+                animation: "spin 0.8s linear infinite",
+                color: color || "currentColor"   // 👈 THIS IS THE FIX
             }}
         >
             <style>
@@ -40,6 +41,7 @@ function Spinner({ className = "" }) {
         </svg>
     );
 }
+
 
 
 export default function Uploader({
@@ -132,10 +134,12 @@ export default function Uploader({
                             ) : null}
 
                             {processing && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-white/60">
-                                    <Spinner className="w-5 h-5 text-slate-700" />
+                                <div className="absolute inset-0 flex items-center justify-center bg-black/35">
+                                    <Spinner className="w-5 h-5" color="#ffffff" />
+
                                 </div>
                             )}
+
                         </button>
 
 
@@ -245,7 +249,8 @@ export default function Uploader({
                             disabled={!file || processing}
                             className="primary-upload-btn compress-btn-main disabled:opacity-60 text-sm flex items-center gap-2"
                         >
-                            {processing ? <Spinner /> : null}
+                            {processing ? <Spinner className="text-white w-4 h-4" /> : null}
+
                             <span>{processing ? "Processing" : "Compress"}</span>
                         </button>
                     </div>
