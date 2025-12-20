@@ -113,6 +113,7 @@ export default function Uploader({
                         <button
                             type="button"
                             className="preview-wrap result-thumb--clickable relative"
+                            aria-label={outURL ? "Open compressed image preview" : "Open original image preview"}
                             onClick={() => {
                                 if (outURL) {
                                     window.open(outURL, "_blank");
@@ -223,7 +224,9 @@ export default function Uploader({
                 </div>
 
                 <div>
-                    <label className="control-label">Quality</label>
+                    <label htmlFor="quality-slider" className="control-label">
+                        Quality
+                    </label>
                     <div className="mt-1 flex items-center gap-2">
                         <input
                             type="range"
@@ -233,8 +236,11 @@ export default function Uploader({
                             value={quality}
                             onChange={(e) => setQuality(Number(e.target.value))}
                             className="w-full"
+                            aria-describedby="quality-value"
                         />
-                        <div className="w-8 text-right text-xs small-muted">{Math.round(quality * 100)}%</div>
+                        <div id="quality-value" className="w-8 text-right text-xs small-muted">
+                            {Math.round(quality * 100)}%
+                        </div>
                     </div>
                 </div>
 
