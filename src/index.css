@@ -1086,4 +1086,23 @@ html[data-theme="dark"] .compressly-title {
   opacity: 0.8;
   font-size: 0.75rem;
 }
+/* Limit width of long horizontal controls on desktop */
+.control-max {
+  max-width: 860px;
+}
+/* Prevent long sliders from dominating layout */
+.range-wrap {
+  max-width: 460px; /* mobile & small screens */
+}
+
+@media (min-width: 768px) {
+  .range-wrap {
+    max-width: 420px; /* desktop refinement */
+  }
+}
+
+/* Reserve progress space WITHOUT permanent padding */
+.controls-pad {
+  min-height: 32px;
+}
 

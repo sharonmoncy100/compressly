@@ -1104,15 +1104,21 @@ export default function App() {
       handleResultBlob(blob, mime);
       setLastNote("");
       setProgressPct(100);
+
+      // let the progress bar finish before hiding
+      setTimeout(() => {
+        setProcessing(false);
+        setProgressPct(0);
+      }, 500);
+
     } catch (err) {
       console.error("runCompress: unexpected", err);
       setLastNote(`Error while compressing: ${err?.message || String(err)}.`);
       setProgressPct(0);
     } finally {
       stopSmoothProgress();
-      setProcessing(false);
-      setTimeout(() => setProgressPct(0), 600);
     }
+
   }
 
   const reductionPercent =

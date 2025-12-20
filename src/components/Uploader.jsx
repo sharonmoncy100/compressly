@@ -68,6 +68,7 @@ export default function Uploader({
 }) {
     return (
         <section className="md:col-span-8 container-card p-3 uploader-shell">
+            
             <div
                 onDrop={(e) => {
                     e.preventDefault();
@@ -227,8 +228,10 @@ export default function Uploader({
                     <label htmlFor="quality-slider" className="control-label">
                         Quality
                     </label>
-                    <div className="mt-1 flex items-center gap-2">
+                    <div className="mt-1 flex items-center gap-2 control-max range-wrap">
+
                         <input
+                            id="quality-slider"    
                             type="range"
                             min="0.05"
                             max="0.98"
@@ -248,12 +251,13 @@ export default function Uploader({
                     <label className="control-label">Target (KB)</label>
 
                     <div className="mt-1">
-                        <div className="target-row">
+                        <div className="target-row control-max">
                             <input
                                 value={targetKB}
                                 onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))}
                                 placeholder="Enter size in KB"
-                                className="px-2 py-1 w-[70%] text-sm target-input"
+                                className="px-2 py-1 w-full max-w-[360px] text-sm target-input"
+
                             />
 
                             <button
@@ -267,17 +271,27 @@ export default function Uploader({
                         </div>
                     </div>
                 </div>
-
             </div>
 
-            <div className="mt-3">
-                <div className="progress-track">
-                    <div className="progress-fill" style={{ width: `${Math.min(100, progressPct)}%` }} />
-                </div>
-                <div className="mt-2 text-xs small-muted text-right">
-                    {lastNote}
-                </div>
+            {/* Reserved space for progress */}
+            <div className="mt-3 control-max range-wrap controls-pad">
+                {processing && (
+                    <>
+                        <div className="progress-track">
+                            <div
+                                className="progress-fill"
+                                style={{ width: `${Math.min(100, progressPct)}%` }}
+                            />
+                        </div>
+
+                        <div className="mt-2 text-xs small-muted text-right">
+                            {lastNote}
+                        </div>
+                    </>
+                )}
             </div>
+
         </section>
+
     );
 }
