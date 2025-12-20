@@ -417,11 +417,30 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   // ---- HARD resize source ONCE if scaleFactor < 1 ----
   let workingSrc = src;
 
+  // --- Slider-only safeguard: auto downscale at very low quality ---
+  if (!targetBytes && mime === "image/jpeg") {
+    if (quality < 0.45) {
+      const longEdge = Math.max(workingSrc.width, workingSrc.height);
+      if (longEdge > 800) {
+        const r = 800 / longEdge;
+        const scaledCanvas = await renderScaled(
+          workingSrc,
+          Math.round(workingSrc.width * r),
+          Math.round(workingSrc.height * r)
+        );
+        workingSrc = await decodeImage(
+          await canvasToBlobWithFallback(scaledCanvas, "image/png", 1)
+        );
+      }
+    }
+  }
+
+
   if (scaleFactor < 1) {
     const scaledCanvas = await renderScaled(
-      src,
-      Math.round(src.width * scaleFactor),
-      Math.round(src.height * scaleFactor)
+      workingSrc,
+      Math.round(workingSrc.width * scaleFactor),
+      Math.round(workingSrc.height * scaleFactor)
     );
 
     const scaledBlob = await canvasToBlobWithFallback(
@@ -514,6 +533,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   let targetH = Math.round(targetW * aspect);
 
   progress(10, "Preparing image");
+
   if (!targetBytes || targetBytes <= 0) {
     const canvas = await renderScaled(workingSrc, targetW, targetH);
 
