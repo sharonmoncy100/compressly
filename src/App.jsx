@@ -1244,14 +1244,32 @@ export default function App() {
 
             </div>
 
-
             <div className="container-card quick-help-card minimal-card">
-              <div className="text-sm font-medium">Quick help</div>
-              <div className="text-xs small-muted">
-                For forms: Many forms require ≤100KB - use Target (KB) + JPEG.
-                For web: WebP gives smaller files and faster pages.
+              <div className="flex items-center gap-2">
+                <span className="h-3 w-1 rounded-full bg-slate-300" />
+                <div className="quick-help-title tracking-wide">
+                  Quick help
+                </div>
               </div>
+
+              {/* spacer — card-safe */}
+              <div className="h-1"></div>
+
+              <div className="text-xs small-muted">
+                <div>
+                  <span className="font-medium">For forms:</span>{" "}
+                  Use <span className="font-medium">Target (KB)</span> with{" "}
+                  <span className="font-medium">JPEG</span> to meet upload limits.
+                </div>
+                <div className="mt-1">
+                  <span className="font-medium">For websites:</span>{" "}
+                  Choose <span className="font-medium">WebP</span> for smaller files and
+                  faster loading.
+                </div>
+              </div>
+
             </div>
+
           </aside>
 
 
@@ -1311,12 +1329,27 @@ export default function App() {
                     Can I compress images for government or job portals?
                   </h3>
                   <p className="faq-a">
-                    Yes, you can quickly reduce file size to meet KB limits used by
+                    Yes, you can quickly reduce file size inorder to meet KB limits that is used by
                     government sites, job portals and college forms while keeping the
                     image readable.
                   </p>
                 </div>
               </div>
+
+              <div className="faq-item faq-item--neutral">
+                <div className="faq-stripe" />
+                <div className="faq-content">
+                  <h3 className="faq-q">
+                    Are JPEG and JPG the same format?
+                  </h3>
+                  <p className="faq-a">
+                    Yes. JPEG and JPG are the same image format with identical quality and
+                    compression. The only difference is the file extension. Both JPEG and JPG
+                    files are accepted by websites, government portals and exam forms.
+                  </p>
+                </div>
+              </div>
+
             </div>
           </section>
           

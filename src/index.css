@@ -706,6 +706,14 @@ html { scroll-behavior: smooth; }
   }
 }
 
+/* Quick help label spacing */
+.quick-help-title {
+  margin-bottom: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fg);
+  
+}
 
 /* header underline + spacing */
 /* header underline + spacing + background */
@@ -870,6 +878,16 @@ input[type="range"]:active::-moz-range-thumb {
 .faq-item--green .faq-stripe{ background:#10b981; }
 .faq-item--purple .faq-stripe{ background:#a855f7; }
 .faq-item--orange .faq-stripe{ background:#f97316; }
+
+/* Neutral FAQ item (JPEG vs JPG) */
+.faq-item--neutral .faq-stripe {
+  background: linear-gradient(
+    to bottom,
+    rgba(100,116,139,0.9),
+    rgba(100,116,139,0.6)
+  );
+}
+
 
 .faq-content{
   flex:1;

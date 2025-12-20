@@ -240,7 +240,7 @@ export default function Uploader({
                         <input
                             value={targetKB}
                             onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))}
-                            placeholder="Enter size in KB/MB"
+                            placeholder="Enter size in KB"
                             className="px-2 py-1 w-full text-sm target-input"
                         />
 
