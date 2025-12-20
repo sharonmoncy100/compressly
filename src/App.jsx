@@ -1,4 +1,4 @@
-// App.jsx — with HEIC input support (converts HEIC->JPEG before compressing)
+// App.jsx - with HEIC input support (converts HEIC->JPEG before compressing)
 // Minimal, lazy-loaded heic2any usage. If browser natively supports HEIC (createImageBitmap or <img>), we use that first.
 
 import React, { useRef, useState, useEffect } from "react";
@@ -313,7 +313,7 @@ async function convertHeicToJpegBlob(heicBlob, quality = 0.9, progressCb = () =>
   // 1) Try native decode (Safari / some browsers)
   try {
     const decoded = await decodeImage(heicBlob);
-    progressCb(25, "Native decode OK — converting to JPEG...");
+    progressCb(25, "Native decode OK - converting to JPEG...");
     const canvas = await renderScaled(decoded, decoded.width, decoded.height);
     const jpeg = await canvasToBlobWithFallback(canvas, "image/jpeg", quality);
     if (jpeg && jpeg.size > 0) return jpeg;
@@ -639,7 +639,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
         50 +
         Math.round((attempt / MAX_DOWNS) * 30) +
         Math.round((qIter / 5) * 10),
-        `Downscale ${attempt + 1}/${MAX_DOWNS} — q ${Math.round(q * 100)}%`
+        `Downscale ${attempt + 1}/${MAX_DOWNS} - q ${Math.round(q * 100)}%`
       );
       const canvas = await renderScaled(workingSrc, currentW, currentH);
       const blob = await canvasToBlobWithFallback(canvas, mime, q);
@@ -815,7 +815,7 @@ export default function App() {
       return { previewBlob: file, previewURL: URL.createObjectURL(file) };
     }
 
-    // It's HEIC/HEIF — try native decode first
+    // It's HEIC/HEIF - try native decode first
     progressCb(5, "Checking native HEIC support...");
     try {
       const decoded = await decodeImage(file);
@@ -830,7 +830,7 @@ export default function App() {
       }
       // else fall through to library fallback
     } catch (err) {
-      // native decode likely not supported — continue
+      // native decode likely not supported - continue
       console.info("Native HEIC decode unavailable", err?.message || err);
     }
 
@@ -841,7 +841,7 @@ export default function App() {
       const mod = await import("heic2any");
       heic2anyFn = mod?.default || mod;
     } catch (e) {
-      // dynamic import failed — inject CDN script and poll for window.heic2any
+      // dynamic import failed - inject CDN script and poll for window.heic2any
       if (!window.heic2any) {
         const existing = document.querySelector('script[data-heic2any="1"]');
         if (!existing) {
@@ -1004,7 +1004,7 @@ export default function App() {
       // If user increases target KB, reset aggressive assumptions
       if (targetBytes > 0 && originalSize > 0) {
         if (targetBytes > originalSize * 0.9) {
-          // Target is close to original — no need for aggressive compression
+          // Target is close to original - no need for aggressive compression
           setQuality(0.9);
         }
       }
@@ -1052,7 +1052,7 @@ export default function App() {
       let usedOriginalFileName = file.name;
       if (isHeicFile(file)) {
         // give user feedback
-        progressCb(6, "HEIC detected — converting to JPEG...");
+        progressCb(6, "HEIC detected - converting to JPEG...");
         try {
           // try conversion with quality ~ current quality setting
           const conv = await convertHeicToJpegBlob(file, Math.max(0.7, quality || 0.8), progressCb);
@@ -1064,13 +1064,13 @@ export default function App() {
            
             setPreviewURL(URL.createObjectURL(inputBlob));
             setOriginalSize(inputBlob.size);
-            progressCb(30, "HEIC converted — compressing now");
+            progressCb(30, "HEIC converted - compressing now");
           } else {
-            progressCb(0, "HEIC conversion failed — using original file");
+            progressCb(0, "HEIC conversion failed - using original file");
           }
         } catch (he) {
           console.warn("HEIC conversion error:", he);
-          progressCb(0, "HEIC conversion failed — try another browser or convert externally");
+          progressCb(0, "HEIC conversion failed - try another browser or convert externally");
           // proceed to attempt compression anyway (likely will fail decode)
           inputBlob = file;
         }
@@ -1089,7 +1089,7 @@ export default function App() {
       stopSmoothProgress();
 
       if (!blob) {
-        setLastNote("Compression failed — try smaller image or lower quality.");
+        setLastNote("Compression failed - try smaller image or lower quality.");
         setProgressPct(0);
         setProcessing(false);
         return;
@@ -1278,7 +1278,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* spacer — card-safe */}
+              {/* spacer - card-safe */}
               <div className="h-1"></div>
 
               <div className="text-xs small-muted">
