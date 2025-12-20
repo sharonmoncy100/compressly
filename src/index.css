@@ -196,8 +196,21 @@ html[data-theme="dark"] .primary-btn{
   box-shadow: 0 5px 15px rgba(11,102,209,0.45);
   cursor: pointer;
   transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
-  margin-bottom: 1rem; /* Added space below the button */
+
 }
+.select-image-btn{
+  margin-bottom: 0.75rem;
+}
+.target-row {
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+
+.target-block {
+  margin-bottom: 12px;
+}
+
 .primary-upload-btn:hover{
   background:#0750a6;
   box-shadow:0 1px 10px rgba(11,102,209,0.55);

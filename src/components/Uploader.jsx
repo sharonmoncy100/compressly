@@ -86,9 +86,13 @@ export default function Uploader({
                     </p>
 
                     <div className="mt-5 flex flex-col items-center gap-2">
-                        <button onClick={() => inputRef.current?.click()} className="primary-upload-btn">
+                        <button
+                            onClick={() => inputRef.current?.click()}
+                            className="primary-upload-btn select-image-btn"
+                        >
                             Select Image
                         </button>
+
 
                         <input
                             ref={inputRef}
@@ -234,27 +238,30 @@ export default function Uploader({
                     </div>
                 </div>
 
-                <div>
+                <div className="target-block">
                     <label className="control-label">Target (KB)</label>
-                    <div className="mt-1 flex gap-3">
-                        <input
-                            value={targetKB}
-                            onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))}
-                            placeholder="Enter size in KB"
-                            className="px-2 py-1 w-full text-sm target-input"
-                        />
 
-                        <button
-                            onClick={runCompress}
-                            disabled={!file || processing}
-                            className="primary-upload-btn compress-btn-main disabled:opacity-60 text-sm flex items-center gap-2"
-                        >
-                            {processing ? <Spinner className="text-white w-4 h-4" /> : null}
+                    <div className="mt-1">
+                        <div className="target-row">
+                            <input
+                                value={targetKB}
+                                onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))}
+                                placeholder="Enter size in KB"
+                                className="px-2 py-1 w-[70%] text-sm target-input"
+                            />
 
-                            <span>{processing ? "Processing" : "Compress"}</span>
-                        </button>
+                            <button
+                                onClick={runCompress}
+                                disabled={!file || processing}
+                                className="primary-upload-btn compress-btn-main disabled:opacity-60 text-sm flex items-center gap-2"
+                            >
+                                {processing ? <Spinner className="text-white w-4 h-4" /> : null}
+                                <span>{processing ? "Processing" : "Compress"}</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
+
             </div>
 
             <div className="mt-3">
