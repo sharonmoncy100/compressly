@@ -263,33 +263,44 @@ export default function Uploader({
                             <button
                                 onClick={runCompress}
                                 disabled={!file || processing}
-                                className="primary-upload-btn compress-btn-main disabled:opacity-60 text-sm flex items-center gap-2"
+                                className="primary-upload-btn compress-btn-main disabled:opacity-60 text-sm"
                             >
-                                {processing ? <Spinner className="text-white w-4 h-4" /> : null}
-                                <span>{processing ? "Processing" : "Compress"}</span>
+                                Compress
                             </button>
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Reserved space for progress */}
+            {/* Progress area (reserved space, no layout jump) */}
             <div className="mt-3 control-max range-wrap controls-pad">
                 {processing && (
                     <>
-                        <div className="progress-track">
-                            <div
-                                className="progress-fill"
-                                style={{ width: `${Math.min(100, progressPct)}%` }}
-                            />
+                        <div className="flex items-center gap-3">
+
+                            {/* progress bar */}
+                            <div className="progress-track flex-1">
+                                <div
+                                    className="progress-fill"
+                                    style={{ width: `${Math.min(100, progressPct)}%` }}
+                                />
+                            </div>
+
+                            {/* spinner on the RIGHT */}
+                            <Spinner className="w-3.5 h-3.5 text-slate-400 opacity-60" />
+
                         </div>
 
-                        <div className="mt-2 text-xs small-muted text-right">
-                            {lastNote}
+                        {/* reserved text line */}
+                        <div className="text-xs small-muted leading-tight h-[14px]">
+
+                            {lastNote || "Processing image…"}
                         </div>
                     </>
                 )}
             </div>
+
 
         </section>
 

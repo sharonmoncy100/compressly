@@ -308,12 +308,12 @@ html[data-theme="dark"] .chip{
 /* progress bar */
 .progress-track{
   background:rgba(15,23,42,0.08);
-  height:7px;
+  height:15px;
   border-radius:999px;
   overflow:hidden;
 }
 .progress-fill{
-  height:7px;
+  height:15px;
   border-radius:999px;
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   background:linear-gradient(90deg,#0b66d1,#2563eb);
@@ -1106,3 +1106,6 @@ html[data-theme="dark"] .compressly-title {
   min-height: 32px;
 }
 
+.progress-track {
+  margin-top: 1px;
+}
