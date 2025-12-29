@@ -13,8 +13,9 @@ export default function Header({
                     <img
                         src={IconImg}
                         alt="Compressly"
-                        className="w-10 h-10 sm:w-11 sm:h-11 md:w-12 md:h-12 object-contain flex-shrink-0"
+                        className="logo-img object-contain flex-shrink-0"
                     />
+
                     <span className="compressly-title">Compressly</span>
                 </div>
 

@@ -339,6 +339,29 @@
     box-shadow: 0 4px 10px rgba(11, 102, 209, 0.25);
   }
 }
+.site-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  text-decoration: none;
+  color: var(--fg);
+}
+
+.brand img {
+  border-radius: 6px;
+}
+
+.brand-text {
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.2px;
+}
 
     </style>
 </head>
@@ -350,32 +373,44 @@
             <span>Passport photo - resize & compress</span>
         </nav>
 
-        <!-- Simple hero with clear CTA -->
-        <header class="hero" role="banner">
-            
-            <div class="hero-main">
-                <h1>Passport photo - resize and compress to 35 x 45 mm (2 x 2 in)</h1>
-                <p>Prepare passport and visa photos for Indian portals - correct pixel sizes, file-weight tips (100 KB,
-                    200 KB) and an instant browser tool. No uploads, private and fast.</p>
 
-                <div class="hero-badge" aria-label="Fast, private, no upload">
-                    <span>Fast</span>
-                    <span class="dot"></span>
-                    <span>Private</span>
-                    <span class="dot"></span>
-                    <span>No upload</span>
-                </div>
+<header class="page-header" role="banner">
+    <div class="site-header" aria-label="Site header">
+        <a href="/" class="brand">
+            <img src="/icon.png" alt="Compressly logo" width="36" height="36" loading="eager" />
+            <span class="brand-text">Compressly</span>
+        </a>
+    </div>
 
-                <div class="cta-row">
-                    <a class="btn btn-primary" href="/" title="Open Compressly - compress image now">
-                        Open compressor - compress now
-                    </a>
-                    <a class="btn btn-ghost" href="/compress-image-to-100kb.html" title="Compress to 100 KB">
-                        Compress to 100 KB
-                    </a>
-                </div>
+    <div class="hero">
+        <div class="hero-main">
+            <h1>Passport photo - resize and compress to 35 x 45 mm (2 x 2 in)</h1>
+            <p>
+                Prepare passport and visa photos for Indian portals - correct pixel sizes,
+                file-weight tips (100 KB, 200 KB) and an instant browser tool. No uploads,
+                private and fast.
+            </p>
+
+            <div class="hero-badge" aria-label="Fast, private, no upload">
+                <span>Fast</span>
+                <span class="dot"></span>
+                <span>Private</span>
+                <span class="dot"></span>
+                <span>No upload</span>
             </div>
-        </header>
+
+            <div class="cta-row">
+                <a class="btn btn-primary" href="/" title="Open Compressly - compress image now">
+                    Open compressor - compress now
+                </a>
+                <a class="btn btn-ghost" href="/compress-image-to-100kb.html" title="Compress to 100 KB">
+                    Compress to 100 KB
+                </a>
+            </div>
+        </div>
+    </div>
+</header>
+
 
         <main>
             <section class="card" aria-labelledby="examples">

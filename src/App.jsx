@@ -1437,25 +1437,25 @@ export default function App() {
         <footer>
           <div className="footer-inner">
             <div className="brand-text">
-              Made by Leosh ads · © Compressly 2025
+              Copyright © 2025 Compressly
             </div>
 
             <div className="footer-links">
-              <a href="#about">About Compressly</a>
+              <a href="/privacy.html">Privacy Policy</a>
+              <span>•</span>
+              <a href="/terms.html">Terms</a>
+              <span>•</span>
+              <a href="/contact.html">Contact</a>
               <span>•</span>
               <a href="/compress-image-to-100kb.html">Compress to 100 KB</a>
               <span>•</span>
-              <a href="/compress-jpg-online.html">Compress JPG online</a>
-              <span>•</span>
-              <a href="/compress-png-online.html">Compress PNG online</a>
-              <span>•</span>
-              <a href="/privacy.html">Privacy</a>
+              <a href="/compress-jpg-online.html">Compress JPG</a>
             </div>
           </div>
 
           <SpeedInsights sampleRate={0.2} />
-
         </footer>
+
       </div>
     </div>
   );
