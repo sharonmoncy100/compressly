@@ -3,55 +3,76 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Privacy Policy - Compressly</title>
+    <title>Privacy Policy – Compressly</title>
+
     <meta name="description"
-        content="Compressly privacy policy. We process images in your browser only. No uploads, no accounts, and minimal logging for analytics and site health." />
+        content="Compressly privacy policy. Images are processed locally in your browser. No uploads, no accounts, and minimal anonymous analytics for site improvement." />
+
     <link rel="canonical" href="https://www.compressly.in/privacy.html" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="robots" content="index, follow" />
 
     <style>
         body {
-            font-family: Inter, system-ui, Arial, sans-serif;
             margin: 0;
-            padding: 22px;
-            background: #fff;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+            background: #ffffff;
             color: #0f1724;
-            line-height: 1.6
+            line-height: 1.6;
         }
 
-        .wrap {
+        /* Header */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: #0f1724;
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.2px;
+        }
+
+        /* Main content */
+        main.wrap {
             max-width: 920px;
-            margin: 0 auto
+            margin: 24px auto 40px;
+            padding: 0 16px;
         }
 
         h1 {
-            font-size: 20px;
-            margin-bottom: 6px
+            font-size: 22px;
+            margin-bottom: 6px;
         }
 
         h2 {
             font-size: 16px;
-            margin-top: 18px;
-            margin-bottom: 8px
+            margin-top: 20px;
+            margin-bottom: 8px;
         }
 
-        p {
-            color: #374151
+        p,
+        li {
+            color: #374151;
+            font-size: 15px;
         }
 
         ul {
-            margin-left: 18px
+            padding-left: 18px;
         }
 
         a {
-            color: #4f46e5
-        }
-
-        footer {
-            margin-top: 28px;
-            color: #6b7280;
-            font-size: 14px
+            color: #4f46e5;
         }
 
         .note {
@@ -59,77 +80,119 @@
             border: 1px solid #e6eefc;
             padding: 12px;
             border-radius: 8px;
-            margin-top: 12px
+            margin-top: 12px;
+        }
+
+        /* Footer */
+        .page-footer {
+            margin-top: 32px;
+            padding: 18px 0;
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .page-footer a {
+            color: #4f46e5;
+            text-decoration: none;
         }
     </style>
 </head>
 
 <body>
-    <div class="wrap">
-        <a href="/">← Home</a>
+
+    <!-- Header -->
+    <header class="site-header" role="banner">
+        <a href="/" class="brand">
+            <img src="/icon.png" alt="Compressly logo" width="36" height="36" />
+            <span class="brand-text">Compressly</span>
+        </a>
+    </header>
+
+    <!-- Main -->
+    <main class="wrap">
         <h1>Privacy Policy</h1>
 
-        <p>Last updated: <strong>Dec 4, 2025</strong></p>
+        <p><strong>Last updated:</strong> December 2025</p>
 
-        <p><strong>Compressly</strong> is a free, privacy-first image compressor. This page explains what data we
-            collect (if any), how we use it, and what choices you have.</p>
+        <p>
+            <strong>Compressly</strong> is a privacy-first, browser-based image compression
+            tool. This page explains what data we collect (if any), how it is used,
+            and what choices you have.
+        </p>
 
-        <h2>Key points - short summary</h2>
+        <h2>Key points (short summary)</h2>
         <ul>
-            <li>All image compression happens locally in your browser. We do <strong>not</strong> upload your images to
-                any server.</li>
-            <li>We do not require accounts or personal information to use the tool.</li>
-            <li>We may collect minimal usage analytics (anonymous) to improve the site - see details below.</li>
+            <li>All image compression happens locally in your browser.</li>
+            <li>Your images are not uploaded, stored, or shared.</li>
+            <li>No account or personal information is required to use the tool.</li>
+            <li>Only minimal, anonymous analytics are used to improve the site.</li>
         </ul>
 
-        <h2>How Compressly works (privacy details)</h2>
-        <p>When you choose an image, the file stays in your device memory and the compression happens inside your
-            browser (client-side). We never send your images to our servers. That means your photos remain private and
-            never leave your device unless you explicitly download or share them.</p>
+        <h2>How Compressly works</h2>
+        <p>
+            When you select an image, the file remains on your device and compression
+            happens entirely within your browser. We never receive or store your images.
+            Files only leave your device if you choose to download or share them yourself.
+        </p>
 
-        <h2>What we do collect</h2>
+        <h2>Information we collect</h2>
         <ul>
-            <li><strong>No personal images or files:</strong> images you compress are not uploaded or stored on our
-                servers.</li>
-            <li><strong>Minimal analytics:</strong> we may use Vercel Analytics (and/or Speed Insights) and Google
-                Search Console to measure visits and performance. These tools collect aggregated, non-personal
-                information such as page views, device type and general location (city/region, not exact coordinates).
-                This is used only to improve the site.</li>
-            <li><strong>Error logging:</strong> for site stability we may capture anonymous errors (stack traces without
-                user content). We do not tie this to your image files.</li>
+            <li>
+                <strong>No image data:</strong> Images you compress are never uploaded
+                to our servers.
+            </li>
+            <li>
+                <strong>Anonymous analytics:</strong> We may use tools such as Vercel Analytics,
+                Speed Insights, and Google Search Console to understand site usage and
+                performance. These tools collect aggregated, non-personal information
+                like page views, device type, and general region.
+            </li>
+            <li>
+                <strong>Error logs:</strong> Anonymous technical errors may be recorded
+                to maintain site stability. These logs do not include image content.
+            </li>
         </ul>
 
         <h2>Cookies</h2>
-        <p>We do not use tracking cookies for advertising. If any small cookies are set for analytics or platform
-            operation, they are minimal, safe, and used only to measure site performance (not to track individuals
-            across sites). If you prefer, you can block cookies in your browser.</p>
+        <p>
+            Compressly does not use advertising or tracking cookies. Any cookies used
+            are minimal and related to site performance or platform operation.
+            You can disable cookies in your browser if you prefer.
+        </p>
 
         <h2>Third-party services</h2>
-        <p>We rely on third-party services for hosting and analytics (for example, Vercel for hosting and Speed Insights
-            / analytics). These services have their own privacy policies. We recommend checking their policies if you
-            want full details.</p>
+        <p>
+            Compressly relies on third-party services for hosting and analytics.
+            These services operate under their own privacy policies.
+        </p>
 
         <h2>Your choices</h2>
         <ul>
-            <li>If you do not want to be included in anonymous analytics, you can use an ad-blocker or disable
-                third-party cookies in your browser.</li>
-            <li>Do not upload or share images you do not want to keep private - the site does not store or forward
-                images, but always keep local backups if needed.</li>
+            <li>You may block analytics or cookies using browser settings or extensions.</li>
+            <li>For highly sensitive images, consider offline professional software.</li>
         </ul>
 
         <div class="note">
-            <strong>Note:</strong> Compressly is not intended for medical or highly sensitive images. For extremely
-            sensitive images consider offline professional software or trusted internal tools.
+            <strong>Note:</strong> Compressly is not intended for medical, biometric,
+            or extremely sensitive images.
         </div>
 
         <h2>Contact</h2>
-        <p>If you have privacy questions or requests, contact: <a
-                href="mailto:contact@compressly.in">contact@compressly.in</a></p>
+        <p>
+            If you have questions about this privacy policy, you can contact us at
+            <a href="mailto:contact@compressly.in">contact@compressly.in</a>.
+        </p>
+    </main>
 
-        <footer>
-            © 2025 Compressly
-        </footer>
-    </div>
+    <!-- Footer -->
+    <footer class="page-footer">
+        © 2025 Compressly ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/contact.html">Contact</a>
+    </footer>
+
 </body>
 
 </html>
