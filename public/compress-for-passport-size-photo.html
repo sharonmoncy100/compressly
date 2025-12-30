@@ -218,20 +218,30 @@
             text-decoration: none;
         }
 
-        /* Footer */
-        footer {
-            margin-top: 28px;
-            text-align: center;
-            font-size: 14px;
-            color: var(--muted);
-        }
+   .page-footer{
+  margin-top:32px;
+  padding:18px 0;
+  text-align:center;
+  font-size:14px;
+  color:#64748b;
+  border-top:1px solid rgba(15,23,42,0.08);
+}
 
-        footer a {
-            color: var(--accent);
-            text-decoration: none;
-        }
+/* Accessible, distinguishable links */
+.page-footer a{
+  color:#0b66d1;
+  text-decoration:underline;
+  text-underline-offset:2px;
+}
 
-        @media (max-width:640px) {
+/* Optional hover polish */
+.page-footer a:hover{
+  text-decoration-thickness:2px;
+}
+
+
+
+             @media (max-width:640px) {
             .cta-row {
                 flex-direction: column;
             }
@@ -343,12 +353,13 @@
         </main>
 
         <!-- Footer -->
-        <footer>
-            © 2025 Compressly ·
-            <a href="/privacy.html">Privacy</a> ·
-            <a href="/terms.html">Terms</a> ·
-            <a href="/contact.html">Contact</a>
-        </footer>
+    <footer class="page-footer">
+        © 2025 Compressly ·
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/contact.html">Contact</a>
+    </footer>
+
 
     </div>
 
