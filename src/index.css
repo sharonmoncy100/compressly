@@ -64,7 +64,7 @@ body{
 .app-wrap{
   max-width:1024px;
   margin:0 auto;
-  padding:16px;
+  padding: 0 16px;
 }
 @media (max-width:640px){
   .app-wrap{ padding:10px; }
@@ -193,7 +193,6 @@ html[data-theme="dark"] .primary-btn{
   font-weight: 600;
   font-size: 1.02rem;
   letter-spacing: 0.02em;
-  box-shadow: 0 5px 15px rgba(11,102,209,0.45);
   cursor: pointer;
   transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 
@@ -211,20 +210,19 @@ html[data-theme="dark"] .primary-btn{
   margin-bottom: 12px;
 }
 
+.primary-upload-btn{
+  box-shadow: 0 4px 12px rgba(11,102,209,0.28);
+}
 .primary-upload-btn:hover{
-  background:#0750a6;
-  box-shadow:0 1px 10px rgba(11,102,209,0.55);
-  transform:translateY(-1px);
+  box-shadow:0 6px 16px rgba(11,102,209,0.35);
 }
 .primary-upload-btn:active{
-  background:#0750a6;
-  box-shadow:0 10px 24px rgba(11,102,209,0.45);
-  transform:translateY(0);
+  box-shadow:0 3px 10px rgba(11,102,209,0.25);
 }
 html[data-theme="dark"] .primary-upload-btn{
-  background:#2563eb;
-  box-shadow:0 16px 44px rgba(0,0,0,0.9);
+  box-shadow:0 8px 22px rgba(0,0,0,0.75);
 }
+
 
 
 /* slightly smaller Compress button */

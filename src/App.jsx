@@ -1143,12 +1143,13 @@ export default function App() {
 
   return (
     <div
-      className="min-h-screen app-bg"
-      
-    >
-      <div className="app-wrap">
+      className="min-h-screen app-bg">
+        
+      <div className="page-shell">
+
         {/* header */}
         <Header IconImg={IconImg} theme={theme} toggleTheme={toggleTheme} />
+        <div className="app-wrap">
 
         {/* Headline wrapper: KEEP H1 in DOM first (SEO), but visually show H2 above */}
         <div className="hero-headings">
@@ -1433,6 +1434,7 @@ export default function App() {
             </div>
           </section>
         </main>
+        </div> {/* end app-wrap */}
 
         <footer>
           <div className="footer-inner">
