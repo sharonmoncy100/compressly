@@ -645,15 +645,23 @@ html[data-theme="dark"] footer{
 
 
 /* Footer links */
+/* AdSense-safe footer links */
 .footer-links a{
-  color:var(--muted);
+  color:#0b66d1;              /* calm, readable blue */
   text-decoration:none;
+  font-weight:500;
 }
-
 
 .footer-links a:hover{
-  text-decoration:none; /* prevent underline */
+  text-decoration:underline;
+  text-underline-offset:2px;
 }
+
+/* Dark mode tweak */
+html[data-theme="dark"] .footer-links a{
+  color:#60a5fa;
+}
+
 
 /* Touch-friendly links (mobile accessibility) */
 .footer-links .touch-link{

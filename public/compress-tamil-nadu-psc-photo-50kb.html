@@ -4,90 +4,99 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+
     <title>Compress Tamil Nadu PSC photo - Resize & Compress to 50KB for TNPSC portal</title>
+
     <meta name="description"
-        content="Applying for Tamil Nadu PSC (TNPSC) exams? Prepare your passport-style photo (3.5×4.5 cm) under 50KB with Compressly’s in-browser tool. Crop, resize, and compress instantly with no uploads." />
+        content="Applying for Tamil Nadu PSC (TNPSC) exams? Prepare your passport-style photo (3.5×4.5 cm) under 50KB with Compressly’s in-browser tool. Crop and compress instantly with no uploads." />
+
     <link rel="canonical" href="https://www.compressly.in/compress-tamil-nadu-psc-photo-50kb.html" />
+    <meta name="robots" content="index, follow" />
+
     <style>
-        /* Minimal, clean styles so you can drop this file into /public as-is */
         :root {
             --bg: #ffffff;
             --fg: #0f1724;
             --muted: #6b7280;
             --accent: #2563eb;
-            --card: #ffffff;
-            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
         }
 
         html,
         body {
-            height: 100%;
             margin: 0;
             background: var(--bg);
             color: var(--fg);
             -webkit-font-smoothing: antialiased;
         }
 
+        /* ===== Global header ===== */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 700;
+        }
+
+        /* ===== Page wrapper ===== */
         .wrap {
             max-width: 980px;
-            margin: 15px auto;
-            padding: 4px;
+            margin: 18px auto;
+            padding: 0 16px;
+        }
+
+        .breadcrumb {
+            font-size: 16px;
+            color: var(--muted);
+            margin-bottom: 10px;
+        }
+
+        .breadcrumb a {
+            color: var(--muted);
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
 
         .card {
-            background: var(--card);
+            background: #ffffff;
             border-radius: 12px;
-            padding: 4px;
+            padding: 16px;
             border: 1px solid rgba(15, 23, 42, 0.06);
         }
 
-        header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
-        }
-
-        header img {
-            width: 44px;
-            height: 44px;
-            object-fit: contain;
-        }
-
-     h1 {
-  font-size: 1.7rem;
-  color: var(--fg);
-  font-weight: 700;
-  line-height: 1.25;
-  margin-bottom: 12px;
-}
-
-
-        .hero-h2 {
-            font-size: 1.6rem;
-            margin: 8px 0 12px;
-            color: var(--fg);
+        h1 {
+            font-size: 1.7rem;
             font-weight: 700;
-            line-height: 1.12;
+            line-height: 1.25;
+            margin-bottom: 12px;
         }
 
-      .lead {
-  color: var(--muted);
-  margin-bottom: 16px;
-  font-size: 1.15rem;      /* slightly larger */
-  line-height: 1.65;
-}
+        .lead {
+            color: var(--muted);
+            margin-bottom: 16px;
+            font-size: 1.15rem;
+            line-height: 1.65;
+        }
 
         .cta {
             display: inline-flex;
-            gap: 10px;
             align-items: center;
             padding: 12px 18px;
             border-radius: 10px;
-            background: #2474ddf8;
-            color: #fff;
+            background: #2474dd;
+            color: #ffffff;
             text-decoration: none;
             font-weight: 700;
+            margin-bottom: 16px;
         }
 
         .columns {
@@ -97,56 +106,37 @@
             margin-top: 16px;
         }
 
-        @media(max-width:880px) {
+        @media (max-width: 880px) {
             .columns {
                 grid-template-columns: 1fr;
-            }
-
-            .hero-h2 {
-                font-size: 1.3rem;
             }
         }
 
         ul,
-ol {
-  margin: 10px 0 16px 22px;
-  color: var(--muted);
-  font-size: 1.1rem;       /* 🔑 THIS fixes Practical tips */
-  line-height: 1.6;
-}
+        ol {
+            margin: 10px 0 16px 22px;
+            color: var(--muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
 
-    .small-muted {
-  color: var(--muted);
-  font-size: 1.1rem;       /* reduced from 1.2 for balance */
-  line-height: 1.6;
-}
+        .small-muted {
+            color: var(--muted);
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
 
         .tips {
             background: #f8fafc;
             padding: 12px;
             border-radius: 8px;
             border: 1px solid rgba(15, 23, 42, 0.04);
-            color: var(--muted);
         }
 
-        .meta {
-            font-size: 0.95rem;
-            color: var(--muted);
-            margin-top: 8px;
-        }
-
-        .faq {
-            margin-top: 18px;
-        }
-
-    .faq h3 {
-  font-size: 1.05rem;
-  margin: 12px 0 6px;
-  font-weight: 600;
-}
-
-        .related {
-            margin-top: 12px;
+        .faq h3 {
+            font-size: 1.05rem;
+            margin: 12px 0 6px;
+            font-weight: 600;
         }
 
         .related a {
@@ -155,209 +145,144 @@ ol {
             color: var(--accent);
             text-decoration: none;
         }
-footer {
-  margin-top: 28px;
-  padding-top: 12px;
-  border-top: 1px solid rgba(15,23,42,0.05);
-  color: var(--muted);
-  font-size: 0.85rem;     /* smaller */
-  text-align: center;
-  line-height: 1.5;
-}
 
-        .kbd {
-            background: #111827;
-            color: #fff;
-            padding: 2px 6px;
-            border-radius: 5px;
-            font-weight: 700;
-            font-size: 0.82rem;
-            margin-left: 6px;
+        /* ===== Standard footer ===== */
+        .page-footer {
+            margin-top: 32px;
+            padding: 18px 0;
+            text-align: center;
+            font-size: 14px;
+            color: var(--muted);
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
         }
 
-        .breadcrumb {
-            font-size: 16px;
-            color: var(--muted);
-            margin-bottom: 8px;
+        .footer-copy {
+            margin-bottom: 6px;
+        }
+
+        .footer-links a {
+            color: #0b66d1;
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
     </style>
 </head>
 
 <body>
-    <div class="wrap">
-        <nav class="breadcrumb" aria-label="Breadcrumb">
-            <a href="https://www.compressly.in/">Home</a> &nbsp;›&nbsp; <span>Compress TNPSC photo to 50 kb</span>
-        </nav>
-        <div class="wrap">
-            <div class="card">
-                <header></header>
-                <h1>Compress Photo for TNPSC Application (&lt; 50 KB)</h1>
 
-                <p class="lead">
-        Applying for Tamil Nadu PSC (TNPSC) exams requires a passport-style photo that meets strict technical specifications,
-        including a 3.5×4.5 cm size and a small file size (often ≤50 KB). Many applicants across Tamil Nadu - including Chennai,
-        Coimbatore, Madurai, Tiruchirappalli and other cities - struggle to resize and compress their images to match these
-        exact TNPSC requirements. 
-                </p>
-                <a class="cta" href="https://www.compressly.in/" title="Open Compressly tool">
-                    Compress Now
-                </a>
-                <p class="lead">
-                Thousands of TNPSC aspirants face photo upload errors because regular mobile or camera photos are too large in both
-                dimensions and file size. Compressly solves this by running entirely in your browser, with no uploads, accounts or
-                software required. Whether you are applying from Chennai, Madurai, Salem or anywhere in Tamil Nadu, you can simply select
-                your image and prepare a TNPSC-compliant photo in seconds so your application is not delayed by technical photo issues.
-                </p>
-                <div class="columns" style="margin-top:18px">
-                    <div>
-                        <section aria-labelledby="steps-heading" style="margin-bottom:14px">
-                            <h2 id="steps-heading" style="font-size:1.05rem;margin:0 0 8px 0">Quick steps (1 minutes)
-                            </h2>
-                            <ol style="margin-left:20px;color:var(--muted);line-height:1.6; font-size: 1rem">
-                                <li><strong>Open the Compressly tool</strong> (button above) and choose your TNPSC photo
-                                    (JPG/PNG/HEIC/WebP).</li>
-                              
-                                <li><strong>Enter target KB</strong>: type <strong>50</strong> (for ≤50KB) or the value
-                                    the TNPSC form asks for, then press Compress.</li>
-                                <li><strong>Preview & download</strong>: check that the face is clear in the preview,
-                                    then download the image and upload it to the TNPSC portal.</li>
-                            </ol>
-                        </section>
-                        <section aria-labelledby="why-heading" style="margin-top:8px">
-                            <h3 id="why-heading" style="margin:6px 0 8px 0;font-size:1rem">Why this matters</h3>
-                            <p class="small-muted">
-                                The TNPSC application portal will reject any photo that exceeds the specified dimensions
-                                or file size. A rejected photo means extra hassle and delays. Compressly helps you meet
-                                TNPSC’s exact requirements so you can complete your form smoothly on the first try. Many
-                                candidates and coaching centers overlook these strict limits, leading to last-minute
-                                problems; our tool makes sure your photo meets the rules and avoids rejections.
-                            </p>
-                        </section>
-                        <section aria-labelledby="tips-heading" style="margin-top:12px">
-                            <h3 id="tips-heading" style="margin:6px 0 8px 0;font-size:1rem">Practical tips</h3>
-                            <ul>
-                                <li>Prefer JPEG for photographs – it usually produces smaller file sizes that TNPSC
-                                    accepts.</li>
-                                <li>If your image is HEIC (iPhone), use Compressly – it will convert HEIC to JPEG
-                                    in-browser before compressing.</li>
-                                <li>If the size limit is strict, try reducing the quality (for example 80% or 70%) or
-                                    cropping slightly more. Keep the face centered and clear.</li>
-                                <li>Use a descriptive filename like <code>lastname_tnpsc.jpg</code> before uploading,
-                                    and avoid special characters in the name.</li>
-                            </ul>
-                        </section>
-                        <section class="faq" aria-labelledby="faq-heading">
-                            <h2 id="faq-heading" style="font-size:1.05rem;margin:8px 0">Frequently asked</h2>
-                            <div>
-                                <h3>What exact pixel size and file size does TNPSC require?</h3>
-                                <p class="small-muted">TNPSC typically requires a 3.5 cm × 4.5 cm photo (about 350 × 450
-                                    px or 413 × 531 px) in JPG format, with a file size often between 20 KB and 50 KB.
-                                    Always check the official TNPSC notification for exact requirements.</p>
-                            </div>
-                            <div>
-                                <h3>Can I use Compressly on a mobile device?</h3>
-                                <p class="small-muted">Yes – Compressly runs entirely in your browser on any device. You
-                                    can select a photo from your phone’s gallery and compress it without installing
-                                    anything. The tool is optimized for mobile too.</p>
-                            </div>
-                            <div>
-                                <h3>Will compressing to 50KB reduce photo clarity?</h3>
-                                <p class="small-muted">Compressing lowers file size by reducing quality, which can
-                                    slightly affect clarity. For best results, crop tightly around the face and try
-                                    moderate quality settings (like 80–85%) if the initial 50KB result is too small.
-                                    Always check the preview to ensure the face details remain clear before uploading.
-                                </p>
-                            </div>
-                        </section>
+    <!-- ===== HEADER ===== -->
+    <header class="site-header" role="banner">
+        <a href="/" class="brand">
+            <img src="/icon.png" alt="Compressly logo" width="36" height="36" />
+            <span>Compressly</span>
+        </a>
+    </header>
+
+    <div class="wrap">
+
+        <!-- ===== Breadcrumb ===== -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="https://www.compressly.in/">Home</a> ›
+            <span>Compress TNPSC photo to 50 KB</span>
+        </nav>
+
+        <div class="card">
+
+            <h1>Compress Photo for TNPSC Application (&lt; 50 KB)</h1>
+
+            <p class="lead">
+                Applying for Tamil Nadu PSC (TNPSC) exams requires a passport-style photo that meets strict technical
+                specifications, including a 3.5×4.5 cm size and a small file size (often ≤50 KB).
+                Many applicants across Tamil Nadu - including Chennai, Coimbatore, Madurai, Tiruchirappalli and other
+                cities - struggle to resize and compress their images to match these exact TNPSC requirements.
+            </p>
+
+            <a class="cta" href="https://www.compressly.in/">Compress Now</a>
+
+            <p class="lead">
+                Thousands of TNPSC aspirants face photo upload errors because regular mobile or camera photos are too
+                large in both dimensions and file size. Compressly solves this by running entirely in your browser,
+                with no uploads, accounts or software required.
+            </p>
+
+            <div class="columns">
+                <div>
+                    <h2>Quick steps (1 minute)</h2>
+                    <ol>
+                        <li>Open the Compressly tool and choose your TNPSC photo.</li>
+                        <li>Enter target KB as <strong>50</strong>.</li>
+                        <li>Preview and download the image.</li>
+                    </ol>
+
+                    <h3>Why this matters</h3>
+                    <p class="small-muted">
+                        The TNPSC portal will reject photos that exceed the specified dimensions or file size.
+                        Compressly helps you meet TNPSC’s requirements on the first try.
+                    </p>
+
+                    <h3>Practical tips</h3>
+                    <ul>
+                        <li>Prefer JPEG for photographs.</li>
+                        <li>Crop tightly around the face.</li>
+                        <li>Use simple filenames without special characters.</li>
+                    </ul>
+
+                    <h2>Frequently asked</h2>
+                    <div class="faq">
+                        <h3>What pixel size does TNPSC require?</h3>
+                        <p class="small-muted">
+                            Typically 3.5 × 4.5 cm (about 350 × 450 px or 413 × 531 px).
+                        </p>
+
+                        <h3>Can I use Compressly on mobile?</h3>
+                        <p class="small-muted">
+                            Yes. Compressly works fully in your browser on any device.
+                        </p>
+
+                        <h3>Will compressing reduce clarity?</h3>
+                        <p class="small-muted">
+                            Slight quality loss may occur at very low KB. Always check the preview before uploading.
+                        </p>
                     </div>
-                    <aside style="align-self:start">
-                        <div style="position:sticky;top:20px">
-                            <div class="card" style="padding:14px">
-                                <div style="font-weight:700">Quick tool</div>
-                                <div class="small-muted meta">Compress to exact KB & download instantly</div>
-                                <a class="cta" href="https://www.compressly.in/"
-                                    style="margin-top:12px;display:block;text-align:center">Open Compressly</a>
-                                <div class="tips" style="margin-top:12px">
-                                    <div style="font-weight:700;margin-bottom:6px">Common portal targets</div>
-                                    <div class="small-muted">TNPSC: <strong>3.5×4.5 cm</strong> (≈413×531px),
-                                        <strong>≤50KB</strong> (typical). Always confirm the notification.</div>
-                                </div>
-                                <div style="margin-top:12px" class="small-muted">
-                                    <strong>Need a different size?</strong><br />
-                                    Use the Target (KB) box and format selector in the tool to try WebP or JPEG.
-                                </div>
-                            </div>
-                            <div class="card" style="margin-top:12px;padding:12px">
-                                <div style="font-weight:700;margin-bottom:6px">Related tools</div>
-                                <nav class="related">
-                                    <a href="/compress-image-to-100kb.html">Compress to 100 KB</a>
-                                    <a href="/compress-image-to-50kb.html">Compress to 50 KB</a>
-                                    <a href="/compress-jpg-online.html">Compress JPG online</a>
-                                    <a href="/compress-png-online.html">Compress PNG online</a>
-                                    <a href="/compress-image-for-exam-forms.html">Exam form photos</a>
-                                    <a href="/compress-passport-size-photo-online.html">Compress passport size photo online</a>
-                                    
-                                </nav>
-                            </div>
-                        </div>
-                    </aside>
                 </div>
-                <div style="margin-top:16px">
-                    <div class="small-muted">If you followed these steps and your TNPSC upload still fails, check the
-                        TNPSC notification for any updated photo dimensions or file-size limits – sometimes requirements
-                        change slightly. During peak TNPSC application periods (often just before the deadline), the
-                        portal can slow down, and having a correctly formatted photo ready saves valuable time. Many
-                        candidates complete their application faster because they get the photo right on the first try.
-                        It's worth spending a few minutes now to get it right and avoid future hassles.</div>
-                </div>
+
+                <aside>
+                    <div class="card">
+                        <strong>Quick tool</strong>
+                        <p class="small-muted">Compress to exact KB instantly</p>
+                        <a class="cta" href="https://www.compressly.in/">Open Compressly</a>
+                    </div>
+
+                    <div class="card" style="margin-top:12px">
+                        <strong>Related tools</strong>
+                        <nav class="related">
+                            <a href="/compress-image-to-100kb.html">Compress to 100 KB</a>
+                            <a href="/compress-image-to-50kb.html">Compress to 50 KB</a>
+                            <a href="/compress-jpg-online.html">Compress JPG online</a>
+                            <a href="/compress-png-online.html">Compress PNG online</a>
+                        </nav>
+                    </div>
+                </aside>
             </div>
+
+            <p class="small-muted" style="margin-top:16px">
+                If your upload still fails, recheck the TNPSC notification for updated photo requirements.
+                Preparing the photo correctly saves time and avoids last-minute issues.
+            </p>
+
         </div>
-        <script type="application/ld+json">
-        {
-          "@context":"https://schema.org",
-          "@type":"FAQPage",
-          "mainEntity":[
-            {
-              "@type":"Question",
-              "name":"What pixel size and file size does TNPSC require?",
-              "acceptedAnswer":{
-                "@type":"Answer",
-                "text":"TNPSC typically requires a 3.5×4.5 cm photo (about 350×450 px or 413×531 px) in JPG format, with file size around 20–50 KB."
-              }
-            },
-            {
-              "@type":"Question",
-              "name":"Can I use Compressly on mobile?",
-              "acceptedAnswer":{
-                "@type":"Answer",
-                "text":"Yes. Compressly runs entirely in your browser on any device, including mobile phones. You can select a photo from your gallery and compress it without uploading anywhere."
-              }
-            },
-            {
-              "@type":"Question",
-              "name":"Will compressing to 50KB reduce photo quality?",
-              "acceptedAnswer":{
-                "@type":"Answer",
-                "text":"Compressing reduces file size by lowering image quality, which may slightly affect clarity. For best results, crop tightly around the face and try moderate quality settings (like 80–85%) to keep details clear."
-              }
-            }
-          ]
-        }
-        </script>
-    <footer>
-        <div class="small-muted">
-            Compressly © 2025. All Rights Reserved
-        </div>
-        <div style="margin-top:6px">
-            <a href="/privacy.html">Privacy</a> •
-            <a href="/compress-jpg-online.html">Compress JPG</a> •
-            <a href="/compress-png-online.html">Compress PNG</a> •
-            <a href="/compress-signature-png-psc.html">Compress Signature</a>
-            </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="page-footer">
+        <div class="footer-copy">© 2025 Compressly</div>
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy Policy</a> ·
+            <a href="/terms.html">Terms</a> ·
+            <a href="/contact.html">Contact</a>
         </div>
     </footer>
 
-    </div>
 </body>
 
 </html>

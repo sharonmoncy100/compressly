@@ -20,13 +20,53 @@
 
     <style>
         body {
-            font-family: Inter, Arial;
-            padding: 24px;
-            max-width: 900px;
-            margin: 0 auto;
+            font-family: Inter, Arial, sans-serif;
+            margin: 0;
             color: #0f1724;
         }
 
+        /* ===== Header (edge to edge) ===== */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #0f1724;
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.2px;
+        }
+
+        /* ===== Page wrapper ===== */
+        .wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* ===== Breadcrumb ===== */
+        .breadcrumb {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .breadcrumb a {
+            color: #6b7280;
+            text-decoration: underline;
+        }
+
+        /* ===== Content ===== */
         h1 {
             font-size: 24px;
             margin-bottom: 10px;
@@ -58,58 +98,98 @@
             margin-top: 14px;
         }
 
-        footer {
+        /* ===== Footer (edge to edge) ===== */
+        .page-footer {
             margin-top: 40px;
-            color: #6b7280;
+            padding: 18px 0;
+            text-align: center;
             font-size: 14px;
+            color: #6b7280;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .footer-copy {
+            margin-bottom: 6px;
+        }
+
+        .footer-links a {
+            color: #0b66d1;
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
     </style>
 </head>
 
 <body>
 
-    <a href="https://www.compressly.in">Home</a>
+    <!-- ===== SITE HEADER ===== -->
+    <header class="site-header" role="banner">
+        <a href="https://www.compressly.in" class="brand">
+            <img src="/icon.png" alt="Compressly logo" width="36" height="36" />
+            <span class="brand-text">Compressly</span>
+        </a>
+    </header>
 
-    <h1>Compress Image to 100 KB - Kerala PSC, Government Forms and Exams</h1>
+    <div class="wrap">
 
-    <p>
-        Many online applications in India, especially Kerala PSC, Government exams, University portals, job recruitment
-        sites and various entrance exams require the photo to be less than 100 KB.
-        Compressly helps you compress your image to exactly 100 KB without losing much quality. Everything works inside
-        your browser, so your photo never gets uploaded to any server.
-    </p>
+        <!-- ===== BREADCRUMB ===== -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="https://www.compressly.in">Home</a> ›
+            <span>Compress image to 100 KB</span>
+        </nav>
 
-    <h2>How to compress an image to 100 KB</h2>
-    <ol>
-        <li>Open Compressly (Home).</li>
-        <li>Choose your image (JPG, PNG or WebP).</li>
-        <li>In the Target (KB) box, type 100.</li>
-        <li>Press the Compress button.</li>
-        <li>Download the 100 KB image instantly.</li>
-    </ol>
+        <!-- ===== PAGE CONTENT (UNCHANGED) ===== -->
+        <h1>Compress Image to 100 KB - Kerala PSC, Government Forms and Exams</h1>
 
-    <p>This method works perfectly for:</p>
-    <ul>
-        <li>Kerala PSC (KPSC Thulasi) photo uploads</li>
-        <li>Indian Government online forms</li>
-        <li>Passport photo and ID card uploads</li>
-        <li>Civil Service exam documents</li>
-        <li>University admission portals</li>
-        <li>10th, 12th, degree, PG entrance exam forms</li>
-        <li>Private job application portals</li>
-    </ul>
+        <p>
+            Many online applications in India, especially Kerala PSC, Government exams, University portals, job
+            recruitment
+            sites and various entrance exams require the photo to be less than 100 KB.
+            Compressly helps you compress your image to exactly 100 KB without losing much quality. Everything works
+            inside
+            your browser, so your photo never gets uploaded to any server.
+        </p>
 
-    <a class="cta" href="https://www.compressly.in">Compress to 100 KB now</a>
+        <h2>How to compress an image to 100 KB</h2>
+        <ol>
+            <li>Open Compressly (Home).</li>
+            <li>Choose your image (JPG, PNG or WebP).</li>
+            <li>In the Target (KB) box, type 100.</li>
+            <li>Press the Compress button.</li>
+            <li>Download the 100 KB image instantly.</li>
+        </ol>
 
-    <h2>Tips to get perfect 100 KB results</h2>
-    <ul>
-        <li>Use JPG or WebP for the smallest file size.</li>
-        <li>If your form requires a specific size (for example 150 x 200 px), resize your photo before uploading.</li>
-        <li>If your image is slightly above 100 KB, reduce the target to 95 KB.</li>
-    </ul>
+        <p>This method works perfectly for:</p>
+        <ul>
+            <li>Kerala PSC (KPSC Thulasi) photo uploads</li>
+            <li>Indian Government online forms</li>
+            <li>Passport photo and ID card uploads</li>
+            <li>Civil Service exam documents</li>
+            <li>University admission portals</li>
+            <li>10th, 12th, degree, PG entrance exam forms</li>
+            <li>Private job application portals</li>
+        </ul>
 
-    <footer>
-        © Compressly - compressly.in
+        <a class="cta" href="https://www.compressly.in">Compress to 100 KB now</a>
+
+        <h2>Tips to get perfect 100 KB results</h2>
+        <ul>
+            <li>Use JPG or WebP for the smallest file size.</li>
+            <li>If your form requires a specific size (for example 150 x 200 px), resize your photo before uploading.
+            </li>
+            <li>If your image is slightly above 100 KB, reduce the target to 95 KB.</li>
+        </ul>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="page-footer">
+        <div class="footer-copy">© 2025 Compressly</div>
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy Policy</a> ·
+            <a href="/terms.html">Terms</a> ·
+            <a href="/contact.html">Contact</a>
+        </div>
     </footer>
 
 </body>

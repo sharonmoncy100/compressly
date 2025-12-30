@@ -24,13 +24,30 @@
 
         html,
         body {
-            height: 100%;
             margin: 0;
             background: var(--bg);
             color: var(--fg);
             -webkit-font-smoothing: antialiased;
         }
 
+        /* ===== Edge-to-edge header ===== */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 700;
+        }
+
+        /* ===== Page wrapper ===== */
         .wrap {
             max-width: 980px;
             margin: 18px auto;
@@ -150,157 +167,181 @@
             font-size: 1rem;
         }
 
-        footer {
+        /* ===== Standard footer (two-line) ===== */
+        .page-footer {
             margin-top: 26px;
-            color: var(--muted);
-            font-size: 0.95rem;
+            padding: 18px 0;
             text-align: center;
+            font-size: 0.95rem;
+            color: var(--muted);
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .footer-copy {
+            margin-bottom: 6px;
+        }
+
+        .footer-links a {
+            color: #0b66d1;
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
     </style>
 </head>
 
 <body>
+
+    <!-- ===== SITE HEADER ===== -->
+    <header class="site-header" role="banner">
+        <a href="/" class="brand">
+            <img src="/icon.png" alt="Compressly logo" width="36" height="36" />
+            <span>Compressly</span>
+        </a>
+    </header>
+
     <div class="wrap">
+
+        <!-- ===== EXISTING BREADCRUMB (UNCHANGED) ===== -->
         <nav class="breadcrumb" aria-label="Breadcrumb">
             <a href="https://www.compressly.in/">Home</a> &nbsp;›&nbsp;
             <span>Compress photo for Kerala University admission</span>
         </nav>
 
-    <div class="card">
-        <!-- Semantic SEO heading (quiet) -->
-        <h1>Compressly - prepare photos for Kerala University online admission</h1>
-    
-        <!-- Visual hero heading (main user focus) -->
-        <div class="hero-h2">
-            Compress Photo for Kerala University Online Admission Portal
-        </div>
-    
-        <p class="lead">
-            Kerala University online admission portals often reject photo uploads because the image size,
-            dimensions, or file format does not match the exact requirements. Many students face this issue
-            during UG and PG applications, especially when uploading photos taken from mobile phones.
-        </p>
-    
-        <a class="cta" href="https://www.compressly.in/" title="Open Compressly image compressor">
-            Compress Photo Now
-        </a>
-    
-        <p class="lead">
-            Compressly helps you resize and compress your admission photo directly in your browser.
-            There is no upload to external servers, no account required, and no software installation.
-            This makes it ideal for students applying from anywhere in Kerala, including Thiruvananthapuram,
-            Ernakulam, Kozhikode, Thrissur, and nearby districts.
-        </p>
-    
-        <div class="columns">
-            <!-- Left content -->
-            <div>
-                <section aria-labelledby="steps-heading">
-                    <h2 id="steps-heading" style="font-size:1.15rem;margin-bottom:8px">
-                        Quick steps to prepare your photo
-                    </h2>
-    
-                    <ol>
-                        <li>Select your photo (JPG, PNG, HEIC, or WebP) in the Compressly tool.</li>
-                        <li>Crop the image so your face is centered and clearly visible.</li>
-                        <li>Adjust the target file size as mentioned in the Kerala University admission notice.</li>
-                        <li>Click Compress and preview the result before downloading.</li>
-                        <li>Upload the final image to the Kerala University admission portal.</li>
-                    </ol>
-                </section>
-    
-                <section aria-labelledby="why-heading">
-                    <h3 id="why-heading">Why photo compression matters</h3>
-                    <p class="small-muted">
-                        University admission portals use strict validation to reduce server load and ensure
-                        uniformity across applications. Even a small difference in file size or dimensions
-                        can cause upload failures. Compressly helps you meet these limits while keeping
-                        the photo clear and professional.
-                    </p>
-                </section>
-    
-                <section aria-labelledby="tips-heading">
-                    <h3 id="tips-heading">Helpful tips for Kerala University applicants</h3>
-                    <ul>
-                        <li>Use JPEG format for best compatibility with admission portals.</li>
-                        <li>Avoid scanned photos with heavy shadows or borders.</li>
-                        <li>If the file size is strict, reduce quality slightly instead of resizing too much.</li>
-                        <li>Save a backup copy before uploading.</li>
-                    </ul>
-                </section>
-    
-                <section class="faq" aria-labelledby="faq-heading">
-                    <h2 id="faq-heading" style="font-size:1.15rem">Frequently asked questions</h2>
-    
-                    <div>
-                        <h3>What photo size does Kerala University require?</h3>
-                        <p class="small-muted">
-                            Requirements can vary by course and admission cycle. Most Kerala University portals
-                            specify a maximum file size and sometimes fixed pixel dimensions. Always confirm the
-                            official notification before uploading.
-                        </p>
-                    </div>
-    
-                    <div>
-                        <h3>Can I use Compressly on my phone?</h3>
-                        <p class="small-muted">
-                            Yes. Compressly works fully in your mobile browser and supports photos from your
-                            gallery or camera.
-                        </p>
-                    </div>
-    
-                    <div>
-                        <h3>Will compressing reduce photo clarity?</h3>
-                        <p class="small-muted">
-                            Light compression does not noticeably affect clarity. Cropping properly and avoiding
-                            extreme compression helps maintain a clear facial image.
-                        </p>
-                    </div>
-                </section>
+        <!-- ===== ORIGINAL CONTENT (100% UNCHANGED) ===== -->
+        <div class="card">
+            <h1>Compressly - prepare photos for Kerala University online admission</h1>
+
+            <div class="hero-h2">
+                Compress Photo for Kerala University Online Admission Portal
             </div>
-    
-            <!-- Right sidebar -->
-            <aside>
-                <div class="card">
-                    <div style="font-weight:700">Quick access</div>
-                    <p class="small-muted">Resize and compress images instantly</p>
-                    <a class="cta" href="https://www.compressly.in/"
-                        style="margin-top:12px;display:block;text-align:center">
-                        Open Compressly
-                    </a>
-    
-                    <div class="tips" style="margin-top:14px">
-                        <strong>Common uses</strong>
+
+            <p class="lead">
+                Kerala University online admission portals often reject photo uploads because the image size,
+                dimensions, or file format does not match the exact requirements. Many students face this issue
+                during UG and PG applications, especially when uploading photos taken from mobile phones.
+            </p>
+
+            <a class="cta" href="https://www.compressly.in/" title="Open Compressly image compressor">
+                Compress Photo Now
+            </a>
+
+            <p class="lead">
+                Compressly helps you resize and compress your admission photo directly in your browser.
+                There is no upload to external servers, no account required, and no software installation.
+                This makes it ideal for students applying from anywhere in Kerala, including Thiruvananthapuram,
+                Ernakulam, Kozhikode, Thrissur, and nearby districts.
+            </p>
+
+            <div class="columns">
+                <div>
+                    <section>
+                        <h2 style="font-size:1.15rem;margin-bottom:8px">
+                            Quick steps to prepare your photo
+                        </h2>
+
+                        <ol>
+                            <li>Select your photo (JPG, PNG, HEIC, or WebP) in the Compressly tool.</li>
+                            <li>Crop the image so your face is centered and clearly visible.</li>
+                            <li>Adjust the target file size as mentioned in the Kerala University admission notice.</li>
+                            <li>Click Compress and preview the result before downloading.</li>
+                            <li>Upload the final image to the Kerala University admission portal.</li>
+                        </ol>
+                    </section>
+
+                    <section>
+                        <h3>Why photo compression matters</h3>
                         <p class="small-muted">
-                            Kerala University UG and PG admissions, revaluation forms,
-                            and online document uploads.
+                            University admission portals use strict validation to reduce server load and ensure
+                            uniformity across applications. Even a small difference in file size or dimensions
+                            can cause upload failures. Compressly helps you meet these limits while keeping
+                            the photo clear and professional.
                         </p>
+                    </section>
+
+                    <section>
+                        <h3>Helpful tips for Kerala University applicants</h3>
+                        <ul>
+                            <li>Use JPEG format for best compatibility with admission portals.</li>
+                            <li>Avoid scanned photos with heavy shadows or borders.</li>
+                            <li>If the file size is strict, reduce quality slightly instead of resizing too much.</li>
+                            <li>Save a backup copy before uploading.</li>
+                        </ul>
+                    </section>
+
+                    <section class="faq">
+                        <h2 style="font-size:1.15rem">Frequently asked questions</h2>
+
+                        <div>
+                            <h3>What photo size does Kerala University require?</h3>
+                            <p class="small-muted">
+                                Requirements can vary by course and admission cycle. Most Kerala University portals
+                                specify a maximum file size and sometimes fixed pixel dimensions. Always confirm the
+                                official notification before uploading.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3>Can I use Compressly on my phone?</h3>
+                            <p class="small-muted">
+                                Yes. Compressly works fully in your mobile browser and supports photos from your
+                                gallery or camera.
+                            </p>
+                        </div>
+
+                        <div>
+                            <h3>Will compressing reduce photo clarity?</h3>
+                            <p class="small-muted">
+                                Light compression does not noticeably affect clarity. Cropping properly and avoiding
+                                extreme compression helps maintain a clear facial image.
+                            </p>
+                        </div>
+                    </section>
+                </div>
+
+                <aside>
+                    <div class="card">
+                        <div style="font-weight:700">Quick access</div>
+                        <p class="small-muted">Resize and compress images instantly</p>
+                        <a class="cta" href="https://www.compressly.in/"
+                            style="margin-top:12px;display:block;text-align:center">
+                            Open Compressly
+                        </a>
+
+                        <div class="tips" style="margin-top:14px">
+                            <strong>Common uses</strong>
+                            <p class="small-muted">
+                                Kerala University UG and PG admissions, revaluation forms,
+                                and online document uploads.
+                            </p>
+                        </div>
                     </div>
-                </div>
-    
-                <div class="card" style="margin-top:14px">
-                    <div style="font-weight:700;margin-bottom:6px">Related tools</div>
-                    <nav class="related">
-                        <a href="/compress-image-to-100kb.html">Compress image to 100 KB</a>
-                        <a href="/compress-image-to-50kb.html">Compress image to 50 KB</a>
-                        <a href="/compress-jpg-online.html">Compress JPG online</a>
-                        <a href="/compress-png-online.html">Compress PNG online</a>
-                        <a href="/compress-image-for-exam-forms.html">Exam form photo compression</a>
-                    </nav>
-                </div>
-            </aside>
+
+                    <div class="card" style="margin-top:14px">
+                        <div style="font-weight:700;margin-bottom:6px">Related tools</div>
+                        <nav class="related">
+                            <a href="/compress-image-to-100kb.html">Compress image to 100 KB</a>
+                            <a href="/compress-image-to-50kb.html">Compress image to 50 KB</a>
+                            <a href="/compress-jpg-online.html">Compress JPG online</a>
+                            <a href="/compress-png-online.html">Compress PNG online</a>
+                            <a href="/compress-image-for-exam-forms.html">Exam form photo compression</a>
+                        </nav>
+                    </div>
+                </aside>
+            </div>
         </div>
+
     </div>
 
+    <!-- ===== STANDARD FOOTER ===== -->
+    <footer class="page-footer">
+        <div class="footer-copy">© 2025 Compressly</div>
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy Policy</a> ·
+            <a href="/terms.html">Terms</a> ·
+            <a href="/contact.html">Contact</a>
+        </div>
+    </footer>
 
-        <footer>
-            <div>
-                Compressly © 2025 ·
-                <a href="/privacy.html">Privacy</a> ·
-                <a href="/compress-jpg-online.html">Compress JPG</a>
-            </div>
-        </footer>
-    </div>
 </body>
 
 </html>

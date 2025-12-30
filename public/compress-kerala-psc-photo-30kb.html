@@ -4,61 +4,83 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Compress Kerala PSC Photo - Resize & Compress to 30KB for Thulasi Portal</title>
+
+    <title>Compress Kerala PSC Photo to 30KB for Thulasi Portal - Compressly</title>
+
     <meta name="description"
-        content="Need a Kerala PSC photo under 30KB for the Thulasi portal? Use Compressly's simple in-browser tool to crop, resize and compress PSC photos to 200×150px and ≤30KB without uploads." />
+        content="Need a Kerala PSC photo under 30KB for the Thulasi portal? Use Compressly to reduce photo file size to meet PSC upload limits. Browser-only and private." />
+
     <link rel="canonical" href="https://www.compressly.in/compress-kerala-psc-photo-30kb.html" />
+    <meta name="robots" content="index, follow" />
+
     <style>
-        /* Minimal, clean styles so you can drop this file into /public as-is */
         :root {
             --bg: #ffffff;
             --fg: #0f1724;
             --muted: #6b7280;
             --accent: #2563eb;
-            --card: #ffffff;
-            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
         }
 
         html,
         body {
-            height: 100%;
             margin: 0;
             background: var(--bg);
             color: var(--fg);
-            -webkit-font-smoothing: antialiased
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Header */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            text-decoration: none;
+            color: var(--fg);
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.2px;
         }
 
         .wrap {
             max-width: 980px;
             margin: 15px auto;
-            padding: 4px
+            padding: 4px;
         }
 
         .card {
-            background: var(--card);
+            background: #ffffff;
             border-radius: 12px;
             padding: 4px;
-            border: 1px solid rgba(15, 23, 42, 0.06)
+            border: 1px solid rgba(15, 23, 42, 0.06);
         }
 
-        header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 18px
+        .breadcrumb {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 8px;
         }
 
-        header img {
-            width: 44px;
-            height: 44px;
-            object-fit: contain
+        .breadcrumb a {
+            color: var(--muted);
+            text-decoration: underline;
         }
 
         h1 {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             margin: 0;
             color: var(--muted);
-            font-weight: 600
+            font-weight: 600;
         }
 
         .hero-h2 {
@@ -66,13 +88,13 @@
             margin: 8px 0 12px;
             color: var(--fg);
             font-weight: 700;
-            line-height: 1.12
+            line-height: 1.15;
         }
 
         .lead {
             color: var(--muted);
             margin-bottom: 14px;
-            font-size: 1.1rem;
+            font-size: 1.05rem;
             line-height: 1.6;
         }
 
@@ -82,37 +104,37 @@
             align-items: center;
             padding: 12px 18px;
             border-radius: 10px;
-            background:#2474ddf8;
+            background: #2474ddf8;
             color: #fff;
             text-decoration: none;
-            font-weight: 700
+            font-weight: 700;
         }
 
         .columns {
             display: grid;
             grid-template-columns: 1fr 320px;
             gap: 16px;
-            margin-top: 16px
+            margin-top: 16px;
         }
 
-        @media(max-width:880px) {
+        @media (max-width: 880px) {
             .columns {
-                grid-template-columns: 1fr
+                grid-template-columns: 1fr;
             }
 
             .hero-h2 {
-                font-size: 1.3rem
+                font-size: 1.3rem;
             }
         }
 
         ul {
             margin: 8px 0 12px 20px;
-            color: var(--muted)
+            color: var(--muted);
         }
 
         .small-muted {
             color: var(--muted);
-            font-size: 1.2rem;
+            font-size: 1rem;
             line-height: 1.5;
         }
 
@@ -121,268 +143,127 @@
             padding: 12px;
             border-radius: 8px;
             border: 1px solid rgba(15, 23, 42, 0.04);
-            color: var(--muted)
-        }
-
-        .meta {
-            font-size: 0.95rem;
             color: var(--muted);
-            margin-top: 8px
-        }
-
-        .faq {
-            margin-top: 18px
-        }
-
-        .faq h3 {
-            font-size: 1rem;
-            margin: 10px 0 6px
-        }
-
-        .related {
-            margin-top: 12px
-        }
-
-        .related a {
-            display: inline-block;
-            margin-right: 8px;
-            color: var(--accent);
-            text-decoration: none
         }
 
         footer {
             margin-top: 22px;
-            color: var(--muted);
+            padding: 16px 0;
+            text-align: center;
             font-size: 0.9rem;
-            text-align: center
-        }
-
-        .kbd {
-            background: #111827;
-            color: #fff;
-            padding: 2px 6px;
-            border-radius: 5px;
-            font-weight: 700;
-            font-size: 0.82rem;
-            margin-left: 6px
-        }
-            .breadcrumb {
-            font-size: 16px;
             color: var(--muted);
-            margin-bottom: 8px;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
         }
 
+        footer a {
+            color: #0b66d1;
+            text-decoration: underline;
+        }
     </style>
 </head>
 
 <body>
-        <div class="wrap">
-            <nav class="breadcrumb" aria-label="Breadcrumb">
-                <a href="https://www.compressly.in/">Home</a> &nbsp;›&nbsp; <span>Compress Photo under 30 kb</span>
-            </nav>
-    <div class="wrap">
-        <div class="card">
-            <header>
-            
-            </header>
 
-            <!-- Semantic: H1 is the main SEO heading (kept semantic, shown quieter) -->
+    <header class="site-header" role="banner">
+        <a href="/" class="brand">
+            <img src="/icon.png" alt="Compressly logo" width="36" height="36" />
+            <span class="brand-text">Compressly</span>
+        </a>
+    </header>
+
+    <div class="wrap">
+
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a> > <span>Compress Kerala PSC photo</span>
+        </nav>
+
+        <div class="card">
+
             <h1>Compressly - free tool to prepare Kerala PSC photos (Thulasi)</h1>
 
-            <!-- Visual hero: make this visually prominent (H2) while H1 remains the SEO heading -->
-            <div class="hero-h2">Upload & Compress Kerala PSC Photo to &lt; 30KB - Instant, in your browser</div>
-
-            <p class="lead">
-                Applying for Kerala PSC exams through the Thulasi portal requires your passport photo to meet strict technical
-                specifications that often reject applicants from across Kerala's major cities including Thiruvananthapuram, Kochi,
-                Kozhikode, Kollam, and Thrissur. If you're struggling to resize your photo to the exact 200×230 pixel dimensions or
-                compress it below the mandatory 50KB file size limit for KPSC application forms, this tool provides an instant solution.
-            </p>
-                <a class="cta" href="https://www.compressly.in/" title="Open Compressly tool">
-                    Compress Now
-                </a>
-                 <p class="lead">
-                Thousands of PSC aspirants in Kerala face photo upload errors during their Thulasi registration because standard
-                smartphone photos are too large in both dimensions and file size. This free online photo resizer and compressor works
-                entirely in your browser without requiring any uploads to external servers, account creation, or software downloads.
-                </p>
-                <p class="lead">
-                Whether you're applying from Ernakulam, Kannur, Malappuram, or any other district in Kerala, you can now prepare your
-                KPSC Thulasi-compliant passport photo in seconds. Simply select your image, and the tool automatically resizes it to
-                Kerala PSC specifications while compressing the file size to meet the portal's requirements. This is particularly
-                helpful for candidates in major application hubs like Thiruvananthapuram and Kochi where the highest number of Kerala
-                PSC exam registrations occur annually, ensuring your application doesn't get rejected due to technical photo format
-                issues.</p>
-            
-
-        
-
-            <div class="columns" style="margin-top:18px">
-                <!-- Left: instructions -->
-                <div>
-                    <section aria-labelledby="steps-heading" style="margin-bottom:14px">
-                        <h2 id="steps-heading" style="font-size:1.05rem;margin:0 0 8px 0">Quick steps (2 minutes)</h2>
-                        <ol style="margin-left:20px;color:var(--muted);line-height:1.6; font-size: 1rem">
-                            <li><strong>Open the Compressly tool</strong> (button above) and choose your photo
-                                (JPG/PNG/HEIC/WebP).</li>
-                            <li><strong>Crop to face</strong> so your head occupies the center using the crop preview.
-                            </li>
-                            <li><strong>Set size</strong>: choose width <strong>200px</strong> and height
-                                <strong>150px</strong> (if your portal asks for 200×150).
-                              </li>
-                            <li><strong>Enter target KB</strong>: type <strong>30</strong> (for ≤30KB) or the value your
-                                PSC upload asks. Press Compress</li>
-                            <li><strong>Preview & download</strong>: check the face clarity, then download the image and
-                                upload to Thulasi portal.</li>
-                        </ol>
-                    </section>
-
-                    <section aria-labelledby="why-heading" style="margin-top:8px">
-                        <h3 id="why-heading" style="margin:6px 0 8px 0;font-size:1rem">Why this helps</h3>
-                        <p class="small-muted">
-                            Many government and exam portals (including Kerala PSC & other state exam forms) require
-                            exact pixel dimensions and small file sizes so forms accept the upload. Compressly lets you
-                            reach the KB target while keeping the face readable. Example tools and resizers publicly
-                            reference the same 200×150px / ≤30KB guidance for PSC/Thulasi-style portals.
-                           
-                        </p>
-                    </section>
-
-                    <section aria-labelledby="tips-heading" style="margin-top:12px">
-                        <h3 id="tips-heading" style="margin:6px 0 8px 0;font-size:1rem">Practical tips</h3>
-                        <ul>
-                            <li>Prefer JPEG for photographs - best compatibility for government portals.</li>
-                            <li>If your image is HEIC (iPhone), use the Compressly tool - it converts HEIC to JPEG
-                                in-browser before compressing.</li>
-                            <li>If the target KB is strict, try small quality reductions (70-85%) or slight cropping.
-                                Keep the face region clear.</li>
-                            <li>Save a copy with a descriptive name like <code>lastname_psc.jpg</code> before upload.
-                            </li>
-                        </ul>
-                    </section>
-
-                    <section class="faq" aria-labelledby="faq-heading">
-                        <h2 id="faq-heading" style="font-size:1.05rem;margin:8px 0">Frequently asked</h2>
-
-                        <div>
-                            <h3>What exact pixel size and file size does Kerala PSC need?</h3>
-                            <p class="small-muted">Common PSC-style requirements are 200×150px for photo and file sizes
-                                often required ≤30KB - confirm the specific notice for your notification. Compressly
-                                helps you hit those numbers. </p>
-                        </div>
-
-                        <div>
-                            <h3>Can I use Compressly on mobile?</h3>
-                            <p class="small-muted">Yes - Compressly runs entirely in your browser on mobile; pick a
-                                photo from the gallery. The tool is tuned for low-end phones too.</p>
-                        </div>
-
-                        <div>
-                            <h3>Will compression reduce face clarity?</h3>
-                            <p class="small-muted">A small amount of visible quality loss is possible when forcing a
-                                very low KB target. To keep clarity: crop tightly, prefer JPEG, and try several quality
-                                settings (85 → 70 → 60) until the face remains clear.</p>
-                        </div>
-                    </section>
-                </div>
-
-                <!-- Right: quick card -->
-                <aside style="align-self:start">
-                    <div style="position:sticky;top:20px">
-                        <div class="card" style="padding:14px">
-                            <div style="font-weight:700">Quick tool</div>
-                            <div class="small-muted meta">Compress to exact KB & download instantly</div>
-                            <a class="cta" href="https://www.compressly.in/"
-                                style="margin-top:12px;display:block;text-align:center">Open Compressly</a>
-
-                            <div class="tips" style="margin-top:12px">
-                                <div style="font-weight:700;margin-bottom:6px">Common portal targets</div>
-                                <div class="small-muted">Kerala PSC: <strong>200×150px</strong>, <strong>≤30KB</strong>
-                                    (typical). Always confirm the notification.
-                                </div>
-                            </div>
-
-                            <div style="margin-top:12px" class="small-muted">
-                                <strong>Need a different size?</strong><br />
-                                Use the Target (KB) box and the format selector in the tool to try WebP or JPEG.
-                            </div>
-                        </div>
-
-                        <div class="card" style="margin-top:12px;padding:12px">
-                            <div style="font-weight:700;margin-bottom:6px">Related tools</div>
-                            <nav class="related">
-                                <a href="/compress-image-to-100kb.html">Compress to 100 KB</a>
-                                <a href="/compress-image-to-50kb.html">Compress to 50 KB</a>
-                                <a href="/compress-jpg-online.html">Compress JPG online</a>
-                                <a href="/compress-png-online.html">Compress PNG online</a>
-                                <a href="/compress-photo-for-passport-seva-kendra.html">Passport Seva Kendra photos</a>
-                            </nav>
-                        </div>
-                    </div>
-                </aside>
+            <div class="hero-h2">
+                Compress Kerala PSC photo to under 30KB - instant and browser based
             </div>
 
-            <div style="margin-top:16px">
-                <div class="small-muted">If you followed the steps and your upload still fails, check the PSC
-                    notification for any updated dimensions or KB limits - some notifications change requirements
-                    slightly by notification.<p>
-                Here's something most PSC aspirants in Kerala don't realize until it's too late - the Thulasi portal actually saves your
-                uploaded photo and signature for future applications, but only if they meet the exact specifications the first time. If
-                you've ever wondered why some candidates seem to complete their applications faster,
-                it's because they got their photo right on the first attempt and now it auto-fills for every exam. The problem is that
-                many coaching centers and photo studios across still provide photos in outdated formats or wrong dimensions,
-                which means you'll face the same upload struggle every single time you apply for a new PSC notification.<p> What makes it
-                worse is that during peak application periods - usually the last 2-3 days before the deadline - the Thulasi server slows
-                down considerably, and a wrongly sized photo will waste precious minutes while you're racing against time. Many Candidates have reported missing application deadlines simply because they spent
-                hours trying to fix their photo size at the last moment. Getting your photo formatted correctly once means you're set
-                for all future Kerala PSC exams, whether it's for Last Grade Servant, University Assistant, or any other position.
-                That's why it's worth spending five minutes now to create a properly formatted photo rather than struggling with it
-                during every application cycle.
+            <p class="lead">
+                Applying for Kerala PSC exams through the Thulasi portal requires your passport photo to meet strict
+                technical
+                specifications that often reject applicants from across Kerala including Thiruvananthapuram, Kochi,
+                Kozhikode, Kollam and Thrissur.
+                If your photo exceeds the allowed file size for KPSC application forms, Compressly helps you reduce the
+                file
+                size quickly and safely.
+            </p>
+
+            <a class="cta" href="/">Compress Now</a>
+
+            <p class="lead">
+                Thousands of PSC aspirants face photo upload errors because smartphone photos are often too large in
+                file
+                size.
+                Compressly works entirely in your browser without uploads, accounts or software downloads.
+            </p>
+
+            <p class="lead">
+                Whether you are applying from Ernakulam, Kannur, Malappuram or any other district in Kerala, you can
+                prepare a
+                Thulasi compliant photo in seconds.
+                The image must already meet the required background and dimensions before compression.
+            </p>
+
+            <div class="columns">
+
+                <div>
+                    <h2>Quick steps</h2>
+                    <ol>
+                        <li>Open the Compressly tool and choose your photo.</li>
+                        <li>Ensure the photo already meets PSC background and size rules.</li>
+                        <li>Enter a target value such as 30KB and compress.</li>
+                        <li>Preview the result and upload to the Thulasi portal.</li>
+                    </ol>
+
+                    <div class="tips">
+                        <strong>Important:</strong> Compressly only reduces file size.
+                        Image dimensions must already match the PSC notification.
+                    </div>
+
+                    <h2>Practical tips</h2>
+                    <ul>
+                        <li>Prefer JPEG for best compatibility.</li>
+                        <li>If the KB limit is strict, try small quality reductions.</li>
+                        <li>Always keep a copy of the original photo.</li>
+                    </ul>
+
+                    <h2>FAQ</h2>
+                    <p class="small-muted"><strong>What file size does Kerala PSC require?</strong><br />
+                        Many PSC notifications require photos under 30KB. Always confirm the notification.</p>
+
+                    <p class="small-muted"><strong>Can I use Compressly on mobile?</strong><br />
+                        Yes. Compressly works fully in mobile browsers.</p>
                 </div>
+
+                <aside>
+                    <div class="card" style="padding:14px">
+                        <strong>Quick tool</strong>
+                        <p class="small-muted">Reduce file size and download instantly.</p>
+                        <a class="cta" href="/" style="display:block;text-align:center">Open Compressly</a>
+                    </div>
+                </aside>
+
             </div>
 
         </div>
 
-        <!-- Structured FAQ schema (helpful for rich results) -->
-        <script type="application/ld+json">
-    {
-      "@context":"https://schema.org",
-      "@type":"FAQPage",
-      "mainEntity":[
-        {
-          "@type":"Question",
-          "name":"What pixel size and file size does Kerala PSC require?",
-          "acceptedAnswer":{
-            "@type":"Answer",
-            "text":"Kerala PSC-style portals commonly use 200×150px for photos with file size requirements like 30KB. Confirm the notification for your specific opening."
-          }
-        },
-        {
-          "@type":"Question",
-          "name":"Can I compress HEIC images?",
-          "acceptedAnswer":{
-            "@type":"Answer",
-            "text":"Yes - Compressly converts HEIC to JPEG in-browser before compressing so you can prepare the photo without uploading anywhere."
-          }
-        },
-        {
-          "@type":"Question",
-          "name":"Will compressing to 30KB reduce face clarity?",
-          "acceptedAnswer":{
-            "@type":"Answer",
-            "text":"Small quality loss may occur. Crop tightly and try slightly higher quality settings if the face becomes unreadable."
-          }
-        }
-      ]
-    }
-    </script>
-
-        <footer>
-            <div class="small-muted">Compressly  2025. All Rights Reserved<br /> Helpful pages: <a
-                    href="/privacy.html">Privacy</a> • <a href="/compress-jpg-online.html">Compress JPG</a></div>
-        </footer>
-
     </div>
+
+    <footer>
+        <div>© 2025 Compressly</div>
+        <div>
+            <a href="/privacy.html">Privacy Policy</a> ·
+            <a href="/terms.html">Terms</a> ·
+            <a href="/contact.html">Contact</a>
+        </div>
+    </footer>
 
 </body>
 

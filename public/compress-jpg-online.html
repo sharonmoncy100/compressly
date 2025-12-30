@@ -20,13 +20,53 @@
 
     <style>
         body {
-            font-family: Inter, Arial;
-            padding: 24px;
-            max-width: 900px;
-            margin: 0 auto;
+            font-family: Inter, Arial, sans-serif;
+            margin: 0;
             color: #0f1724;
         }
 
+        /* ===== Header (edge to edge) ===== */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #0f1724;
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.2px;
+        }
+
+        /* ===== Page wrapper ===== */
+        .wrap {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        /* ===== Breadcrumb ===== */
+        .breadcrumb {
+            font-size: 13px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .breadcrumb a {
+            color: #6b7280;
+            text-decoration: underline;
+        }
+
+        /* ===== Content (original styles preserved) ===== */
         h1 {
             font-size: 24px;
             margin-bottom: 10px;
@@ -41,6 +81,7 @@
         li {
             color: #374151;
             line-height: 1.6;
+            font-size: 15px; /* safe, readable size */
         }
 
         a {
@@ -58,18 +99,47 @@
             text-decoration: none;
         }
 
-        footer {
+        /* ===== Footer (edge to edge) ===== */
+        .page-footer {
             margin-top: 40px;
-            color: #6b7280;
+            padding: 18px 0;
+            text-align: center;
             font-size: 14px;
+            color: #6b7280;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .footer-copy {
+            margin-bottom: 6px;
+        }
+
+        .footer-links a {
+            color: #0b66d1;
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
     </style>
 </head>
 
 <body>
 
-    <a href="https://www.compressly.in">Home</a>
+<!-- ===== SITE HEADER ===== -->
+<header class="site-header" role="banner">
+    <a href="https://www.compressly.in" class="brand">
+        <img src="/icon.png" alt="Compressly logo" width="36" height="36" />
+        <span class="brand-text">Compressly</span>
+    </a>
+</header>
 
+<div class="wrap">
+
+    <!-- ===== BREADCRUMB ===== -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+        <a href="https://www.compressly.in">Home</a> ›
+        <span>Compress JPG online</span>
+    </nav>
+
+    <!-- ===== PAGE CONTENT (UNCHANGED) ===== -->
     <h1>Compress JPG Online - Kerala PSC and Government Forms</h1>
 
     <p>
@@ -98,10 +168,17 @@
         <li>Online job application forms in India</li>
     </ul>
 
-    <footer>
-        © Compressly - compressly.in
-    </footer>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="page-footer">
+    <div class="footer-copy">© 2025 Compressly</div>
+    <div class="footer-links">
+        <a href="/privacy.html">Privacy Policy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/contact.html">Contact</a>
+    </div>
+</footer>
 
 </body>
-
 </html>

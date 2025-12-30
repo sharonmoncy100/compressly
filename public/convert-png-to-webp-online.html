@@ -3,13 +3,15 @@
 
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
     <title>Convert PNG to WebP Online - Smaller Images - Compressly</title>
 
     <meta name="description"
         content="Convert PNG images to WebP in your browser for smaller file size and faster uploads. Preserve quality and transparency when possible." />
+
     <link rel="canonical" href="https://www.compressly.in/convert-png-to-webp-online.html" />
     <meta name="robots" content="index, follow" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <meta property="og:title" content="Convert PNG to WebP - Compressly" />
     <meta property="og:description"
@@ -17,33 +19,71 @@
     <meta property="og:url" content="https://www.compressly.in/convert-png-to-webp-online.html" />
 
     <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebPage",
-    "name":"Convert PNG to WebP - Compressly",
-    "description":"Convert PNG images to WebP in your browser for smaller file size and faster uploads.",
-    "url":"https://www.compressly.in/convert-png-to-webp-online.html"
-  }
-  </script>
+    {
+      "@context":"https://schema.org",
+      "@type":"WebPage",
+      "name":"Convert PNG to WebP - Compressly",
+      "description":"Convert PNG images to WebP in your browser for smaller file size and faster uploads.",
+      "url":"https://www.compressly.in/convert-png-to-webp-online.html"
+    }
+    </script>
 
     <style>
+        :root {
+            --bg: #ffffff;
+            --fg: #0f1724;
+            --muted: #374151;
+            --accent: #4f46e5;
+            font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, Arial;
+        }
+
+        html,
         body {
-            font-family: Inter, Arial, sans-serif;
-            color: #0f1724;
             margin: 0;
-            padding: 20px;
+            background: var(--bg);
+            color: var(--fg);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ===== Global header ===== */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 700;
+        }
+
+        /* ===== Page wrapper ===== */
+        .wrap {
             max-width: 920px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 18px auto;
+            padding: 0 16px;
         }
 
         a {
-            color: #4f46e5;
+            color: var(--accent);
             text-decoration: none;
         }
 
-        header {
-            margin-bottom: 14px;
+        .breadcrumb {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .breadcrumb a {
+            color: #6b7280;
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
 
         h1 {
@@ -58,18 +98,20 @@
 
         p,
         li {
-            color: #374151;
+            color: var(--muted);
             line-height: 1.6;
+            font-size: 15px;
         }
 
         .cta {
             display: inline-block;
-            background: #4f46e5;
-            color: #fff;
+            background: var(--accent);
+            color: #ffffff;
             padding: 10px 14px;
             border-radius: 8px;
             text-decoration: none;
             margin-top: 10px;
+            font-weight: 600;
         }
 
         .note {
@@ -78,7 +120,7 @@
             padding: 10px;
             border-radius: 8px;
             margin-top: 12px;
-            color: #374151;
+            color: var(--muted);
         }
 
         .related {
@@ -101,83 +143,130 @@
             border: 1px solid #e6eefc;
             padding: 12px;
             border-radius: 8px;
-            background: #fff;
+            background: #ffffff;
         }
 
-        footer {
-            margin-top: 36px;
-            color: #6b7280;
+        /* ===== Standard footer ===== */
+        .page-footer {
+            margin-top: 32px;
+            padding: 18px 0;
+            text-align: center;
             font-size: 14px;
+            color: #6b7280;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .footer-copy {
+            margin-bottom: 6px;
+        }
+
+        .footer-links a {
+            color: #0b66d1;
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
     </style>
 </head>
 
 <body>
 
-    <header>
-        <a href="/">Home</a>
-        <h1>Convert PNG to WebP online - smaller files in your browser</h1>
-        <p class="small">Convert PNG images to WebP without uploading. WebP usually produces much smaller files while
-            retaining visual quality.</p>
+    <!-- ===== HEADER ===== -->
+    <header class="site-header" role="banner">
+        <a href="/" class="brand">
+            <img src="/icon.png" alt="Compressly logo" width="36" height="36" />
+            <span>Compressly</span>
+        </a>
     </header>
 
-    <main>
-        <p>
-            WebP is a modern image format that offers better compression than PNG or JPEG for many images. Converting
-            PNG to WebP is useful when portals or websites accept WebP (not all do). This conversion happens in your
-            browser — no servers involved.
-        </p>
+    <div class="wrap">
 
-        <h2>When to convert PNG → WebP</h2>
-        <ul>
-            <li>If you need the smallest possible file and the target portal supports WebP.</li>
-            <li>If your PNG is photographic (not simple graphics) — WebP gives large savings.</li>
-            <li>Keep PNG if you need lossless transparency and the portal requires PNG specifically.</li>
-        </ul>
+        <!-- ===== Breadcrumb ===== -->
+        <nav class="breadcrumb" aria-label="Breadcrumb">
+            <a href="/">Home</a> ›
+            <span>Convert PNG to WebP</span>
+        </nav>
 
-        <h2>How to convert</h2>
-        <ol>
-            <li>Open Compressly and choose the PNG file.</li>
-            <li>Select output = WebP (or Auto which selects WebP when supported).</li>
-            <li>Optionally enter a target KB or adjust quality. WebP usually reaches the target at higher quality than
-                JPEG.</li>
-            <li>Compress and download the WebP file.</li>
-        </ol>
+        <!-- ===== ORIGINAL CONTENT (UNCHANGED) ===== -->
 
-        <div class="note">
-            <strong>Note:</strong> Not all portals accept WebP. If the portal rejects WebP, convert to JPEG instead or
-            use the original PNG when transparency is required.
-        </div>
+        <header>
+            <h1>Convert PNG to WebP online - smaller files in your browser</h1>
+            <p class="small">
+                Convert PNG images to WebP without uploading. WebP usually produces much smaller files while
+                retaining visual quality.
+            </p>
+        </header>
 
-        <a class="cta" href="/">Open Compressor</a>
-
-        <h2>FAQ</h2>
-        <div class="faq">
-            <p><strong>Q:</strong> Will converting to WebP remove transparency?<br />
-                <strong>A:</strong> WebP supports transparency (animated or static) with lossless WebP. Choose lossless
-                WebP if you must preserve exact transparency.
+        <main>
+            <p>
+                WebP is a modern image format that offers better compression than PNG or JPEG for many images.
+                Converting
+                PNG to WebP is useful when portals or websites accept WebP (not all do). This conversion happens in your
+                browser - no servers involved.
             </p>
 
-            <p><strong>Q:</strong> Are WebP files accepted everywhere?<br />
-                <strong>A:</strong> No — some older government portals and legacy forms may not accept WebP. If unsure,
-                use JPG for maximum compatibility.
-            </p>
-        </div>
+            <h2>When to convert PNG → WebP</h2>
+            <ul>
+                <li>If you need the smallest possible file and the target portal supports WebP.</li>
+                <li>If your PNG is photographic (not simple graphics) - WebP gives large savings.</li>
+                <li>Keep PNG if you need lossless transparency and the portal requires PNG specifically.</li>
+            </ul>
 
-        <div class="links">
-            <h2>Related pages</h2>
-            <div class="related">
-                <a class="chip" href="/convert-png-to-webp-online.html">Convert PNG → WebP</a>
-                <a class="chip" href="/compress-png-online.html">Compress PNG online</a>
-                <a class="chip" href="/compress-jpg-online.html">Compress JPG online</a>
-                <a class="chip" href="/compress-image-to-100kb.html">Compress to 100 KB</a>
+            <h2>How to convert</h2>
+            <ol>
+                <li>Open Compressly and choose the PNG file.</li>
+                <li>Select output = WebP (or Auto which selects WebP when supported).</li>
+                <li>Optionally enter a target KB or adjust quality. WebP usually reaches the target at higher quality
+                    than
+                    JPEG.</li>
+                <li>Compress and download the WebP file.</li>
+            </ol>
+
+            <div class="note">
+                <strong>Note:</strong> Not all portals accept WebP. If the portal rejects WebP, convert to JPEG instead
+                or
+                use the original PNG when transparency is required.
             </div>
-        </div>
-    </main>
 
-    <footer>
-        <div class="small">© Compressly - compressly.in</div>
+            <a class="cta" href="/">Open Compressor</a>
+
+            <h2>FAQ</h2>
+            <div class="faq">
+                <p><strong>Q:</strong> Will converting to WebP remove transparency?<br />
+                    <strong>A:</strong> WebP supports transparency (animated or static) with lossless WebP. Choose
+                    lossless
+                    WebP if you must preserve exact transparency.
+                </p>
+
+                <p><strong>Q:</strong> Are WebP files accepted everywhere?<br />
+                    <strong>A:</strong> No - some older government portals and legacy forms may not accept WebP. If
+                    unsure,
+                    use JPG for maximum compatibility.
+                </p>
+            </div>
+
+            <div class="links">
+                <h2>Related pages</h2>
+                <div class="related">
+                    <a class="chip" href="/convert-png-to-webp-online.html">Convert PNG → WebP</a>
+                    <a class="chip" href="/compress-png-online.html">Compress PNG online</a>
+                    <a class="chip" href="/compress-jpg-online.html">Compress JPG online</a>
+                    <a class="chip" href="/compress-image-to-100kb.html">Compress to 100 KB</a>
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="page-footer">
+        <div class="footer-copy">© 2025 Compressly</div>
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy Policy</a> ·
+            <a href="/terms.html">Terms</a> ·
+            <a href="/contact.html">Contact</a>
+        </div>
     </footer>
+
 </body>
 
 </html>

@@ -1437,7 +1437,7 @@ export default function App() {
         <footer>
           <div className="footer-inner">
             <div className="brand-text">
-              Copyright © 2025 Compressly
+              © 2025 Compressly
             </div>
 
             <div className="footer-links">

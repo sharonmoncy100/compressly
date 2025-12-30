@@ -17,21 +17,21 @@
     <meta property="og:url" content="https://www.compressly.in/compress-image-to-50kb.html" />
 
     <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"WebPage",
-    "name":"Compress Image to 50 KB - Compressly",
-    "description":"Shrink images to 50 KB for strict upload limits. Tips to keep the best quality while reaching tiny file sizes.",
-    "url":"https://www.compressly.in/compress-image-to-50kb.html"
-  }
-  </script>
+    {
+      "@context":"https://schema.org",
+      "@type":"WebPage",
+      "name":"Compress Image to 50 KB - Compressly",
+      "description":"Shrink images to 50 KB for strict upload limits. Tips to keep the best quality while reaching tiny file sizes.",
+      "url":"https://www.compressly.in/compress-image-to-50kb.html"
+    }
+    </script>
 
     <style>
         body {
             font-family: Inter, Arial, sans-serif;
             color: #0f1724;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             max-width: 920px;
             margin-left: auto;
             margin-right: auto;
@@ -42,9 +42,33 @@
             text-decoration: none;
         }
 
-        header {
-            margin-bottom: 14px;
+        /* Brand header */
+        .site-header {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid rgba(15, 23, 42, 0.08);
         }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            text-decoration: none;
+            color: #0f1724;
+        }
+
+        .brand-text {
+            font-weight: 700;
+            font-size: 16px;
+            letter-spacing: 0.2px;
+        }
+header.page-header {
+  padding: 12px 20px 8px;
+  margin-bottom: 0;
+}
+
+
 
         h1 {
             font-size: 22px;
@@ -60,6 +84,10 @@
         li {
             color: #374151;
             line-height: 1.6;
+        }
+
+        main {
+            padding: 20px;
         }
 
         .cta {
@@ -104,17 +132,39 @@
             background: #fff;
         }
 
-        footer {
+        /* Footer */
+        .page-footer {
             margin-top: 36px;
-            color: #6b7280;
+            padding: 18px 0;
+            text-align: center;
             font-size: 14px;
+            color: #6b7280;
+            border-top: 1px solid rgba(15, 23, 42, 0.08);
+        }
+
+        .footer-copy {
+            margin-bottom: 6px;
+        }
+
+        .footer-links a {
+            color: #0b66d1;
+            text-decoration: underline;
+            text-underline-offset: 2px;
         }
     </style>
 </head>
 
 <body>
 
-    <header>
+    <!-- SITE HEADER -->
+    <header class="site-header" role="banner">
+        <a href="/" class="brand">
+            <img src="/icon.png" alt="Compressly logo" width="36" height="36" />
+            <span class="brand-text">Compressly</span>
+        </a>
+    </header>
+
+    <header class="page-header">
         <a href="/">Home</a>
         <h1>Compress image to 50 KB - for strict upload limits</h1>
         <p class="small">How to get your photo down to 50 KB while preserving as much quality as possible. Useful for
@@ -133,7 +183,7 @@
             <li>Enter 50 in Target (KB) and set output to JPG or WebP.</li>
             <li>Use quality 0.6 or lower if needed; try reducing target to 45 KB if initial result is slightly above 50
                 KB.</li>
-            <li>If target still not reached, reduce pixel dimensions slightly (downscale to 800–1000 px on the longest
+            <li>If target still not reached, reduce pixel dimensions slightly (downscale to 800-1000 px on the longest
                 side).</li>
         </ol>
 
@@ -169,8 +219,14 @@
         </div>
     </main>
 
-    <footer>
-        <div class="small">© Compressly - compressly.in</div>
+    <!-- FOOTER -->
+    <footer class="page-footer">
+        <div class="footer-copy">© 2025 Compressly</div>
+        <div class="footer-links">
+            <a href="/privacy.html">Privacy Policy</a> ·
+            <a href="/terms.html">Terms</a> ·
+            <a href="/contact.html">Contact</a>
+        </div>
     </footer>
 
 </body>
