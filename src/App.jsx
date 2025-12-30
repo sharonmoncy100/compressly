@@ -1441,16 +1441,14 @@ export default function App() {
             </div>
 
             <div className="footer-links">
-              <a href="/privacy.html">Privacy Policy</a>
-              <span>•</span>
-              <a href="/terms.html">Terms</a>
-              <span>•</span>
-              <a href="/contact.html">Contact</a>
-              <span>•</span>
-              <a href="/compress-image-to-100kb.html">Compress to 100 KB</a>
-              <span>•</span>
-              <a href="/compress-jpg-online.html">Compress JPG</a>
+              <a className="touch-link" href="/privacy.html">Privacy Policy</a>
+              <a className="touch-link" href="/terms.html">Terms</a>
+              <a className="touch-link" href="/contact.html">Contact</a>
+              <a className="touch-link" href="/compress-image-to-100kb.html">Compress to 100 KB</a>
+              <a className="touch-link" href="/compress-jpg-online.html">Compress JPG</a>
+
             </div>
+
           </div>
 
           <SpeedInsights sampleRate={0.2} />

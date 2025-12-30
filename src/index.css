@@ -596,7 +596,10 @@ a.btn.bg-indigo-600{
 }
 
 
-/* footer */
+/* =========================
+   Footer (final version)
+   ========================= */
+
 footer{
   margin-top:40px;
   padding:26px 0 30px;
@@ -604,15 +607,13 @@ footer{
   border-top:1px solid #e5e7eb;
 }
 
-
+/* Dark mode */
 html[data-theme="dark"] footer{
   background:#020617;
   border-top-color:#111827;
 }
 
-
-
-
+/* Inner wrapper */
 .footer-inner{
   max-width:1024px;
   margin:0 auto;
@@ -620,42 +621,60 @@ html[data-theme="dark"] footer{
   text-align:center;
 }
 
+/* Copyright / brand text */
 .brand-text{
   color:var(--fg);
   font-weight:600;
   font-size:0.95rem;
   letter-spacing:0.2px;
+  line-height: 1.4;
+  margin-bottom:10px;
 }
 
+/* Footer links container */
 .footer-links{
-  margin-top:8px;
   display:flex;
   justify-content:center;
   align-items:center;
-  gap:6px;
   flex-wrap:wrap;
+  column-gap:16px;
+  row-gap:6px;
   font-size:0.86rem;
-  color:var(--muted);
 }
 
+
+
+/* Footer links */
 .footer-links a{
   color:var(--muted);
   text-decoration:none;
 }
+
+
 .footer-links a:hover{
-  text-decoration:underline;
+  text-decoration:none; /* prevent underline */
 }
 
+/* Touch-friendly links (mobile accessibility) */
+.footer-links .touch-link{
+  display:inline-flex;
+  align-items:center;
+  padding:8px 6px;     /* increases tap area */
+  line-height:1.2;
+}
+
+
+
+
+/* Mobile tweaks */
 @media (max-width:640px){
-  footer{
-    margin-top:32px;
-    padding:22px 0 26px;
-  }
-  .brand-text{
-    font-size:0.86rem;
-  }
   .footer-links{
-    font-size:0.82rem;
+    flex-direction: column;   /* stack vertically */
+    row-gap: 6px;
+  }
+
+  .footer-links .touch-link{
+    padding: 6px 0;          /* vertical tap area */
   }
 }
 
