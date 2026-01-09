@@ -164,16 +164,18 @@ export default function Uploader({
                     </div>
                 </div>
                 {outURL && (
-                    <div className="mt-2 text-xs small-muted text-center md:text-left">
-                        Compressed result is ready below
+                    <div className="result-ready-message">
+                        <div className="result-ready-badge">
+                            <span className="result-ready-dot"></span>
+                            Compressed result is ready
+                        </div>
                     </div>
                 )}
-
 
             </div>
 
             {/* controls */}
-            <div className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
+            <div id="compress-controls" className="mt-3 grid grid-cols-1 md:grid-cols-3 gap-3 items-end">
                 <div>
                     <label className="control-label" htmlFor="output-format">
                         Output

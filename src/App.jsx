@@ -791,7 +791,7 @@ export default function App() {
     setOutMime(actualMime);
     const baseName = file ? file.name.replace(/\.[^/.]+$/, "") : "image";
     const ext = mimeToExt(actualMime);
-    setOutFilename(`compressly-${baseName}.${ext}`);
+    setOutFilename(`${baseName}-compressed.${ext}`);
   }
 
   // Helper: detect HEIC by MIME or filename
@@ -953,6 +953,16 @@ export default function App() {
       setLastNote("HEIC preview unavailable - will try conversion when compressing.");
       setProgressPct(0);
     }
+
+    // Smooth scroll to compress controls on mobile/tablet (skip on desktop with large screen)
+    if (typeof window !== "undefined") {
+      setTimeout(() => {
+        const compressSection = document.getElementById("compress-controls");
+        if (compressSection && window.innerWidth < 1024) {
+          compressSection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      }, 50);
+    }
   }
 
   async function runCompress() {
@@ -1109,6 +1119,14 @@ export default function App() {
       setTimeout(() => {
         setProcessing(false);
         setProgressPct(0);
+
+        // Smooth scroll to result section on mobile/tablet
+        if (typeof window !== "undefined") {
+          const resultSection = document.getElementById("compressed-result");
+          if (resultSection && window.innerWidth < 1024) {
+            resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+          }
+        }
       }, 500);
 
     } catch (err) {
@@ -1197,7 +1215,7 @@ export default function App() {
             <h2 id="result-heading" className="page-h2">
               Compressed Result
             </h2>
-            <div className="container-card rounded-lg p-3 result-card">
+            <div id="compressed-result" className="container-card rounded-lg p-3 result-card">
 
               {!outURL ? (
                 /* BEFORE compression */
@@ -1247,13 +1265,14 @@ export default function App() {
                               backgroundColor: "#2563eb",
                               color: "#ffffff",
                               borderRadius: "9999px",
-                              padding: "10px 24px",
+                              padding: "8px 20px",
                               fontWeight: 600,
-                              fontSize: "14px",
+                              fontSize: "13px",
                               display: "inline-flex",
                               alignItems: "center",
                               justifyContent: "center",
-                              boxShadow: "0 4px 12px rgba(37,99,235,0.35)"
+                              boxShadow: "0 3px 10px rgba(37,99,235,0.3)",
+                              gap: "6px"
                             }}
                           >
                             Download
