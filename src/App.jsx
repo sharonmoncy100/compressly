@@ -1206,18 +1206,18 @@ export default function App() {
                 </div>
               ) : (
                 /* AFTER compression */
-                <div className="result-header flex items-start gap-3">
-                  <button
-                    type="button"
-                    className="result-thumb result-thumb--clickable"
-                    onClick={() => window.open(outURL, "_blank")}
-                  >
-                    <img
-                      src={outURL}
-                      alt="Compressed image preview"
-                      className="w-full h-full object-contain rounded-md"
-                    />
-                  </button>
+                    <div className="result-header flex items-start gap-4">
+                      <div className="image-preview-frame result-preview-frame">
+                        <img
+                          src={outURL}
+                          alt="Compressed image preview"
+                          className="max-w-[88%] max-h-[88%] object-contain"
+                        />
+                      </div>
+
+
+
+
 
                   <div className="flex-1">
                     <div className="result-meta flex items-center justify-between">
@@ -1236,34 +1236,31 @@ export default function App() {
                      
                     </div>
 
-                    <div className="mt-2 mb-2 flex flex-wrap gap-2 items-center">
-                      <div className="chip text-xs">
-                        Reduction:
-                        <span className="font-medium ml-1">{reductionPercent}%</span>
-                      </div>
-                      <div className="chip text-xs">
-                        Format:
-                        <span className="font-medium ml-1">
-                          {mimeToExt(outMime)}
-                        </span>
-                      </div>
-                    </div>
+            
 
                     <div className="mt-3 result-actions">
-                      <a
-                        href={outURL}
-                        download={downloadName}
-                        className="btn bg-indigo-600 text-white text-sm flex items-center gap-2"
-                      >
-                        Download
-                      </a>
+                          <a
+                            href={outURL}
+                            download={downloadName}
+                            className="download-btn"
+                            style={{
+                              backgroundColor: "#2563eb",
+                              color: "#ffffff",
+                              borderRadius: "9999px",
+                              padding: "10px 24px",
+                              fontWeight: 600,
+                              fontSize: "14px",
+                              display: "inline-flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              boxShadow: "0 4px 12px rgba(37,99,235,0.35)"
+                            }}
+                          >
+                            Download
+                          </a>
 
-                      <button
-                        onClick={() => window.open(outURL, "_blank")}
-                        className="open-link btn text-sm"
-                      >
-                        Open in new tab
-                      </button>
+
+
                     </div>
                   </div>
                 </div>

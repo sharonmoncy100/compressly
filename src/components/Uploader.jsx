@@ -108,80 +108,68 @@ export default function Uploader({
                 </div>
 
                 {/* preview + meta stacked below for consistent padding */}
-                <div className="w-full flex items-center justify-center mt-4">
-                    <div className="flex items-center gap-3" style={{ minWidth: 0 }}>
+                <div className="w-full flex justify-center mt-4">
+                    <div className="flex items-center gap-5">
+
+
                         {/* clickable preview: opens compressed image if available */}
-                        <button
-                            type="button"
-                            className="preview-wrap result-thumb--clickable relative"
-                            aria-label={outURL ? "Open compressed image preview" : "Open original image preview"}
-                            onClick={() => {
-                                if (outURL) {
-                                    window.open(outURL, "_blank");
-                                } else if (previewURL) {
-                                    window.open(previewURL, "_blank");
-                                }
-                            }}
-                            disabled={!outURL && !previewURL}
-                        >
-                            {outURL ? (
-                                <img
-                                    src={outURL}
-                                    alt="Compressed image preview"
-                                    className="object-contain w-full h-full"
-                                />
-                            ) : previewURL ? (
+                        <div className="image-preview-frame upload-preview-frame relative">
+
+
+                            {previewURL ? (
                                 <img
                                     src={previewURL}
                                     alt="Original image preview"
-                                    className={`object-contain w-full h-full ${processing ? "opacity-70" : ""
-                                        }`}
+                                    className={`object-contain max-w-[88%] max-h-[88%] ${processing ? "opacity-70" : ""}`}
                                 />
                             ) : null}
+                        </div>
+                        <div className="text-xs small-muted flex flex-col justify-center gap-2">
 
-                            {processing && (
-                                <div className="absolute inset-0 flex items-center justify-center bg-black/35">
-                                    <Spinner className="w-5 h-5" color="#ffffff" />
 
+
+                            {file && (
+                                <div className="text-[13px] font-semibold uppercase tracking-wide text-slate-500">
+                                    Original image
                                 </div>
                             )}
 
-                        </button>
 
-
-                        <div className="text-xs small-muted flex flex-col items-start" style={{ minWidth: 0 }}>
-                            {displayName && (
-                                <div className="mb-1 text-xs font-semibold uppercase tracking-wide text-slate-500">
-                                    {outURL ? "Compressed image" : "Original image"}
-                                </div>
-                            )}
-
-                            {displayName && (
-                                
+                            {file && (
                                 <div className="font-medium truncate" style={{ maxWidth: 180 }}>
-                                    {displayName}
+                                    {file.name}
                                 </div>
                             )}
-                            {displaySize ? <div className="mt-1">{humanFileSize(displaySize)}</div> : null}
 
-                            {outURL ? (
-                                <div className="mt-2 flex items-center gap-4">
-                                    {outURL ? (
-                                        <a href={outURL} download={displayName} className="uploader-download-pill">
-                                            Download
-                                        </a>
-                                    ) : null}
-
-                                    {outURL ? (
-                                        <button onClick={resetAll} className="uploader-reset-pill">
-                                            Reset
-                                        </button>
-                                    ) : null}
+                            {originalSize ? (
+                                <div className="text-xs text-slate-500">
+                                    {humanFileSize(originalSize)}
                                 </div>
                             ) : null}
-                        </div>
+
+                            {file && (
+                                <button
+                                    type="button"
+                                    onClick={resetAll}
+                                    className="secondary-pill"
+                                >
+                                    Change image
+                                </button>
+
+                            )}
+
+
+                       
+                        </div> 
                     </div>
                 </div>
+                {outURL && (
+                    <div className="mt-2 text-xs small-muted text-center md:text-left">
+                        Compressed result is ready below
+                    </div>
+                )}
+
+
             </div>
 
             {/* controls */}
