@@ -64,7 +64,9 @@ export default function Uploader({
     progressPct,
     lastNote,
     format,
-    setFormat
+    setFormat,
+    openPreview = () => {}  // Default handler if not provided
+    
 }) {
     return (
         <section className="md:col-span-8 container-card p-3 uploader-shell">
@@ -113,17 +115,22 @@ export default function Uploader({
 
 
                         {/* clickable preview: opens compressed image if available */}
-                        <div className="image-preview-frame upload-preview-frame relative">
-
-
-                            {previewURL ? (
+                        <div 
+                            className="image-preview-frame upload-preview-frame relative cursor-pointer"
+                            onClick={() => previewURL && openPreview(previewURL)}
+                            role="button"
+                            tabIndex={0}
+                        >
+                            {previewURL && (
                                 <img
                                     src={previewURL}
                                     alt="Original image preview"
-                                    className={`object-contain max-w-[88%] max-h-[88%] ${processing ? "opacity-70" : ""}`}
+                                    className="object-contain max-w-[88%] max-h-[88%] cursor-zoom-in"
                                 />
-                            ) : null}
+                            )}
                         </div>
+
+
                         <div className="text-xs small-muted flex flex-col justify-center gap-2">
 
 

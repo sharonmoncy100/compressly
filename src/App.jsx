@@ -5,6 +5,8 @@ import React, { useRef, useState, useEffect } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/react";
 import Header from "./components/Header";
 import Uploader from "./components/Uploader";
+import { createPortal } from "react-dom";
+
 
 /* Vite-safe asset URLs */
 const IconImg = new URL("./assets/icon.png", import.meta.url).href;
@@ -714,6 +716,7 @@ export default function App() {
   const [file, setFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
   const [originalSize, setOriginalSize] = useState(0);
+  const [modalImage, setModalImage] = useState(null);
 
   const [outURL, setOutURL] = useState("");
   const [outSize, setOutSize] = useState(0);
@@ -742,6 +745,20 @@ export default function App() {
     window.localStorage.setItem("compressly-theme", theme);
   }, [theme]);
 
+  useEffect(() => {
+    function handleEsc(e) {
+      if (e.key === "Escape") {
+        setModalImage(null);
+      }
+    }
+
+    window.addEventListener("keydown", handleEsc);
+    return () => window.removeEventListener("keydown", handleEsc);
+  }, []);
+
+  useEffect(() => {
+    console.log("MODAL STATE CHANGED:", modalImage);
+  }, [modalImage]);
 
   useEffect(() => {
     if (file && !previewURL) {
@@ -769,23 +786,7 @@ export default function App() {
 
   }
 
-  function handleFiles(files) {
-    if (!files || files.length === 0) return;
-    const f = files[0];
-    setFile(f);
-    setOriginalSize(f.size);
-    if (previewURL) URL.revokeObjectURL(previewURL);
-    setPreviewURL(URL.createObjectURL(f));
-    if (outURL) URL.revokeObjectURL(outURL);
-    setOutURL("");
-    setOutSize(0);
-    setOutMime("");
-    setOutFilename("");
-    setLastNote("");
-    if (inputRef?.current) {
-      inputRef.current.value = "";
-    }
-  }
+
 
   function isWebPSupported() {
     const canvas = document.createElement("canvas");
@@ -1231,6 +1232,8 @@ export default function App() {
             lastNote={lastNote}
             format={format}
             setFormat={setFormat}
+              openPreview={(url) => setModalImage(url)}
+
           />
 
 
@@ -1253,8 +1256,10 @@ export default function App() {
                         <img
                           src={outURL}
                           alt="Compressed image preview"
-                          className="max-w-[88%] max-h-[88%] object-contain"
+                          className="max-w-[88%] max-h-[88%] object-contain cursor-zoom-in"
+                          onClick={() => setModalImage(outURL)}
                         />
+
                       </div>
 
 
@@ -1474,6 +1479,7 @@ export default function App() {
             </div>
           </section>
         </main>
+        
         </div> {/* end app-wrap */}
 
         <footer>
@@ -1496,7 +1502,59 @@ export default function App() {
           <SpeedInsights sampleRate={0.2} />
         </footer>
 
-      </div>
+      </div> {/* end page-shell */}
+
+      {/* 🔍 IMAGE PREVIEW MODAL - Outside page-shell for true fixed positioning */}
+      {modalImage &&
+        createPortal(
+          <div
+            onClick={() => setModalImage(null)}
+            style={{
+              position: "fixed",
+              inset: 0,
+              background: "rgba(0,0,0,0.7)",
+              zIndex: 999999,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center"
+            }}
+          >
+            <div
+              onClick={(e) => e.stopPropagation()}
+              style={{ maxWidth: "95vw", maxHeight: "95vh", position: "relative" }}
+            >
+              <button
+                onClick={() => setModalImage(null)}
+                style={{
+                  position: "absolute",
+                  top: -12,
+                  right: -12,
+                  width: 32,
+                  height: 32,
+                  borderRadius: "50%",
+                  background: "#000",
+                  color: "#fff",
+                  border: "none",
+                  cursor: "pointer"
+                }}
+              >
+                ×
+              </button>
+
+              <img
+                src={modalImage}
+                alt="Preview"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "90vh",
+                  borderRadius: 12
+                }}
+              />
+            </div>
+          </div>,
+          document.getElementById("modal-root")
+        )}
+
     </div>
   );
 }
