@@ -218,7 +218,11 @@ export default function Uploader({
                     <label htmlFor="quality-slider" className="control-label">
                         Quality
                     </label>
-                    <div className="mt-1 flex items-center gap-2 control-max range-wrap">
+                    <div
+                        className={`mt-1 flex items-center gap-2 control-max range-wrap ${targetKB ? "opacity-50 pointer-events-none" : ""
+                            }`}
+                    >
+
 
                         <input
                             id="quality-slider"    

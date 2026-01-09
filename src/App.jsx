@@ -398,9 +398,16 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   }
   let estimatedQ = quality;
 
-  if (targetBytes > 0 && mime === "image/jpeg" && !pngOptimized) {
+  // ⚠️ Only estimate quality if caller did NOT already decide
+  if (
+    targetBytes > 0 &&
+    mime === "image/jpeg" &&
+    !pngOptimized &&
+    quality < 0.85
+  ) {
     estimatedQ = estimateQualityFromKB(kbPerPixel);
   }
+
 
 
   // --- Smart downscaling for impossible KB targets (tuned for face photos) ---
@@ -453,7 +460,13 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   }
 
   // Hard clamp long edge for human photos
-  const LONG_EDGE_MAX = targetBytes > 120 * 1024 ? 1600 : 1000;
+  let LONG_EDGE_MAX = 1000;
+
+  if (targetBytes > 200 * 1024) LONG_EDGE_MAX = 1400;
+  if (targetBytes > 400 * 1024) LONG_EDGE_MAX = 1800;
+  if (targetBytes > 700 * 1024) LONG_EDGE_MAX = 2400;
+  if (targetBytes > 1200 * 1024) LONG_EDGE_MAX = 3200;
+
 
 
   if (mime === "image/jpeg") {
@@ -501,13 +514,17 @@ async function compressFileOptimized(fileBlob, opts = {}) {
     const testBlob = await canvasToBlobWithFallback(
       testCanvas,
       mime,
-      quality
+      estimatedQ
     );
-
-    if (testBlob && testBlob.size <= targetBytes * 1.03) {
+    if (
+      testBlob &&
+      testBlob.size <= targetBytes &&
+      testBlob.size >= targetBytes * 0.95
+    ) {
       progress(90, "Finalizing");
       return testBlob;
     }
+
   }
   // ---------------------------------------------------------------
 
@@ -559,6 +576,9 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   let bestBlob = null;
   let bestSize = 0;
 
+  const TARGET_TOLERANCE = 0.98; // aim for 98–100% of target
+
+
   const isExtremeJPEG = (
     mime === "image/jpeg" &&
     targetBytes > 0 &&
@@ -589,10 +609,20 @@ async function compressFileOptimized(fileBlob, opts = {}) {
     if (!blob) continue;
     const s = blob.size;
     // Keep the largest result that is <= targetBytes (exam-safe)
-    if (s <= targetBytes && s > bestSize) {
-      bestBlob = blob;
-      bestSize = s;
+    if (s <= targetBytes) {
+      // keep the largest result under target
+      if (!bestBlob || s > bestSize) {
+        bestBlob = blob;
+        bestSize = s;
+      }
+
+      // stop early if we are very close to target
+      if (s >= targetBytes * TARGET_TOLERANCE) {
+        progress(90, "Finalizing");
+        return blob;
+      }
     }
+
 
 
     // Guide binary search
@@ -699,25 +729,7 @@ export default function App() {
 
   // Auto-sync quality slider when Target KB is edited (JPEG only)
   // Runs ONLY when targetKB or format changes
-  useEffect(() => {
-    if (!targetKB || format !== "jpeg") return;
 
-    const kb = Number(targetKB);
-    if (!kb) return;
-
-    const minKB = 20;
-    const maxKB = 300;
-
-    const clampedKB = Math.min(maxKB, Math.max(minKB, kb));
-
-    // Linear mapping:
-    // 20 KB  → ~60%
-    // 300 KB → ~92%
-    const estimatedQ =
-      0.6 + ((clampedKB - minKB) / (maxKB - minKB)) * (0.92 - 0.6);
-
-    setQuality(Math.round(estimatedQ * 100) / 100);
-  }, [targetKB, format]);
 
   // compact theme switcher (localStorage + data-theme)
   const [theme, setTheme] = useState(() => {
@@ -1009,6 +1021,12 @@ export default function App() {
           ? Math.max(8 * 1024, Math.round(Number(targetKB) * 1024))
           : 0;
 
+      // 🔒 Target-size mode: start from higher quality to avoid undershoot
+      let effectiveQuality = quality;
+
+      if (targetBytes > 0) {
+        effectiveQuality = 0.88;
+      }
 
 
       // If user increases target KB, reset aggressive assumptions
@@ -1055,7 +1073,13 @@ export default function App() {
         setLastNote(note || "");
       };
 
-      const maxWidth = 1200;
+      let maxWidth = 1200;
+
+      if (targetBytes > 200 * 1024) maxWidth = 1600;
+      if (targetBytes > 400 * 1024) maxWidth = 2000;
+      if (targetBytes > 700 * 1024) maxWidth = 2600;
+      if (targetBytes > 1200 * 1024) maxWidth = 3400;
+
 
       // --------- HEIC handling: convert if needed ----------
       let inputBlob = file;
@@ -1090,7 +1114,7 @@ export default function App() {
 
       const blob = await compressFileOptimized(inputBlob, {
         mime,
-        quality,
+        quality: effectiveQuality,
         targetBytes,
         maxWidth,
         progress: progressCb,
