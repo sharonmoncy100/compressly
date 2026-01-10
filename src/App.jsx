@@ -1276,10 +1276,6 @@ export default function App() {
                       </div>
 
 
-
-
-
-
                   <div className="flex-1">
                     <div className="result-meta flex items-center justify-between">
                       <div>
@@ -1499,7 +1495,7 @@ export default function App() {
         <footer>
           <div className="footer-inner">
             <div className="brand-text">
-              © 2025 Compressly
+              © 2026 Compressly
             </div>
 
             <div className="footer-links">

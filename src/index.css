@@ -360,6 +360,12 @@ html[data-theme="dark"] .uploader-shell{
   flex-direction: column;
   gap:18px;
   align-items:center;
+   min-height: 260px;
+}
+@media (min-width: 768px) {
+  .uploader {
+    min-height: 300px;
+  }
 }
 .uploader:hover{
   border-color:#0b66d1;
@@ -428,17 +434,22 @@ html[data-theme="dark"] .fancy-select{
   border-radius:10px;
 }
 
-
-.fancy-select__native option{
-  color: var(--select-text);
-  background: linear-gradient(180deg, var(--surface), var(--surface-2));
-}
-
-
 .fancy-select__native:disabled,
 .fancy-select__native[aria-disabled="true"] {
   color: var(--select-placeholder) !important;
   -webkit-text-fill-color: var(--select-placeholder) !important;
+}
+
+/* Dropdown options – clean & consistent */
+.fancy-select__native option {
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--fg);
+}
+
+html[data-theme="dark"] .fancy-select__native option {
+  background-color: #020617;
 }
 
 
