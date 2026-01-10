@@ -716,10 +716,7 @@ async function compressFileOptimized(fileBlob, opts = {}) {
 
 export default function App() {
   const inputRef = useRef();
-  const dragY = useRef(0);
-  const startY = useRef(0);
-  const [dragOffset, setDragOffset] = useState(0);
-
+ 
   const [file, setFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
   const [originalSize, setOriginalSize] = useState(0);
@@ -1259,15 +1256,25 @@ export default function App() {
               ) : (
                 /* AFTER compression */
                     <div className="result-header flex items-start gap-4">
-                      <div className="image-preview-frame result-preview-frame">
+                      <div
+                        className="image-preview-frame result-preview-frame cursor-pointer"
+                        onClick={() => setModalImage(outURL)}
+                        role="button"
+                        tabIndex={0}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            setModalImage(outURL);
+                          }
+                        }}
+                      >
                         <img
                           src={outURL}
                           alt="Compressed image preview"
-                          className="max-w-[88%] max-h-[88%] object-contain cursor-zoom-in"
-                          onClick={() => setModalImage(outURL)}
+                          className="max-w-[88%] max-h-[88%] object-contain"
                         />
-
                       </div>
+
 
 
 
@@ -1520,7 +1527,7 @@ export default function App() {
               position: "fixed",
               inset: 0,
               background: "rgba(0,0,0,0.7)",
-              zIndex: 999999,
+              zIndex: 9999,
               display: "flex",
               alignItems: "center",
               justifyContent: "center"
@@ -1540,69 +1547,38 @@ export default function App() {
                 aria-label="Close preview"
                 style={{
                   position: "absolute",
-                  top: "clamp(8px, 2vw, 14px)",
-                  right: "clamp(8px, 2vw, 14px)",
+                  top: 8,
+                  right: 8,
                   width: 32,
                   height: 32,
                   borderRadius: "50%",
                   background: "rgba(0,0,0,0.65)",
-                  backdropFilter: "blur(6px)",
-                  WebkitBackdropFilter: "blur(6px)",
-                  border: "1px solid rgba(255,255,255,0.15)",
-                  cursor: "pointer",
+                  border: "none",
+                  color: "#fff",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  color: "#fff",
-                  boxShadow: "0 6px 18px rgba(0,0,0,0.35)"
+                  cursor: "pointer"
                 }}
               >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                  <path
-                    d="M6 6l12 12M18 6L6 18"
-                    stroke="currentColor"
-                    strokeWidth="1.8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                ✕
               </button>
 
-              {/* Image */}
               <img
                 src={modalImage}
                 alt="Preview"
-                draggable={false}
-                onTouchStart={(e) => {
-                  startY.current = e.touches[0].clientY;
-                }}
-                onTouchMove={(e) => {
-                  const currentY = e.touches[0].clientY;
-                  dragY.current = currentY - startY.current;
-                  if (dragY.current > 0) {
-                    setDragOffset(dragY.current);
-                  }
-                }}
-                onTouchEnd={() => {
-                  if (dragOffset > 120) {
-                    setModalImage(null);
-                  } else {
-                    setDragOffset(0);
-                  }
-                }}
                 style={{
                   maxWidth: "100%",
                   maxHeight: "90vh",
                   borderRadius: 12,
-                  transform: `translateY(${dragOffset}px)`,
-                  transition: dragOffset === 0 ? "transform 200ms ease" : "none",
-                  touchAction: "none"
+                  display: "block"
                 }}
               />
             </div>
           </div>,
           document.getElementById("modal-root")
         )}
+
 
 
     </div>

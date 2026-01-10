@@ -110,95 +110,85 @@ export default function Uploader({
                 </div>
 
                 {/* preview + meta stacked below for consistent padding */}
-                <div className="w-full flex justify-center mt-4">
-                    <div className="flex items-center gap-5">
+                {previewURL && (
+                    <>
+                        {/* preview + meta stacked below for consistent padding */}
+                        <div className="w-full flex justify-center mt-4">
+                            <div className="flex items-center gap-5">
 
-
-                        {/* clickable preview: opens compressed image if available */}
-                        <div 
-                            className="image-preview-frame upload-preview-frame relative cursor-pointer"
-                            onClick={() => previewURL && openPreview(previewURL)}
-                            role="button"
-                            tabIndex={0}
-                        >
-                            {file && (
-                                <button
-                                    type="button"
-                                    aria-label="Remove image"
-                                    title="Remove image"
-                                    onClick={(e) => {
-                                        e.stopPropagation();
-                                        resetAll();
-                                    }}
-                                    style={{
-                                        position: "absolute",
-                                        top: "6px",
-                                        right: "6px",
-                                        width: "24px",
-                                        height: "24px",
-                                        padding: 0,
-                                        border: "1px solid #e5e7eb",
-                                        background: "#ffffff",
-                                        borderRadius: "50%",
-                                        cursor: "pointer",
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        boxShadow: "0 2px 4px rgba(0,0,0,0.08)",
-                                        transition: "border-color 120ms ease, background 120ms ease",
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.style.borderColor = "#d1d5db";
-                                        e.currentTarget.style.background = "#f9fafb";
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.style.borderColor = "#e5e7eb";
-                                        e.currentTarget.style.background = "#ffffff";
-                                    }}
+                                {/* clickable preview */}
+                                <div
+                                    className="image-preview-frame upload-preview-frame relative cursor-pointer"
+                                    onClick={() => openPreview(previewURL)}
+                                    role="button"
+                                    tabIndex={0}
                                 >
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
-                                        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                                    </svg>
-                                </button>
-                            )}
-                            {previewURL && (
-                                <img
-                                    src={previewURL}
-                                    alt="Original image preview"
-                                    className="object-contain max-w-[88%] max-h-[88%] cursor-zoom-in"
-                                />
-                            )}
+                                    {/* remove icon */}
+                                    <button
+                                        type="button"
+                                        aria-label="Remove image"
+                                        title="Remove image"
+                                        onClick={(e) => {
+                                            e.stopPropagation();
+                                            resetAll();
+                                        }}
+                                        style={{
+                                            position: "absolute",
+                                            top: "6px",
+                                            right: "6px",
+                                            width: "24px",
+                                            height: "24px",
+                                            padding: 0,
+                                            border: "1px solid #e5e7eb",
+                                            background: "#ffffff",
+                                            borderRadius: "50%",
+                                            cursor: "pointer",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
+                                            boxShadow: "0 2px 4px rgba(0,0,0,0.08)"
+                                        }}
+                                    >
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                            <path
+                                                d="M6 6l12 12M18 6L6 18"
+                                                stroke="currentColor"
+                                                strokeWidth="1.5"
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </svg>
+                                    </button>
+
+                                    <img
+                                        src={previewURL}
+                                        alt="Original image preview"
+                                        className="object-contain max-w-[88%] max-h-[88%] cursor-zoom-in"
+                                    />
+                                </div>
+
+                                {/* meta */}
+                                <div className="text-xs small-muted flex flex-col justify-center gap-2">
+                                    <div className="text-[13px] font-semibold uppercase tracking-wide text-slate-500">
+                                        Original image
+                                    </div>
+
+                                    <div className="font-medium truncate" style={{ maxWidth: 180 }}>
+                                        {file?.name}
+                                    </div>
+
+                                    {originalSize ? (
+                                        <div className="text-xs text-slate-500">
+                                            {humanFileSize(originalSize)}
+                                        </div>
+                                    ) : null}
+                                </div>
+
+                            </div>
                         </div>
+                    </>
+                )}
 
-
-                        <div className="text-xs small-muted flex flex-col justify-center gap-2">
-
-
-
-                            {file && (
-                                <div className="text-[13px] font-semibold uppercase tracking-wide text-slate-500">
-                                    Original image
-                                </div>
-                            )}
-
-
-                            {file && (
-                                <div className="font-medium truncate" style={{ maxWidth: 180 }}>
-                                    {file.name}
-                                </div>
-                            )}
-
-                            {originalSize ? (
-                                <div className="text-xs text-slate-500">
-                                    {humanFileSize(originalSize)}
-                                </div>
-                            ) : null}
-
-
-                       
-                        </div> 
-                    </div>
-                </div>
                 {outURL && (
                     <div className="result-ready-message">
                         <div className="result-ready-badge">
