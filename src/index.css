@@ -1351,6 +1351,73 @@ html[data-theme="dark"] .secondary-pill:hover {
   background: rgba(148, 163, 184, 0.12);
   border-color: rgba(148, 163, 184, 0.5);
 }
+
+/* Compact icon variant for inline actions (rename, change, etc.) */
+.secondary-pill--icon {
+  padding: 0; /* remove padding so it hugs the SVG */
+  width: auto; /* allow size to be SVG-only on desktop */
+  height: auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  box-sizing: border-box;
+  transition: background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
+  transform: none; /* avoid layout shift */
+  line-height: 0;
+  border: 1px solid rgba(148,163,184,0.12); /* subtle border */
+  background: rgba(255,255,255,0); /* transparent but keeps the box */
+  vertical-align: middle;
+}
+.secondary-pill--icon svg {
+  display: block;
+  width: 15px; /* slightly larger so pencil reads clearly */
+  height: 15px;
+}
+/* Prevent jump only for the compact icon */
+.secondary-pill--icon:hover,
+.secondary-pill--icon:active {
+  transform: none;
+  background: rgba(148,163,184,0.06);
+  border-color: rgba(148,163,184,0.28);
+}
+.secondary-pill--icon:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(79,70,229,0.06);
+  border-color: rgba(79,70,229,0.28);
+}
+
+@media (max-width: 640px) {
+  .secondary-pill--icon {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(148,163,184,0.16);
+  }
+}
+
+/* Modern inline rename input */
+.rename-input {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  background: transparent;
+  transition: box-shadow 0.12s ease, border-color 0.12s ease;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 32px; /* match icon height to avoid vertical jumps */
+  line-height: 1;
+  box-sizing: border-box;
+  display: inline-block;
+  vertical-align: middle;
+}
+.rename-input:focus {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(79,70,229,0.06);
+  border-color: rgba(79,70,229,0.6);
+}
+
 /* Result ready message - modern inline notification */
 .result-ready-message {
   margin: 12px 0 0 0;

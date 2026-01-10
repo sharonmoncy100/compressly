@@ -726,6 +726,9 @@ export default function App() {
   const [outSize, setOutSize] = useState(0);
   const [outMime, setOutMime] = useState("");
   const [outFilename, setOutFilename] = useState("");
+  const [isRenaming, setIsRenaming] = useState(false);
+  const [tempName, setTempName] = useState("");
+
 
   const [quality, setQuality] = useState(0.82);
   const [targetKB, setTargetKB] = useState("");
@@ -809,6 +812,8 @@ export default function App() {
     const baseName = file ? file.name.replace(/\.[^/.]+$/, "") : "image";
     const ext = mimeToExt(actualMime);
     setOutFilename(`${baseName}-compressed.${ext}`);
+    setTempName(`${baseName}-compressed`);
+
   }
 
   // Helper: detect HEIC by MIME or filename
@@ -1279,12 +1284,78 @@ export default function App() {
                   <div className="flex-1">
                     <div className="result-meta flex items-center justify-between">
                       <div>
-                        <div
-                          className="text-sm font-medium truncate"
-                          style={{ maxWidth: 200 }}
-                        >
-                          {displayName}
-                        </div>
+                            <div className="flex items-center gap-2" style={{ maxWidth: 220 }}>
+                              {!isRenaming ? (
+                                <>
+                                  <span className="text-sm font-medium truncate">
+                                    {outFilename}
+                                  </span>
+
+                                  {/* Pencil icon (compact pill) */}
+                                  <button
+                                    type="button"
+                                    aria-label="Rename file"
+                                    title="Rename file"
+                                    onClick={() => {
+                                      setTempName(outFilename.replace(/\.[^/.]+$/, ""));
+                                      setIsRenaming(true);
+                                    }}
+                                    className="secondary-pill secondary-pill--icon ml-1"
+                                  >
+                                    <svg
+                                      width="14"
+                                      height="14"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      aria-hidden
+                                    >
+                                      <path
+                                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.29a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                                        fill="currentColor"
+                                      />
+                                    </svg>
+                                  </button>
+
+                                </>
+                              ) : (
+                                <input
+                                  autoFocus
+                                  value={tempName}
+                                  onChange={(e) => setTempName(e.target.value)}
+                                  onBlur={() => {
+                                    const cleaned = tempName.trim();
+
+                                    // ❌ block empty
+                                    if (!cleaned) {
+                                      setIsRenaming(false);
+                                      return;
+                                    }
+
+                                    // ❌ block only dots (., .., ...)
+                                    if (!cleaned.replace(/\./g, "")) {
+                                      setIsRenaming(false);
+                                      return;
+                                    }
+
+                                    const ext = outFilename.match(/\.[^/.]+$/)?.[0] || "";
+                                    setOutFilename(`${cleaned}${ext}`);
+                                    setIsRenaming(false);
+
+                                    setIsRenaming(false);
+                                  }}
+                                  onKeyDown={(e) => {
+                                    if (e.key === "Enter") {
+                                      e.currentTarget.blur();
+                                    }
+                                    if (e.key === "Escape") {
+                                      setIsRenaming(false);
+                                    }
+                                  }}
+                                  className="text-sm font-medium rename-input w-full"
+                                />
+                              )}
+                            </div>
+
                         <div className="text-xs small-muted mt-1">
                           Final size: {humanFileSize(outSize)}
                         </div>
