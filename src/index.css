@@ -1280,6 +1280,13 @@ html[data-theme="dark"] .image-preview-frame {
 .upload-preview-frame {
   width: 88px;
   height: 88px;
+  /* Ensure a small horizontal gap to adjacent metadata */
+  margin-right: 4px; /* reduced */
+}
+
+/* If metadata sits immediately after the preview, add a little left offset */
+.image-preview-frame + .text-xs.small-muted {
+  margin-left: 2px; /* reduced */
 }
 
 /* Remove underline from download buttons */

@@ -114,7 +114,7 @@ export default function Uploader({
                     <>
                         {/* preview + meta stacked below for consistent padding */}
                         <div className="w-full flex justify-center mt-4">
-                            <div className="flex items-center gap-5">
+                            <div className="flex items-center gap-4">
 
                                 {/* clickable preview */}
                                 <div
@@ -169,8 +169,8 @@ export default function Uploader({
 
                                 {/* meta */}
                                 <div className="text-xs small-muted flex flex-col justify-center gap-2">
-                                    <div className="text-[13px] font-semibold uppercase tracking-wide text-slate-500">
-                                        Original image
+                                    <div className="text-[15px] font-semibold tracking-wide text-slate-500">
+                                        Original Image
                                     </div>
 
                                     <div className="font-medium truncate" style={{ maxWidth: 180 }}>
