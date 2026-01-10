@@ -8,8 +8,11 @@ import Uploader from "./components/Uploader";
 import { createPortal } from "react-dom";
 
 
+
+
 /* Vite-safe asset URLs */
 const IconImg = new URL("./assets/icon.png", import.meta.url).href;
+
 
 /* Helper: show human-friendly size (1024 base) and also show exact bytes */
 function humanFileSizeShort(bytes) {
@@ -713,6 +716,10 @@ async function compressFileOptimized(fileBlob, opts = {}) {
 
 export default function App() {
   const inputRef = useRef();
+  const dragY = useRef(0);
+  const startY = useRef(0);
+  const [dragOffset, setDragOffset] = useState(0);
+
   const [file, setFile] = useState(null);
   const [previewURL, setPreviewURL] = useState("");
   const [originalSize, setOriginalSize] = useState(0);
@@ -1504,7 +1511,7 @@ export default function App() {
 
       </div> {/* end page-shell */}
 
-      {/* 🔍 IMAGE PREVIEW MODAL - Outside page-shell for true fixed positioning */}
+      {/* 🔍 IMAGE PREVIEW MODAL */}
       {modalImage &&
         createPortal(
           <div
@@ -1521,39 +1528,82 @@ export default function App() {
           >
             <div
               onClick={(e) => e.stopPropagation()}
-              style={{ maxWidth: "95vw", maxHeight: "95vh", position: "relative" }}
+              style={{
+                position: "relative",
+                maxWidth: "95vw",
+                maxHeight: "95vh"
+              }}
             >
+              {/* Close button */}
               <button
                 onClick={() => setModalImage(null)}
+                aria-label="Close preview"
                 style={{
                   position: "absolute",
-                  top: -12,
-                  right: -12,
+                  top: "clamp(8px, 2vw, 14px)",
+                  right: "clamp(8px, 2vw, 14px)",
                   width: 32,
                   height: 32,
                   borderRadius: "50%",
-                  background: "#000",
+                  background: "rgba(0,0,0,0.65)",
+                  backdropFilter: "blur(6px)",
+                  WebkitBackdropFilter: "blur(6px)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                   color: "#fff",
-                  border: "none",
-                  cursor: "pointer"
+                  boxShadow: "0 6px 18px rgba(0,0,0,0.35)"
                 }}
               >
-                ×
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M6 6l12 12M18 6L6 18"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
               </button>
 
+              {/* Image */}
               <img
                 src={modalImage}
                 alt="Preview"
+                draggable={false}
+                onTouchStart={(e) => {
+                  startY.current = e.touches[0].clientY;
+                }}
+                onTouchMove={(e) => {
+                  const currentY = e.touches[0].clientY;
+                  dragY.current = currentY - startY.current;
+                  if (dragY.current > 0) {
+                    setDragOffset(dragY.current);
+                  }
+                }}
+                onTouchEnd={() => {
+                  if (dragOffset > 120) {
+                    setModalImage(null);
+                  } else {
+                    setDragOffset(0);
+                  }
+                }}
                 style={{
                   maxWidth: "100%",
                   maxHeight: "90vh",
-                  borderRadius: 12
+                  borderRadius: 12,
+                  transform: `translateY(${dragOffset}px)`,
+                  transition: dragOffset === 0 ? "transform 200ms ease" : "none",
+                  touchAction: "none"
                 }}
               />
             </div>
           </div>,
           document.getElementById("modal-root")
         )}
+
 
     </div>
   );

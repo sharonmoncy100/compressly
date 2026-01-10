@@ -121,6 +121,46 @@ export default function Uploader({
                             role="button"
                             tabIndex={0}
                         >
+                            {file && (
+                                <button
+                                    type="button"
+                                    aria-label="Remove image"
+                                    title="Remove image"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        resetAll();
+                                    }}
+                                    style={{
+                                        position: "absolute",
+                                        top: "6px",
+                                        right: "6px",
+                                        width: "24px",
+                                        height: "24px",
+                                        padding: 0,
+                                        border: "1px solid #e5e7eb",
+                                        background: "#ffffff",
+                                        borderRadius: "50%",
+                                        cursor: "pointer",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        boxShadow: "0 2px 4px rgba(0,0,0,0.08)",
+                                        transition: "border-color 120ms ease, background 120ms ease",
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.style.borderColor = "#d1d5db";
+                                        e.currentTarget.style.background = "#f9fafb";
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.style.borderColor = "#e5e7eb";
+                                        e.currentTarget.style.background = "#ffffff";
+                                    }}
+                                >
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                        <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                    </svg>
+                                </button>
+                            )}
                             {previewURL && (
                                 <img
                                     src={previewURL}
@@ -154,17 +194,6 @@ export default function Uploader({
                                 </div>
                             ) : null}
 
-                            {file && (
-                                <button
-                                    type="button"
-                                    onClick={resetAll}
-                                    className="secondary-pill"
-                                >
-                                    Change image
-                                </button>
-
-                            )}
-
 
                        
                         </div> 
@@ -176,6 +205,24 @@ export default function Uploader({
                             <span className="result-ready-dot"></span>
                             Compressed result is ready
                         </div>
+                    </div>
+                )}
+
+                {outURL && typeof window !== "undefined" && window.innerWidth >= 1024 && (
+                    <div
+                        role="button"
+                        tabIndex={0}
+                        aria-label="View compressed result"
+                        onClick={() => document.getElementById("compressed-result")?.scrollIntoView({ behavior: "smooth" })}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                document.getElementById("compressed-result")?.scrollIntoView({ behavior: "smooth" });
+                            }
+                        }}
+                        className="text-xs small-muted mt-1 cursor-pointer"
+                    >
+                        ↓ View compressed result below
                     </div>
                 )}
 
