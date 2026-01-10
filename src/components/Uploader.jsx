@@ -331,10 +331,10 @@ export default function Uploader({
                         </div>
 
                         {/* reserved text line */}
-                        <div className="text-xs small-muted leading-tight h-[14px]">
-
+                        <div className="progress-note">
                             {lastNote || "Processing image…"}
                         </div>
+
                     </>
                 )}
             </div>
