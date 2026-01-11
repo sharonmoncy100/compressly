@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+
 
 /* tiny local Spinner to avoid importing from App */
 function Spinner({ className = "", color }) {
@@ -65,9 +67,28 @@ export default function Uploader({
     lastNote,
     format,
     setFormat,
-    openPreview = () => {}  // Default handler if not provided
+    openPreview = () => {},  // Default handler if not provided
+    hasAnimatedScrollCue,
+    shouldAnimateScrollCue,
+    setShouldAnimateScrollCue
+    
     
 }) {
+    const [animateCue, setAnimateCue] = useState(false);
+    useEffect(() => {
+        if (shouldAnimateScrollCue) {
+            setAnimateCue(true);
+
+            const t = setTimeout(() => {
+                setAnimateCue(false);
+                setShouldAnimateScrollCue(false); // 🔒 reset trigger
+            }, 1300);
+
+            return () => clearTimeout(t);
+        }
+    }, [shouldAnimateScrollCue, setShouldAnimateScrollCue]);
+
+
     return (
         <section className="md:col-span-8 container-card p-3 uploader-shell">
             
@@ -314,16 +335,23 @@ export default function Uploader({
                         </div>
                     </>
                 ) : (
-                    outURL &&
-                    typeof window !== "undefined" &&
-                    window.innerWidth >= 1024 && (
-                        <div className="result-ready-scroll-cue">
-                            <span className="result-ready-scroll-icon">↓</span>
-                            <span className="result-ready-scroll-text">
-                                Scroll down to download
-                            </span>
-                        </div>
-                    )
+                        outURL &&
+                        typeof window !== "undefined" &&
+                        window.innerWidth >= 1024 && (
+                            <div
+                                className={
+                                    "result-ready-scroll-cue" +
+                                    (animateCue ? " scroll-cue-animate" : "")
+                                }
+                            >
+
+                                <span className="result-ready-scroll-icon">↓</span>
+                                <span className="result-ready-scroll-text">
+                                    Scroll down to download
+                                </span>
+                            </div>
+                        )
+
                 )}
             </div>
 

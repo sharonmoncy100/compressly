@@ -736,6 +736,10 @@ export default function App() {
   const [format, setFormat] = useState("jpeg");
   const [lastNote, setLastNote] = useState("");
   const [progressPct, setProgressPct] = useState(0);
+  const [hasAnimatedScrollCue, setHasAnimatedScrollCue] = useState(false);
+  const [shouldAnimateScrollCue, setShouldAnimateScrollCue] = useState(false);
+
+
 
   // Auto-sync quality slider when Target KB is edited (JPEG only)
   // Runs ONLY when targetKB or format changes
@@ -1146,6 +1150,8 @@ export default function App() {
       }
 
       handleResultBlob(blob, mime);
+
+
       setLastNote("");
       setProgressPct(100);
 
@@ -1154,7 +1160,12 @@ export default function App() {
         setProcessing(false);
         setProgressPct(0);
 
-        // Smooth scroll to result section on mobile/tablet
+        // 🔥 trigger animation ONLY ONCE
+        if (!hasAnimatedScrollCue) {
+          setShouldAnimateScrollCue(true);
+          setHasAnimatedScrollCue(true);
+        }
+
         if (typeof window !== "undefined") {
           const resultSection = document.getElementById("compressed-result");
           if (resultSection && window.innerWidth < 1024) {
@@ -1162,6 +1173,7 @@ export default function App() {
           }
         }
       }, 500);
+
 
     } catch (err) {
       console.error("runCompress: unexpected", err);
@@ -1242,7 +1254,9 @@ export default function App() {
             format={format}
             setFormat={setFormat}
               openPreview={(url) => setModalImage(url)}
-
+              hasAnimatedScrollCue={hasAnimatedScrollCue}
+              shouldAnimateScrollCue={shouldAnimateScrollCue}
+              setShouldAnimateScrollCue={setShouldAnimateScrollCue}
           />
 
 
@@ -1349,6 +1363,7 @@ export default function App() {
                               <div className="text-xs small-muted mt-1">
                                 Final size: {humanFileSize(outSize)}
                               </div>
+
                             </div>
                           </div>
 
@@ -1394,14 +1409,12 @@ export default function App() {
                             role="button"
                             tabIndex={0}
                           >
-                            <div className="comparison-title">Before</div>
+                          
                             <div className="comparison-frame">
-                              <img
-                                src={previewURL}
-                                alt="Original image"
-                                loading="lazy"
-                              />
+                              <span className="comparison-badge">Before</span>
+                              <img src={previewURL} alt="Original image" loading="lazy" />
                             </div>
+
                             <div className="comparison-size">
                               {humanFileSize(originalSize)}
                             </div>
@@ -1413,14 +1426,14 @@ export default function App() {
                             role="button"
                             tabIndex={0}
                           >
-                            <div className="comparison-title">After</div>
+                            
                             <div className="comparison-frame">
-                              <img
-                                src={outURL}
-                                alt="Compressed image"
-                                loading="lazy"
-                              />
+                              <span className="comparison-badge comparison-badge--after">
+                                After
+                              </span>
+                              <img src={outURL} alt="Compressed image" loading="lazy" />
                             </div>
+
                             <div className="comparison-size">
                               {humanFileSize(outSize)}
                             </div>

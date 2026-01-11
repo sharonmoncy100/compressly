@@ -1279,14 +1279,14 @@ html[data-theme="dark"] .image-preview-frame {
    Before / After Comparison
    ========================= */
 .comparison-heading {
-  font-size: 14px;          /* bigger, readable */
-  font-weight: 600;         /* heading weight */
-  color: var(--fg);         /* not muted anymore */
-
+  margin-top: 12px;        /* 👈 space from top border */
   margin-bottom: 12px;
+
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--fg);
   letter-spacing: 0.2px;
 }
-
 
 .comparison-wrap {
   margin-top: 16px;
@@ -1364,6 +1364,45 @@ html[data-theme="dark"] .comparison-frame {
   background: linear-gradient(180deg, #020617, #020617);
   border-color: rgba(148,163,184,0.25);
   box-shadow: 0 6px 20px rgba(0,0,0,0.85);
+}
+
+/* Comparison corner badge */
+.comparison-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+
+  color: #0f172a;
+  background: rgba(255, 255, 255, 0.85);
+
+  border-radius: 999px;
+  backdrop-filter: blur(4px);
+
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+}
+
+/* After variant (slightly emphasized) */
+.comparison-badge--after {
+  background: rgba(37, 99, 235, 0.12);
+  color: #1d4ed8;
+}
+
+/* Ensure frame can position badge */
+.comparison-frame {
+  position: relative;
+}
+html[data-theme="dark"] .comparison-badge {
+  background: rgba(2, 6, 23, 0.7);
+  color: #e5e7eb;
+}
+
+html[data-theme="dark"] .comparison-badge--after {
+  background: rgba(37, 99, 235, 0.35);
+  color: #bfdbfe;
 }
 
 
@@ -1615,3 +1654,31 @@ html[data-theme="dark"] .result-ready-badge {
 html[data-theme="dark"] .result-ready-dot {
   background: #4ade80;
 }
+/* Scroll cue animation */
+@keyframes scrollCueNudge {
+  0% {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  70% {
+    transform: translateY(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.scroll-cue-animate {
+  animation: scrollCueNudge 1.2s ease-out 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue-animate {
+    animation: none;
+  }
+}
+
