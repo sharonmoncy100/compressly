@@ -768,6 +768,24 @@ export default function App() {
   }, []);
 
   useEffect(() => {
+    if (!modalImage) return;
+
+    // Push a dummy history entry when modal opens
+    window.history.pushState({ modalOpen: true }, "");
+
+    const handlePopState = () => {
+      setModalImage(null);
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, [modalImage]);
+
+
+  useEffect(() => {
     console.log("MODAL STATE CHANGED:", modalImage);
   }, [modalImage]);
 
@@ -1654,7 +1672,7 @@ export default function App() {
             }}
           >
             <div
-              onClick={(e) => e.stopPropagation()}
+              onClick={() => setModalImage(null)}
               style={{
                 position: "relative",
                 maxWidth: "95vw",
