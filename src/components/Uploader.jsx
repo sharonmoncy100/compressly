@@ -198,23 +198,7 @@ export default function Uploader({
                     </div>
                 )}
 
-                {outURL && typeof window !== "undefined" && window.innerWidth >= 1024 && (
-                    <div
-                        role="button"
-                        tabIndex={0}
-                        aria-label="View compressed result"
-                        onClick={() => document.getElementById("compressed-result")?.scrollIntoView({ behavior: "smooth" })}
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter" || e.key === " ") {
-                                e.preventDefault();
-                                document.getElementById("compressed-result")?.scrollIntoView({ behavior: "smooth" });
-                            }
-                        }}
-                        className="text-xs small-muted mt-1 cursor-pointer"
-                    >
-                        ↓ View compressed result below
-                    </div>
-                )}
+         
 
             </div>
 
@@ -313,31 +297,36 @@ export default function Uploader({
 
             {/* Progress area (reserved space, no layout jump) */}
             <div className="mt-3 control-max range-wrap controls-pad">
-                {processing && (
+                {processing ? (
                     <>
                         <div className="flex items-center gap-3">
-
-                            {/* progress bar */}
                             <div className="progress-track flex-1">
                                 <div
                                     className="progress-fill"
                                     style={{ width: `${Math.min(100, progressPct)}%` }}
                                 />
                             </div>
-
-                            {/* spinner on the RIGHT */}
                             <Spinner className="w-3.5 h-3.5 text-slate-400 opacity-60" />
-
                         </div>
 
-                        {/* reserved text line */}
                         <div className="progress-note">
                             {lastNote || "Processing image…"}
                         </div>
-
                     </>
+                ) : (
+                    outURL &&
+                    typeof window !== "undefined" &&
+                    window.innerWidth >= 1024 && (
+                        <div className="result-ready-scroll-cue">
+                            <span className="result-ready-scroll-icon">↓</span>
+                            <span className="result-ready-scroll-text">
+                                Scroll down to download
+                            </span>
+                        </div>
+                    )
                 )}
             </div>
+
 
 
         </section>
