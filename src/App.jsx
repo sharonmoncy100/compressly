@@ -1259,141 +1259,181 @@ export default function App() {
                   Select an image and click <strong>Compress</strong> to see the result here.
                 </div>
               ) : (
-                /* AFTER compression */
-                    <div className="result-header flex items-start gap-4">
-                      <div
-                        className="image-preview-frame result-preview-frame cursor-pointer"
-                        onClick={() => setModalImage(outURL)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            e.preventDefault();
-                            setModalImage(outURL);
-                          }
-                        }}
-                      >
-                        <img
-                          src={outURL}
-                          alt="Compressed image preview"
-                          className="max-w-[88%] max-h-[88%] object-contain"
-                        />
-                      </div>
+                    /* AFTER compression */
+                    <>
+                      {/* ===============================
+      RESULT HEADER (image + meta)
+     =============================== */}
+                      <div className="result-header flex items-start gap-4">
+                        <div
+                          className="image-preview-frame result-preview-frame cursor-pointer"
+                          onClick={() => setModalImage(outURL)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setModalImage(outURL);
+                            }
+                          }}
+                        >
+                          <img
+                            src={outURL}
+                            alt="Compressed image preview"
+                            className="max-w-[88%] max-h-[88%] object-contain"
+                          />
+                        </div>
 
+                        <div className="flex-1">
+                          <div className="result-meta flex items-center justify-between">
+                            <div>
+                              <div className="flex items-center gap-2" style={{ maxWidth: 220 }}>
+                                {!isRenaming ? (
+                                  <>
+                                    <span className="text-sm font-medium truncate">
+                                      {outFilename}
+                                    </span>
 
-                  <div className="flex-1">
-                    <div className="result-meta flex items-center justify-between">
-                      <div>
-                            <div className="flex items-center gap-2" style={{ maxWidth: 220 }}>
-                              {!isRenaming ? (
-                                <>
-                                  <span className="text-sm font-medium truncate">
-                                    {outFilename}
-                                  </span>
-
-                                  {/* Pencil icon (compact pill) */}
-                                  <button
-                                    type="button"
-                                    aria-label="Rename file"
-                                    title="Rename file"
-                                    onClick={() => {
-                                      setTempName(outFilename.replace(/\.[^/.]+$/, ""));
-                                      setIsRenaming(true);
-                                    }}
-                                    className="secondary-pill secondary-pill--icon ml-1"
-                                  >
-                                    <svg
-                                      width="14"
-                                      height="14"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      aria-hidden
+                                    <button
+                                      type="button"
+                                      aria-label="Rename file"
+                                      title="Rename file"
+                                      onClick={() => {
+                                        setTempName(outFilename.replace(/\.[^/.]+$/, ""));
+                                        setIsRenaming(true);
+                                      }}
+                                      className="secondary-pill secondary-pill--icon ml-1"
                                     >
-                                      <path
-                                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.29a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                                        fill="currentColor"
-                                      />
-                                    </svg>
-                                  </button>
-
-                                </>
-                              ) : (
-                                <input
-                                  autoFocus
-                                  value={tempName}
-                                  onChange={(e) => setTempName(e.target.value)}
-                                  onBlur={() => {
-                                    const cleaned = tempName.trim();
-
-                                    // ❌ block empty
-                                    if (!cleaned) {
+                                      <svg
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        aria-hidden
+                                      >
+                                        <path
+                                          d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.29a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                                          fill="currentColor"
+                                        />
+                                      </svg>
+                                    </button>
+                                  </>
+                                ) : (
+                                  <input
+                                    autoFocus
+                                    value={tempName}
+                                    onChange={(e) => setTempName(e.target.value)}
+                                    onBlur={() => {
+                                      const cleaned = tempName.trim();
+                                      if (!cleaned) {
+                                        setIsRenaming(false);
+                                        return;
+                                      }
+                                      if (!cleaned.replace(/\./g, "")) {
+                                        setIsRenaming(false);
+                                        return;
+                                      }
+                                      const ext = outFilename.match(/\.[^/.]+$/)?.[0] || "";
+                                      setOutFilename(`${cleaned}${ext}`);
                                       setIsRenaming(false);
-                                      return;
-                                    }
+                                    }}
+                                    onKeyDown={(e) => {
+                                      if (e.key === "Enter") e.currentTarget.blur();
+                                      if (e.key === "Escape") setIsRenaming(false);
+                                    }}
+                                    className="text-sm font-medium rename-input w-full"
+                                  />
+                                )}
+                              </div>
 
-                                    // ❌ block only dots (., .., ...)
-                                    if (!cleaned.replace(/\./g, "")) {
-                                      setIsRenaming(false);
-                                      return;
-                                    }
-
-                                    const ext = outFilename.match(/\.[^/.]+$/)?.[0] || "";
-                                    setOutFilename(`${cleaned}${ext}`);
-                                    setIsRenaming(false);
-
-                                    setIsRenaming(false);
-                                  }}
-                                  onKeyDown={(e) => {
-                                    if (e.key === "Enter") {
-                                      e.currentTarget.blur();
-                                    }
-                                    if (e.key === "Escape") {
-                                      setIsRenaming(false);
-                                    }
-                                  }}
-                                  className="text-sm font-medium rename-input w-full"
-                                />
-                              )}
+                              <div className="text-xs small-muted mt-1">
+                                Final size: {humanFileSize(outSize)}
+                              </div>
                             </div>
+                          </div>
 
-                        <div className="text-xs small-muted mt-1">
-                          Final size: {humanFileSize(outSize)}
+                          <div className="mt-3 result-actions">
+                            <a
+                              href={outURL}
+                              download={downloadName}
+                              className="download-btn"
+                              style={{
+                                backgroundColor: "#2563eb",
+                                color: "#ffffff",
+                                borderRadius: "9999px",
+                                padding: "8px 20px",
+                                fontWeight: 600,
+                                fontSize: "13px",
+                                display: "inline-flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                boxShadow: "0 3px 10px rgba(37,99,235,0.3)",
+                                gap: "6px",
+                              }}
+                            >
+                              Download
+                            </a>
+                          </div>
                         </div>
                       </div>
 
-                     
-                    </div>
+                      {/* ===============================
+      BEFORE / AFTER COMPARISON
+     =============================== */}
+              
 
-            
+                      <div className="comparison-wrap">
+                        <div className="comparison-heading">
+                          Image comparison
+                        </div>
 
-                    <div className="mt-3 result-actions">
-                          <a
-                            href={outURL}
-                            download={downloadName}
-                            className="download-btn"
-                            style={{
-                              backgroundColor: "#2563eb",
-                              color: "#ffffff",
-                              borderRadius: "9999px",
-                              padding: "8px 20px",
-                              fontWeight: 600,
-                              fontSize: "13px",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              boxShadow: "0 3px 10px rgba(37,99,235,0.3)",
-                              gap: "6px"
-                            }}
+                        <div className="comparison-grid">
+                          <div
+                            className="comparison-item"
+                            onClick={() => setModalImage(previewURL)}
+                            role="button"
+                            tabIndex={0}
                           >
-                            Download
-                          </a>
+                            <div className="comparison-title">Before</div>
+                            <div className="comparison-frame">
+                              <img
+                                src={previewURL}
+                                alt="Original image"
+                                loading="lazy"
+                              />
+                            </div>
+                            <div className="comparison-size">
+                              {humanFileSize(originalSize)}
+                            </div>
+                          </div>
+
+                          <div
+                            className="comparison-item"
+                            onClick={() => setModalImage(outURL)}
+                            role="button"
+                            tabIndex={0}
+                          >
+                            <div className="comparison-title">After</div>
+                            <div className="comparison-frame">
+                              <img
+                                src={outURL}
+                                alt="Compressed image"
+                                loading="lazy"
+                              />
+                            </div>
+                            <div className="comparison-size">
+                              {humanFileSize(outSize)}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </>
 
 
-
-                    </div>
-                  </div>
-                </div>
+                
               )}
+              
+
 
             </div>
 
