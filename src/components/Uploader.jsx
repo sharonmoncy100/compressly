@@ -104,12 +104,9 @@ export default function Uploader({
                     <h3 className="text-base font-medium">
                         Drop images here to start compressing
                     </h3>
-                    <p className="small-muted mt-2">
-                        Free online image compressor - reduce JPG, PNG, WebP and HEIC file
-                        size in your browser.
-                    </p>
+            
 
-                    <div className="mt-5 flex flex-col items-center gap-2">
+                    <div className="mt-3 flex flex-col items-center gap-2">
                         <button
                             onClick={() => inputRef.current?.click()}
                             className="primary-upload-btn select-image-btn"
@@ -126,7 +123,7 @@ export default function Uploader({
                             onChange={(e) => handleFiles(e.target.files)}
                         />
 
-                        <div className="small-muted text-xs">Drag &amp; drop or click Select Image to upload.</div>
+                        <div className="small-muted text-xs">Drag &amp; drop or select an image. Processing happens entirely in your browser.</div>
                     </div>
                 </div>
 
@@ -223,16 +220,7 @@ export default function Uploader({
                     </>
                 )}
 
-                {outURL && (
-                    <div className="result-ready-message">
-                        <div className="result-ready-badge">
-                            <span className="result-ready-dot"></span>
-                            Compressed result is ready
-                        </div>
-                    </div>
-                )}
-
-         
+             
 
             </div>
 
