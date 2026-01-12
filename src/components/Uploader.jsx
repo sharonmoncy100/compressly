@@ -138,13 +138,9 @@ export default function Uploader({
                             <div className="flex items-center gap-4">
 
                                 {/* clickable preview */}
-                                <div
-                                    className="image-preview-frame upload-preview-frame relative cursor-pointer"
-                                    onClick={() => openPreview(previewURL)}
-                                    role="button"
-                                    tabIndex={0}
-                                >
-                                    {/* remove icon */}
+                                <div className="relative inline-block">
+
+                                    {/* ❌ Remove image button */}
                                     <button
                                         type="button"
                                         aria-label="Remove image"
@@ -155,39 +151,56 @@ export default function Uploader({
                                         }}
                                         style={{
                                             position: "absolute",
-                                            top: "6px",
-                                            right: "6px",
-                                            width: "24px",
-                                            height: "24px",
-                                            padding: 0,
-                                            border: "1px solid #e5e7eb",
-                                            background: "#ffffff",
+                                            top: "-10px",
+                                            right: "-10px",
+                                            width: "28px",
+                                            height: "28px",
                                             borderRadius: "50%",
-                                            cursor: "pointer",
+                                            background: "#ffffff",
+                                            border: "1px solid #e5e7eb",
+                                            boxShadow: "0 3px 8px rgba(0,0,0,0.1)",
                                             display: "flex",
                                             alignItems: "center",
                                             justifyContent: "center",
-                                            boxShadow: "0 2px 4px rgba(0,0,0,0.08)"
+                                            cursor: "pointer",
+                                            zIndex: 5
                                         }}
                                     >
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                                        <svg
+                                            width="14"
+                                            height="14"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            aria-hidden
+                                        >
                                             <path
                                                 d="M6 6l12 12M18 6L6 18"
                                                 stroke="currentColor"
-                                                strokeWidth="1.5"
+                                                strokeWidth="1.6"
                                                 strokeLinecap="round"
                                                 strokeLinejoin="round"
                                             />
                                         </svg>
                                     </button>
 
-                                    <img
-                                        src={previewURL}
-                                        alt="Original image preview"
-                                        className="object-contain max-w-[88%] max-h-[88%] cursor-zoom-in"
-                                    />
+
+                                    {/* Image preview frame */}
+                                    <div
+                                        className="image-preview-frame upload-preview-frame cursor-pointer"
+                                        onClick={() => openPreview(previewURL)}
+                                        role="button"
+                                        tabIndex={0}
+                                    >
+                                        <img
+                                            src={previewURL}
+                                            alt="Original image preview"
+                                            className="object-contain max-w-[88%] max-h-[88%] cursor-zoom-in"
+                                        />
+                                    </div>
+
                                 </div>
 
+                         
                                 {/* meta */}
                                 <div className="text-xs small-muted flex flex-col justify-center gap-2">
                                     <div className="text-[15px] font-semibold tracking-wide text-slate-500">
@@ -291,17 +304,21 @@ export default function Uploader({
                 </div>
 
                 <div className="target-block">
-                    <label className="control-label">Target (KB)</label>
+                    <label className="control-label">Target</label>
 
                     <div className="mt-1">
                         <div className="target-row control-max">
-                            <input
-                                value={targetKB}
-                                onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))}
-                                placeholder="Enter size in KB"
-                                className="px-2 py-1 w-full max-w-[360px] text-sm target-input"
-
-                            />
+                            {/* Target input with KB suffix */}
+                            <div className="target-input-wrap">
+                                <input
+                                    value={targetKB}
+                                    onChange={(e) => setTargetKB(e.target.value.replace(/[^\d]/g, ""))}
+                                    inputMode="numeric"
+                                    placeholder="e.g. 100"
+                                    className="target-input-field"
+                                />
+                                <span className="target-input-suffix">KB</span>
+                            </div>
 
                             <button
                                 onClick={runCompress}
@@ -310,10 +327,10 @@ export default function Uploader({
                             >
                                 Compress
                             </button>
-
                         </div>
                     </div>
                 </div>
+
             </div>
 
             {/* Progress area (reserved space, no layout jump) */}

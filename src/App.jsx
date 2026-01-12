@@ -759,6 +759,7 @@ export default function App() {
   useEffect(() => {
     function handleEsc(e) {
       if (e.key === "Escape") {
+        document.activeElement?.blur(); // ✅ IMPORTANT
         setModalImage(null);
       }
     }
@@ -770,8 +771,21 @@ export default function App() {
   useEffect(() => {
     if (!modalImage) return;
 
-    // Push a dummy history entry when modal opens
-    window.history.pushState({ modalOpen: true }, "");
+    const handleKeyDown = (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [modalImage]);
+
+  useEffect(() => {
+    if (!modalImage) return;
+
+    // Push a history state when modal opens
+    window.history.pushState({ modal: true }, "");
 
     const handlePopState = () => {
       setModalImage(null);
@@ -1390,22 +1404,25 @@ export default function App() {
                               href={outURL}
                               download={downloadName}
                               className="download-btn"
-                              style={{
-                                backgroundColor: "#2563eb",
-                                color: "#ffffff",
-                                borderRadius: "9999px",
-                                padding: "8px 20px",
-                                fontWeight: 600,
-                                fontSize: "13px",
-                                display: "inline-flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                boxShadow: "0 3px 10px rgba(37,99,235,0.3)",
-                                gap: "6px",
-                              }}
                             >
-                              Download
+                              <svg
+                                width="14"
+                                height="14"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                aria-hidden="true"
+                              >
+                                <path
+                                  d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+                                  stroke="currentColor"
+                                  strokeWidth="1.6"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                />
+                              </svg>
+                              <span>Download</span>
                             </a>
+
                           </div>
                         </div>
                       </div>
@@ -1676,13 +1693,19 @@ export default function App() {
               style={{
                 position: "relative",
                 maxWidth: "95vw",
-                maxHeight: "95vh"
+                maxHeight: "95vh",
+                outline: "none"
               }}
             >
+
               {/* Close button */}
               <button
-                onClick={() => setModalImage(null)}
+                onClick={(e) => {
+                  e.currentTarget.blur();   // ✅ remove focus immediately
+                  setModalImage(null);
+                }}
                 aria-label="Close preview"
+                tabIndex={-1}               // ✅ button cannot receive keyboard focus
                 style={{
                   position: "absolute",
                   top: 8,
@@ -1696,10 +1719,27 @@ export default function App() {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  cursor: "pointer"
+                  cursor: "pointer",
+                  outline: "none"           // ✅ kill focus ring
                 }}
               >
-                ✕
+
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  aria-hidden
+                >
+                  <path
+                    d="M6 6l12 12M18 6L6 18"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+
               </button>
 
               <img
