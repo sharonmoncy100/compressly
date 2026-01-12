@@ -1025,6 +1025,7 @@ input[type="range"]:active::-moz-range-thumb {
 
 .target-input-field {
   flex: 1;
+  min-width: 0; /* ✅ ANDROID FIX */
   padding: 6px 8px;
   font-size: 14px;
   border: none;
