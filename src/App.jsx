@@ -1248,17 +1248,26 @@ export default function App() {
         <div className="app-wrap">
 
         {/* Headline wrapper: KEEP H1 in DOM first (SEO), but visually show H2 above */}
-        <div className="hero-headings">
-          <h1 className="page-h1">
-            Free Online Image Compressor - Compress JPG, PNG, WebP & HEIC
-          </h1>
+          <div className="hero-headings">
+            {/* SEO + trust grouped */}
+            <div className="hero-subgroup">
+              <h1 className="page-h1">
+                Free Online Image Compressor - Compress JPG, PNG, WebP & HEIC
+              </h1>
 
-          <section aria-labelledby="uploader-heading" className="hero-section md:col-span-12">
-            <h2 id="uploader-heading" className="page-h2">
-              Upload & Compress Images
-            </h2>
-          </section>
-        </div>
+              <p className="trust-note">
+                All image processing happens locally in your browser. No files are uploaded.
+              </p>
+            </div>
+
+            {/* Primary user action */}
+            <section aria-labelledby="uploader-heading" className="hero-section">
+              <h2 id="uploader-heading" className="page-h2">
+                Upload & Compress Images
+              </h2>
+            </section>
+          </div>
+
 
 
 
