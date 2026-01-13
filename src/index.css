@@ -158,16 +158,16 @@ html[data-theme="dark"] .frost{
 }
 
 .trust-note {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #4b5563;
   margin-top: 0.2rem;
   margin-bottom: 0.4rem;
   line-height: 1.4;
+  max-width: 640px;
 
   /* LCP FIX */
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
 }
-
 
 
 /* text utilities */
