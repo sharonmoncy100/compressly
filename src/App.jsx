@@ -1788,12 +1788,17 @@ export default function App() {
 
               </button>
 
-              <div className="modal-image-frame">
-                <img
-                  src={modalImage}
-                  alt="Preview"
-                />
-              </div>
+              <img
+                src={modalImage}
+                alt="Preview"
+                style={{
+                  maxWidth: "100%",
+                  maxHeight: "90vh",
+                  borderRadius: 12,
+                  display: "block"
+                }}
+              />
+
 
             </div>
           </div>,

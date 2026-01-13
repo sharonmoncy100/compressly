@@ -1583,23 +1583,6 @@ html[data-theme="dark"] .comparison-badge--after {
   background: rgba(37, 99, 235, 0.35);
   color: #bfdbfe;
 }
-/* Modal image container (SaaS-style) */
-.modal-image-frame {
-  border-radius: 12px;
-  overflow: hidden;
-  background: var(--surface);
-  box-shadow:
-    0 10px 30px rgba(0, 0, 0, 0.25),
-    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-}
-
-/* Image itself */
-.modal-image-frame img {
-  display: block;
-  max-width: 100%;
-  max-height: 90vh;
-  object-fit: contain;
-}
 
 
 /* Upload box preview */
