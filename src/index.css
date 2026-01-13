@@ -293,6 +293,14 @@ html[data-theme="dark"] .chip{
   .preview-wrap{ width:128px; height:128px; }
 }
 
+/* Card-level heading (used inside panels like Result) */
+.card-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: 0.2px;
+  margin-bottom: 10px;
+}
 
 /* result thumb */
 .result-thumb{
@@ -328,6 +336,27 @@ html[data-theme="dark"] .chip{
   cursor:default;
   box-shadow:none;
   transform:none;
+}
+/* Empty state for Compressed Result */
+.result-empty-state {
+  padding: 40px 20px;          /* 👈 more breathing room */
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.result-empty-icon {
+  color: #2563eb;
+  opacity: 0.6;
+}
+
+.result-empty-text {
+  max-width: 360px;            /* 👈 prevents wide, cheap look */
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
 }
 
 
@@ -762,10 +791,39 @@ html[data-theme="dark"] .footer-links a{
 html { scroll-behavior: smooth; }
 #about{
   scroll-margin-top: 80px;
-  padding: 20px;
+  /* remove horizontal inset so inner card can be full-width like FAQ */
+  padding: 8px 0 12px 0; /* top / left-right / bottom */
+  margin-top: 6px; /* small gap from previous section */
 }
 @media (max-width:640px){
-  #about{ padding:14px; }
+  #about{ padding:8px 0 10px 0; }
+}
+
+/* Local: tighten text & card spacing inside About section only */
+#about .container-card{
+  /* match internal padding of FAQ and keep content aligned */
+  padding: 12px 20px;
+  margin-top: 6px; /* reduce gap under heading */
+}
+
+#about .small-muted{
+  margin-top: 4px; /* reduces gap between heading and body text */
+  margin-bottom: 8px;
+}
+#about ul{
+  margin-top: 6px;
+  margin-bottom: 8px;
+  padding-left: 1.2rem; /* keep bullets aligned but a bit tighter */
+}
+/* About section list alignment */
+#about ul {
+  margin-left: 1rem;
+  margin-top: 0.4rem;
+  margin-bottom: 0.6rem;
+}
+
+#about li {
+  margin-bottom: 0.35rem;
 }
 
 
@@ -965,6 +1023,7 @@ input[type="range"]:active::-moz-range-thumb {
 /* FAQ stripe list – aligned like reference */
 .faq-card{
   margin-top: 3px;
+  margin-bottom: 0px;
   padding: 12px 0;
   border-radius: 12px;
 }
@@ -1273,6 +1332,13 @@ html[data-theme="dark"] .compressly-title {
   padding: 16px;
   box-sizing: border-box;
   border-top: 1px solid rgba(148,163,184,0.18);
+   margin-top: 14px;
+}
+.result-card .page-h2 {
+  margin-bottom: 6px;
+}
+.result-card .small-muted.text-center {
+  padding: 18px 12px;
 }
 
 
@@ -1357,17 +1423,17 @@ html[data-theme="dark"] .image-preview-frame {
    ========================= */
 .comparison-heading {
   margin-top: 12px;        /* 👈 space from top border */
-  margin-bottom: 12px;
+  margin-bottom: 10px;
 
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: var(--fg);
   letter-spacing: 0.2px;
 }
 
 .comparison-wrap {
-  margin-top: 16px;
-  padding-top: 14px;
+  margin-top: 14px;
+  padding-top: 12px;
   border-top: 1px solid rgba(148,163,184,0.18);
 }
 

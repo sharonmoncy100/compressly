@@ -1310,16 +1310,35 @@ export default function App() {
 
           {/* right: result */}
           <aside className="md:col-span-4">
-            <h2 id="result-heading" className="page-h2">
-              Compressed Result
-            </h2>
-            <div id="compressed-result" className="container-card rounded-lg p-3 result-card">
+              <div
+                id="compressed-result"
+                className="container-card rounded-lg result-card"
+              >
+                <h2 className="card-heading">Compressed Result</h2>
 
-              {!outURL ? (
-                /* BEFORE compression */
-                <div className="text-sm small-muted text-center py-6">
-                  Select an image and click <strong>Compress</strong> to see the result here.
-                </div>
+                {!outURL ? (
+                  <div className="result-empty-state">
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      aria-hidden="true"
+                      className="result-empty-icon"
+                    >
+                      <path
+                        d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
+                        stroke="currentColor"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+
+                    <p className="result-empty-text">
+                      Select an image and click <strong>Compress</strong> to see the result here.
+                    </p>
+                  </div>
               ) : (
                     /* AFTER compression */
                     <>
@@ -1536,7 +1555,9 @@ export default function App() {
             <h2 id="faq-heading" className="page-h2">
               Frequently Asked Questions
             </h2>
-            <div className="faq-card container-card">
+
+              <div className="faq-card container-card mb-10">
+
               <div className="faq-item faq-item--blue">
                 <div className="faq-stripe" />
                 <div className="faq-content">
@@ -1611,58 +1632,67 @@ export default function App() {
           </section>
           
 
-          {/* About section */}
-          <section id="about" className="md:col-span-12 container-card p-4 soft-shadow mt-6 about-card" aria-labelledby="about-heading">
-            <h2 id="about-heading" className="page-h2">
-              About Compressly
-            </h2>
+            {/* About section */}
+            <section
+              id="about"
+              className="md:col-span-12 mt-6"
+              aria-labelledby="about-heading"
+            >
 
-            {/* About section content (SEO-rich) */}
-            <div className="mt-2 small-muted text-sm leading-relaxed">
-              <strong>Compressly</strong> is a free, privacy-first image
-              compressor that runs entirely in your browser - no uploads, no
-              accounts, and no tracking. Compressly reduces JPG, PNG and WebP
-              images to much smaller sizes while keeping visual quality,
-              helping you meet file-size limits for web forms, email
-              attachments, government portals, and job application uploads.
-              <br />
-              <br />
-              Key features:
-              <ul>
-                <li>
-                  Fast client-side compression - everything happens locally in
-                  your browser.
-                </li>
-                <li>
-                  Target-size compression (for example: compress image to 100
-                  KB) with smart quality search and adaptive downscaling.
-                </li>
-                <li>
-                  Support for JPEG, PNG and WebP formats, plus easy download
-                  options.
-                </li>
-                <li>
-                  Mobile-friendly and tuned for low-end phones - perfect for
-                  users with limited bandwidth.
-                </li>
-              </ul>
-              <br />
-              How to use: choose an image, pick a format or enter a target size
-              (KB), press <strong>Compress</strong>, then{" "}
-              <strong>Download</strong>. Use WebP + Target for the smallest
-              files.
-              <br />
-              <br />
-              Compressly is ideal for anyone who needs to quickly reduce image
-              file sizes: students submitting forms, job applicants, bloggers,
-              small business owners, and web developers aiming to speed up page
-              load times.
-              <br />
-              <br />
-              Learn more: try the quick links below to compress a JPEG or
-              compress an image to 100 KB.
-            </div>
-          </section>
+              {/* Section heading (OUTSIDE card, like FAQ) */}
+              <h2 id="about-heading" className="page-h2">
+                About Compressly
+              </h2>
+
+              {/* Content card */}
+              <div className="container-card p-4 soft-shadow mt-2">
+                <div className="small-muted text-sm leading-relaxed">
+                  <strong>Compressly</strong> is a free, privacy-first image
+                  compressor that runs entirely in your browser - no uploads, no
+                  accounts, and no tracking. Compressly reduces JPG, PNG and WebP
+                  images to much smaller sizes while keeping visual quality,
+                  helping you meet file-size limits for web forms, email
+                  attachments, government portals, and job application uploads.
+                  <br />
+                  <br />
+                  Key features:
+                  <ul>
+                    <li>
+                      Fast client-side compression - everything happens locally in
+                      your browser.
+                    </li>
+                    <li>
+                      Target-size compression (for example: compress image to 100
+                      KB) with smart quality search and adaptive downscaling.
+                    </li>
+                    <li>
+                      Support for JPEG, PNG and WebP formats, plus easy download
+                      options.
+                    </li>
+                    <li>
+                      Mobile-friendly and tuned for low-end phones - perfect for
+                      users with limited bandwidth.
+                    </li>
+                  </ul>
+                  <br />
+                  How to use: choose an image, pick a format or enter a target size
+                  (KB), press <strong>Compress</strong>, then{" "}
+                  <strong>Download</strong>. Use WebP + Target for the smallest
+                  files.
+                  <br />
+                  <br />
+                  Compressly is ideal for anyone who needs to quickly reduce image
+                  file sizes: students submitting forms, job applicants, bloggers,
+                  small business owners, and web developers aiming to speed up page
+                  load times.
+                  <br />
+                  <br />
+                  Learn more: try the quick links below to compress a JPEG or
+                  compress an image to 100 KB.
+                </div>
+              </div>
+            </section>
+
         </main>
         
         </div> {/* end app-wrap */}
