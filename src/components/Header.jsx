@@ -1,7 +1,8 @@
 import React from "react";
 
 export default function Header({
-    IconImg,
+    Icon64,
+    Icon128,
     theme,
     toggleTheme,
     showThemeToggle = true,
@@ -11,10 +12,13 @@ export default function Header({
             <div className="header-inner flex items-center justify-between mb-3 w-full">
                 <div className="header-left flex items-center gap-3">
                     <img
-                        src={IconImg}
+                        src={Icon64}
+                        srcSet={`${Icon64} 64w, ${Icon128} 128w`}
+                        sizes="(max-width: 640px) 32px, 38px"
                         alt="Compressly"
                         className="logo-img object-contain flex-shrink-0"
                     />
+
 
                     <span className="compressly-title">Compressly</span>
                 </div>

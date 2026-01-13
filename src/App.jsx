@@ -11,7 +11,8 @@ import { createPortal } from "react-dom";
 
 
 /* Vite-safe asset URLs */
-const IconImg = new URL("./assets/icon.png", import.meta.url).href;
+const Icon64 = new URL("./assets/icon-64.png", import.meta.url).href;
+const Icon128 = new URL("./assets/icon-128.png", import.meta.url).href;
 
 
 /* Helper: show human-friendly size (1024 base) and also show exact bytes */
@@ -1244,7 +1245,13 @@ export default function App() {
       <div className="page-shell">
 
         {/* header */}
-        <Header IconImg={IconImg} theme={theme} toggleTheme={toggleTheme} />
+        <Header
+          Icon64={Icon64}
+          Icon128={Icon128}
+          theme={theme}
+          toggleTheme={toggleTheme}
+        />
+
         <div className="app-wrap">
 
         {/* Headline wrapper: KEEP H1 in DOM first (SEO), but visually show H2 above */}
