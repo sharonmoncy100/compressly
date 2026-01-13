@@ -803,7 +803,10 @@ html { scroll-behavior: smooth; }
 #about .container-card{
   /* match internal padding of FAQ and keep content aligned */
   padding: 12px 20px;
-  margin-top: 6px; /* reduce gap under heading */
+  margin-top: 4px; /* reduce gap under heading */
+  background: var(--card); /* ensure consistent flat background */
+  box-shadow: none; /* match FAQ - no elevated shadow */
+  border: 1px solid rgba(15,23,42,0.04);
 }
 
 #about .small-muted{
@@ -1016,6 +1019,39 @@ input[type="range"]::-moz-range-thumb {
 input[type="range"]:active::-moz-range-thumb {
   transform: scale(1.12);
   box-shadow: 0 0 0 5px rgba(37,99,235,0.18);
+}
+/* Secondary section headings (FAQ, About, etc.) */
+.section-h2 {
+  font-size: 1.25rem;        /* smaller than hero */
+  font-weight: 600;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+  margin-bottom: 0.5rem;
+}
+
+/* Make FAQ/About heading visually aligned with inner card content and slightly bolder */
+#faq-heading {
+  padding-left: 20px;       /* aligns with 20px inner padding of cards */
+  font-weight: 700;
+  margin-top: 6px;          /* small gap above FAQ to match About spacing */
+  margin-bottom: 0.35rem;
+}
+#about-heading {
+  padding-left: 20px;       /* aligns with 20px inner padding of cards */
+  font-weight: 700;
+  margin-top: 0;
+  margin-bottom: 0.35rem;
+}
+
+/* Mobile tuning */
+@media (max-width: 640px) {
+  .section-h2 {
+    font-size: 1.1rem;
+  }
+  #faq-heading,
+  #about-heading {
+    padding-left: 14px;
+  }
 }
 
 
@@ -1546,6 +1582,23 @@ html[data-theme="dark"] .comparison-badge {
 html[data-theme="dark"] .comparison-badge--after {
   background: rgba(37, 99, 235, 0.35);
   color: #bfdbfe;
+}
+/* Modal image container (SaaS-style) */
+.modal-image-frame {
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow:
+    0 10px 30px rgba(0, 0, 0, 0.25),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+/* Image itself */
+.modal-image-frame img {
+  display: block;
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
 }
 
 

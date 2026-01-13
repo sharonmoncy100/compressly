@@ -1482,7 +1482,7 @@ export default function App() {
                           
                             <div className="comparison-frame">
                               <span className="comparison-badge">Before</span>
-                              <img src={previewURL} alt="Original image" loading="lazy" />
+                              <img src={previewURL} alt="Original image" loading="lazy"/>
                             </div>
 
                             <div className="comparison-size">
@@ -1552,9 +1552,9 @@ export default function App() {
           {/* informational cards */}
           {/* FAQ section */}
           <section className="md:col-span-12 mt-4" aria-labelledby="faq-heading">
-            <h2 id="faq-heading" className="page-h2">
-              Frequently Asked Questions
-            </h2>
+              <h2 id="faq-heading" className="section-h2">
+                Frequently Asked Questions
+              </h2>
 
               <div className="faq-card container-card mb-10">
 
@@ -1640,7 +1640,7 @@ export default function App() {
             >
 
               {/* Section heading (OUTSIDE card, like FAQ) */}
-              <h2 id="about-heading" className="page-h2">
+              <h2 id="about-heading" className="section-h2">
                 About Compressly
               </h2>
 
@@ -1788,16 +1788,13 @@ export default function App() {
 
               </button>
 
-              <img
-                src={modalImage}
-                alt="Preview"
-                style={{
-                  maxWidth: "100%",
-                  maxHeight: "90vh",
-                  borderRadius: 12,
-                  display: "block"
-                }}
-              />
+              <div className="modal-image-frame">
+                <img
+                  src={modalImage}
+                  alt="Preview"
+                />
+              </div>
+
             </div>
           </div>,
           document.getElementById("modal-root")
