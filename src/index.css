@@ -1443,6 +1443,10 @@ html[data-theme="dark"] .result-preview-frame {
 
 .image-preview-frame img {
   pointer-events: auto;
+  border-radius: 4px;
+  max-width: 94%;   /* ← less gap (was 88%) */
+  max-height: 94%;
+  object-fit: contain;
 }
 
 
@@ -1508,10 +1512,11 @@ html[data-theme="dark"] .image-preview-frame {
 }
 
 .comparison-frame img {
-  max-width: 88%;
-  max-height: 88%;
+  max-width: 94%;  /* ← change from 88% */
+  max-height: 94%;
   object-fit: contain;
   display: block;
+  border-radius: 12px;
 }
 
 /* Size text */
