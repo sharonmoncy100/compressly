@@ -1387,7 +1387,7 @@ export default function App() {
                                   className="secondary-pill secondary-pill--icon"
                                   style={{
                                     position: "absolute",
-                                    right: "-38px",
+                                    right: "0",
                                     top: "50%",
                                     transform: "translateY(-50%)"
                                   }}

@@ -678,6 +678,7 @@ a.btn.bg-indigo-600{
 /* Stabilize filename row height so rename doesn't push layout */
 .result-header .flex-1 > div:first-child {
   min-height: 22px;   /* matches text + input height */
+  padding-right: 34px; /* space for pencil icon */
 }
 
 @media (max-width: 360px) {
