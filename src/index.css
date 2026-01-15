@@ -661,6 +661,12 @@ a.btn.bg-indigo-600{
 @media (max-width: 640px) {
   .result-header .flex-1 {
     gap: 5px; /* slightly tighter on mobile */
+     padding-right: 32px; /* reserves space for the icon */
+  }
+}
+@media (max-width: 640px) {
+  .result-header {
+    overflow-x: hidden;
   }
 }
 
