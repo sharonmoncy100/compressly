@@ -1367,12 +1367,10 @@ export default function App() {
 
                         <div className="flex-1">
                           {/* Filename + rename button */}
-                          <div className="relative flex items-center" style={{ maxWidth: 220 }}>
-
+                          <div className="relative flex items-center gap-1" style={{ maxWidth: 220 }}>
                             {!isRenaming ? (
                               <>
-                                <span className="text-sm font-medium truncate pr-2">
-
+                                <span className="text-sm font-medium truncate flex-1">
                                   {outFilename}
                                 </span>
 
@@ -1385,12 +1383,6 @@ export default function App() {
                                     setIsRenaming(true);
                                   }}
                                   className="secondary-pill secondary-pill--icon"
-                                  style={{
-                                    position: "absolute",
-                                    right: "0",
-                                    top: "50%",
-                                    transform: "translateY(-50%)"
-                                  }}
                                 >
                                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
                                     <path
@@ -1427,6 +1419,7 @@ export default function App() {
                               />
                             )}
                           </div>
+
 
                           {/* Final size - TIGHT spacing */}
                           <div className="text-xs small-muted">

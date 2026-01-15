@@ -587,23 +587,6 @@ html[data-theme="dark"] .info-card{
 }
 
 
-/* Reset button */
-.reset-btn{
-  border-radius:10px;
-  padding:.45rem .65rem;
-  border:1px solid rgba(15,23,42,0.08);
-  background: linear-gradient(180deg,var(--surface),var(--surface-2));
-  color:var(--fg);
-  font-weight:700;
-  box-shadow:0 6px 18px rgba(15,23,42,0.04);
-  transition: transform .12s, box-shadow .12s, background .12s;
-}
-.reset-btn:active{ transform:translateY(1px); }
-.reset-btn:disabled{ opacity:.55; box-shadow:none; cursor:not-allowed; }
-html[data-theme="dark"] .reset-btn{
-  border-color:rgba(148,163,184,0.3);
-  box-shadow:0 6px 18px rgba(0,0,0,0.7);
-}
 
 
 /* anchors that look like buttons */
@@ -658,12 +641,7 @@ a.btn.bg-indigo-600{
   gap: 4px; /* ← THIS is the spacing */
 }
 
-@media (max-width: 640px) {
-  .result-header .flex-1 {
-    gap: 5px; /* slightly tighter on mobile */
-     padding-right: 32px; /* reserves space for the icon */
-  }
-}
+
 @media (max-width: 640px) {
   .result-header {
     overflow-x: hidden;
@@ -675,15 +653,23 @@ a.btn.bg-indigo-600{
   line-height: 0.9;
 }
 
-/* Stabilize filename row height so rename doesn't push layout */
-.result-header .flex-1 > div:first-child {
-  min-height: 22px;   /* matches text + input height */
-  padding-right: 34px; /* space for pencil icon */
-}
+
 
 @media (max-width: 360px) {
   .result-header .secondary-pill--icon {
     right: -26px;
+  }
+}
+/* Match compressed result filename behavior to preview */
+.result-header .flex-1 > div:first-child span {
+  max-width: 160px;   /* mobile-safe */
+  display: block;
+
+}
+
+@media (min-width: 768px) {
+  .result-header .flex-1 > div:first-child span {
+    max-width: 160px;
   }
 }
 
@@ -1682,6 +1668,12 @@ a.download-btn {
     box-shadow 0.18s ease,
     transform 0.12s ease;
 }
+@media (max-width: 640px) {
+  .download-btn {
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+  }
+}
+
 
 /* Hover (desktop) */
 .download-btn:hover {
@@ -1783,6 +1775,7 @@ html[data-theme="dark"] .secondary-pill:hover {
   transition: background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
   transform: none; /* avoid layout shift */
   line-height: 0;
+  align-self: center;
   border: 1px solid rgba(148,163,184,0.12); /* subtle border */
   background: rgba(255,255,255,0); /* transparent but keeps the box */
   vertical-align: middle;
