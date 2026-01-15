@@ -50,6 +50,10 @@ html[data-theme="dark"]{
   --select-text: rgba(255,255,255,0.94);
   --select-placeholder: #9ca3af;
 }
+/* Trust note (uploader) – dark mode fix */
+html[data-theme="dark"] .trust-note {
+  color: rgba(226, 232, 240, 0.75);
+}
 
 
 html {
@@ -1828,6 +1832,16 @@ html[data-theme="dark"] .secondary-pill:hover {
   outline: none;
   box-shadow: 0 0 0 4px rgba(79,70,229,0.06);
   border-color: rgba(79,70,229,0.6);
+}
+/* Dark mode: rename input visibility */
+html[data-theme="dark"] .rename-input {
+  color: #e5e7eb;                 /* visible text */
+  background: rgba(15, 23, 42, 0.6);
+  border-color: rgba(148, 163, 184, 0.35);
+}
+
+html[data-theme="dark"] .rename-input::placeholder {
+  color: rgba(226, 232, 240, 0.5);
 }
 
 

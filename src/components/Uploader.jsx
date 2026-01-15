@@ -123,7 +123,8 @@ export default function Uploader({
                             onChange={(e) => handleFiles(e.target.files)}
                         />
 
-                        <div className="small-muted text-xs">Drag &amp; drop or click Select Image to upload</div>
+                        <div className="small-muted text-xs trust-note">
+Drag &amp; drop or click Select Image to upload</div>
                     </div>
                 </div>
 

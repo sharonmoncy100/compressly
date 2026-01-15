@@ -1531,6 +1531,75 @@ export default function App() {
             </div>
 
           </aside>
+      
+            {/* ===============================
+    How to Get the Best Compression Results
+   =============================== */}
+            <section id="compression-tips" className="mt-6">
+              <h2
+                id="compression-tips-heading"
+                className="section-h2"
+                style={{ paddingLeft: 20 }}
+              >
+                How to get the best compression results
+              </h2>
+
+              <div className="container-card mt-2">
+                {/* ⬅ MATCH ABOUT SECTION PADDING */}
+                <div className="small-muted text-sm leading-relaxed px-[20px] py-[6px]">
+                  <p>
+                    Compressing images is not only about reducing file size. It's about choosing
+                    the right format, keeping visual quality intact, and making sure the image
+                    fits its purpose - whether that's a website, an online form, or sharing. 
+                  </p>
+
+                  <div className="mt-3 space-y-2">
+                    <div>
+                      <strong className="text-slate-900">
+                        Choose the right format:
+                      </strong>{" "}
+                      JPEG works best for photographs, WebP usually produces smaller files for
+                      websites, and PNG is ideal for logos or images with text. HEIC files take a little more time to convert but can be compressed well.
+                    </div>
+
+                    <div>
+                      <strong className="text-slate-900">
+                        Use Target (KB) when size matters:
+                      </strong>{" "}
+                      If an upload requires a strict file size, enter a target size instead of
+                      adjusting quality manually. Compressly automatically balances quality
+                      and file size for you.
+                    </div>
+
+                    <div>
+                      <strong className="text-slate-900">
+                        Compare before downloading:
+                      </strong>{" "}
+                      Use the before and after comparison to make sure important details,
+                      edges, and text remain clear after compression.
+                    </div>
+
+                    <div>
+                      <strong className="text-slate-900">
+                        Rename files when needed:
+                      </strong>{" "}
+                      Rename the compressed image before downloading to keep your files
+                      organized for forms, projects, or sharing.
+                    </div>
+
+                    <div>
+                      <strong className="text-slate-900">
+                        Your images stay private:
+                      </strong>{" "}
+                      All compression happens locally in your browser. Images are never uploaded
+                      or stored on any server.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+
 
 
           {/* informational cards */}
