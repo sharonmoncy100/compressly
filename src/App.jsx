@@ -1609,7 +1609,7 @@ export default function App() {
               </h2>
 
               <div className="container-card mt-2">
-                {/* INNER WRAPPER — matches About section indent */}
+                {/* INNER WRAPPER - matches About section indent */}
                 <div className="small-muted text-sm leading-relaxed" style={{ padding: "12px 20px" }}>
                   <p>
                     Image compression plays an important role in how quickly images load
@@ -1652,7 +1652,7 @@ export default function App() {
               </h2>
 
               <div className="container-card mt-2">
-                {/* INNER WRAPPER — same indent as About */}
+                {/* INNER WRAPPER - same indent as About */}
                 <div className="small-muted text-sm leading-relaxed" style={{ padding: "12px 20px" }}>
                   <p>
                     Image compression becomes important whenever images need to be uploaded,
@@ -1678,7 +1678,7 @@ export default function App() {
                   <p className="mt-2">
                     Compressly is designed to handle these situations without complexity.
                     You can upload an image, choose the right format or target size, preview
-                    the result, and download the optimized file — all without installing
+                    the result, and download the optimized file - all without installing
                     software or worrying about privacy.
                   </p>
                 </div>
