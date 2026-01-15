@@ -1343,8 +1343,8 @@ export default function App() {
                     /* AFTER compression */
                     <>
                       {/* ===============================
-      RESULT HEADER (image + meta)
-     =============================== */}
+  RESULT HEADER (image + meta)
+ =============================== */}
                       <div className="result-header flex items-start gap-4">
                         <div
                           className="image-preview-frame result-preview-frame cursor-pointer"
@@ -1366,87 +1366,79 @@ export default function App() {
                         </div>
 
                         <div className="flex-1">
-                          <div className="result-meta flex items-center justify-between">
-                            <div>
-                              <div className="flex items-center gap-2" style={{ maxWidth: 220 }}>
-                                {!isRenaming ? (
-                                  <>
-                                    <span className="text-sm font-medium truncate">
-                                      {outFilename}
-                                    </span>
+                          {/* Filename + rename button */}
+                          <div className="relative flex items-center" style={{ maxWidth: 220 }}>
 
-                                    <button
-                                      type="button"
-                                      aria-label="Rename file"
-                                      title="Rename file"
-                                      onClick={() => {
-                                        setTempName(outFilename.replace(/\.[^/.]+$/, ""));
-                                        setIsRenaming(true);
-                                      }}
-                                      className="secondary-pill secondary-pill--icon ml-1"
-                                    >
-                                      <svg
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        aria-hidden
-                                      >
-                                        <path
-                                          d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.29a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
-                                          fill="currentColor"
-                                        />
-                                      </svg>
-                                    </button>
-                                  </>
-                                ) : (
-                                  <input
-                                    autoFocus
-                                    value={tempName}
-                                    onChange={(e) => setTempName(e.target.value)}
-                                    onBlur={() => {
-                                      const cleaned = tempName.trim();
-                                      if (!cleaned) {
-                                        setIsRenaming(false);
-                                        return;
-                                      }
-                                      if (!cleaned.replace(/\./g, "")) {
-                                        setIsRenaming(false);
-                                        return;
-                                      }
-                                      const ext = outFilename.match(/\.[^/.]+$/)?.[0] || "";
-                                      setOutFilename(`${cleaned}${ext}`);
-                                      setIsRenaming(false);
-                                    }}
-                                    onKeyDown={(e) => {
-                                      if (e.key === "Enter") e.currentTarget.blur();
-                                      if (e.key === "Escape") setIsRenaming(false);
-                                    }}
-                                    className="text-sm font-medium rename-input w-full"
-                                  />
-                                )}
-                              </div>
+                            {!isRenaming ? (
+                              <>
+                                <span className="text-sm font-medium truncate pr-2">
 
-                              <div className="text-xs small-muted mt-1">
-                                Final size: {humanFileSize(outSize)}
-                              </div>
+                                  {outFilename}
+                                </span>
 
-                            </div>
+                                <button
+                                  type="button"
+                                  aria-label="Rename file"
+                                  title="Rename file"
+                                  onClick={() => {
+                                    setTempName(outFilename.replace(/\.[^/.]+$/, ""));
+                                    setIsRenaming(true);
+                                  }}
+                                  className="secondary-pill secondary-pill--icon"
+                                  style={{
+                                    position: "absolute",
+                                    right: "-38px",
+                                    top: "50%",
+                                    transform: "translateY(-50%)"
+                                  }}
+                                >
+                                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+                                    <path
+                                      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41L18.37 3.29a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"
+                                      fill="currentColor"
+                                    />
+                                  </svg>
+                                </button>
+                              </>
+                            ) : (
+                              <input
+                                autoFocus
+                                value={tempName}
+                                onChange={(e) => setTempName(e.target.value)}
+                                onBlur={() => {
+                                  const cleaned = tempName.trim();
+                                  if (!cleaned) {
+                                    setIsRenaming(false);
+                                    return;
+                                  }
+                                  if (!cleaned.replace(/\./g, "")) {
+                                    setIsRenaming(false);
+                                    return;
+                                  }
+                                  const ext = outFilename.match(/\.[^/.]+$/)?.[0] || "";
+                                  setOutFilename(`${cleaned}${ext}`);
+                                  setIsRenaming(false);
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter") e.currentTarget.blur();
+                                  if (e.key === "Escape") setIsRenaming(false);
+                                }}
+                                className="text-sm font-medium rename-input w-full"
+                              />
+                            )}
                           </div>
 
-                          <div className="mt-3 result-actions">
-                            <a
-                              href={outURL}
-                              download={downloadName}
-                              className="download-btn"
-                            >
-                              <svg
-                                width="14"
-                                height="14"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                aria-hidden="true"
-                              >
+                          {/* Final size - TIGHT spacing */}
+                          <div className="text-xs small-muted">
+
+                            Final size: {humanFileSize(outSize)}
+                          </div>
+
+                          {/* Download button - TIGHT spacing */}
+                          <div>
+
+                            <a href={outURL} download={downloadName} className="download-btn">
+                              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path
                                   d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
                                   stroke="currentColor"
@@ -1457,7 +1449,6 @@ export default function App() {
                               </svg>
                               <span>Download</span>
                             </a>
-
                           </div>
                         </div>
                       </div>

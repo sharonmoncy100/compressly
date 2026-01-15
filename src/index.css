@@ -634,13 +634,56 @@ a.btn.bg-indigo-600{
 
 /* result card layout tweaks */
 
-.result-header{
-  align-items:center;
-  gap: 0.5rem; /* tighter spacing between thumbnail and meta */
+/* Result header: responsive layout */
+.result-header {
+  display: flex;
+  flex-direction: row;        /* 👈 ALWAYS horizontal */
+  align-items: flex-start;    /* 👈 LEFT-ALIGN */
+  gap: 16px;
 }
+
+
+/* Desktop: side-by-side layout */
+@media (min-width: 768px) {
+  .result-header {
+    flex-direction: row;
+    align-items: flex-start;  /* top-align thumbnail with metadata */
+    gap: 16px;
+  }
+}
+/* ✅ FINAL, SINGLE SOURCE OF TRUTH */
+.result-header .flex-1 {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* ← THIS is the spacing */
+}
+
+@media (max-width: 640px) {
+  .result-header .flex-1 {
+    gap: 5px; /* slightly tighter on mobile */
+  }
+}
+
+/* normalize line-height */
+.result-header .small-muted {
+  line-height: 0.9;
+}
+
+/* Stabilize filename row height so rename doesn't push layout */
+.result-header .flex-1 > div:first-child {
+  min-height: 22px;   /* matches text + input height */
+}
+
+@media (max-width: 360px) {
+  .result-header .secondary-pill--icon {
+    right: -26px;
+  }
+}
+
 .result-meta .text-sm{
   line-height:1.3;
 }
+
 
 /* chip spacing inside result card */
 .result-card .chip{ margin-right:0.35rem; }
@@ -1360,9 +1403,7 @@ html[data-theme="dark"] .compressly-title {
 .progress-track {
   margin-top: 0;
 }
-.result-header {
-  align-items: center;
-}
+
 
 .result-card {
   padding: 16px;
@@ -1381,8 +1422,9 @@ html[data-theme="dark"] .compressly-title {
 /* ---------- Compressed result preview (FINAL) ---------- */
 
 .result-preview-frame {
-  width: 96px;
-  height: 96px;
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;  /* 👈 ADD THIS LINE */
   border-radius: 12px;
   background: linear-gradient(
     180deg,
@@ -1723,13 +1765,13 @@ html[data-theme="dark"] .secondary-pill:hover {
 
 /* Compact icon variant for inline actions (rename, change, etc.) */
 .secondary-pill--icon {
-  padding: 0; /* remove padding so it hugs the SVG */
+   padding: 6px;      /* remove padding so it hugs the SVG */
   width: auto; /* allow size to be SVG-only on desktop */
   height: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 3px;
+  border-radius: 6px;
   box-sizing: border-box;
   transition: background 0.12s ease, border-color 0.12s ease, box-shadow 0.12s ease;
   transform: none; /* avoid layout shift */
@@ -1738,11 +1780,12 @@ html[data-theme="dark"] .secondary-pill:hover {
   background: rgba(255,255,255,0); /* transparent but keeps the box */
   vertical-align: middle;
 }
+/* Rename icon visual size */
 .secondary-pill--icon svg {
-  display: block;
-  width: 15px; /* slightly larger so pencil reads clearly */
+  width: 15px;
   height: 15px;
 }
+
 /* Prevent jump only for the compact icon */
 .secondary-pill--icon:hover,
 .secondary-pill--icon:active {
@@ -1758,9 +1801,9 @@ html[data-theme="dark"] .secondary-pill:hover {
 
 @media (max-width: 640px) {
   .secondary-pill--icon {
-    width: 40px;
-    height: 40px;
-    padding: 8px;
+    width: 30px;
+    height: 30px;
+    padding: 4px;
     border-radius: 8px;
     border: 1px solid rgba(148,163,184,0.16);
   }
