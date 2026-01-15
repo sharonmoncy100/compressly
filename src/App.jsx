@@ -1264,6 +1264,7 @@ export default function App() {
 
               <p className="trust-note">
                 All image processing happens locally in your browser. No files are uploaded.
+                You can upload and compress images securely without creating an account or sending files to any external server. Your images stay on your device at all times, making Compressly suitable for personal photos, official documents, and form submissions where privacy is important.
               </p>
             </div>
 
@@ -1599,7 +1600,90 @@ export default function App() {
               </div>
             </section>
 
+            {/* ===============================
+   Why Image Compression Matters
+   =============================== */}
+            <section id="why-compression-matters" className="mt-6">
+              <h2 className="section-h2" style={{ paddingLeft: 20 }}>
+                Why image compression matters for websites and forms
+              </h2>
 
+              <div className="container-card mt-2">
+                {/* INNER WRAPPER — matches About section indent */}
+                <div className="small-muted text-sm leading-relaxed" style={{ padding: "12px 20px" }}>
+                  <p>
+                    Image compression plays an important role in how quickly images load
+                    and whether they are accepted by websites, online forms, and upload
+                    systems. Many government portals, job applications, and college forms
+                    enforce strict file size limits, which can cause uncompressed images
+                    to be rejected even if the image quality is good.
+                  </p>
+
+                  <p className="mt-2">
+                    For websites and blogs, large image files can slow down page loading,
+                    especially on mobile devices or slower internet connections. Smaller,
+                    optimized images help pages load faster, improve user experience, and
+                    reduce unnecessary data usage for visitors.
+                  </p>
+
+                  <p className="mt-2">
+                    Compression is not about making images blurry or unusable. When done
+                    correctly, it reduces file size while preserving visual clarity, text
+                    readability, and important details. Choosing the right format and
+                    compression method ensures images remain suitable for their intended
+                    purpose.
+                  </p>
+
+                  <p className="mt-2">
+                    With Compressly, you can quickly prepare images for uploads, sharing,
+                    or publishing without installing software or creating an account -
+                    making image compression simple, private, and accessible to everyone.
+                  </p>
+                </div>
+              </div>
+            </section>
+
+            {/* ===============================
+   When and why you should compress images
+   =============================== */}
+            <section id="when-to-compress-images" className="mt-6">
+              <h2 className="section-h2" style={{ paddingLeft: 20 }}>
+                When and why you should compress images
+              </h2>
+
+              <div className="container-card mt-2">
+                {/* INNER WRAPPER — same indent as About */}
+                <div className="small-muted text-sm leading-relaxed" style={{ padding: "12px 20px" }}>
+                  <p>
+                    Image compression becomes important whenever images need to be uploaded,
+                    shared, or displayed efficiently. This is especially common when submitting
+                    documents to government portals, job applications, college admissions,
+                    or online forms that enforce strict file size limits.
+                  </p>
+
+                  <p className="mt-2">
+                    Compression is also useful for everyday sharing. Sending images through
+                    email, messaging apps, or cloud uploads can be slower and less reliable
+                    when files are large. Smaller image sizes upload faster, use less data,
+                    and are easier for recipients to download and view.
+                  </p>
+
+                  <p className="mt-2">
+                    For websites and online projects, compressing images helps maintain a
+                    smooth browsing experience. Optimized images reduce page load time,
+                    lower bandwidth usage, and make sites more accessible for users on
+                    mobile devices or slower internet connections.
+                  </p>
+
+                  <p className="mt-2">
+                    Compressly is designed to handle these situations without complexity.
+                    You can upload an image, choose the right format or target size, preview
+                    the result, and download the optimized file — all without installing
+                    software or worrying about privacy.
+                  </p>
+                </div>
+              </div>
+            </section>
 
 
           {/* informational cards */}
