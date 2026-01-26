@@ -22,10 +22,10 @@
   --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 
   /* core surface / foreground vars */
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --surface-2: #fbfdff;
-  --card: #ffffff;
+  --bg: #f5f7fb;        /* page background */
+  --surface: #f7f9fc;   /* subtle section bg */
+  --surface-2: #eef2f7; /* gentle gradient support */
+  --card: #ffffff;  
   --muted: #6b7280;
   --fg: #0f1724;
   --accent-from: #4f46e5;
@@ -39,10 +39,10 @@
 
 /* dark theme via data-theme on html */
 html[data-theme="dark"]{
-  --bg:#020617;
-  --surface:#020617;
-  --surface-2:#020617;
-  --card:#020617;
+   --bg: #020617;
+  --surface: #020617;
+  --surface-2: #020617;
+  --card: #020617;
   --muted:#9ca3af;
   --fg:rgba(255,255,255,0.94);
   --accent-from:#6366f1;
@@ -70,6 +70,7 @@ body{
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   font-size:15px;
+  font-weight: 400;  /* 👈 lock body text */
 }
 
 
@@ -136,7 +137,7 @@ html[data-theme="dark"] .frost{
 /* Visual style for the (visually-prominent) H2 */
 .page-h2 {
   color: var(--fg);        /* dark/black color */
-  font-weight: 700;
+  font-weight: 600;
   font-size: 1.6rem;       /* large hero size */
   line-height: 1.4;
   margin-top: 0;          /* spacing handled by container */
@@ -173,7 +174,7 @@ html[data-theme="dark"] .frost{
 
 
 /* text utilities */
-.small-muted, .kv { color:var(--muted); font-size:0.92rem; line-height:1.4; }
+.small-muted, .kv { color:var(--muted); font-size:0.92rem; line-height:1.4; font-weight: 400;}
 .kv{ font-size:0.92rem; }
 
 
@@ -225,7 +226,7 @@ html[data-theme="dark"] .primary-btn{
   background-color: #2563eb;
   color: #ffffff;
 
-  font-weight: 600;
+  font-weight: 500;
   font-size: 15px;
   line-height: 1;
   white-space: nowrap;
@@ -470,15 +471,19 @@ html[data-theme="dark"] .uploader-shell{
 .uploader{
   border-radius: 10px;
   border: 2px dashed rgba(203,213,225,0.85);
-  background: #f9fafb;
+
+  background: transparent;        /* 🔑 no competing color */
+
   padding: 28px 20px 22px;
-  display:flex;
+  display: flex;
   flex-direction: column;
-  gap:14px;
-  align-items:center;
-   min-height: 262px;
-   transition: background 0.15s ease, border-color 0.15s ease;
+  gap: 14px;
+  align-items: center;
+  min-height: 262px;
+
+  transition: border-color 0.15s ease, background-color 0.15s ease;
 }
+
 
 
 html[data-theme="dark"] .uploader{
@@ -497,7 +502,16 @@ html[data-theme="dark"] .uploader:hover{
     padding-bottom: 18px; /* was 22px */
   }
 }
+/* Highlight ONLY when dragging files */
+.uploader.drag-active{
+  background: rgba(37,99,235,0.04); /* very subtle */
+  border-color: #2563eb;
+}
 
+html[data-theme="dark"] .uploader.drag-active{
+  border-color:#2563eb;
+  background:rgba(37,99,235,0.1);
+}
 
 
 /* Fancy native select */
@@ -508,8 +522,8 @@ html[data-theme="dark"] .uploader:hover{
   max-width:320px;
   border-radius:10px;
   overflow:hidden;
-  background: linear-gradient(180deg, var(--surface), var(--surface-2));
-  border: 1px solid rgba(15,23,42,0.06);
+ background: transparent;     /* 🔑 card owns the surface */
+  border: 1px solid rgba(15,23,42,0.12);
   box-shadow: inset 0 -1px 0 rgba(15,23,42,0.02);
 }
 
@@ -525,8 +539,8 @@ html[data-theme="dark"] .uploader:hover{
 
 
 html[data-theme="dark"] .fancy-select{
-  border-color:rgba(148,163,184,0.28);
-  box-shadow:none;
+  border-color: rgba(148,163,184,0.28);
+  background: transparent;
 }
 
 
@@ -669,7 +683,7 @@ a.btn.bg-indigo-600{
 .result-header .flex-1 {
   display: flex;
   flex-direction: column;
-  gap: 4px; /* ← THIS is the spacing */
+  gap: 2px; /* ← THIS is the spacing */
 }
 
 
@@ -962,7 +976,7 @@ html { scroll-behavior: smooth; }
 .header-wrap{
   margin: 0 0 16px 0;
   padding: 12px 16px;
-  background: linear-gradient(135deg, var(--card) 0%, var(--surface) 100%);
+  background: var(--card);
   border-bottom: 1px solid rgba(15,23,42,0.08);
   box-shadow: 0 2px 8px rgba(15,23,42,0.04);
   backdrop-filter: blur(2px);
@@ -1403,10 +1417,12 @@ html[data-theme="dark"] .compressly-title {
 /* Limit width of long horizontal controls on desktop */
 .control-max {
   max-width: 860px;
+  background: transparent;
 }
 /* Prevent long sliders from dominating layout */
 .range-wrap {
   max-width: 460px; /* mobile & small screens */
+  background: transparent;
 }
 
 @media (min-width: 768px) {
@@ -1485,6 +1501,14 @@ html[data-theme="dark"] .result-preview-frame {
     inset 0 1px 0 rgba(255,255,255,0.05),
     0 8px 22px rgba(0,0,0,0.85);
 }
+/* Align download button with metadata (FINAL FIX) */
+.result-download-row {
+  margin-top: 6px;        /* visually balanced */
+  display: flex;
+  align-items: center;    /* vertical alignment */
+  line-height: 1;         /* normalize */
+}
+
 /* Shared image preview frame */
 .image-preview-frame {
   border-radius: 12px;
@@ -1677,42 +1701,43 @@ a.download-btn {
    Download Button (Primary)
    ========================= */
 
-.download-btn {
-  background-color: #2563eb;
+.download-btn{
+  height: 28px;                 /* ⬅ smaller */
+  padding: 0 14px;              /* ⬅ tighter */
+
+  border-radius: 6px;
+  border: 1px solid rgba(37,99,235,0.35);
+
+  background: #2563eb;
   color: #ffffff;
-  border-radius: 9999px;
-  padding: 8px 20px;
-  font-weight: 600;
-  font-size: 13px;
-  margin: 0;  /* 👈 ADD THIS to kill inherited margin */
-  line-height: 1;  /* 👈 ADD THIS to prevent line-height spacing */
+
+  font-size: 13.5px;            /* ⬅ calmer */
+  font-weight: 500;
+  line-height: 1;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 6px;
+  gap: 6px;                     /* ⬅ FIX icon–text spacing */
 
-  box-shadow: 0 3px 10px rgba(37, 99, 235, 0.3);
-  text-decoration: none;
   cursor: pointer;
 
-  transition:
-    background-color 0.18s ease,
-    box-shadow 0.18s ease,
-    transform 0.12s ease;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
 }
+
 @media (max-width: 640px) {
   .download-btn {
     box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+     font-size: 13px;
+    padding: 0 12px;
   }
 }
 
 
 /* Hover (desktop) */
-.download-btn:hover {
-  background-color: #1e4ed8; /* slightly deeper blue */
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.38);
-  transform: translateY(-1px);
+.download-btn:hover{
+  background-color: #1d4ed8;
+  border-color: rgba(37,99,235,0.55);
 }
 
 /* Active (click) */
@@ -1735,6 +1760,15 @@ a.download-btn {
     transition: none;
   }
 }
+html[data-theme="dark"] .download-btn{
+  background-color: #1d4ed8;
+  border-color: rgba(99,102,241,0.45);
+}
+html[data-theme="dark"] .download-btn:hover{
+  background-color: #2563eb;
+}
+
+
 
 /* subtle inline action (Change image, Remove, etc.) */
 .secondary-pill {
@@ -1979,3 +2013,16 @@ html[data-theme="dark"] .result-ready-dot {
   }
 }
 
+/* Modal context: remove heavy backgrounds from image frames */
+.image-preview-frame,
+.result-preview-frame,
+.comparison-frame {
+  background: transparent;
+  box-shadow: none;
+  border: 1px solid rgba(148,163,184,0.25);
+}
+html[data-theme="dark"] .image-preview-frame,
+html[data-theme="dark"] .result-preview-frame,
+html[data-theme="dark"] .comparison-frame {
+  border-color: rgba(148,163,184,0.3);
+}

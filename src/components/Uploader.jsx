@@ -88,18 +88,29 @@ export default function Uploader({
         }
     }, [shouldAnimateScrollCue, setShouldAnimateScrollCue]);
 
+    const [dragActive, setDragActive] = useState(false);
 
     return (
         <section className="md:col-span-8 container-card p-3 uploader-shell">
             
             <div
+                onDragEnter={() => setDragActive(true)}
+                onDragLeave={(e) => {
+                    if (!e.currentTarget.contains(e.relatedTarget)) {
+                        setDragActive(false);
+                    }
+                }}
+
                 onDrop={(e) => {
                     e.preventDefault();
+                    setDragActive(false);
                     if (e.dataTransfer?.files) handleFiles(e.dataTransfer.files);
                 }}
                 onDragOver={(e) => e.preventDefault()}
-                className="uploader rounded-lg flex flex-col gap-4 items-start"
+                className={`uploader rounded-lg flex flex-col gap-4 items-start ${dragActive ? "drag-active" : ""
+                    }`}
             >
+
                 <div className="flex-1 w-full text-center">
                     <h3 className="text-base font-medium">
                         Drop images here to start compressing

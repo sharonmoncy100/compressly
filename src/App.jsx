@@ -1423,13 +1423,16 @@ export default function App() {
 
                           {/* Final size - TIGHT spacing */}
                           <div className="text-xs small-muted">
-
-                            Final size: {humanFileSize(outSize)}
+                            Final size:{" "}
+                            <span style={{ fontWeight: 600, color: "var(--fg)" }}>
+                              {humanFileSize(outSize)}
+                            </span>
                           </div>
 
+
                           {/* Download button - TIGHT spacing */}
                           {/* Download button - TIGHT spacing */}
-                          <div style={{ marginTop: '10px', lineHeight: 0 }}>  {/* 👈 ADD lineHeight: 0 */}
+                          <div className="result-download-row">
                             <a href={outURL} download={downloadName} className="download-btn">
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path
