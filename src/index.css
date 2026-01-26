@@ -217,18 +217,25 @@ html[data-theme="dark"] .primary-btn{
 
 /* big blue CTA in uploader + Compress */
 .primary-upload-btn{
-  padding: 0.9rem 2.5rem;
-  border-radius: 999px;
+  padding: 0.85rem 2.2rem;
+  height: 42px;                 /* 👈 stable vertical rhythm */
+  border-radius: 6px;           /* 👈 iLoveIMG match */
   border: none;
-  background: #0b66d1;
-  color: #ffffff;
-  font-weight: 600;
-  font-size: 1.02rem;
-  letter-spacing: 0.02em;
-  cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
 
+  background-color: #2563eb;
+  color: #ffffff;
+
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+
+  cursor: pointer;              /* 👈 FORCE hand cursor */
+
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25); /* 👈 constant */
+  transition: background-color 0.12s ease;
 }
+
 .select-image-btn{
   margin-bottom: 0.75rem;
 }
@@ -246,22 +253,44 @@ html[data-theme="dark"] .primary-btn{
   box-shadow: 0 4px 12px rgba(11,102,209,0.28);
 }
 .primary-upload-btn:hover{
-  box-shadow:0 6px 16px rgba(11,102,209,0.35);
+  background-color: #1d4ed8;
 }
-.primary-upload-btn:active{
-  box-shadow:0 3px 10px rgba(11,102,209,0.25);
+
+.primary-upload-btn:disabled{
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }
 html[data-theme="dark"] .primary-upload-btn{
-  box-shadow:0 8px 22px rgba(0,0,0,0.75);
+  background-color: #1d4ed8;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.7);
 }
+
+html[data-theme="dark"] .primary-upload-btn:hover{
+  background-color: #2563eb;
+}
+
+
 
 
 
 /* slightly smaller Compress button */
 .compress-btn-main{
   padding: 0.6rem 1.6rem;
+  height: 35px;
+
   font-size: 0.95rem;
+  line-height: 1;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 6px;     /* 👈 match iLoveIMG */
+  cursor: pointer;
 }
+
+
 
 
 /* chips */
@@ -451,10 +480,7 @@ html[data-theme="dark"] .uploader-shell{
    transition: background 0.15s ease, border-color 0.15s ease;
 }
 
-.uploader:hover{
-  border-color:#0b66d1;
-  background:#f3f4ff;
-}
+
 html[data-theme="dark"] .uploader{
   background:#020617;
   border-color:#1f2937;
@@ -471,6 +497,7 @@ html[data-theme="dark"] .uploader:hover{
     padding-bottom: 18px; /* was 22px */
   }
 }
+
 
 
 /* Fancy native select */
@@ -1657,6 +1684,8 @@ a.download-btn {
   padding: 8px 20px;
   font-weight: 600;
   font-size: 13px;
+  margin: 0;  /* 👈 ADD THIS to kill inherited margin */
+  line-height: 1;  /* 👈 ADD THIS to prevent line-height spacing */
 
   display: inline-flex;
   align-items: center;

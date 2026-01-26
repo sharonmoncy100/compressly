@@ -124,7 +124,7 @@ export default function Uploader({
                         />
 
                         <div className="small-muted text-xs trust-note">
-Drag &amp; drop or click Select Image to upload</div>
+                               Drag &amp; drop or click Select Image to upload</div>
                     </div>
                 </div>
 
