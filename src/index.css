@@ -1288,6 +1288,7 @@ input[type="range"]:active::-moz-range-thumb {
   border: none;
   outline: none;
   background: transparent;
+  min-width: 0; /* allow text to truncate instead of pushing suffix */
 }
 
 
@@ -1308,6 +1309,9 @@ input[type="range"]:active::-moz-range-thumb {
   border-left: 1px solid rgba(15,23,42,0.12);
 
   white-space: nowrap;      /* ⬅ prevents wrap on tiny screens */
+  flex-shrink: 0;   /* ✅ critical fix */
+   min-width: 44px; /* enough for "KB" comfortably */
+  justify-content: center;
 }
 @media (max-width: 640px) {
   .target-input-suffix {
