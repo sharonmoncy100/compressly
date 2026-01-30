@@ -251,7 +251,8 @@ html[data-theme="dark"] .primary-btn{
 }
 
 .primary-upload-btn{
-  box-shadow: 0 4px 12px rgba(11,102,209,0.28);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+
 }
 .primary-upload-btn:hover{
   background-color: #1d4ed8;
@@ -502,6 +503,23 @@ html[data-theme="dark"] .uploader:hover{
     padding-bottom: 18px; /* was 22px */
   }
 }
+/* Uploader primary instruction text */
+.uploader h3 {
+  font-family: var(--font-sans);
+  font-weight: 500;          /* was default 600-ish feeling */
+  letter-spacing: -0.01em;   /* subtle SaaS polish */
+  color: var(--fg);
+}
+
+/* Uploader helper / drop text */
+.uploader .small-muted,
+.uploader .trust-note {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: 0;         /* keep neutral */
+  color: var(--muted);
+}
+
 /* Highlight ONLY when dragging files */
 .uploader.drag-active{
   background: rgba(37,99,235,0.04); /* very subtle */
@@ -528,14 +546,25 @@ html[data-theme="dark"] .uploader.drag-active{
 }
 
 
-/* stronger style for Output dropdown */
+/* Output dropdown – calm, secondary control */
 .fancy-select--strong{
-  border-color: rgba(15,23,42,0.12);
-  box-shadow: 0 6px 20px rgba(15,23,42,0.06);
+  border-color: rgba(15,23,42,0.16);
+  box-shadow: none;
 }
+
 .fancy-select--strong:hover{
-  box-shadow: 0 10px 28px rgba(15,23,42,0.10);
+  border-color: rgba(15,23,42,0.28);
+  box-shadow: none;
 }
+html[data-theme="dark"] .fancy-select--strong{
+  border-color: rgba(148,163,184,0.35);
+}
+
+html[data-theme="dark"] .fancy-select--strong:hover{
+  border-color: rgba(148,163,184,0.55);
+  background: rgba(148,163,184,0.06);
+}
+
 
 
 html[data-theme="dark"] .fancy-select{
@@ -561,6 +590,8 @@ html[data-theme="dark"] .fancy-select{
   caret-color: var(--select-text);
   line-height:1.25;
   transition: box-shadow .12s;
+  letter-spacing: -0.005em;      /* subtle tightening */
+  font-family: var(--font-sans);
 }
 .fancy-select__native:focus{
   outline:none;
@@ -580,6 +611,7 @@ html[data-theme="dark"] .fancy-select{
   font-weight: 500;
   line-height: 1.4;
   color: var(--fg);
+   font-family: var(--font-sans);
 }
 
 html[data-theme="dark"] .fancy-select__native option {
@@ -1020,14 +1052,15 @@ html[data-theme="dark"] .header-wrap{
   width:36px;
   height:36px;
   border-radius:999px;
-  border:1px solid rgba(148,163,184,0.3);
+  border: 1px solid rgba(15,23,42,0.12);
   display:flex;
   align-items:center;
   justify-content:center;
   background:linear-gradient(135deg,var(--surface-2) 0%,var(--surface) 100%);
   cursor:pointer;
   transition:background .2s ease, box-shadow .2s ease, transform .1s ease, border-color .2s ease;
-  box-shadow:0 4px 12px rgba(15,23,42,0.08);
+  box-shadow:none;
+  background: radial-gradient(circle at 0% 0%, rgba(255,255,255,0.9) 0%, rgba(243,244,246,0.9) 100%);
 }
 .theme-toggle-btn:hover{
   transform:translateY(-1px);
@@ -1041,9 +1074,15 @@ html[data-theme="dark"] .header-wrap{
   font-size:0.9rem;
 }
 html[data-theme="dark"] .theme-toggle-btn{
-  border-color:rgba(148,163,184,0.5);
-  box-shadow:0 6px 18px rgba(0,0,0,0.8);
-}/* ---- Quality slider: clean professional look ---- */
+  background: rgba(15,23,42,0.9);
+  border-color: rgba(148,163,184,0.3);
+  box-shadow: none;
+}
+
+html[data-theme="dark"] .theme-toggle-btn:hover{
+  background: rgba(30,41,59,1);
+}
+/* ---- Quality slider: clean professional look ---- */
 input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
@@ -1218,51 +1257,74 @@ input[type="range"]:active::-moz-range-thumb {
   box-shadow:0 0 0 1px rgba(37,99,235,0.35);
 }
 /* Target input with KB suffix */
+/* Target input wrapper – clearer, modern SaaS style */
 .target-input-wrap {
   display: flex;
   align-items: stretch;
   width: 100%;
   max-width: 360px;
-  height: 35px;              /* ✅ MATCHES BUTTON */
-  border: 1px solid #e5e7eb;
+  height: 35px;
+
   border-radius: 8px;
-  background: #ffffff;
+  border: 1px solid rgba(15,23,42,0.22);   /* 👈 clearer than before */
+  background: #ffffff;                     /* 👈 brighter than card */
+
   overflow: hidden;
+  transition: border-color 0.12s ease, box-shadow 0.12s ease;
 }
+
 
 
 .target-input-field {
   flex: 1;
-  min-width: 0; /* ✅ ANDROID FIX */
-  padding: 8px 10px;         /* ✅ vertically centered */
+  padding: 8px 10px;
+
+  font-family: var(--font-sans);
   font-size: 14px;
+  font-weight: 500;
+  color: var(--fg);        /* 👈 important */
+
   border: none;
   outline: none;
   background: transparent;
-  line-height: 35px;      /* vertically center text */
 }
+
 
 .target-input-field::placeholder {
   color: #9ca3af;
 }
 
 .target-input-suffix {
-  flex-shrink: 0; /* ✅ DO NOT let Android collapse KB */
   display: flex;
   align-items: center;
   padding: 0 12px;
+
   font-size: 13px;
   font-weight: 500;
   color: #6b7280;
+
   background: #f8fafc;
-  border-left: 1px solid #e5e7eb;
-  white-space: nowrap;
-  line-height: 1;   /* optional safety */
+  border-left: 1px solid rgba(15,23,42,0.08);
 }
+
 /* Focus state for Target KB input */
 .target-input-wrap:focus-within {
   border-color: #2563eb; /* same blue as Download button */
   box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+html[data-theme="dark"] .target-input-wrap {
+  background: #020617;
+  border-color: rgba(148,163,184,0.45);
+}
+
+html[data-theme="dark"] .target-input-wrap:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 2px rgba(37,99,235,0.2);
+}
+
+html[data-theme="dark"] .target-input-suffix {
+  background: rgba(15,23,42,0.6);
+  border-left-color: rgba(148,163,184,0.25);
 }
 
 
