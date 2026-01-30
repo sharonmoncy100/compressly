@@ -1,0 +1,145 @@
+[33md439252[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m put seo pages inside seo folder
+[33me9059f6[m added Compressly for heading near favicon
+[33m6820fb3[m btn improved
+[33me78eaac[m added new page
+[33maab9be2[m added good screen bg and font size
+[33m53c0434[m added rectangular btn
+[33mf4826e6[m fixed hifen
+[33m0c90a6b[m added more sections and texts
+[33m4c80443[m added finally touch
+[33ma5a4237[m fixed rename icon prob
+[33me78e249[m padding
+[33m1611fb8[m padding for rename
+[33m19c6cfc[m fixed padding of download, filename
+[33ma2ce15e[m fixed border inside img inside white
+[33m3f06897[m removed border for modasl
+[33mf1f896a[m good
+[33m38184c3[m fixed about text outside
+[33mf813813[m updated favicon to look big
+[33m2490679[m added new favicon-64
+[33ma4a4e50[m improved logo 64 and 128
+[33m366c5b5[m improved lcp all image
+[33m0533b74[m improved lcp
+[33mbcd1863[m lcp font improved
+[33mb1f79aa[m preload fix of font
+[33med08346[m added local fonts
+[33m91dc3c2[m added All image happens outside the box
+[33m0276c74[m removed text from upload box
+[33mab46902[m kb label increased height
+[33mcf97855[m kb label fix on phone
+[33m3478f85[m download ico, svg, esc and tab
+[33m88db415[m mob back button modal close
+[33me5a0b47[m add first time scroll cue anim
+[33m5bad62b[m addeed image comparison
+[33m6a12406[m added scroll down
+[33m5d5f38e[m added rename
+[33m3ed80ad[m added space for filename white
+[33mfdebb8b[m fixed processing space under it
+[33m25bff33[m added 2026 and styled drop box
+[33ma86337c[m removed white box
+[33m04a00a6[m added cross icons to the modal
+[33mb600dbb[m final
+[33mae6ea49[m added everything before modal
+[33m9c28d28[m improvd ui
+[33m01a7921[m added and improved ui and change image btn
+[33ma70e8af[m added meta
+[33m95a9160[m added
+[33m8de91b1[m added button enhancement
+[33m069d66e[m modified header and footer of all seo pages
+[33m719e110[m ggg
+[33mbc26499[m corrected pagespeed insights for footers of seo
+[33m3e41740[m re done footer for both desktop and vertical for mobile
+[33md119166[m added legal pages
+[33mcfb8645[m added contact.html
+[33mde97a4e[m modified header of the main page
+[33mc477b4f[m dddd
+[33m189dd73[m increased size of progress bar
+[33m6dface2[m left aligned
+[33madd21b3[m fixed screen reader access...
+[33m1e3ad22[m addded space for compress btn
+[33me484f04[m quality slider bug fixed
+[33m8897901[m Quick help and a line added in faq
+[33m3f5e7ed[m saved all
+[33m2a99f1c[m ssss
+[33m48eadc8[m improved slider working
+[33mce67e68[m slider works now
+[33m7a67dde[m added new
+[33m4cd6c28[m new logic
+[33m6a3583e[m addede slide sync
+[33m36bf2e3[m improved progress bar
+[33m4aef28f[m added new TNPSC page
+[33m2066c11[m added nice jpeg saturation
+[33mbb8826e[m improved clarity by reducing pixels
+[33me156d3f[m improved blur and clarity
+[33me21eea3[m added png for text and logo
+[33m740a155[m added Original and Compressed label
+[33ma165c7f[m dddd
+[33m2091d14[m added 2 pages
+[33m82f80ff[m increased font size
+[33m5089580[m added new page 30kb
+[33md7ce98f[m added compressly text near logo
+[33mbbd2b85[m updated speed insights code
+[33me7c7d2c[m trying
+[33mf538bab[m trigger redeploy for speed insights
+[33m1004ef9[m updated speed insights
+[33m34e0a43[m just updated h1 to matvh same h1
+[33m7051f4c[m updated proper spacing for all
+[33me14a8cd[m added h1 and h2
+[33ma02b378[m uploader.jsx created
+[33m9971cd8[m splitted Header.jsx
+[33mc69b080[m box shadow reduced
+[33mb65a039[m updated dependencies
+[33mad7cc42[m updated both pages
+[33m8bce203[m added a new seva page
+[33mea70a74[m aupdated kerala-psc page
+[33m789395b[m hh
+[33m67b4613[m ddd
+[33m7192aa3[m updated passpt pg
+[33mfb4bc6d[m ff
+[33me31a91a[m added analytics
+[33m2224b1c[m added priavcy
+[33m60d3b56[m Add privacy page, footer link and sitemap entry
+[33m6b9cd73[m gggg
+[33me4c2524[m added
+[33m176112d[m added
+[33m9d7dc4a[m updated passpor
+[33m5a62837[m updated passport page
+[33meb6eb0e[m Add social passport og image
+[33mf862858[m Fix OG
+[33m12e53a9[m added moification in speedinsights
+[33m1283852[m added png
+[33m3ac3ab7[m new updated paint
+[33m52b837f[m updated index
+[33mf6e703c[m Add pages: 200KB, compress WebP, PSC & passport guide
+[33m020dd80[m Add pages: passport-size, exam-forms, convert-png-to-webp
+[33m3f259d5[m Add signature PNG and 50KB SEO pages
+[33m6306cdb[m fixed headings
+[33m42cf060[m fixed headings
+[33m97f75e9[m Add passport photo and Kerala PSC SEO pages
+[33mb48e0f6[m added new sitempa
+[33m8232301[m added Sitemap modification
+[33m8396e36[m added SEO pages
+[33m149c0a2[m optimized compressor
+[33m97ea74b[m optimized compressor
+[33mf8f6174[m optimized compressor
+[33m9a9197c[m fixed space for quick help
+[33mbd5a3a3[m added speed insights
+[33m6b2428b[m added about compressly
+[33m7bb8a24[m added about compressly
+[33m6483b27[m added small preview final image
+[33me469087[m added white mode
+[33mf7c7a0e[m added white mode
+[33m27efd7e[m added dark mode
+[33mfc75094[m added dark mode
+[33m4bc53bc[m added more button and text beauty
+[33mb302f7d[m Add Vercel Analytics (Analytics root component)
+[33m8c630e9[m[33m ([m[1;31morigin/backup-before-routing[m[33m, [m[1;31morigin/backup-before-router[m[33m, [m[1;32mbackup-before-routing[m[33m, [m[1;32mbackup-before-router[m[33m)[m added favicon.ico
+[33m3a6bf6e[m Add favicon
+[33mb94a8c7[m Latest UI fixes + output format bug fix
+[33mc329386[m Add permanent redirect root -> www for SEO
+[33md04cdad[m Move sitemap and robots to public root
+[33m6f14e91[m Latest UI fixes + output format bug fix
+[33m0f8a1a7[m added og-image and keywords in index
+[33m147f542[m Latest UI fixes + output format bug fixed
+[33m0b6f360[m Latest UI fixes + output format bug fix
+[33m07b109a[m Initial commit
