@@ -1299,7 +1299,7 @@ input[type="range"]:active::-moz-range-thumb {
 .target-input-suffix {
   display: flex;
   align-items: center;
-  padding: 0 12px;
+  padding: 0 10px;
 
   font-size: 13.5px;        /* ⬅ slightly bigger */
   font-weight: 600;         /* ⬅ clearer unit */
@@ -1310,14 +1310,16 @@ input[type="range"]:active::-moz-range-thumb {
 
   white-space: nowrap;      /* ⬅ prevents wrap on tiny screens */
   flex-shrink: 0;   /* ✅ critical fix */
-   min-width: 44px; /* enough for "KB" comfortably */
+   min-width: auto; /* prevent shrinking */
   justify-content: center;
 }
 @media (max-width: 640px) {
   .target-input-suffix {
-    font-size: 14px;        /* ⬅ mobile readability */
+    font-size: 13px;        /* ⬅ mobile readability */
     color: #1f2937;         /* ⬅ stronger contrast */
     background: #e5e7eb;    /* ⬅ visible unit block */
+    padding: 0 8px;
+    
   }
 }
 
