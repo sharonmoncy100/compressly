@@ -163,13 +163,14 @@ html[data-theme="dark"] .frost{
 }
 
 .trust-note {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   color: #4b5563;
   margin-top: 0.2rem;
   margin-bottom: 0.4rem;
   line-height: 1.4;
   max-width: 640px;
-
+  font-weight: 400;           /* keep neutral */
+  letter-spacing: -0.005em;   /* ⬅ Inter polish */
 }
 
 
@@ -1299,13 +1300,24 @@ input[type="range"]:active::-moz-range-thumb {
   align-items: center;
   padding: 0 12px;
 
-  font-size: 13px;
-  font-weight: 500;
-  color: #6b7280;
+  font-size: 13.5px;        /* ⬅ slightly bigger */
+  font-weight: 600;         /* ⬅ clearer unit */
+  color: #374151;           /* ⬅ stronger than muted */
 
-  background: #f8fafc;
-  border-left: 1px solid rgba(15,23,42,0.08);
+  background: #f1f5f9;      /* ⬅ visible but neutral */
+  border-left: 1px solid rgba(15,23,42,0.12);
+
+  white-space: nowrap;      /* ⬅ prevents wrap on tiny screens */
 }
+@media (max-width: 640px) {
+  .target-input-suffix {
+    font-size: 14px;        /* ⬅ mobile readability */
+    color: #1f2937;         /* ⬅ stronger contrast */
+    background: #e5e7eb;    /* ⬅ visible unit block */
+  }
+}
+
+
 
 /* Focus state for Target KB input */
 .target-input-wrap:focus-within {
@@ -1323,9 +1335,11 @@ html[data-theme="dark"] .target-input-wrap:focus-within {
 }
 
 html[data-theme="dark"] .target-input-suffix {
-  background: rgba(15,23,42,0.6);
-  border-left-color: rgba(148,163,184,0.25);
+  background: rgba(15,23,42,0.85);  /* ⬅ stronger surface */
+  color: #e5e7eb;                   /* ⬅ readable */
+  border-left-color: rgba(148,163,184,0.35);
 }
+
 
 
 .chip-action{
