@@ -89,14 +89,28 @@
         }
 
         .cta {
-            display: inline-block;
-            padding: 10px 14px;
-            background: #4f46e5;
-            color: white;
-            border-radius: 8px;
-            text-decoration: none;
-            margin-top: 14px;
-        }
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 12px 20px;
+        background: linear-gradient(135deg, #0b66d1 0%, #0952a5 100%);
+        color: white;
+        border-radius: 10px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 15px;
+        box-shadow: 0 4px 12px rgba(11, 102, 209, 0.25);
+        transition: all 0.2s ease;
+    }
+
+    .cta:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(11, 102, 209, 0.35);
+    }
+
+    .cta:active {
+        transform: translateY(0);
+    }
 
         /* ===== Footer (edge to edge) ===== */
         .page-footer {
@@ -150,6 +164,10 @@
             your browser, so your photo never gets uploaded to any server.
         </p>
 
+        <a class="cta" href="https://www.compressly.in" style="margin-top: 16px; margin-bottom: 20px;">
+            Compress image to 100 KB now →
+        </a>
+
         <h2>How to compress an image to 100 KB</h2>
         <ol>
             <li>Open Compressly (Home).</li>
@@ -169,8 +187,6 @@
             <li>10th, 12th, degree, PG entrance exam forms</li>
             <li>Private job application portals</li>
         </ul>
-
-        <a class="cta" href="https://www.compressly.in">Compress to 100 KB now</a>
 
         <h2>Tips to get perfect 100 KB results</h2>
         <ul>
