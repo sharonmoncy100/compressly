@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K9Z1H2JLZQ', { anonymize_ip: true });
+
+        gtag('event', 'psc_tool_opened', { page: 'psc-photo-tool' });
+    </script>
+
+    <title>Kerala PSC Photo Preparation Tool – Resize & Compress | Compressly</title>
+
+    <meta name="description"
+        content="Prepare your Kerala PSC (KPSC Thulasi) photo easily. Resize to correct dimensions, add name/date stamp, and compress to 30 KB or 100 KB. Works fully in your browser." />
+
+    <link rel="canonical" href="https://www.compressly.in/psc-photo-tool.html" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --fg: #0f1724;
+            --muted: #475569;
+            --accent: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: rgba(15, 23, 42, .08);
+            font-family: Inter, system-ui, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: #fff;
+            border-bottom: 1px solid var(--border);
+            padding: 14px 16px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 700;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        .wrap {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 16px;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .breadcrumb a {
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .breadcrumb span {
+            margin: 0 6px;
+            color: #94a3b8;
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        h1 {
+            font-size: 22px;
+            margin: 0 0 6px;
+        }
+
+        .trust {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        label {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 11px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .file-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 16px;
+            border-radius: 10px;
+            background: #2563eb;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .file-name {
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .row {
+            display: flex;
+            gap: 10px;
+        }
+
+        .row>div {
+            flex: 1;
+        }
+
+        @media(max-width:480px) {
+            .row {
+                flex-direction: column;
+            }
+        }
+
+        .preset-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+
+        .preset {
+            padding: 8px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        .preset.active {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+        }
+
+        .toggle {
+            font-size: 14px;
+            color: var(--accent);
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        button {
+            margin-top: 14px;
+            width: 100%;
+            padding: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .result {
+            display: none;
+            text-align: center;
+        }
+
+        .preview {
+            max-width: 140px;
+            margin: 10px auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .promo {
+            background: #f1f5f9;
+            text-align: center;
+        }
+
+        .promo a {
+            color: #2563eb;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            padding: 18px 0;
+            border-top: 1px solid var(--border);
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <a href="/" class="brand">
+            <img src="/icon.png" width="32" height="32" alt="Compressly logo">
+            <span>Compressly</span>
+        </a>
+    </header>
+
+    <main>
+        <div class="wrap">
+
+            <nav class="breadcrumb">
+                <a href="/">Home</a>
+                <span>›</span>
+                <span>Kerala PSC Photo Tool</span>
+            </nav>
+
+            <div class="card">
+                <h1>Kerala PSC Photo Preparation Tool</h1>
+                <div class="trust">
+                    Resize, compress, and prepare your KPSC Thulasi photo. All processing happens locally in your
+                    browser.
+                </div>
+            </div>
+
+            <div class="card">
+                <label>Upload your photo</label>
+                <label class="file-btn">
+                    Choose photo
+                    <input type="file" id="fileInput" accept="image/*">
+                </label>
+                <div id="fileName" class="file-name"></div>
+
+                <div style="margin-top:12px">
+                    <label>Photo dimensions (pixels)</label>
+                    <div class="row">
+                        <div><input type="number" id="width" value="350"></div>
+                        <div><input type="number" id="height" value="450"></div>
+                    </div>
+                </div>
+
+                <div style="margin-top:12px">
+                    <label>Target file size</label>
+                    <div class="preset-row">
+                        <div class="preset" data-kb="30">30 KB</div>
+                        <div class="preset active" data-kb="100">100 KB</div>
+                    </div>
+                </div>
+
+                <div class="toggle" id="toggleStamp">+ Add name & date stamp (optional)</div>
+
+                <div id="stampFields" style="display:none;margin-top:10px">
+                    <div class="row">
+                        <div>
+                            <label>Name</label>
+                            <input type="text" id="stampName" placeholder="Your name">
+                        </div>
+                        <div>
+                            <label>Date</label>
+                            <input type="date" id="stampDate">
+                        </div>
+                    </div>
+                </div>
+
+                <button id="processBtn" disabled>Prepare PSC Photo</button>
+            </div>
+
+            <div class="card result" id="resultCard">
+                <h2 style="font-size:18px">Your PSC photo is ready</h2>
+                <img id="preview" class="preview">
+                <div id="meta" class="trust"></div>
+                <a id="download" download>
+                    <button>Download Photo</button>
+                </a>
+            </div>
+
+            <div class="card promo">
+                <p style="margin:0 0 8px;font-size:14px;color:#475569">
+                    Need to compress other images or formats?
+                </p>
+                <a href="/" id="promoLink">Go to Compressly Image Compressor →</a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer>
+        © 2026 Compressly · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a>
+    </footer>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const processBtn = document.getElementById('processBtn');
+        const presets = document.querySelectorAll('.preset');
+        const toggleStamp = document.getElementById('toggleStamp');
+        const stampFields = document.getElementById('stampFields');
+        const fileNameEl = document.getElementById('fileName');
+        const stampDate = document.getElementById('stampDate');
+        const stampName = document.getElementById('stampName');
+
+        let targetKB = 100;
+        let stampEnabled = false;
+
+        stampDate.valueAsDate = new Date();
+
+        presets.forEach(p => {
+            p.onclick = () => {
+                presets.forEach(x => x.classList.remove('active'));
+                p.classList.add('active');
+                targetKB = Number(p.dataset.kb);
+            };
+        });
+
+        toggleStamp.onclick = () => {
+            stampEnabled = !stampEnabled;
+            stampFields.style.display = stampEnabled ? 'block' : 'none';
+        };
+
+        fileInput.onchange = () => {
+            if (fileInput.files.length) {
+                fileNameEl.textContent = fileInput.files[0].name;
+                processBtn.disabled = false;
+            }
+        };
+
+        processBtn.onclick = async () => {
+            const file = fileInput.files[0];
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await img.decode();
+
+            const w = Number(width.value);
+            const h = Number(height.value);
+
+            const canvas = document.createElement('canvas');
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext('2d');
+
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(img, 0, 0, w, h);
+
+            if (stampEnabled) {
+                const name = stampName.value.trim();
+                const date = stampDate.value;
+                if (name || date) {
+                    const text = [
+                        name,
+                        date ? new Date(date).toLocaleDateString('en-GB').replace(/\//g, '-') : ''
+                    ].filter(Boolean).join(' · ');
+
+                    const fontSize = Math.max(14, Math.round(w * 0.04));
+                    ctx.font = `bold ${fontSize}px Arial`;
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+
+                    const padding = 6;
+                    const textWidth = ctx.measureText(text).width;
+                    const x = w / 2;
+                    const y = h - 6;
+
+                    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+                    ctx.fillRect(
+                        x - textWidth / 2 - padding,
+                        y - fontSize - padding,
+                        textWidth + padding * 2,
+                        fontSize + padding
+                    );
+
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillText(text, x, y);
+                }
+            }
+
+            let quality = 0.9, blob;
+            do {
+                blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', quality));
+                quality -= 0.05;
+            } while (blob.size / 1024 > targetKB && quality > 0.35);
+
+            const url = URL.createObjectURL(blob);
+            preview.src = url;
+            download.href = url;
+            download.download = `psc-photo-${w}x${h}-${targetKB}kb.jpg`;
+
+            meta.textContent = `Final size: ${Math.round(blob.size / 1024)} KB · ${w}×${h}px`;
+            resultCard.style.display = 'block';
+            resultCard.scrollIntoView({ behavior: 'smooth' });
+
+            gtag('event', 'psc_photo_prepared', { target_kb: targetKB });
+        };
+
+        download.onclick = () => gtag('event', 'psc_download_clicked');
+        promoLink.onclick = () => gtag('event', 'go_to_compressly_clicked');
+    </script>
+
+</body>
+
+</html>
