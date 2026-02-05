@@ -527,20 +527,18 @@
 
                     ctx.fillStyle = '#000';
                     ctx.textAlign = 'center';
-                    ctx.textBaseline = 'top';
+                    ctx.textBaseline = 'middle';
 
 
-                    let y = h - stripH + padding;
-                    lines.forEach(t => {
+                    let y = h - stripH + padding + (lineHeight / 2);
+                   lines.forEach(t => {
                         let fs = fontBase;
                         do {
-                            ctx.font = `${fs}px Arial`;
+                           ctx.font = `bold ${fs}px Tahoma, Arial, sans-serif`;
                             fs--;
                         } while (ctx.measureText(t).width > w - 8 && fs > 6);
-                       ctx.lineWidth = 0.6;          // 👈 subtle, don’t increase beyond 0.8
-                        ctx.strokeStyle = '#000';
-                        ctx.strokeText(t, w / 2, y);
 
+                        // Remove stroke completely for cleaner look
                         ctx.fillStyle = '#000';
                         ctx.fillText(t, w / 2, y);
 
