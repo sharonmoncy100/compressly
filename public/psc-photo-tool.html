@@ -443,6 +443,41 @@
                 processBtn.disabled = false;
             }
         };
+        function stepDownResize(img, targetW, targetH) {
+                let srcCanvas = document.createElement('canvas');
+                let srcCtx = srcCanvas.getContext('2d');
+
+                srcCanvas.width = img.width;
+                srcCanvas.height = img.height;
+                srcCtx.drawImage(img, 0, 0);
+
+                while (srcCanvas.width * 0.5 > targetW) {
+                    const tmpCanvas = document.createElement('canvas');
+                    tmpCanvas.width = Math.max(targetW, Math.round(srcCanvas.width * 0.5));
+                    tmpCanvas.height = Math.max(targetH, Math.round(srcCanvas.height * 0.5));
+
+                    const tmpCtx = tmpCanvas.getContext('2d');
+                    tmpCtx.imageSmoothingEnabled = true;
+                    tmpCtx.imageSmoothingQuality = 'high';
+                    tmpCtx.drawImage(srcCanvas, 0, 0, tmpCanvas.width, tmpCanvas.height);
+
+                    srcCanvas = tmpCanvas;
+                    srcCtx = tmpCtx;
+                }
+            
+
+                const finalCanvas = document.createElement('canvas');
+                finalCanvas.width = targetW;
+                finalCanvas.height = targetH;
+                const finalCtx = finalCanvas.getContext('2d');
+                finalCtx.imageSmoothingEnabled = true;
+                finalCtx.imageSmoothingQuality = 'high';
+                
+                finalCtx.drawImage(srcCanvas, 0, 0, targetW, targetH);
+
+                return finalCanvas;
+            }
+
 
         processBtn.onclick = async () => {
             processBtn.disabled = true;
@@ -457,14 +492,11 @@
             const w = +width.value;
             const h = +height.value;
 
-            const canvas = document.createElement('canvas');
-            canvas.width = w;
-            canvas.height = h;
+         const resizedCanvas = stepDownResize(img, w, h);
+            const canvas = resizedCanvas;
             const ctx = canvas.getContext('2d');
 
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(img, 0, 0, w, h);
+            
 
             /* ✅ FIXED STAMP SCALING */
             if (stampEnabled) {
@@ -490,9 +522,13 @@
                     ctx.strokeStyle = '#cccccc';
                     ctx.strokeRect(0, h - stripH, w, stripH);
 
+                  ctx.save();
+                    ctx.translate(0.5, 0.5);
+
                     ctx.fillStyle = '#000';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'top';
+
 
                     let y = h - stripH + padding;
                     lines.forEach(t => {
@@ -504,6 +540,8 @@
                         ctx.fillText(t, w / 2, y);
                         y += lineHeight;
                     });
+                    ctx.restore();
+
                 }
             }
 
@@ -524,17 +562,25 @@
             processBtn.disabled = false;
         };
 
-        async function compressToTarget(canvas, minKB, maxKB) {
-            let qLow = 0.5, qHigh = 0.95, best = null;
+       async function compressToTarget(canvas, minKB, maxKB) {
+            let qLow = 0.75, qHigh = 0.98;
+            let best = null;
+
             for (let i = 0; i < 12; i++) {
                 const q = (qLow + qHigh) / 2;
                 const b = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
                 const kb = b.size / 1024;
+
                 if (kb >= minKB && kb <= maxKB) best = b;
-                if (kb > maxKB) qHigh = q; else qLow = q;
+                if (kb > maxKB) qHigh = q;
+                else qLow = q;
             }
-            return best || await new Promise(r => canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2));
+
+            return best || await new Promise(r =>
+                canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2)
+            );
         }
+
 
         
     </script>
