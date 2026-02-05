@@ -511,7 +511,7 @@
                 const lines = [name, dateStr].filter(Boolean);
                 if (lines.length) {
                    const fontBase = Math.max(8, Math.min(13, Math.round(h * 0.06)));
-                    const lineHeight = Math.round(fontBase * 1.05);
+                    const lineHeight = Math.round(fontBase * 1.18);
                     const padding = Math.round(fontBase * 0.35);
 
                     const stripH = lines.length * lineHeight + padding * 2;
@@ -537,7 +537,13 @@
                             ctx.font = `${fs}px Arial`;
                             fs--;
                         } while (ctx.measureText(t).width > w - 8 && fs > 6);
+                       ctx.lineWidth = 0.6;          // 👈 subtle, don’t increase beyond 0.8
+                        ctx.strokeStyle = '#000';
+                        ctx.strokeText(t, w / 2, y);
+
+                        ctx.fillStyle = '#000';
                         ctx.fillText(t, w / 2, y);
+
                         y += lineHeight;
                     });
                     ctx.restore();
