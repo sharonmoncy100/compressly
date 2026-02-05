@@ -304,7 +304,7 @@
                 <h1>Kerala PSC Photo Preparation Tool</h1>
                 <div class="trust">
                     Prepare your Kerala PSC (KPSC Thulasi) photo exactly as required. Resize to official dimensions, add
-                    a clean name and date stamp, and compress to the correct file size – all securely in your browser.
+                    a clean name and date stamp, and compress to the correct file size - all securely in your browser.
                 </div>
             </div>
 
@@ -314,6 +314,8 @@
                     Choose photo
                     <input type="file" id="fileInput" accept="image/*">
                 </label>
+            
+
                 <div id="fileName" class="file-name"></div>
 
                 <div style="margin-top:16px">
@@ -470,14 +472,16 @@
                 let dateStr = '';
                 if (stampDate.value) {
                     const d = new Date(stampDate.value);
-                    dateStr = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
+                   dateStr = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
+
                 }
 
                 const lines = [name, dateStr].filter(Boolean);
                 if (lines.length) {
-                    const fontBase = Math.max(8, Math.min(16, Math.round(h * 0.07)));
-                    const lineHeight = Math.round(fontBase * 1.15);
-                    const padding = Math.round(fontBase * 0.6);
+                   const fontBase = Math.max(8, Math.min(13, Math.round(h * 0.06)));
+                    const lineHeight = Math.round(fontBase * 1.05);
+                    const padding = Math.round(fontBase * 0.35);
+
                     const stripH = lines.length * lineHeight + padding * 2;
 
                     ctx.fillStyle = '#ffffff';
@@ -494,7 +498,7 @@
                     lines.forEach(t => {
                         let fs = fontBase;
                         do {
-                            ctx.font = `bold ${fs}px Arial`;
+                            ctx.font = `${fs}px Arial`;
                             fs--;
                         } while (ctx.measureText(t).width > w - 8 && fs > 6);
                         ctx.fillText(t, w / 2, y);
@@ -531,6 +535,8 @@
             }
             return best || await new Promise(r => canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2));
         }
+
+        
     </script>
 
 </body>
