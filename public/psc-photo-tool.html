@@ -4,7 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-
+     
+    <!-- Disable GA on localhost -->
+    <script>
+        if (location.hostname === "localhost") {
+            window['ga-disable-G-K9Z1H2JLZQ'] = true;
+        }
+    </script>
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
     <script>
