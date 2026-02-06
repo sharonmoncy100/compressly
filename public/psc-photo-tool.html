@@ -244,7 +244,8 @@
             max-width: 170px;
             margin: 14px auto;
             border-radius: 8px;
-            border: 1px solid var(--border)
+            border: 1px solid var(--border);
+            image-rendering: pixelated;
         }
 
         footer {
@@ -472,11 +473,38 @@
                 const finalCtx = finalCanvas.getContext('2d');
                 finalCtx.imageSmoothingEnabled = true;
                 finalCtx.imageSmoothingQuality = 'high';
-                
+                finalCtx.setTransform(1, 0, 0, 1, 0, 0);
                 finalCtx.drawImage(srcCanvas, 0, 0, targetW, targetH);
 
                 return finalCanvas;
             }
+
+       function applyEdgeSharpen(ctx, w, h) {
+            const imgData = ctx.getImageData(0, 0, w, h);
+            const data = imgData.data;
+            const copy = new Uint8ClampedArray(data);
+
+            const strength = 0.25; // 🔒 PSC-safe, do NOT exceed 0.35
+
+            for (let y = 1; y < h - 1; y++) {
+                for (let x = 1; x < w - 1; x++) {
+                    const i = (y * w + x) * 4;
+
+                    for (let c = 0; c < 3; c++) {
+                        const current = copy[i + c];
+                        const avg =
+                            (copy[i + c - 4] + copy[i + c + 4] +
+                                copy[i + c - w * 4] + copy[i + c + w * 4]) / 4;
+
+                        let val = current + (current - avg) * strength;
+                        data[i + c] = Math.max(0, Math.min(255, val));
+                    }
+                }
+            }
+
+            ctx.putImageData(imgData, 0, 0);
+        }
+
 
 
         processBtn.onclick = async () => {
@@ -493,8 +521,13 @@
             const h = +height.value;
 
          const resizedCanvas = stepDownResize(img, w, h);
-            const canvas = resizedCanvas;
+           const canvas = resizedCanvas;
             const ctx = canvas.getContext('2d');
+
+            /* 🔍 RESTORE EDGE CLARITY (REAL SHARPEN) */
+            applyEdgeSharpen(ctx, w, h);
+
+
 
             
 
