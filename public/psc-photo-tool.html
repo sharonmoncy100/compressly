@@ -152,10 +152,17 @@
             display: none
         }
 
-        .file-name {
-            margin-top: 6px;
-            font-size: 13px;
-            color: var(--muted)
+            .file-name{
+        margin-top:6px;font-size:13px;color:var(--muted);
+        transition:all 0.3s ease;
+        }
+        .file-name.selected{
+        color:var(--fg);
+        font-weight:600;
+        background:#e0f2fe;
+        padding:8px 12px;
+        border-radius:6px;
+        border-left:3px solid #2563eb;
         }
 
         .row {
@@ -286,40 +293,39 @@
             margin-top: 16px
         }
 
-        .crop-wrapper {
-            background: #f1f5f9;
-            border-radius: 10px;
-            padding: 16px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+       .crop-wrapper {
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 24px;              /* ⬅ more space */
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
 
-        .crop-canvas-wrap {
-            position: relative;
-            display: inline-block;
-            max-width: 100%;
-            background: #000;
-            border-radius: 6px;
-            overflow: hidden;
-        }
+    .crop-canvas-wrap {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    background: #ffffff;        /* ⬅ real photo background */
+    border-radius: 8px;
+    padding: 0px;              /* ⬅ makes crop box feel inside */
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.06);
+}
+ #cropCanvas {
+    max-width: 100%;
+    border-radius: 6px;
+    display: block;
+    background: #ffffff;
+}
 
-        #cropCanvas {
-            max-width: 100%;
-            border-radius: 6px;
-            display: block;
-            opacity: 0.4;
-        }
-
-        .crop-box {
-            position: absolute;
-            border: 2px solid #2563eb;
-            background: transparent;
-            cursor: move;
-            pointer-events: auto;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
-            overflow: hidden;
-        }
+.crop-box {
+    position: absolute;
+    border: 2px solid #2563eb;
+    background: transparent;
+    cursor: move;
+    z-index: 5;
+    touch-action: none;
+}
 
         .crop-box-content {
             position: absolute;
@@ -435,13 +441,15 @@
             </div>
 
             <div class="card">
-                <label>Upload your photo</label>
-                <label class="file-btn">
-                    Choose photo
-                    <input type="file" id="fileInput" accept="image/*">
-                </label>
+                <div id="uploadSection">
+                    <label id="uploadLabel">Upload your photo</label>
+                    <label class="file-btn" id="chooseBtn">
+                        Choose photo
+                        <input type="file" id="fileInput" accept="image/*">
+                    </label>
+                    
+                </div>
                 <div id="fileName" class="file-name"></div>
-
                 <!-- CROP UI -->
                 <div class="crop-container" id="cropContainer">
                     <div class="crop-hint">
@@ -451,15 +459,17 @@
                     <div class="crop-wrapper">
                         <div class="crop-canvas-wrap" id="cropCanvasWrap">
                             <canvas id="cropCanvas"></canvas>
+                           
+
                             <div class="crop-box" id="cropBox">
-                                <canvas class="crop-box-content" id="cropBoxCanvas"></canvas>
+                                
                             </div>
                         </div>
                     </div>
 
                     <div class="zoom-control">
                         <div class="zoom-label">Zoom</div>
-                        <input type="range" class="zoom-slider" id="zoomRange" min="1" max="2.5" step="0.01" value="1">
+                        <input type="range" class="zoom-slider" id="zoomRange" min="0.5" max="2.5" step="0.01" value="0.8">
                     </div>
 
                     <div class="crop-actions">
@@ -577,10 +587,14 @@
         const stampFields = document.getElementById('stampFields');
         const stampName = document.getElementById('stampName');
         const stampDate = document.getElementById('stampDate');
+        const uploadSection = document.getElementById('uploadSection');
+            const chooseBtn = document.getElementById('chooseBtn');
+            const uploadLabel = document.getElementById('uploadLabel');
 
         let originalImage = null, croppedImage = null;
-        let zoom = 1, targetKB = 30, stampEnabled = false;
+        let zoom = 0.8, targetKB = 30, stampEnabled = false;
         let canvasWidth = 0, canvasHeight = 0, imageOffsetX = 0, imageOffsetY = 0;
+            let selectedFileName = '';
 
         stampDate.valueAsDate = new Date();
 
@@ -598,9 +612,21 @@
             toggleStamp.textContent = stampEnabled ? '- Remove name & date stamp' : '+ Add name & date stamp (optional)';
         };
 
-        fileInput.onchange = async () => {
+     fileInput.onchange = async () => {
             if (!fileInput.files.length) return;
-            fileNameEl.textContent = fileInput.files[0].name;
+
+            selectedFileName = fileInput.files[0].name;
+            uploadSection.style.display = 'none'; // 👈 HIDE upload UI
+
+            fileNameEl.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24"
+             xmlns="http://www.w3.org/2000/svg"
+             style="vertical-align:-2px;margin-right:6px;fill:#2563eb">
+          <path d="M3 6c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6z"/>
+        </svg>
+        ${selectedFileName}
+    `;
+            fileNameEl.classList.add('selected');
             processBtn.disabled = false;
 
             const img = new Image();
@@ -609,14 +635,14 @@
             originalImage = img;
             showCrop(img);
 
-            // Reset file input to allow same file selection
-            fileInput.value = '';
+            fileInput.value = ''; // safe now
         };
 
         function showCrop(img) {
+            const aspect = 150 / 200; // PSC required aspect ratio
+             const maxBoxScale = 0.72;      // ✅ ADD THIS LINE
             cropContainer.style.display = 'block';
             mainControls.style.display = 'none';
-
             const maxW = Math.min(600, window.innerWidth - 80);
             const imgAspect = img.width / img.height;
             let canvasW = maxW;
@@ -634,56 +660,52 @@
             cropCanvas.height = canvasH;
 
             const ctx = cropCanvas.getContext('2d');
+           
 
             function redraw() {
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
                 const dw = canvasWidth * zoom;
                 const dh = canvasHeight * zoom;
+
                 imageOffsetX = (canvasWidth - dw) / 2;
                 imageOffsetY = (canvasHeight - dh) / 2;
+
                 ctx.drawImage(img, imageOffsetX, imageOffsetY, dw, dh);
-                updateCropBoxContent();
+
+                // Clamp crop box safely (desktop + mobile)
+                const maxL = canvasWidth - cropBox.offsetWidth;
+                const maxT = canvasHeight - cropBox.offsetHeight;
+
+                cropBox.style.left =
+                    Math.max(0, Math.min(parseFloat(cropBox.style.left), maxL)) + 'px';
+                cropBox.style.top =
+                    Math.max(0, Math.min(parseFloat(cropBox.style.top), maxT)) + 'px';
             }
+           
 
-            function updateCropBoxContent() {
-                const boxW = parseFloat(cropBox.style.width);
-                const boxH = parseFloat(cropBox.style.height);
-                const boxL = parseFloat(cropBox.style.left);
-                const boxT = parseFloat(cropBox.style.top);
-
-                cropBoxCanvas.width = boxW;
-                cropBoxCanvas.height = boxH;
-
-                const boxCtx = cropBoxCanvas.getContext('2d');
-                boxCtx.clearRect(0, 0, boxW, boxH);
-
-                const dw = canvasWidth * zoom;
-                const dh = canvasHeight * zoom;
-
-                boxCtx.drawImage(
-                    img,
-                    0, 0, img.width, img.height,
-                    imageOffsetX - boxL, imageOffsetY - boxT, dw, dh
-                );
-            }
 
             redraw();
 
             zoomRange.oninput = e => { zoom = +e.target.value; redraw(); };
 
-            const aspect = 150 / 200;
-            let bw = canvasWidth * 0.6;
-            let bh = bw / aspect;
-            if (bh > canvasHeight * 0.8) {
-                bh = canvasHeight * 0.8;
+         // PSC-friendly crop box (slightly smaller to allow free movement)
+            
+            let bw, bh;
+
+            if (canvasWidth / canvasHeight > aspect) {
+                bh = canvasHeight * maxBoxScale;
                 bw = bh * aspect;
+            } else {
+                bw = canvasWidth * maxBoxScale;
+                bh = bw / aspect;
             }
+
             cropBox.style.width = bw + 'px';
             cropBox.style.height = bh + 'px';
             cropBox.style.left = (canvasWidth - bw) / 2 + 'px';
             cropBox.style.top = (canvasHeight - bh) / 2 + 'px';
 
-            updateCropBoxContent();
             enableDrag(redraw);
         }
 
@@ -716,13 +738,20 @@
         }
 
         applyCrop.onclick = () => {
+            mainControls.style.display = 'block';
+          const rect = cropCanvas.getBoundingClientRect();
+
+            // how much CSS is scaling the canvas
+            const scaleCanvasX = canvasWidth / rect.width;
+            const scaleCanvasY = canvasHeight / rect.height;
+
             const scaleX = originalImage.width / (canvasWidth * zoom);
             const scaleY = originalImage.height / (canvasHeight * zoom);
 
-            const boxL = parseFloat(cropBox.style.left);
-            const boxT = parseFloat(cropBox.style.top);
-            const boxW = parseFloat(cropBox.style.width);
-            const boxH = parseFloat(cropBox.style.height);
+            const boxL = parseFloat(cropBox.style.left) * scaleCanvasX;
+            const boxT = parseFloat(cropBox.style.top) * scaleCanvasY;
+            const boxW = parseFloat(cropBox.style.width) * scaleCanvasX;
+            const boxH = parseFloat(cropBox.style.height) * scaleCanvasY;
 
             const sx = (boxL - imageOffsetX) * scaleX;
             const sy = (boxT - imageOffsetY) * scaleY;
@@ -732,26 +761,37 @@
             const c = document.createElement('canvas');
             c.width = sw;
             c.height = sh;
-            const ctx = c.getContext('2d');
+           const ctx = c.getContext('2d');
+
+            /* 🔒 FORCE WHITE BACKGROUND (PSC SAFE) */
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, c.width, c.height);
+
             ctx.drawImage(originalImage, sx, sy, sw, sh, 0, 0, sw, sh);
 
+
             const img = new Image();
-            img.onload = () => {
+           img.onload = () => {
                 croppedImage = img;
                 cropContainer.style.display = 'none';
                 mainControls.style.display = 'block';
-                zoom = 1;
-                zoomRange.value = 1;
+                uploadSection.style.display = 'block'; // 👈 SHOW upload UI for potential second try
+                zoom = 0.8;
+                zoomRange.value = 0.8;
+               fileNameEl.textContent = '✅ ' + selectedFileName + ' (cropped)';
             };
             img.src = c.toDataURL('image/jpeg', 1);
         };
 
-        skipCrop.onclick = () => {
+     skipCrop.onclick = () => {
+     mainControls.style.display = 'block';
             croppedImage = originalImage;
             cropContainer.style.display = 'none';
             mainControls.style.display = 'block';
-            zoom = 1;
-            zoomRange.value = 1;
+            uploadSection.style.display = 'block'; // 👈 SHOW upload UI for potential second try
+            zoom = 0.8;
+            zoomRange.value = 0.8;
+           fileNameEl.textContent = '✅ ' + selectedFileName + ' (original - no crop)';
         };
 
         function stepDownResize(img, w, h) {
@@ -770,9 +810,12 @@
             let f = document.createElement('canvas');
             f.width = w; f.height = h;
             const fCtx = f.getContext('2d');
-            fCtx.imageSmoothingEnabled = true;
+           fCtx.imageSmoothingEnabled = true;
             fCtx.imageSmoothingQuality = 'high';
+            fCtx.fillStyle = '#ffffff';          // ✅ FIX
+            fCtx.fillRect(0, 0, w, h);            // ✅ FIX
             fCtx.drawImage(c, 0, 0, w, h);
+
             return f;
         }
 
@@ -871,12 +914,25 @@
             download.href = url;
             download.download = `psc-photo-${w}x${h}-${Math.round(blob.size / 1024)}kb.jpg`;
             meta.textContent = `Final size: ${Math.round(blob.size / 1024)} KB · ${w}×${h}px · JPEG`;
+            gtag('event', 'psc_photo_prepared', {
+                file_size: Math.round(blob.size / 1024),
+                dimensions: `${w}x${h}`,
+                target_kb: targetKB,
+                stamp_enabled: stampEnabled
+            });
 
             processing.style.display = 'none';
             document.getElementById('resultCard').style.display = 'block';
             document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
             processBtn.disabled = false;
         };
+        download.onclick = () => {
+                gtag('event', 'psc_photo_downloaded', {
+                    file_size: Math.round(preview.src ? parseInt(meta.textContent) : 0),
+                    target_kb: targetKB
+                });
+            };
+        </script>
     </script>
 
 </body>
