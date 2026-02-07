@@ -612,13 +612,13 @@
             toggleStamp.textContent = stampEnabled ? '- Remove name & date stamp' : '+ Add name & date stamp (optional)';
         };
 
-     fileInput.onchange = async () => {
-            if (!fileInput.files.length) return;
+   fileInput.onchange = async () => {
+        if (!fileInput.files.length) return;
 
-            selectedFileName = fileInput.files[0].name;
-            uploadSection.style.display = 'none'; // 👈 HIDE upload UI
+        selectedFileName = fileInput.files[0].name;
+        uploadSection.style.display = 'none';
 
-            fileNameEl.innerHTML = `
+        fileNameEl.innerHTML = `
         <svg width="16" height="16" viewBox="0 0 24 24"
              xmlns="http://www.w3.org/2000/svg"
              style="vertical-align:-2px;margin-right:6px;fill:#2563eb">
@@ -626,18 +626,73 @@
         </svg>
         ${selectedFileName}
     `;
-            fileNameEl.classList.add('selected');
-            processBtn.disabled = false;
+        fileNameEl.classList.add('selected');
+        processBtn.disabled = false;
 
-            const img = new Image();
-            img.src = URL.createObjectURL(fileInput.files[0]);
-            await img.decode();
+        // Show loading indicator
+        fileNameEl.innerHTML += ' <span style="color:#2563eb">(loading...)</span>';
+
+        const img = new Image();
+        img.src = URL.createObjectURL(fileInput.files[0]);
+        await img.decode();
+
+        // ✅ DOWNSAMPLE HUGE IMAGES BEFORE CROP (mobile safety)
+        const maxDimension = 2400; // Safe for mobile, still 16x bigger than final 150×200
+        if (img.width > maxDimension || img.height > maxDimension) {
+            const downsampled = await downsampleLargeImage(img, maxDimension);
+            originalImage = downsampled;
+        } else {
             originalImage = img;
-            showCrop(img);
+        }
 
-            fileInput.value = ''; // safe now
-        };
+        // Remove loading text
+        fileNameEl.innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24"
+             xmlns="http://www.w3.org/2000/svg"
+             style="vertical-align:-2px;margin-right:6px;fill:#2563eb">
+          <path d="M3 6c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6z"/>
+        </svg>
+        ${selectedFileName}
+    `;
 
+        showCrop(originalImage);
+        fileInput.value = '';
+    };
+        async function downsampleLargeImage(img, maxDim) {
+            let w = img.width;
+            let h = img.height;
+
+            // Calculate new dimensions
+            if (w > h) {
+                if (w > maxDim) {
+                    h = Math.round(h * (maxDim / w));
+                    w = maxDim;
+                }
+            } else {
+                if (h > maxDim) {
+                    w = Math.round(w * (maxDim / h));
+                    h = maxDim;
+                }
+            }
+
+            // Use step-down approach for quality
+            const c = document.createElement('canvas');
+            c.width = w;
+            c.height = h;
+            const ctx = c.getContext('2d');
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, w, h);
+            ctx.drawImage(img, 0, 0, w, h);
+
+            // Convert back to image
+            return new Promise((resolve) => {
+                const newImg = new Image();
+                newImg.onload = () => resolve(newImg);
+                newImg.src = c.toDataURL('image/jpeg', 0.95);
+            });
+        }
         function showCrop(img) {
             const aspect = 150 / 200; // PSC required aspect ratio
              const maxBoxScale = 0.72;      // ✅ ADD THIS LINE
