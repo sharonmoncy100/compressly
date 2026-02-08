@@ -664,7 +664,7 @@
         fileInput.value = '';
     };
 
-    async function downsampleLargeImage(img, maxDim) {
+  async function downsampleLargeImage(img, maxDim) {
         return new Promise((resolve) => {
             let w = img.width;
             let h = img.height;
@@ -688,7 +688,7 @@
                 const newImg = new Image();
                 newImg.onload = () => resolve(newImg);
                 newImg.src = URL.createObjectURL(blob);
-            }, 'image/jpeg', 0.92);
+            }, 'image/jpeg', 0.98); // ✅ CHANGED from 0.92 to 0.98
         });
     }
         function showCrop(img) {
@@ -872,17 +872,21 @@
             return f;
         }
 
-        function applyEdgeSharpen(ctx, w, h) {
+     function applyEdgeSharpen(ctx, w, h) {
             const imgData = ctx.getImageData(0, 0, w, h);
             const data = imgData.data;
             const copy = new Uint8ClampedArray(data);
-            const strength = 0.25;
+
+            // ✅ STRONGER sharpening for tiny PSC photos (150×200)
+            const strength = 0.45; // INCREASED from 0.25
+
             for (let y = 1; y < h - 1; y++) {
                 for (let x = 1; x < w - 1; x++) {
                     const i = (y * w + x) * 4;
                     for (let c = 0; c < 3; c++) {
                         const current = copy[i + c];
-                        const avg = (copy[i + c - 4] + copy[i + c + 4] + copy[i + c - w * 4] + copy[i + c + w * 4]) / 4;
+                        const avg = (copy[i + c - 4] + copy[i + c + 4] +
+                            copy[i + c - w * 4] + copy[i + c + w * 4]) / 4;
                         let val = current + (current - avg) * strength;
                         data[i + c] = Math.max(0, Math.min(255, val));
                     }
@@ -891,16 +895,29 @@
             ctx.putImageData(imgData, 0, 0);
         }
 
-        async function compressToTarget(canvas, minKB, maxKB) {
-            let qL = 0.75, qH = 0.98, best = null;
-            for (let i = 0; i < 12; i++) {
-                let q = (qL + qH) / 2;
-                let b = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
-                let kb = b.size / 1024;
-                if (kb >= minKB && kb <= maxKB) best = b;
-                if (kb > maxKB) qH = q; else qL = q;
+      async function compressToTarget(canvas, minKB, maxKB) {
+            let qLow = 0.88, qHigh = 0.99; // ✅ INCREASED from 0.75-0.98 to 0.88-0.99
+            let best = null;
+
+            for (let i = 0; i < 15; i++) { // ✅ More iterations for precision (was 12)
+                const q = (qLow + qHigh) / 2;
+                const b = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
+                const kb = b.size / 1024;
+
+                if (kb >= minKB && kb <= maxKB) {
+                    best = b;
+                    // Continue searching for better quality within range
+                    qLow = q;
+                } else if (kb > maxKB) {
+                    qHigh = q;
+                } else {
+                    qLow = q;
+                }
             }
-            return best || await new Promise(r => canvas.toBlob(r, 'image/jpeg', (qL + qH) / 2));
+
+            return best || await new Promise(r =>
+                canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2)
+            );
         }
 
         processBtn.onclick = async () => {
@@ -916,7 +933,9 @@
             const canvas = resizedCanvas;
             const ctx = canvas.getContext('2d');
 
+            // ✅ APPLY SHARPEN TWICE for ultra-crisp PSC photos
             applyEdgeSharpen(ctx, w, h);
+            applyEdgeSharpen(ctx, w, h); // Second pass for clarity
 
             if (stampEnabled) {
                 const name = stampName.value.trim().toUpperCase();
