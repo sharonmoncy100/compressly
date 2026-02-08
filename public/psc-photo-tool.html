@@ -452,9 +452,9 @@
                 <div id="fileName" class="file-name"></div>
                 <!-- CROP UI -->
                 <div class="crop-container" id="cropContainer">
-                    <div class="crop-hint">
-                        Adjust your photo (150×200 ratio) • Drag the box to reposition
-                    </div>
+                <div class="crop-hint" id="cropHint">
+                    Adjust your photo (150×200 ratio) • Drag the box to reposition
+                </div>
 
                     <div class="crop-wrapper">
                         <div class="crop-canvas-wrap" id="cropCanvasWrap">
@@ -495,13 +495,21 @@
                         </div>
                     </div>
 
-                    <div style="margin-top:16px">
-                        <label>Target file size</label>
-                        <div class="preset-row">
-                            <div class="preset active" data-kb="30">30 KB (PSC)</div>
-                            <div class="preset" data-kb="100">100 KB</div>
-                        </div>
+                <div style="margin-top:16px">
+                    <label>Photo type</label>
+                    <div class="preset-row">
+                        <div class="preset active photo-type" data-type="photo" data-w="150" data-h="200">Photo (150×200)</div>
+                        <div class="preset photo-type" data-type="signature" data-w="150" data-h="100">Signature (150×100)</div>
                     </div>
+                </div>
+                
+                <div style="margin-top:16px">
+                    <label>Target file size</label>
+                    <div class="preset-row">
+                        <div class="preset active file-size" data-kb="30">30 KB (PSC)</div>
+                        <div class="preset file-size" data-kb="100">100 KB</div>
+                    </div>
+                </div>
 
                     <div class="toggle" id="toggleStamp">+ Add name & date stamp (optional)</div>
 
@@ -592,17 +600,43 @@
             const uploadLabel = document.getElementById('uploadLabel');
 
         let originalImage = null, croppedImage = null;
-        let zoom = 0.8, targetKB = 30, stampEnabled = false;
-        let canvasWidth = 0, canvasHeight = 0, imageOffsetX = 0, imageOffsetY = 0;
+            let zoom = 0.8, targetKB = 30, stampEnabled = false;
+            let canvasWidth = 0, canvasHeight = 0, imageOffsetX = 0, imageOffsetY = 0;
             let selectedFileName = '';
+            let photoType = 'photo'; // 'photo' or 'signature'
+            let targetWidth = 150, targetHeight = 200; // Default photo dimensions
 
         stampDate.valueAsDate = new Date();
 
-        presets.forEach(p => {
+      // File size presets
+        document.querySelectorAll('.preset.file-size').forEach(p => {
             p.onclick = () => {
-                presets.forEach(x => x.classList.remove('active'));
+                document.querySelectorAll('.preset.file-size').forEach(x => x.classList.remove('active'));
                 p.classList.add('active');
                 targetKB = +p.dataset.kb;
+            }
+        });
+
+        // Photo type presets
+        document.querySelectorAll('.preset.photo-type').forEach(p => {
+            p.onclick = () => {
+                document.querySelectorAll('.preset.photo-type').forEach(x => x.classList.remove('active'));
+                p.classList.add('active');
+                photoType = p.dataset.type;
+                targetWidth = +p.dataset.w;
+                targetHeight = +p.dataset.h;
+
+                // Update dimension inputs
+                document.getElementById('width').value = targetWidth;
+                document.getElementById('height').value = targetHeight;
+               
+                // ✅ ADD THIS: Update crop hint text
+                updateCropHintText();
+
+                // If crop is showing, update crop box aspect ratio
+                if (cropContainer.style.display === 'block' && originalImage) {
+                    updateCropBoxAspect();
+                }
             }
         });
 
@@ -692,9 +726,10 @@
         });
     }
         function showCrop(img) {
-            const aspect = 150 / 200; // PSC required aspect ratio
-             const maxBoxScale = 0.72;      // ✅ ADD THIS LINE
+            const aspect = targetWidth / targetHeight; // ✅ Use current target dimensions
+            const maxBoxScale = 0.72;      // ✅ ADD THIS LINE
             cropContainer.style.display = 'block';
+            updateCropHintText(); // ✅ ADD THIS LINE
             mainControls.style.display = 'none';
             const maxW = Math.min(600, window.innerWidth - 80);
             const imgAspect = img.width / img.height;
@@ -744,25 +779,14 @@
 
          // PSC-friendly crop box (slightly smaller to allow free movement)
             
-            let bw, bh;
-
-            if (canvasWidth / canvasHeight > aspect) {
-                bh = canvasHeight * maxBoxScale;
-                bw = bh * aspect;
-            } else {
-                bw = canvasWidth * maxBoxScale;
-                bh = bw / aspect;
-            }
-
-            cropBox.style.width = bw + 'px';
-            cropBox.style.height = bh + 'px';
-            cropBox.style.left = (canvasWidth - bw) / 2 + 'px';
-            cropBox.style.top = (canvasHeight - bh) / 2 + 'px';
+          // Use updateCropBoxAspect function
+            updateCropBoxAspect();
 
             enableDrag(redraw);
         }
 
-        function enableDrag(redrawCallback) {
+        function enableDrag(redrawCallback) 
+        {
             let dragging = false, sx, sy, sl, st;
             cropBox.onmousedown = cropBox.ontouchstart = e => {
                 e.preventDefault();
@@ -789,6 +813,35 @@
             document.addEventListener('mouseup', end);
             document.addEventListener('touchend', end);
         }
+        // ✅ UPDATE CROP BOX SIZE BASED ON SELECTED PHOTO TYPE 
+        function updateCropBoxAspect() {
+                const aspect = targetWidth / targetHeight;
+                const maxBoxScale = 0.72;
+
+                let bw, bh;
+                if (canvasWidth / canvasHeight > aspect) {
+                    bh = canvasHeight * maxBoxScale;
+                    bw = bh * aspect;
+                } else {
+                    bw = canvasWidth * maxBoxScale;
+                    bh = bw / aspect;
+                }
+
+                cropBox.style.width = bw + 'px';
+                cropBox.style.height = bh + 'px';
+                cropBox.style.left = (canvasWidth - bw) / 2 + 'px';
+                cropBox.style.top = (canvasHeight - bh) / 2 + 'px';
+            }
+            // ✅ Update crop ends
+
+              function updateCropHintText() {
+                    const cropHint = document.getElementById('cropHint');
+                    if (photoType === 'signature') {
+                        cropHint.textContent = 'Adjust your signature (150×100 ratio) • Drag the box to reposition';
+                    } else {
+                        cropHint.textContent = 'Adjust your photo (150×200 ratio) • Drag the box to reposition';
+                    }
+                }
 
         applyCrop.onclick = () => {
             mainControls.style.display = 'block';
@@ -872,28 +925,31 @@
             return f;
         }
 
-     function applyEdgeSharpen(ctx, w, h) {
-            const imgData = ctx.getImageData(0, 0, w, h);
-            const data = imgData.data;
-            const copy = new Uint8ClampedArray(data);
+   function applyEdgeSharpen(ctx, w, h) {
+        const imgData = ctx.getImageData(0, 0, w, h);
+        const data = imgData.data;
+        const copy = new Uint8ClampedArray(data);
 
-            // ✅ STRONGER sharpening for tiny PSC photos (150×200)
-            const strength = 0.45; // INCREASED from 0.25
+        // ✅ ADAPTIVE sharpening: stronger for signatures (smaller height)
+        let strength = 0.45;
+        if (photoType === 'signature') {
+            strength = 0.65; // Extra sharp for tiny signatures
+        }
 
-            for (let y = 1; y < h - 1; y++) {
-                for (let x = 1; x < w - 1; x++) {
-                    const i = (y * w + x) * 4;
-                    for (let c = 0; c < 3; c++) {
-                        const current = copy[i + c];
-                        const avg = (copy[i + c - 4] + copy[i + c + 4] +
-                            copy[i + c - w * 4] + copy[i + c + w * 4]) / 4;
-                        let val = current + (current - avg) * strength;
-                        data[i + c] = Math.max(0, Math.min(255, val));
-                    }
+        for (let y = 1; y < h - 1; y++) {
+            for (let x = 1; x < w - 1; x++) {
+                const i = (y * w + x) * 4;
+                for (let c = 0; c < 3; c++) {
+                    const current = copy[i + c];
+                    const avg = (copy[i + c - 4] + copy[i + c + 4] +
+                        copy[i + c - w * 4] + copy[i + c + w * 4]) / 4;
+                    let val = current + (current - avg) * strength;
+                    data[i + c] = Math.max(0, Math.min(255, val));
                 }
             }
-            ctx.putImageData(imgData, 0, 0);
         }
+        ctx.putImageData(imgData, 0, 0);
+    }
 
       async function compressToTarget(canvas, minKB, maxKB) {
             let qLow = 0.88, qHigh = 0.99; // ✅ INCREASED from 0.75-0.98 to 0.88-0.99
@@ -929,13 +985,17 @@
             const w = +width.value;
             const h = +height.value;
 
+            // For signatures, apply triple sharpen for maximum clarity
+            const sharpenPasses = (photoType === 'signature') ? 3 : 2;
+
             const resizedCanvas = stepDownResize(croppedImage, w, h);
             const canvas = resizedCanvas;
             const ctx = canvas.getContext('2d');
 
-            // ✅ APPLY SHARPEN TWICE for ultra-crisp PSC photos
-            applyEdgeSharpen(ctx, w, h);
-            applyEdgeSharpen(ctx, w, h); // Second pass for clarity
+          // ✅ ADAPTIVE SHARPEN: 2x for photos, 3x for signatures
+            for (let i = 0; i < sharpenPasses; i++) {
+                applyEdgeSharpen(ctx, w, h);
+            }
 
             if (stampEnabled) {
                 const name = stampName.value.trim().toUpperCase();
@@ -984,7 +1044,8 @@
             const url = URL.createObjectURL(blob);
             preview.src = url;
             download.href = url;
-            download.download = `psc-photo-${w}x${h}-${Math.round(blob.size / 1024)}kb.jpg`;
+            const filePrefix = photoType === 'signature' ? 'psc-signature' : 'psc-photo';
+            download.download = `${filePrefix}-${w}x${h}-${Math.round(blob.size / 1024)}kb.jpg`;
             meta.textContent = `Final size: ${Math.round(blob.size / 1024)} KB · ${w}×${h}px · JPEG`;
             gtag('event', 'psc_photo_prepared', {
                 file_size: Math.round(blob.size / 1024),
