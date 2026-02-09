@@ -981,21 +981,26 @@
             enableDrag(redraw);
 
             // Ensure crop area and controls are visible on all devices
-            // Scroll the crop container to center and focus the primary action so mobile users don't have to scroll
+            // Scroll the crop canvas into slightly-above-center to keep controls visible but not push content too far down
             setTimeout(() => {
                 try {
-                    cropContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    const applyBtn = document.getElementById('applyCrop');
-                    if (applyBtn) applyBtn.focus({ preventScroll: false });
+                    const canvasEl = document.getElementById('cropCanvas');
+                    if (canvasEl) {
+                        const rect = canvasEl.getBoundingClientRect();
+                        const targetY = window.scrollY + rect.top - Math.round(window.innerHeight * 0.22);
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    } else {
+                        cropContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
                 } catch (e) {}
             }, 120);
         }
 
         function enableDrag(redrawCallback) 
         {
-            let dragging = false, draggingCandidate = false, sx, sy, sl, st;
+            let dragging = false, sx, sy, sl, st;
 
-            // Mouse (desktop) - immediate drag
+            // Desktop: start dragging on mousedown
             cropBox.onmousedown = e => {
                 e.preventDefault();
                 dragging = true;
@@ -1005,38 +1010,18 @@
                 st = parseFloat(cropBox.style.top);
             };
 
-            // Touch (mobile) - differentiate scroll vs drag
+            // Mobile: start dragging on touchstart (do not try to distinguish scroll)
             cropBox.ontouchstart = e => {
                 const touch = e.touches[0];
+                dragging = true;
                 sx = touch.clientX; sy = touch.clientY;
                 sl = parseFloat(cropBox.style.left);
                 st = parseFloat(cropBox.style.top);
-                draggingCandidate = true; // may become a drag depending on move
             };
 
             const move = e => {
-                const touch = e.touches ? e.touches[0] : e;
-
-                if (e.touches && draggingCandidate && !dragging) {
-                    const dx = Math.abs(touch.clientX - sx);
-                    const dy = Math.abs(touch.clientY - sy);
-                    // If horizontal movement dominates, start dragging and prevent page scroll
-                    if (dx > 10 && dx > dy) {
-                        dragging = true;
-                        draggingCandidate = false;
-                        e.preventDefault();
-                    }
-                    // If vertical movement dominates, treat as scroll - cancel candidate
-                    else if (dy > 10 && dy > dx) {
-                        draggingCandidate = false;
-                        return; // allow page to scroll
-                    } else {
-                        return; // not enough movement yet
-                    }
-                }
-
                 if (!dragging) return;
-
+                const touch = e.touches ? e.touches[0] : e;
                 let l = sl + (touch.clientX - sx);
                 let t = st + (touch.clientY - sy);
                 l = Math.max(0, Math.min(l, canvasWidth - cropBox.offsetWidth));
@@ -1046,10 +1031,10 @@
                 redrawCallback();
             };
 
-            const end = () => { dragging = false; draggingCandidate = false; };
+            const end = () => dragging = false;
 
             document.addEventListener('mousemove', move);
-            document.addEventListener('touchmove', move, { passive: false });
+            document.addEventListener('touchmove', move);
             document.addEventListener('mouseup', end);
             document.addEventListener('touchend', end);
         }
@@ -1125,10 +1110,17 @@
                 zoom = 0.8;
                 zoomRange.value = 0.8;
                 fileNameEl.textContent = '✅ ' + selectedFileName + ' (cropped)';
-                // Bring the prepare button into view so mobile users can act without scrolling
-                setTimeout(() => {
-                    try { document.getElementById('processBtn').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
-                }, 100);
+                    // Bring the prepare button into view so mobile users can act without scrolling
+                    setTimeout(() => {
+                        try {
+                            const btn = document.getElementById('processBtn');
+                            if (btn) {
+                                const r = btn.getBoundingClientRect();
+                                const targetY = window.scrollY + r.top - Math.round(window.innerHeight * 0.35);
+                                window.scrollTo({ top: targetY, behavior: 'smooth' });
+                            }
+                        } catch (e) {}
+                    }, 100);
             };
             // ✅ USE PNG to preserve quality until final export
             img.src = c.toDataURL('image/png');
@@ -1144,9 +1136,16 @@
             zoom = 0.8;
             zoomRange.value = 0.8;
            fileNameEl.textContent = '✅ ' + selectedFileName + ' (original - no crop)';
-            // Bring the prepare button into view on mobile
+            // Bring the prepare button into view on mobile (no focus)
             setTimeout(() => {
-                try { document.getElementById('processBtn').scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (e) {}
+                try {
+                    const btn = document.getElementById('processBtn');
+                    if (btn) {
+                        const r = btn.getBoundingClientRect();
+                        const targetY = window.scrollY + r.top - Math.round(window.innerHeight * 0.35);
+                        window.scrollTo({ top: targetY, behavior: 'smooth' });
+                    }
+                } catch (e) {}
             }, 100);
         };
 
