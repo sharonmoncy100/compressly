@@ -1037,9 +1037,19 @@
                 }
             }
 
-            let blob;
-            if (targetKB === 30) blob = await compressToTarget(canvas, 25, 30);
-            else blob = await compressToTarget(canvas, 95, 100);
+           let blob;
+            if (targetKB === 30) {
+                // ✅ SIGNATURE-AWARE COMPRESSION
+                if (photoType === 'signature') {
+                    // Signatures compress easily - aim for 22-30 KB (higher quality)
+                    blob = await compressToTarget(canvas, 22, 30);
+                } else {
+                    // Photos - standard 25-30 KB
+                    blob = await compressToTarget(canvas, 25, 30);
+                }
+            } else {
+                blob = await compressToTarget(canvas, 95, 100);
+            }
 
             const url = URL.createObjectURL(blob);
             preview.src = url;
