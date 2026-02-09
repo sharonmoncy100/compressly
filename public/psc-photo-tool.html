@@ -192,9 +192,9 @@
 
         .preset-row {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             flex-wrap: wrap;
-            margin-top: 6px
+            margin-top: 10px
         }
 
         .preset {
@@ -210,6 +210,117 @@
             background: var(--accent);
             color: #fff;
             border-color: var(--accent)
+        }
+
+        /* Modern card-based selection for photo type */
+        .photo-type-card {
+            display: flex;
+            align-items: center;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .photo-type-card:hover {
+            border-color: #cbd5e1;
+            background: #f9fafb;
+        }
+
+        .photo-type-card.active {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+        }
+
+        .photo-type-card input[type="radio"] {
+            margin: 0 12px 0 0;
+            cursor: pointer;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .photo-type-card-content {
+            flex: 1;
+        }
+
+        .photo-type-card-title {
+            font-weight: 600;
+            color: var(--fg);
+            margin-bottom: 2px;
+        }
+
+        .photo-type-card-desc {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .photo-type-card-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            margin-left: 12px;
+            flex-shrink: 0;
+        }
+
+        .photo-type-card.active .photo-type-card-icon {
+            color: var(--accent);
+        }
+
+        .photo-type-card-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .photo-type-card-row label.photo-type-card {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        /* File size card selection */
+        /* Compact file size selection buttons */
+        .file-size-btn {
+            padding: 8px 14px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 6px;
+            background: #fff;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            transition: all 0.2s ease;
+        }
+
+        .file-size-btn:hover {
+            border-color: #cbd5e1;
+            background: #f9fafb;
+        }
+
+        .file-size-btn.active {
+            border-color: var(--accent);
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .file-size-btn input[type="radio"] {
+            display: none;
+        }
+
+        .file-size-btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
         }
 
         .toggle {
@@ -442,27 +553,35 @@
 
     <div class="card">
         <!-- ✅ STEP 1: Choose type FIRST -->
-    <div style="margin-bottom:20px">
+    <div id="photoTypeSection" style="margin-bottom:20px">
         <label>What do you want to prepare?</label>
-        <div class="preset-row">
-            <div class="preset active photo-type" data-type="photo" data-w="150" data-h="200">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
-                    style="vertical-align:-2px;margin-right:4px">
-                    <path
-                        d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
-                </svg>
-                Photo (150×200)
-            </div>
-            <div class="preset photo-type" data-type="signature" data-w="150" data-h="100">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
-                    style="vertical-align:-2px;margin-right:4px">
-                    <path
-                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                </svg>
-                Signature (150×100)
-            </div>
+        <div class="photo-type-card-row">
+            <label class="photo-type-card active photo-type" data-type="photo" data-w="150" data-h="200">
+                <input type="radio" name="photo-type" value="photo" checked>
+                <div class="photo-type-card-content">
+                    <div class="photo-type-card-title">Passport Photo</div>
+                    <div class="photo-type-card-desc">150×200px for PSC applications</div>
+                </div>
+                <div class="photo-type-card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                    </svg>
+                </div>
+            </label>
+            <label class="photo-type-card photo-type" data-type="signature" data-w="150" data-h="100">
+                <input type="radio" name="photo-type" value="signature">
+                <div class="photo-type-card-content">
+                    <div class="photo-type-card-title">Signature</div>
+                    <div class="photo-type-card-desc">150×100px handwritten signature</div>
+                </div>
+                <div class="photo-type-card-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                    </svg>
+                </div>
+            </label>
         </div>
-        <div class="small-label" style="margin-top:6px" id="typeHint">
+        <div class="small-label" style="margin-top:8px" id="typeHint">
             Standard passport-size photo for PSC applications
         </div>
     </div>
@@ -525,9 +644,15 @@
                 
                 <div style="margin-top:16px">
                     <label>Target file size</label>
-                    <div class="preset-row">
-                        <div class="preset active file-size" data-kb="30">30 KB (PSC)</div>
-                        <div class="preset file-size" data-kb="100">100 KB</div>
+                    <div class="file-size-btn-group">
+                        <label class="file-size-btn active file-size" data-kb="30">
+                            <input type="radio" name="file-size" value="30" checked>
+                            30 KB
+                        </label>
+                        <label class="file-size-btn file-size" data-kb="100">
+                            <input type="radio" name="file-size" value="100">
+                            100 KB
+                        </label>
                     </div>
                 </div>
 
@@ -572,7 +697,8 @@
                 </p>
                 <p class="trust">
                     This tool prepares photos using commonly accepted PSC standards such as 150×200 pixels and a 30 KB
-                    file size.
+                    file size. Also, if you need to prepare a signature image, select the "Signature" option for a 150×100 pixel
+                     output with an appropriate aspect ratio and compression.
                 </p>
                 <p class="trust">
                     All processing happens locally in your browser. Your image is never uploaded or stored.
@@ -590,7 +716,7 @@
     </main>
 
     <footer>
-        © 2026 Compressly · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a>
+        © 2026 Compressly · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/contact.html">Contact</a>
     </footer>
 
     <script>
@@ -628,43 +754,83 @@
 
         stampDate.valueAsDate = new Date();
 
-      // File size presets
-        document.querySelectorAll('.preset.file-size').forEach(p => {
-            p.onclick = () => {
-                document.querySelectorAll('.preset.file-size').forEach(x => x.classList.remove('active'));
-                p.classList.add('active');
-                targetKB = +p.dataset.kb;
+      // File size selection handler
+        const updateFileSize = (p) => {
+            document.querySelectorAll('label.file-size-btn').forEach(x => x.classList.remove('active'));
+            p.classList.add('active');
+            
+            // Update radio button
+            const radio = p.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            
+            targetKB = +p.dataset.kb;
+        };
+
+        // Click handler for file size buttons
+        document.querySelectorAll('label.file-size-btn').forEach(p => {
+            p.onclick = (e) => {
+                // Prevent default label behavior from radio input
+                if (e.target.tagName === 'INPUT') return;
+                updateFileSize(p);
             }
         });
 
-       // Photo type presets
-        document.querySelectorAll('.preset.photo-type').forEach(p => {
-            p.onclick = () => {
-                document.querySelectorAll('.preset.photo-type').forEach(x => x.classList.remove('active'));
-                p.classList.add('active');
-                photoType = p.dataset.type;
-                targetWidth = +p.dataset.w;
-                targetHeight = +p.dataset.h;
+        // Change handler for file size radio buttons
+        document.querySelectorAll('input[name="file-size"]').forEach(radio => {
+            radio.onchange = () => {
+                const btn = radio.closest('label.file-size-btn');
+                if (btn) updateFileSize(btn);
+            }
+        });
 
-                // Update dimension inputs
-                document.getElementById('width').value = targetWidth;
-                document.getElementById('height').value = targetHeight;
+       // Photo type selection handler
+        const updatePhotoType = (p) => {
+            document.querySelectorAll('label.photo-type-card').forEach(x => x.classList.remove('active'));
+            p.classList.add('active');
+            
+            // Update radio button
+            const radio = p.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+            
+            photoType = p.dataset.type;
+            targetWidth = +p.dataset.w;
+            targetHeight = +p.dataset.h;
 
-                // ✅ UPDATE UI LABELS dynamically
-                const isSignature = photoType === 'signature';
-                document.getElementById('uploadTypeLabel').textContent = isSignature ? 'signature' : 'photo';
-                document.getElementById('btnTypeLabel').textContent = isSignature ? 'signature' : 'photo';
-                document.getElementById('typeHint').textContent = isSignature
-                    ? 'Your handwritten signature on white paper (black/blue pen)'
-                    : 'Standard passport-size photo for PSC applications';
+            // Update dimension inputs
+            document.getElementById('width').value = targetWidth;
+            document.getElementById('height').value = targetHeight;
 
-                // Update crop hint text
-                updateCropHintText();
+            // ✅ UPDATE UI LABELS dynamically
+            const isSignature = photoType === 'signature';
+            document.getElementById('uploadTypeLabel').textContent = isSignature ? 'signature' : 'photo';
+            document.getElementById('btnTypeLabel').textContent = isSignature ? 'signature' : 'photo';
+            document.getElementById('typeHint').textContent = isSignature
+                ? 'Your handwritten signature on white paper (black/blue pen)'
+                : 'Standard passport-size photo for PSC applications';
 
-                // If crop is showing, update crop box aspect ratio
-                if (cropContainer.style.display === 'block' && originalImage) {
-                    updateCropBoxAspect();
-                }
+            // Update crop hint text
+            updateCropHintText();
+
+            // If crop is showing, update crop box aspect ratio
+            if (cropContainer.style.display === 'block' && originalImage) {
+                updateCropBoxAspect();
+            }
+        };
+
+        // Click handler for card labels
+        document.querySelectorAll('label.photo-type-card').forEach(p => {
+            p.onclick = (e) => {
+                // Prevent default label behavior from radio input
+                if (e.target.tagName === 'INPUT') return;
+                updatePhotoType(p);
+            }
+        });
+
+        // Change handler for radio buttons
+        document.querySelectorAll('input[name="photo-type"]').forEach(radio => {
+            radio.onchange = () => {
+                const card = radio.closest('label.photo-type-card');
+                if (card) updatePhotoType(card);
             }
         });
 
@@ -679,6 +845,7 @@
 
         selectedFileName = fileInput.files[0].name;
         uploadSection.style.display = 'none';
+        document.getElementById('photoTypeSection').style.display = 'none';
 
         fileNameEl.innerHTML = `
         <svg width="16" height="16" viewBox="0 0 24 24"
@@ -757,6 +924,7 @@
             const aspect = targetWidth / targetHeight; // ✅ Use current target dimensions
             const maxBoxScale = 0.72;      // ✅ ADD THIS LINE
             cropContainer.style.display = 'block';
+            document.getElementById('photoTypeSection').style.display = 'none'; // Hide photo type section during crop
             updateCropHintText(); // ✅ ADD THIS LINE
             mainControls.style.display = 'none';
             const maxW = Math.min(600, window.innerWidth - 80);
@@ -909,6 +1077,7 @@
                 cropContainer.style.display = 'none';
                 mainControls.style.display = 'block';
                 uploadSection.style.display = 'block';
+                document.getElementById('photoTypeSection').style.display = 'block'; // Show photo type section again
                 zoom = 0.8;
                 zoomRange.value = 0.8;
                 fileNameEl.textContent = '✅ ' + selectedFileName + ' (cropped)';
@@ -923,6 +1092,7 @@
             cropContainer.style.display = 'none';
             mainControls.style.display = 'block';
             uploadSection.style.display = 'block'; // 👈 SHOW upload UI for potential second try
+            document.getElementById('photoTypeSection').style.display = 'block'; // Show photo type section again
             zoom = 0.8;
             zoomRange.value = 0.8;
            fileNameEl.textContent = '✅ ' + selectedFileName + ' (original - no crop)';
