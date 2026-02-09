@@ -440,16 +440,42 @@
                 </div>
             </div>
 
-            <div class="card">
-                <div id="uploadSection">
-                    <label id="uploadLabel">Upload your photo</label>
-                    <label class="file-btn" id="chooseBtn">
-                        Choose photo
-                        <input type="file" id="fileInput" accept="image/*">
-                    </label>
-                    
-                </div>
-                <div id="fileName" class="file-name"></div>
+    <div class="card">
+        <!-- ✅ STEP 1: Choose type FIRST -->
+    <div style="margin-bottom:20px">
+        <label>What do you want to prepare?</label>
+        <div class="preset-row">
+            <div class="preset active photo-type" data-type="photo" data-w="150" data-h="200">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                    style="vertical-align:-2px;margin-right:4px">
+                    <path
+                        d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                </svg>
+                Photo (150×200)
+            </div>
+            <div class="preset photo-type" data-type="signature" data-w="150" data-h="100">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                    style="vertical-align:-2px;margin-right:4px">
+                    <path
+                        d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                </svg>
+                Signature (150×100)
+            </div>
+        </div>
+        <div class="small-label" style="margin-top:6px" id="typeHint">
+            Standard passport-size photo for PSC applications
+        </div>
+    </div>
+    
+        <!-- ✅ STEP 2: Upload -->
+        <div id="uploadSection">
+            <label id="uploadLabel">Upload your <span id="uploadTypeLabel">photo</span></label>
+            <label class="file-btn" id="chooseBtn">
+                Choose <span id="btnTypeLabel">photo</span>
+                <input type="file" id="fileInput" accept="image/*">
+            </label>
+        </div>
+        <div id="fileName" class="file-name"></div>
                 <!-- CROP UI -->
                 <div class="crop-container" id="cropContainer">
                 <div class="crop-hint" id="cropHint">
@@ -495,13 +521,7 @@
                         </div>
                     </div>
 
-                <div style="margin-top:16px">
-                    <label>Photo type</label>
-                    <div class="preset-row">
-                        <div class="preset active photo-type" data-type="photo" data-w="150" data-h="200">Photo (150×200)</div>
-                        <div class="preset photo-type" data-type="signature" data-w="150" data-h="100">Signature (150×100)</div>
-                    </div>
-                </div>
+              
                 
                 <div style="margin-top:16px">
                     <label>Target file size</label>
@@ -617,7 +637,7 @@
             }
         });
 
-        // Photo type presets
+       // Photo type presets
         document.querySelectorAll('.preset.photo-type').forEach(p => {
             p.onclick = () => {
                 document.querySelectorAll('.preset.photo-type').forEach(x => x.classList.remove('active'));
@@ -629,8 +649,16 @@
                 // Update dimension inputs
                 document.getElementById('width').value = targetWidth;
                 document.getElementById('height').value = targetHeight;
-               
-                // ✅ ADD THIS: Update crop hint text
+
+                // ✅ UPDATE UI LABELS dynamically
+                const isSignature = photoType === 'signature';
+                document.getElementById('uploadTypeLabel').textContent = isSignature ? 'signature' : 'photo';
+                document.getElementById('btnTypeLabel').textContent = isSignature ? 'signature' : 'photo';
+                document.getElementById('typeHint').textContent = isSignature
+                    ? 'Your handwritten signature on white paper (black/blue pen)'
+                    : 'Standard passport-size photo for PSC applications';
+
+                // Update crop hint text
                 updateCropHintText();
 
                 // If crop is showing, update crop box aspect ratio
@@ -875,18 +903,18 @@
 
             ctx.drawImage(originalImage, sx, sy, sw, sh, 0, 0, sw, sh);
 
-
             const img = new Image();
-           img.onload = () => {
+            img.onload = () => {
                 croppedImage = img;
                 cropContainer.style.display = 'none';
                 mainControls.style.display = 'block';
-                uploadSection.style.display = 'block'; // 👈 SHOW upload UI for potential second try
+                uploadSection.style.display = 'block';
                 zoom = 0.8;
                 zoomRange.value = 0.8;
-               fileNameEl.textContent = '✅ ' + selectedFileName + ' (cropped)';
+                fileNameEl.textContent = '✅ ' + selectedFileName + ' (cropped)';
             };
-            img.src = c.toDataURL('image/jpeg', 1);
+            // ✅ USE PNG to preserve quality until final export
+            img.src = c.toDataURL('image/png');
         };
 
      skipCrop.onclick = () => {
@@ -951,30 +979,38 @@
         ctx.putImageData(imgData, 0, 0);
     }
 
-      async function compressToTarget(canvas, minKB, maxKB) {
-            let qLow = 0.88, qHigh = 0.99; // ✅ INCREASED from 0.75-0.98 to 0.88-0.99
-            let best = null;
-
-            for (let i = 0; i < 15; i++) { // ✅ More iterations for precision (was 12)
-                const q = (qLow + qHigh) / 2;
-                const b = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
-                const kb = b.size / 1024;
-
-                if (kb >= minKB && kb <= maxKB) {
-                    best = b;
-                    // Continue searching for better quality within range
-                    qLow = q;
-                } else if (kb > maxKB) {
-                    qHigh = q;
-                } else {
-                    qLow = q;
-                }
-            }
-
-            return best || await new Promise(r =>
-                canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2)
-            );
+   async function compressToTarget(canvas, minKB, maxKB) {
+        // ✅ SIGNATURE-SPECIFIC: Start with higher quality baseline
+        let qLow, qHigh;
+        if (photoType === 'signature') {
+            qLow = 0.94;  // Much higher starting point for signatures
+            qHigh = 0.99;
+        } else {
+            qLow = 0.88;
+            qHigh = 0.99;
         }
+
+        let best = null;
+
+        for (let i = 0; i < 15; i++) {
+            const q = (qLow + qHigh) / 2;
+            const b = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
+            const kb = b.size / 1024;
+
+            if (kb >= minKB && kb <= maxKB) {
+                best = b;
+                qLow = q; // Keep searching for better quality
+            } else if (kb > maxKB) {
+                qHigh = q;
+            } else {
+                qLow = q;
+            }
+        }
+
+        return best || await new Promise(r =>
+            canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2)
+        );
+    }
 
         processBtn.onclick = async () => {
             if (!croppedImage) return;
@@ -1037,14 +1073,12 @@
                 }
             }
 
-           let blob;
+            let blob;
             if (targetKB === 30) {
-                // ✅ SIGNATURE-AWARE COMPRESSION
                 if (photoType === 'signature') {
-                    // Signatures compress easily - aim for 22-30 KB (higher quality)
-                    blob = await compressToTarget(canvas, 22, 30);
+                    // Signatures: aim for higher quality within 30KB
+                    blob = await compressToTarget(canvas, 20, 30);
                 } else {
-                    // Photos - standard 25-30 KB
                     blob = await compressToTarget(canvas, 25, 30);
                 }
             } else {
