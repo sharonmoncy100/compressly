@@ -928,6 +928,8 @@
            fileNameEl.textContent = '✅ ' + selectedFileName + ' (original - no crop)';
         };
 
+
+
         function stepDownResize(img, w, h) {
             let c = document.createElement('canvas'), ctx = c.getContext('2d');
             c.width = img.width; c.height = img.height; ctx.drawImage(img, 0, 0);
@@ -961,7 +963,7 @@
         // ✅ ADAPTIVE sharpening: stronger for signatures (smaller height)
         let strength = 0.45;
         if (photoType === 'signature') {
-            strength = 0.65; // Extra sharp for tiny signatures
+            strength = 0.35; // Extra sharp for tiny signatures
         }
 
         for (let y = 1; y < h - 1; y++) {
@@ -1022,11 +1024,13 @@
             const h = +height.value;
 
             // For signatures, apply triple sharpen for maximum clarity
-            const sharpenPasses = (photoType === 'signature') ? 3 : 2;
+          const sharpenPasses = (photoType === 'signature') ? 1 : 2;
+
 
             const resizedCanvas = stepDownResize(croppedImage, w, h);
             const canvas = resizedCanvas;
             const ctx = canvas.getContext('2d');
+
 
           // ✅ ADAPTIVE SHARPEN: 2x for photos, 3x for signatures
             for (let i = 0; i < sharpenPasses; i++) {
