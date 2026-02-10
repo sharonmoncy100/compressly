@@ -1211,6 +1211,8 @@
         // 📱 MOBILE: pinch zoom (works everywhere on crop area, including inside crop box)
         let initialDist = 0;
         let initialZoom = zoom;
+        let pinchCenterX = 0;
+        let pinchCenterY = 0;
 
         // Add pinch zoom to wrapper so it works even when touching the SVG overlay or crop box
         const cropWrapper = cropCanvasWrap || cropCanvas;
@@ -1220,14 +1222,35 @@
                 e.preventDefault();
                 initialDist = getDistance(e.touches);
                 initialZoom = zoom;
+
+                // Calculate pinch center point (in canvas screen coordinates)
+                const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+                const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+
+                // Get canvas position relative to viewport
+                const canvasRect = cropCanvas.getBoundingClientRect();
+                pinchCenterX = midX - canvasRect.left;
+                pinchCenterY = midY - canvasRect.top;
             }
         }, { passive: false });
 
         cropWrapper.addEventListener('touchmove', e => {
             if (e.touches.length === 2) {
                 e.preventDefault();
-                zoom = initialZoom * (getDistance(e.touches) / initialDist);
-                zoom = Math.max(0.5, Math.min(2.5, zoom));
+                const newZoom = initialZoom * (getDistance(e.touches) / initialDist);
+                const clampedZoom = Math.max(0.5, Math.min(2.5, newZoom));
+
+                // Calculate what image point is currently under the pinch center
+                const imgPointX = (pinchCenterX - imageOffsetX) / initialZoom;
+                const imgPointY = (pinchCenterY - imageOffsetY) / initialZoom;
+
+                // Update zoom level
+                zoom = clampedZoom;
+
+                // Adjust image offset so the same image point stays under the pinch center after zoom
+                imageOffsetX = pinchCenterX - imgPointX * zoom;
+                imageOffsetY = pinchCenterY - imgPointY * zoom;
+
                 zoomRange.value = zoom;
                 clampImage();
                 redraw();
