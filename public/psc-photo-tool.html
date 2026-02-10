@@ -672,7 +672,13 @@
                         <div class="small-label" style="margin-top:6px">Date appears as DD-MM-YYYY</div>
                     </div>
 
-                    <button id="processBtn" class="btn-primary" disabled>Prepare PSC Photo</button>
+                <button id="processBtn" class="btn-primary" disabled>
+                    Prepare PSC Photo
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-3px;margin-left:6px">
+                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
+                    </svg>
+                </button>
+
                     <div class="processing" id="processing">
                         <span class="spinner"></span>Processing your photo…
                     </div>
@@ -684,9 +690,16 @@
                 <h2>Your PSC photo is ready</h2>
                 <img id="preview" class="preview">
                 <div id="meta" class="trust"></div>
-                <a id="download" style="text-decoration:none">
-                    <button class="btn-primary">Download Photo</button>
-                </a>
+            <a id="download" style="text-decoration:none">
+                <button class="btn-primary">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
+                        style="vertical-align:-3px;margin-right:6px">
+                        <path
+                            d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                    </svg>
+                    Download Photo
+                </button>
+            </a>
             </div>
 
             <div class="card">
@@ -843,6 +856,11 @@
  fileInput.onchange = async () => {
         if (!fileInput.files.length) return;
 
+        // ✅ Clear previous result
+        document.getElementById('resultCard').style.display = 'none';
+        croppedImage = null;
+        preview.src = '';
+
         selectedFileName = fileInput.files[0].name;
         uploadSection.style.display = 'none';
         document.getElementById('photoTypeSection').style.display = 'none';
@@ -920,12 +938,12 @@
             }, 'image/jpeg', 0.98); // ✅ CHANGED from 0.92 to 0.98
         });
     }
-        function showCrop(img) {
-            const aspect = targetWidth / targetHeight; // ✅ Use current target dimensions
-            const maxBoxScale = 0.72;      // ✅ ADD THIS LINE
+     function showCrop(img) {
+            const aspect = targetWidth / targetHeight;
+            const maxBoxScale = 0.78; // ✅ BALANCED: Big enough to see clearly, small enough to drag outside
             cropContainer.style.display = 'block';
-            document.getElementById('photoTypeSection').style.display = 'none'; // Hide photo type section during crop
-            updateCropHintText(); // ✅ ADD THIS LINE
+            document.getElementById('photoTypeSection').style.display = 'none';
+            updateCropHintText();
             mainControls.style.display = 'none';
             const maxW = Math.min(600, window.innerWidth - 80);
             const imgAspect = img.width / img.height;
@@ -944,7 +962,38 @@
             cropCanvas.height = canvasH;
 
             const ctx = cropCanvas.getContext('2d');
-           
+
+            // ✅ SMART ZOOM CALCULATION
+            // Goal: Fill the crop box nicely without losing important parts
+            let bw, bh;
+            if (canvasW / canvasH > aspect) {
+                bh = canvasH * maxBoxScale;
+                bw = bh * aspect;
+            } else {
+                bw = canvasW * maxBoxScale;
+                bh = bw / aspect;
+            }
+
+            // Calculate zoom to fit image nicely in crop box
+            const zoomToFitWidth = bw / canvasW;
+            const zoomToFitHeight = bh / canvasH;
+            const baseZoom = Math.max(zoomToFitWidth, zoomToFitHeight) * 1.1; // 10% extra to fill nicely
+
+            // Adjust based on image orientation
+            let initialZoom;
+            if (imgAspect > 1.2) {
+                // Wide landscape (like signatures)
+                initialZoom = baseZoom * 0.9;
+            } else if (imgAspect < 0.8) {
+                // Tall portrait (like passport photos)
+                initialZoom = baseZoom * 0.95;
+            } else {
+                // Square-ish
+                initialZoom = baseZoom;
+            }
+
+            zoom = Math.max(0.6, Math.min(1.4, initialZoom));
+            zoomRange.value = zoom;
 
             function redraw() {
                 ctx.clearRect(0, 0, canvasWidth, canvasHeight);
@@ -952,36 +1001,49 @@
                 const dw = canvasWidth * zoom;
                 const dh = canvasHeight * zoom;
 
-                imageOffsetX = (canvasWidth - dw) / 2;
-                imageOffsetY = (canvasHeight - dh) / 2;
-
                 ctx.drawImage(img, imageOffsetX, imageOffsetY, dw, dh);
 
-                // Clamp crop box safely (desktop + mobile)
                 const maxL = canvasWidth - cropBox.offsetWidth;
                 const maxT = canvasHeight - cropBox.offsetHeight;
 
-                cropBox.style.left =
-                    Math.max(0, Math.min(parseFloat(cropBox.style.left), maxL)) + 'px';
-                cropBox.style.top =
-                    Math.max(0, Math.min(parseFloat(cropBox.style.top), maxT)) + 'px';
+                cropBox.style.left = Math.max(0, Math.min(parseFloat(cropBox.style.left), maxL)) + 'px';
+                cropBox.style.top = Math.max(0, Math.min(parseFloat(cropBox.style.top), maxT)) + 'px';
             }
-           
 
+            // ✅ CENTER IMAGE INITIALLY
+            imageOffsetX = (canvasWidth - canvasWidth * zoom) / 2;
+            imageOffsetY = (canvasHeight - canvasHeight * zoom) / 2;
 
             redraw();
 
-            zoomRange.oninput = e => { zoom = +e.target.value; redraw(); };
+            zoomRange.oninput = e => {
+                const oldZoom = zoom;
+                zoom = +e.target.value;
 
-         // PSC-friendly crop box (slightly smaller to allow free movement)
-            
-          // Use updateCropBoxAspect function
+                // ✅ ZOOM FROM CENTER (not top-left corner)
+                const centerX = canvasWidth / 2;
+                const centerY = canvasHeight / 2;
+
+                // Calculate what point in the image is currently at center
+                const imgCenterXBefore = (centerX - imageOffsetX) / oldZoom;
+                const imgCenterYBefore = (centerY - imageOffsetY) / oldZoom;
+
+                // Keep that same point at center after zoom
+                imageOffsetX = centerX - imgCenterXBefore * zoom;
+                imageOffsetY = centerY - imgCenterYBefore * zoom;
+
+                // Clamp to prevent empty space
+                const dw = canvasWidth * zoom;
+                const dh = canvasHeight * zoom;
+                imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX));
+                imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY));
+
+                redraw();
+            };
+
             updateCropBoxAspect();
-
             enableDrag(redraw);
 
-            // Ensure crop area and controls are visible on all devices
-            // Scroll the crop canvas into slightly-above-center to keep controls visible but not push content too far down
             setTimeout(() => {
                 try {
                     const canvasEl = document.getElementById('cropCanvas');
@@ -992,56 +1054,98 @@
                     } else {
                         cropContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
-                } catch (e) {}
+                } catch (e) { }
             }, 120);
         }
 
-        function enableDrag(redrawCallback) 
-        {
-            let dragging = false, sx, sy, sl, st;
+     function enableDrag(redrawCallback) {
+            let dragging = false, dragTarget = null, sx, sy, sl, st, imgStartX, imgStartY;
 
-            // Desktop: start dragging on mousedown
-            cropBox.onmousedown = e => {
+            // Detect what's being dragged: crop box or background image
+            const startDrag = (e, target) => {
                 e.preventDefault();
                 dragging = true;
-                const mouse = e;
-                sx = mouse.clientX; sy = mouse.clientY;
-                sl = parseFloat(cropBox.style.left);
-                st = parseFloat(cropBox.style.top);
+                dragTarget = target;
+                const touch = e.touches ? e.touches[0] : e;
+                sx = touch.clientX;
+                sy = touch.clientY;
+
+                if (target === 'box') {
+                    sl = parseFloat(cropBox.style.left);
+                    st = parseFloat(cropBox.style.top);
+                } else {
+                    imgStartX = imageOffsetX;
+                    imgStartY = imageOffsetY;
+                }
             };
 
-            // Mobile: start dragging on touchstart (do not try to distinguish scroll)
-            cropBox.ontouchstart = e => {
+            // Crop box dragging
+            cropBox.onmousedown = e => startDrag(e, 'box');
+            cropBox.ontouchstart = e => startDrag(e, 'box');
+
+            // Canvas (background image) dragging
+            cropCanvas.onmousedown = e => {
+                // Only drag image if click is NOT on crop box
+                const rect = cropBox.getBoundingClientRect();
+                const clickX = e.clientX;
+                const clickY = e.clientY;
+                if (clickX < rect.left || clickX > rect.right || clickY < rect.top || clickY > rect.bottom) {
+                    startDrag(e, 'image');
+                }
+            };
+
+            cropCanvas.ontouchstart = e => {
                 const touch = e.touches[0];
-                dragging = true;
-                sx = touch.clientX; sy = touch.clientY;
-                sl = parseFloat(cropBox.style.left);
-                st = parseFloat(cropBox.style.top);
+                const rect = cropBox.getBoundingClientRect();
+                if (touch.clientX < rect.left || touch.clientX > rect.right ||
+                    touch.clientY < rect.top || touch.clientY > rect.bottom) {
+                    startDrag(e, 'image');
+                }
             };
 
             const move = e => {
                 if (!dragging) return;
                 const touch = e.touches ? e.touches[0] : e;
-                let l = sl + (touch.clientX - sx);
-                let t = st + (touch.clientY - sy);
-                l = Math.max(0, Math.min(l, canvasWidth - cropBox.offsetWidth));
-                t = Math.max(0, Math.min(t, canvasHeight - cropBox.offsetHeight));
-                cropBox.style.left = l + 'px';
-                cropBox.style.top = t + 'px';
-                redrawCallback();
+                const dx = touch.clientX - sx;
+                const dy = touch.clientY - sy;
+
+                if (dragTarget === 'box') {
+                    // Move crop box
+                    let l = sl + dx;
+                    let t = st + dy;
+                    l = Math.max(0, Math.min(l, canvasWidth - cropBox.offsetWidth));
+                    t = Math.max(0, Math.min(t, canvasHeight - cropBox.offsetHeight));
+                    cropBox.style.left = l + 'px';
+                    cropBox.style.top = t + 'px';
+                } else {
+                    // Move background image (pan when zoomed)
+                    imageOffsetX = imgStartX + dx;
+                    imageOffsetY = imgStartY + dy;
+
+                    // Clamp image position so it doesn't leave empty space
+                    const dw = canvasWidth * zoom;
+                    const dh = canvasHeight * zoom;
+                    imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX));
+                    imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY));
+
+                    redrawCallback();
+                }
             };
 
-            const end = () => dragging = false;
+            const end = () => {
+                dragging = false;
+                dragTarget = null;
+            };
 
             document.addEventListener('mousemove', move);
-            document.addEventListener('touchmove', move);
+            document.addEventListener('touchmove', move, { passive: false });
             document.addEventListener('mouseup', end);
             document.addEventListener('touchend', end);
         }
         // ✅ UPDATE CROP BOX SIZE BASED ON SELECTED PHOTO TYPE 
         function updateCropBoxAspect() {
                 const aspect = targetWidth / targetHeight;
-                const maxBoxScale = 0.72;
+                const maxBoxScale = 0.78;
 
                 let bw, bh;
                 if (canvasWidth / canvasHeight > aspect) {
