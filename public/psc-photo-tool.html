@@ -481,7 +481,7 @@
     z-index: 1;
 }
 
-/* Corner handles - modern minimal design */
+/* Corner handles - modern minimal design with large touch targets */
 .crop-handle {
     position: absolute;
     width: 8px;
@@ -493,6 +493,20 @@
     z-index: 11;
     cursor: pointer;
     transition: transform 0.15s ease;
+}
+
+/* Invisible touch target (44x44px minimum for mobile) */
+.crop-handle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    pointer-events: auto;
+    z-index: 12;
 }
 
 .crop-handle:hover {
@@ -532,24 +546,38 @@
 .crop-hint {
     font-size: 13px;
     color: #475569;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
     font-weight: 500;
     padding: 0 12px;
 }
 
+@media (max-width: 768px) {
+    .crop-hint {
+        font-size: 12px;
+        margin-bottom: 8px;
+    }
+}
+
 .zoom-control {
-    margin: 20px auto;
+    margin: 12px auto 10px;
     max-width: 320px;
     background: #fff;
-    padding: 16px;
-    border-radius: 10px;
+    padding: 10px;
+    border-radius: 8px;
     border: 1px solid #e2e8f0;
 }
 
+@media (max-width: 768px) {
+    .zoom-control {
+        margin: 8px auto 6px;
+        padding: 8px;
+    }
+}
+
 .zoom-label {
-    font-size: 12px;
+    font-size: 11px;
     color: #64748b;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
     text-align: center;
     font-weight: 600;
     text-transform: uppercase;
@@ -595,22 +623,34 @@
 
 .crop-actions {
     display: flex;
-    gap: 12px;
+    gap: 8px;
     justify-content: center;
-    margin-top: 20px;
-    padding: 0 12px;
+    margin-top: 10px;
+    padding: 0 8px;
     flex-wrap: wrap;
 }
 
 .crop-btn {
-    padding: 12px 28px;
-    border-radius: 8px;
+    padding: 10px 20px;
+    border-radius: 6px;
     font-weight: 600;
-    font-size: 14px;
+    font-size: 13px;
     cursor: pointer;
     border: none;
     transition: all 0.2s ease;
-    min-width: 140px;
+    min-width: 110px;
+}
+
+@media (max-width: 768px) {
+    .crop-actions {
+        gap: 6px;
+        margin-top: 8px;
+    }
+    .crop-btn {
+        padding: 9px 16px;
+        font-size: 12px;
+        min-width: 95px;
+    }
 }
 
 .crop-btn:active {
@@ -1168,11 +1208,14 @@
             cropCanvas.style.cursor = 'default';
         });
 
-        // 📱 MOBILE: pinch zoom
+        // 📱 MOBILE: pinch zoom (works everywhere on crop area, including inside crop box)
         let initialDist = 0;
         let initialZoom = zoom;
 
-        cropCanvas.addEventListener('touchstart', e => {
+        // Add pinch zoom to wrapper so it works even when touching the SVG overlay or crop box
+        const cropWrapper = cropCanvasWrap || cropCanvas;
+
+        cropWrapper.addEventListener('touchstart', e => {
             if (e.touches.length === 2) {
                 e.preventDefault();
                 initialDist = getDistance(e.touches);
@@ -1180,7 +1223,7 @@
             }
         }, { passive: false });
 
-        cropCanvas.addEventListener('touchmove', e => {
+        cropWrapper.addEventListener('touchmove', e => {
             if (e.touches.length === 2) {
                 e.preventDefault();
                 zoom = initialZoom * (getDistance(e.touches) / initialDist);
