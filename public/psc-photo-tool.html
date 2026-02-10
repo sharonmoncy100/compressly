@@ -1267,9 +1267,21 @@
         function clampImage() {
             const dw = canvasWidth * zoom;
             const dh = canvasHeight * zoom;
-            imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX));
-            imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY));
+
+            // If image is smaller than canvas, center it
+            if (dw <= canvasWidth) {
+                imageOffsetX = (canvasWidth - dw) / 2;
+            } else {
+                imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX));
+            }
+
+            if (dh <= canvasHeight) {
+                imageOffsetY = (canvasHeight - dh) / 2;
+            } else {
+                imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY));
+            }
         }
+
 
         function getDistance(t) {
             const dx = t[0].clientX - t[1].clientX;
