@@ -260,19 +260,13 @@
             color: var(--muted);
         }
 
+        /* Icons removed: hide decorative icons to avoid overflow on small screens */
         .photo-type-card-icon {
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--muted);
-            margin-left: 12px;
-            flex-shrink: 0;
+            display: none;
         }
 
         .photo-type-card.active .photo-type-card-icon {
-            color: var(--accent);
+            display: none;
         }
 
         .photo-type-card-row {
@@ -584,7 +578,7 @@
                 <input type="radio" name="photo-type" value="signature">
                 <div class="photo-type-card-content">
                     <div class="photo-type-card-title">Signature</div>
-                    <div class="photo-type-card-desc">150×100px handwritten signature</div>
+                    <div class="photo-type-card-desc">150×100px signature</div>
                 </div>
                 <div class="photo-type-card-icon">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
