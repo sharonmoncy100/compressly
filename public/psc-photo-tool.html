@@ -1217,45 +1217,67 @@
         // Add pinch zoom to wrapper so it works even when touching the SVG overlay or crop box
         const cropWrapper = cropCanvasWrap || cropCanvas;
 
+        let lastTouches = [];
+
         cropWrapper.addEventListener('touchstart', e => {
             if (e.touches.length === 2) {
                 e.preventDefault();
+
+                lastTouches = [
+                    { x: e.touches[0].clientX, y: e.touches[0].clientY },
+                    { x: e.touches[1].clientX, y: e.touches[1].clientY }
+                ];
+
                 initialDist = getDistance(e.touches);
                 initialZoom = zoom;
-
-                // Calculate pinch center point (in canvas screen coordinates)
-                const midX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
-                const midY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
-
-                // Get canvas position relative to viewport
-                const canvasRect = cropCanvas.getBoundingClientRect();
-                pinchCenterX = midX - canvasRect.left;
-                pinchCenterY = midY - canvasRect.top;
             }
         }, { passive: false });
 
         cropWrapper.addEventListener('touchmove', e => {
-            if (e.touches.length === 2) {
-                e.preventDefault();
-                const newZoom = initialZoom * (getDistance(e.touches) / initialDist);
-                const clampedZoom = Math.max(0.5, Math.min(2.5, newZoom));
+            if (e.touches.length !== 2) return;
+            e.preventDefault();
 
-                // Calculate what image point is currently under the pinch center
-                const imgPointX = (pinchCenterX - imageOffsetX) / initialZoom;
-                const imgPointY = (pinchCenterY - imageOffsetY) / initialZoom;
+            const newDist = getDistance(e.touches);
+            let newZoom = initialZoom * (newDist / initialDist);
+            newZoom = Math.max(0.5, Math.min(2.5, newZoom));
 
-                // Update zoom level
-                zoom = clampedZoom;
+            // 🔥 FIND dominant finger (the one that moved more)
+            const move0 = Math.hypot(
+                e.touches[0].clientX - lastTouches[0].x,
+                e.touches[0].clientY - lastTouches[0].y
+            );
+            const move1 = Math.hypot(
+                e.touches[1].clientX - lastTouches[1].x,
+                e.touches[1].clientY - lastTouches[1].y
+            );
 
-                // Adjust image offset so the same image point stays under the pinch center after zoom
-                imageOffsetX = pinchCenterX - imgPointX * zoom;
-                imageOffsetY = pinchCenterY - imgPointY * zoom;
+            const dominantTouch = move0 > move1 ? e.touches[0] : e.touches[1];
 
-                zoomRange.value = zoom;
-                clampImage();
-                redraw();
-            }
+            // Convert dominant finger position to canvas space
+            const rect = cropCanvas.getBoundingClientRect();
+            const anchorX = dominantTouch.clientX - rect.left;
+            const anchorY = dominantTouch.clientY - rect.top;
+
+            // Image point under finger BEFORE zoom
+            const imgX = (anchorX - imageOffsetX) / zoom;
+            const imgY = (anchorY - imageOffsetY) / zoom;
+
+            // Apply zoom
+            zoom = newZoom;
+
+            // Keep image under finger AFTER zoom
+            imageOffsetX = anchorX - imgX * zoom;
+            imageOffsetY = anchorY - imgY * zoom;
+
+            lastTouches = [
+                { x: e.touches[0].clientX, y: e.touches[0].clientY },
+                { x: e.touches[1].clientX, y: e.touches[1].clientY }
+            ];
+
+            clampImage();
+            redraw();
         }, { passive: false });
+
 
         // Slider zoom (desktop + mobile)
         zoomRange.oninput = () => {
