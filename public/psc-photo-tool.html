@@ -284,7 +284,18 @@
 
         .photo-type-card-row label.photo-type-card {
             flex: 1;
-            min-width: 150px;
+            min-width: 120px;
+        }
+
+        /* Keep two cards side-by-side on small phones */
+        @media (max-width: 420px) {
+            .photo-type-card-row {
+                gap: 8px;
+            }
+            .photo-type-card-row label.photo-type-card {
+                flex: 0 0 48%;
+                min-width: 0;
+            }
         }
 
         /* File size card selection */
@@ -656,7 +667,11 @@
                     </div>
                 </div>
 
-                    <div class="toggle" id="toggleStamp">+ Add name & date stamp (optional)</div>
+                    <label class="stamp-toggle" style="display:flex;align-items:center;gap:10px;margin-top:10px;cursor:pointer">
+                        <input type="checkbox" id="toggleStamp" style="width:18px;height:18px;accent-color:var(--accent)">
+                        <span style="font-weight:600;color:var(--accent)">Add name & date stamp</span>
+                        <span style="font-size:12px;color:var(--muted);font-weight:500">(optional)</span>
+                    </label>
 
                     <div id="stampFields" style="display:none;margin-top:14px">
                         <div class="row">
@@ -847,10 +862,10 @@
             }
         });
 
-        toggleStamp.onclick = () => {
-            stampEnabled = !stampEnabled;
+        // Show/hide stamp fields when checkbox changes
+        toggleStamp.onchange = () => {
+            stampEnabled = !!toggleStamp.checked;
             stampFields.style.display = stampEnabled ? 'block' : 'none';
-            toggleStamp.textContent = stampEnabled ? '- Remove name & date stamp' : '+ Add name & date stamp (optional)';
         };
 
  fileInput.onchange = async () => {
