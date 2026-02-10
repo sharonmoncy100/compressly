@@ -438,6 +438,7 @@
     border-radius: 6px;
     display: block;
     background: #ffffff;
+    touch-action: pan-y;
 }
 
 .crop-box {
@@ -446,7 +447,7 @@
     background: transparent;
     cursor: move;
     z-index: 5;
-    touch-action: none;
+    touch-action: pan-x pan-y;
 }
 
         .crop-box-content {
@@ -1072,91 +1073,100 @@
                 } catch (e) { }
             }, 120);
         }
+    function enableDrag(redrawCallback) {
+        let dragging = false;
+        let dragTarget = null;
+        let sx, sy, sl, st, imgStartX, imgStartY;
 
-     function enableDrag(redrawCallback) {
-            let dragging = false, dragTarget = null, sx, sy, sl, st, imgStartX, imgStartY;
+        const startDrag = (e, target) => {
+            dragging = true;
+            dragTarget = target;
 
-            // Detect what's being dragged: crop box or background image
-            const startDrag = (e, target) => {
-                e.preventDefault();
-                dragging = true;
-                dragTarget = target;
-                const touch = e.touches ? e.touches[0] : e;
-                sx = touch.clientX;
-                sy = touch.clientY;
+            const touch = e.touches ? e.touches[0] : e;
+            sx = touch.clientX;
+            sy = touch.clientY;
 
-                if (target === 'box') {
-                    sl = parseFloat(cropBox.style.left);
-                    st = parseFloat(cropBox.style.top);
-                } else {
-                    imgStartX = imageOffsetX;
-                    imgStartY = imageOffsetY;
-                }
-            };
+            if (target === 'box') {
+                sl = parseFloat(cropBox.style.left);
+                st = parseFloat(cropBox.style.top);
+            } else {
+                imgStartX = imageOffsetX;
+                imgStartY = imageOffsetY;
+            }
 
-            // Crop box dragging
-            cropBox.onmousedown = e => startDrag(e, 'box');
-            cropBox.ontouchstart = e => startDrag(e, 'box');
+            // ⛔ stop page scroll ONLY while dragging
+            if (e.cancelable) e.preventDefault();
+        };
 
-            // Canvas (background image) dragging
-            cropCanvas.onmousedown = e => {
-                // Only drag image if click is NOT on crop box
-                const rect = cropBox.getBoundingClientRect();
-                const clickX = e.clientX;
-                const clickY = e.clientY;
-                if (clickX < rect.left || clickX > rect.right || clickY < rect.top || clickY > rect.bottom) {
-                    startDrag(e, 'image');
-                }
-            };
+        // Crop box drag
+        cropBox.addEventListener('touchstart', e => startDrag(e, 'box'), { passive: false });
+        cropBox.addEventListener('mousedown', e => startDrag(e, 'box'));
 
-            cropCanvas.ontouchstart = e => {
-                const touch = e.touches[0];
-                const rect = cropBox.getBoundingClientRect();
-                if (touch.clientX < rect.left || touch.clientX > rect.right ||
-                    touch.clientY < rect.top || touch.clientY > rect.bottom) {
-                    startDrag(e, 'image');
-                }
-            };
+        // Canvas drag (image pan)
+        cropCanvas.addEventListener('touchstart', e => {
+            const t = e.touches[0];
+            const rect = cropBox.getBoundingClientRect();
+            if (
+                t.clientX < rect.left || t.clientX > rect.right ||
+                t.clientY < rect.top || t.clientY > rect.bottom
+            ) {
+                startDrag(e, 'image');
+            }
+        }, { passive: false });
 
-            const move = e => {
-                if (!dragging) return;
-                const touch = e.touches ? e.touches[0] : e;
-                const dx = touch.clientX - sx;
-                const dy = touch.clientY - sy;
+        cropCanvas.addEventListener('mousedown', e => {
+            const rect = cropBox.getBoundingClientRect();
+            if (
+                e.clientX < rect.left || e.clientX > rect.right ||
+                e.clientY < rect.top || e.clientY > rect.bottom
+            ) {
+                startDrag(e, 'image');
+            }
+        });
 
-                if (dragTarget === 'box') {
-                    // Move crop box
-                    let l = sl + dx;
-                    let t = st + dy;
-                    l = Math.max(0, Math.min(l, canvasWidth - cropBox.offsetWidth));
-                    t = Math.max(0, Math.min(t, canvasHeight - cropBox.offsetHeight));
-                    cropBox.style.left = l + 'px';
-                    cropBox.style.top = t + 'px';
-                } else {
-                    // Move background image (pan when zoomed)
-                    imageOffsetX = imgStartX + dx;
-                    imageOffsetY = imgStartY + dy;
+        const move = e => {
+            if (!dragging) return;
 
-                    // Clamp image position so it doesn't leave empty space
-                    const dw = canvasWidth * zoom;
-                    const dh = canvasHeight * zoom;
-                    imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX));
-                    imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY));
+            const touch = e.touches ? e.touches[0] : e;
+            const dx = touch.clientX - sx;
+            const dy = touch.clientY - sy;
 
-                    redrawCallback();
-                }
-            };
+            if (dragTarget === 'box') {
+                let l = sl + dx;
+                let t = st + dy;
 
-            const end = () => {
-                dragging = false;
-                dragTarget = null;
-            };
+                l = Math.max(0, Math.min(l, canvasWidth - cropBox.offsetWidth));
+                t = Math.max(0, Math.min(t, canvasHeight - cropBox.offsetHeight));
 
-            document.addEventListener('mousemove', move);
-            document.addEventListener('touchmove', move, { passive: false });
-            document.addEventListener('mouseup', end);
-            document.addEventListener('touchend', end);
-        }
+                cropBox.style.left = l + 'px';
+                cropBox.style.top = t + 'px';
+            } else {
+                imageOffsetX = imgStartX + dx;
+                imageOffsetY = imgStartY + dy;
+
+                const dw = canvasWidth * zoom;
+                const dh = canvasHeight * zoom;
+
+                imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX));
+                imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY));
+
+                redrawCallback();
+            }
+
+            if (e.cancelable) e.preventDefault();
+        };
+
+        const end = () => {
+            dragging = false;
+            dragTarget = null;
+        };
+
+        document.addEventListener('touchmove', move, { passive: false });
+        document.addEventListener('mousemove', move);
+        document.addEventListener('touchend', end);
+        document.addEventListener('mouseup', end);
+    }
+
         // ✅ UPDATE CROP BOX SIZE BASED ON SELECTED PHOTO TYPE 
         function updateCropBoxAspect() {
                 const aspect = targetWidth / targetHeight;
