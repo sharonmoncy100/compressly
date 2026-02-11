@@ -1846,8 +1846,10 @@ export default function App() {
               <a className="touch-link" href="/privacy.html">Privacy Policy</a>
               <a className="touch-link" href="/terms.html">Terms</a>
               <a className="touch-link" href="/contact.html">Contact</a>
+              <a className="touch-link" href="/about.html">About</a>
               <a className="touch-link" href="/compress-image-to-100kb.html">Compress to 100 KB</a>
               <a className="touch-link" href="/compress-jpg-online.html">Compress JPG</a>
+              <a className="touch-link" href="/psc-photo-tool.html">Kerala PSC Photo Tool</a>
 
             </div>
 

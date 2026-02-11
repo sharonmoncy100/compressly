@@ -770,8 +770,8 @@
         }
 
         .result-preview {
-            max-width: 170px;
-            margin: 16px auto;
+            max-width: 150px;
+            margin: 12px auto;
             border-radius: 10px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
             image-rendering: crisp-edges;
@@ -785,9 +785,9 @@
 
 
         .success-icon {
-            width: 52px;
-            height: 52px;
-            margin: 0 auto 14px;
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 10px;
             padding: 12px;
             background: var(--success);
             border-radius: 50%;
@@ -795,7 +795,7 @@
         }
 
         .suggest-card {
-            margin-top: 16px;
+            margin-top: 12px;
             padding: 16px;
             background: #f0f9ff;
             border: 1px solid #bfdbfe;
@@ -1654,19 +1654,19 @@
             goToStep(5);
 
             // Auto-scroll result into view (mobile)
-              if (window.innerWidth < 768) {
+             if (window.innerWidth < 768) {
                 setTimeout(() => {
-                    const resultTop = document.getElementById('stepResult').offsetTop;
+                    const resultSection = document.getElementById('stepResult');
                     const headerHeight = document.querySelector('header').offsetHeight;
 
+                    const target = resultSection.offsetTop - headerHeight - 20;
+
                     window.scrollTo({
-                        top: resultTop - headerHeight - 10,
+                        top: target,
                         behavior: 'smooth'
                     });
                 }, 150);
             }
-
-
 
 
             // Show suggest card after 2s
@@ -1818,12 +1818,12 @@
                 `Adjust your ${selectedType} (${config.width}×${config.height}) • Drag corners to resize`;
                
                 // Auto-scroll crop buttons into view (mobile only)
-             if (window.innerWidth < 768) {
+           if (window.innerWidth < 768) {
                 setTimeout(() => {
                     const cropSection = document.getElementById('stepCrop');
                     const headerHeight = document.querySelector('header').offsetHeight;
 
-                    const target = cropSection.offsetTop - headerHeight + 40;
+                    const target = cropSection.offsetTop - headerHeight - 10;
 
                     window.scrollTo({
                         top: target,
@@ -1831,6 +1831,7 @@
                     });
                 }, 250);
             }
+
 
 
         }
