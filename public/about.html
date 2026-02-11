@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>About Compressly | Built for Simplicity & Smart Tools</title>
+    <meta name="description"
+        content="Compressly builds simple, fast and secure browser-based tools including image compression and Kerala PSC photo preparation tools. Created by Sharon Moncy." />
+    <link rel="canonical" href="https://www.compressly.in/about.html" />
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --fg: #0f172a;
+            --muted: #64748b;
+            --accent: #2563eb;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --radius: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            line-height: 1.7;
+        }
+
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 28px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: var(--muted);
+            margin-left: 22px;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: var(--accent);
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .hero h1 {
+            font-size: 38px;
+            margin-bottom: 18px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--muted);
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .section {
+            margin-bottom: 70px;
+        }
+
+        .section h2 {
+            font-size: 24px;
+            margin-bottom: 16px;
+        }
+
+        .section p {
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        .grid {
+            display: grid;
+            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        }
+
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 26px;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        .team-card {
+            text-align: center;
+        }
+
+        .team-card h3 {
+            margin-bottom: 6px;
+        }
+
+        .role {
+            font-size: 13px;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            background: var(--card);
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner">
+            <a href="/" class="brand">
+                <img src="/icon.png" width="30" height="30" alt="Compressly">
+                <span>Compressly</span>
+            </a>
+
+            <nav class="nav">
+                <a href="/">Home</a>
+                <a href="https://www.compressly.in">Main Tool</a>
+                <a href="/psc-photo-tool.html">PSC Tool</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <section class="hero">
+            <h1>Built for Simplicity. Designed for Real Users.</h1>
+            <p>
+                Compressly is a growing browser-based tool platform focused on speed,
+                simplicity, and privacy. We build tools that solve real problems -
+                without unnecessary complexity.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>What We Build</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3>Image Compression Tool</h3>
+                    <p>
+                        Our main compressor allows users to reduce image file sizes
+                        efficiently while maintaining quality - all processed locally
+                        in the browser for maximum privacy.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <h3>Kerala PSC Photo Tool</h3>
+                    <p>
+                        A dedicated preparation tool for Kerala PSC applicants to
+                        create perfectly sized passport photos and signatures that
+                        match official pixel and file size requirements.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Our Mission</h2>
+            <p>
+                We believe software should feel effortless. Tools should not confuse,
+                overwhelm, or slow down users. Every detail in Compressly is built
+                with usability and clarity in mind.
+            </p>
+            <p>
+                We focus on clean interfaces, performance optimization, and
+                thoughtful user experience design - ensuring that even non-technical
+                users feel confident using our tools.
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>Our Team</h2>
+
+            <div class="grid">
+
+                <div class="card team-card">
+                    <h3>Sharon Moncy</h3>
+                    <div class="role">Founder & Product Developer</div>
+                    <p>
+                        Sharon leads the development and design of Compressly.
+                        With a strong focus on usability and performance,
+                        he builds tools that balance technical precision with
+                        intuitive user experience.
+                    </p>
+                </div>
+
+                <div class="card team-card">
+                    <h3>Moncy Joseph</h3>
+                    <div class="role">User Experience Advisor</div>
+                    <p>
+                        Moncy provides valuable feedback and practical suggestions
+                        that help refine user experience decisions.
+                        His insights ensure that Compressly remains simple,
+                        accessible, and user-focused.
+                    </p>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="section">
+            <h2>Growing Forward</h2>
+            <p>
+                Compressly is continuously evolving. We are expanding our tools,
+                refining performance, and exploring new ways to make browser-based
+                utilities smarter and more reliable.
+            </p>
+            <p>
+                Our journey has just begun - and we are committed to building tools
+                that users genuinely trust.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        © 2026 Compressly · Built with clarity and care.
+    </footer>
+
+</body>
+
+</html>

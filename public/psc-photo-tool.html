@@ -921,8 +921,8 @@
             </a>
 
             <nav class="nav-menu">
-                <a href="https://www.compressly.in">Main Tool</a>
-                <a href="#infoSection">About</a>
+                <a href="https://www.compressly.in">Image Compressor</a>
+                <a href="https://www.compressly.in/about.html">About</a>
                 <a href="/contact.html">Contact</a>
             </nav>
             <button class="menu-toggle" id="menuToggle">
@@ -1648,15 +1648,18 @@
             goToStep(5);
 
             // Auto-scroll result into view (mobile)
-          if (window.innerWidth < 768) {
+              if (window.innerWidth < 768) {
                 setTimeout(() => {
                     const resultTop = document.getElementById('stepResult').offsetTop;
+                    const headerHeight = document.querySelector('header').offsetHeight;
+
                     window.scrollTo({
-                        top: resultTop - 20,
+                        top: resultTop - headerHeight - 10,
                         behavior: 'smooth'
                     });
                 }, 150);
             }
+
 
 
 
@@ -1809,15 +1812,18 @@
                 `Adjust your ${selectedType} (${config.width}×${config.height}) • Drag corners to resize`;
                
                 // Auto-scroll crop buttons into view (mobile only)
-          if (window.innerWidth < 768) {
+       if (window.innerWidth < 768) {
                 setTimeout(() => {
-                    const containerTop = document.querySelector('.container').offsetTop;
+                    const cropTop = document.getElementById('stepCrop').offsetTop;
+                    const headerHeight = document.querySelector('header').offsetHeight;
+
                     window.scrollTo({
-                        top: containerTop + 120,
+                        top: cropTop - headerHeight - 10,
                         behavior: 'smooth'
                     });
-                }, 250);
+                }, 200);
             }
+
 
 
         }
