@@ -1812,17 +1812,21 @@
                 `Adjust your ${selectedType} (${config.width}×${config.height}) • Drag corners to resize`;
                
                 // Auto-scroll crop buttons into view (mobile only)
-       if (window.innerWidth < 768) {
+             if (window.innerWidth < 768) {
                 setTimeout(() => {
-                    const cropTop = document.getElementById('stepCrop').offsetTop;
+                    const btn = document.getElementById('applyCrop');
+                    const rect = btn.getBoundingClientRect();
                     const headerHeight = document.querySelector('header').offsetHeight;
 
+                    const scrollAmount = window.scrollY + rect.top - headerHeight - 20;
+
                     window.scrollTo({
-                        top: cropTop - headerHeight - 10,
+                        top: scrollAmount,
                         behavior: 'smooth'
                     });
-                }, 200);
+                }, 300);
             }
+
 
 
 
