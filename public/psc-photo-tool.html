@@ -120,7 +120,7 @@
         }
 
         /* Back button */
-        .back-btn {
+                .back-btn {
             display: inline-flex;
             align-items: center;
             gap: 6px;
@@ -135,6 +135,22 @@
             cursor: pointer;
             transition: all 0.2s;
         }
+
+                @media (max-width: 768px) {
+            .back-btn {
+                position: fixed;
+                top: 70px;
+                left: 16px;
+                z-index: 200;
+                background: var(--card);
+                box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            }
+
+            .container {
+                padding-top: 60px;
+            }
+        }
+
 
         .back-btn:hover {
             background: var(--card);
@@ -1219,30 +1235,45 @@
 
 
        // Pinch zoom - ✅ WORKS EVERYWHERE (including inside crop box)
-            let initialDist = 0;
+         let initialDist = 0;
             let initialZoom = 1;
+            let pinchCenter = { x: 0, y: 0 };
 
-            // ✅ Use cropCanvasWrap instead of cropCanvas for wider touch area
             const touchTarget = document.getElementById('cropCanvasWrap');
 
-            touchTarget.ontouchstart = (e) => {
+            touchTarget.addEventListener('touchstart', (e) => {
                 if (e.touches.length === 2) {
                     e.preventDefault();
+
+                    const rect = cropCanvas.getBoundingClientRect();
+                    pinchCenter.x = ((e.touches[0].clientX + e.touches[1].clientX) / 2) - rect.left;
+                    pinchCenter.y = ((e.touches[0].clientY + e.touches[1].clientY) / 2) - rect.top;
+
                     initialDist = getDistance(e.touches);
                     initialZoom = zoom;
                 }
-            };
+            }, { passive: false });
 
-            touchTarget.ontouchmove = (e) => {
+            touchTarget.addEventListener('touchmove', (e) => {
                 if (e.touches.length !== 2) return;
                 e.preventDefault();
+
                 const newDist = getDistance(e.touches);
-                zoom = initialZoom * (newDist / initialDist);
-                zoom = Math.max(0.5, Math.min(2.5, zoom));
+                let newZoom = initialZoom * (newDist / initialDist);
+                newZoom = Math.max(0.5, Math.min(2.5, newZoom));
+
+                const zoomFactor = newZoom / zoom;
+
+                imageOffsetX -= (pinchCenter.x - imageOffsetX) * (zoomFactor - 1);
+                imageOffsetY -= (pinchCenter.y - imageOffsetY) * (zoomFactor - 1);
+
+                zoom = newZoom;
                 zoomRange.value = zoom;
+
                 clampImage();
                 redraw();
-            };
+            }, { passive: false });
+
 
             zoomRange.oninput = () => {
                 zoom = +zoomRange.value;
@@ -1494,6 +1525,17 @@
             processing.classList.remove('active');
             goToStep(5);
 
+            // Auto-scroll result into view (mobile)
+            if (window.innerWidth < 768) {
+                setTimeout(() => {
+                    document.getElementById('stepResult').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }, 200);
+            }
+
+
             // Show suggest card after 2s
             setTimeout(() => {
                 const opposite = selectedType === 'photo' ? 'signature' : 'photo';
@@ -1641,6 +1683,17 @@
             const config = CONFIG[selectedType];
             document.getElementById('cropHint').textContent =
                 `Adjust your ${selectedType} (${config.width}×${config.height}) • Drag corners to resize`;
+               
+                // Auto-scroll crop buttons into view (mobile only)
+            if (window.innerWidth < 768) {
+                setTimeout(() => {
+                    document.getElementById('applyCrop').scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 300);
+            }
+
         }
 
         if (step === 4) {
