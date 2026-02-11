@@ -5,14 +5,12 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
-    <!-- Disable GA on localhost -->
     <script>
         if (location.hostname === "localhost") {
             window['ga-disable-G-K9Z1H2JLZQ'] = true;
         }
     </script>
 
-    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -22,1759 +20,1631 @@
         gtag('event', 'psc_tool_opened', { page: 'psc-photo-tool' });
     </script>
 
-    <title>Kerala PSC Photo Preparation Tool – Resize & Compress | Compressly</title>
-
+    <title>Kerala PSC Photo & Signature Preparation Tool | Compressly</title>
     <meta name="description"
-        content="Prepare your Kerala PSC (KPSC Thulasi) photo with exact pixel size, proper name & date stamp, and accurate 30 KB or 100 KB compression. Works fully in your browser." />
-
+        content="Prepare Kerala PSC passport photos (150×200px) and signatures (150×100px) with exact dimensions and 30KB file size for Thulasi portal. Fast, secure, browser-based tool." />
     <link rel="canonical" href="https://www.compressly.in/psc-photo-tool.html" />
 
     <style>
         * {
-            box-sizing: border-box
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         :root {
-            --fg: #0f1724;
-            --muted: #475569;
+            --fg: #0f172a;
+            --muted: #64748b;
             --accent: #2563eb;
+            --accent-hover: #1d4ed8;
             --bg: #f8fafc;
-            --card: #fff;
-            --border: rgba(15, 23, 42, .08);
-            font-family: Inter, system-ui, Arial, sans-serif;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --radius: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
-            margin: 0;
             background: var(--bg);
             color: var(--fg);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            line-height: 1.6;
         }
 
         header {
-            background: #fff;
+            background: var(--card);
             border-bottom: 1px solid var(--border);
-            padding: 14px 16px;
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             text-decoration: none;
             color: var(--fg);
             font-weight: 700;
+            font-size: 18px;
         }
 
         main {
-            flex: 1
+            flex: 1;
+            padding: 0;
         }
 
-        .wrap {
-            max-width: 1040px;
+        .container {
+            max-width: 880px;
             margin: 0 auto;
-            padding: 16px
+            padding: 24px 16px 40px;
         }
 
-        .breadcrumb {
-            font-size: 13px;
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px 12px 32px;
+            }
+        }
+
+        /* Step indicator */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 32px;
+            padding: 0 16px;
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .step-dot.active {
+            width: 32px;
+            border-radius: 5px;
+            background: var(--accent);
+        }
+
+        .step-dot.done {
+            background: var(--success);
+        }
+
+        /* Back button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            margin-bottom: 20px;
+            background: transparent;
+            border: 1px solid var(--border);
+            border-radius: 8px;
             color: var(--muted);
-            margin-bottom: 12px
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
         }
 
-        .breadcrumb a {
-            color: #2563eb;
-            text-decoration: none;
-            font-weight: 500
+        .back-btn:hover {
+            background: var(--card);
+            border-color: var(--accent);
+            color: var(--accent);
         }
 
-        .breadcrumb span {
-            margin: 0 6px;
-            color: #94a3b8
-        }
-
+        /* Card */
         .card {
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 18px;
+            border-radius: var(--radius);
+            padding: 32px 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 24px 16px;
+            }
         }
 
         h1 {
-            font-size: 26px;
-            margin: 0 0 6px
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--fg);
+            text-align: center;
         }
 
-        h2 {
-            font-size: 20px;
-            margin: 0 0 8px
+        .subtitle {
+            font-size: 15px;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 32px;
+            line-height: 1.5;
         }
 
-        .trust {
-            font-size: 14px;
-            color: var(--muted)
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 24px;
+            }
         }
 
-        label {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            display: block
+        /* Type selection cards */
+        .type-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 32px;
         }
 
-        input[type="number"],
-        input[type="text"],
-        input[type="date"] {
-            width: 100%;
-            padding: 11px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            font-size: 14px;
+        @media (max-width: 480px) {
+            .type-grid {
+                gap: 12px;
+            }
         }
 
-        .file-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 18px;
-            border-radius: 10px;
-            background: #2563eb;
-            color: #fff;
-            font-weight: 600;
+        .type-card {
+            position: relative;
+            padding: 28px 20px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--card);
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(37, 99, 235, .25);
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .type-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .type-card.selected {
+            border-color: var(--accent);
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            box-shadow: 0 4px 16px rgba(37, 99, 235, 0.15);
+        }
+
+        .type-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            padding: 12px;
+            background: var(--accent);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .type-card.selected .type-icon {
+            background: var(--accent-hover);
+        }
+
+        .type-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--fg);
+        }
+
+        .type-desc {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        @media (max-width: 480px) {
+            .type-card {
+                padding: 20px 14px;
+            }
+
+            .type-icon {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 12px;
+            }
+
+            .type-title {
+                font-size: 15px;
+            }
+
+            .type-desc {
+                font-size: 12px;
+            }
+        }
+
+        /* File upload */
+        .upload-area {
+            position: relative;
+            padding: 48px 24px;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            background: #fafbfc;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            background: #f0f9ff;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--accent);
+            background: #dbeafe;
+        }
+
+        .upload-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 16px;
+            padding: 14px;
+            background: var(--accent);
+            border-radius: 50%;
+            color: white;
+        }
+
+        .upload-text {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--fg);
+        }
+
+        .upload-hint {
+            font-size: 13px;
+            color: var(--muted);
         }
 
         input[type="file"] {
-            display: none
+            display: none;
         }
 
-            .file-name{
-        margin-top:6px;font-size:13px;color:var(--muted);
-        transition:all 0.3s ease;
-        }
-        .file-name.selected{
-        color:var(--fg);
-        font-weight:600;
-        background:#e0f2fe;
-        padding:8px 12px;
-        border-radius:6px;
-        border-left:3px solid #2563eb;
-        }
-
-        .row {
-            display: flex;
-            gap: 14px
-        }
-
-        .row>div {
-            flex: 1
-        }
-
-        @media(max-width:640px) {
-            .row {
-                flex-direction: column
+        @media (max-width: 640px) {
+            .upload-area {
+                padding: 36px 20px;
             }
 
-            .btn-primary {
-                max-width: none
+            .upload-icon {
+                width: 48px;
+                height: 48px;
+                padding: 12px;
             }
         }
 
-        .small-label {
-            font-size: 12px;
-            color: #64748b;
-            margin-bottom: 2px
+        /* Crop UI */
+      /* Crop section visibility controlled by .hidden class */
+
+        .crop-canvas-wrap {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            margin: 0 auto;
+            overflow: hidden;
         }
 
-        .preset-row {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 10px
+        #cropCanvas {
+            display: block;
+            max-width: 100%;
+            border-radius: 12px;
+            touch-action: none;
         }
 
-        .preset {
-            padding: 8px 14px;
-            border-radius: 999px;
-            border: 1px solid var(--border);
-            background: #fff;
-            cursor: pointer;
-            font-size: 13px
+        .crop-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
         }
 
-        .preset.active {
+        .crop-box {
+            position: absolute;
+            border: 3px solid var(--accent);
+            background: transparent;
+            cursor: move;
+            z-index: 10;
+            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2),
+                0 4px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .crop-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
+            background-size: 33.333% 100%, 100% 33.333%;
+            pointer-events: none;
+        }
+
+        .crop-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
             background: var(--accent);
-            color: #fff;
-            border-color: var(--accent)
+            border: 2px solid #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            z-index: 11;
+            transition: transform 0.15s;
         }
 
-        /* Modern card-based selection for photo type */
-        .photo-type-card {
+        .crop-handle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+        }
+
+        .crop-handle:hover {
+            transform: scale(1.3);
+        }
+
+        .crop-handle.nw {
+            top: -6px;
+            left: -6px;
+            cursor: nwse-resize;
+        }
+
+        .crop-handle.ne {
+            top: -6px;
+            right: -6px;
+            cursor: nesw-resize;
+        }
+
+        .crop-handle.sw {
+            bottom: -6px;
+            left: -6px;
+            cursor: nesw-resize;
+        }
+
+        .crop-handle.se {
+            bottom: -6px;
+            right: -6px;
+            cursor: nwse-resize;
+        }
+
+        .crop-handle.n {
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ns-resize;
+        }
+
+        .crop-handle.s {
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ns-resize;
+        }
+
+        .crop-handle.e {
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: ew-resize;
+        }
+
+        .crop-handle.w {
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: ew-resize;
+        }
+
+        .crop-hint {
+            font-size: 14px;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .zoom-control {
+            max-width: 320px;
+            margin: 20px auto;
+            padding: 16px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .zoom-label {
+            font-size: 11px;
+            color: var(--muted);
+            text-align: center;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .zoom-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;  /* ✅ ADD THIS LINE */
+            cursor: pointer;
+        }
+
+        .zoom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+        }
+
+        .zoom-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+        }
+
+        /* Stamp fields */
+        .stamp-section {
+            margin-top: 24px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+        }
+
+        .stamp-header {
             display: flex;
             align-items: center;
-            padding: 14px 16px;
-            border: 2px solid var(--border);
-            border-radius: 10px;
-            background: #fff;
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            position: relative;
+            justify-content: space-between;
+            margin-bottom: 16px;
         }
 
-        .photo-type-card:hover {
-            border-color: #cbd5e1;
-            background: #f9fafb;
-        }
-
-        .photo-type-card.active {
-            border-color: var(--accent);
-            background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
-        }
-
-        .photo-type-card input[type="radio"] {
-            margin: 0 12px 0 0;
-            cursor: pointer;
-            width: 18px;
-            height: 18px;
-            accent-color: var(--accent);
-            flex-shrink: 0;
-        }
-
-        .photo-type-card-content {
-            flex: 1;
-        }
-
-        .photo-type-card-title {
+        .stamp-title {
+            font-size: 15px;
             font-weight: 600;
             color: var(--fg);
-            margin-bottom: 2px;
         }
 
-        .photo-type-card-desc {
-            font-size: 12px;
-            color: var(--muted);
-        }
-
-        /* Icons removed: hide decorative icons to avoid overflow on small screens */
-        .photo-type-card-icon {
-            display: none;
-        }
-
-        .photo-type-card.active .photo-type-card-icon {
-            display: none;
-        }
-
-        .photo-type-card-row {
-            display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .photo-type-card-row label.photo-type-card {
-            flex: 1;
-            min-width: 120px;
-        }
-
-        /* Keep two cards side-by-side on small phones */
-        @media (max-width: 420px) {
-            .photo-type-card-row {
-                gap: 8px;
-            }
-            .photo-type-card-row label.photo-type-card {
-                flex: 0 0 48%;
-                min-width: 0;
-            }
-        }
-
-        /* File size card selection */
-        /* Compact file size selection buttons */
-        .file-size-btn {
-            padding: 8px 14px;
-            border: 1.5px solid #e2e8f0;
-            border-radius: 6px;
-            background: #fff;
-            cursor: pointer;
+        .skip-link {
             font-size: 13px;
-            font-weight: 500;
-            color: var(--muted);
-            transition: all 0.2s ease;
-        }
-
-        .file-size-btn:hover {
-            border-color: #cbd5e1;
-            background: #f9fafb;
-        }
-
-        .file-size-btn.active {
-            border-color: var(--accent);
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .file-size-btn input[type="radio"] {
-            display: none;
-        }
-
-        .file-size-btn-group {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-
-        .toggle {
-            font-size: 14px;
             color: var(--accent);
             cursor: pointer;
-            margin-top: 10px;
-            display: inline-block
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .skip-link:hover {
+            text-decoration: underline;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group:last-child {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--fg);
+            margin-bottom: 6px;
+        }
+
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
         }
 
         .btn-primary {
-            margin: 18px auto 0;
-            display: block;
-            width: 100%;
-            max-width: 360px;
-            padding: 13px;
-            font-size: 15px;
-            font-weight: 600;
             background: var(--accent);
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
         }
 
         .btn-primary:disabled {
-            opacity: .5
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
-        .processing {
-            margin-top: 10px;
-            font-size: 13px;
-            color: var(--accent);
+        .btn-secondary {
+            background: #f1f5f9;
+            color: var(--fg);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        @media (max-width: 480px) {
+            .btn {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* Result section */
+        .result-section {
             display: none;
-            text-align: center
+            text-align: center;
+        }
+
+        .result-section.active {
+            display: block;
+        }
+
+        .result-preview {
+            max-width: 200px;
+            margin: 24px auto;
+            border-radius: 10px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+            image-rendering: crisp-edges;
+        }
+
+        .result-meta {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            margin: 0 auto 20px;
+            padding: 16px;
+            background: var(--success);
+            border-radius: 50%;
+            color: white;
+        }
+
+        .suggest-card {
+            margin-top: 32px;
+            padding: 24px;
+            background: #f0f9ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .suggest-card.show {
+            display: block;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .suggest-title {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--fg);
+        }
+
+        .suggest-desc {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        /* Info section */
+        .info-section {
+            margin-top: 40px;
+            padding: 24px;
+            background: #fafbfc;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+        }
+
+        .info-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: var(--fg);
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .info-text:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Processing spinner */
+        .processing {
+            display: none;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--accent);
+        }
+
+        .processing.active {
+            display: block;
         }
 
         .spinner {
             display: inline-block;
-            width: 14px;
-            height: 14px;
+            width: 16px;
+            height: 16px;
             border: 2px solid var(--accent);
             border-top-color: transparent;
             border-radius: 50%;
-            animation: spin .6s linear infinite;
-            margin-right: 6px;
+            animation: spin 0.6s linear infinite;
+            margin-right: 8px;
             vertical-align: middle;
         }
 
         @keyframes spin {
             to {
-                transform: rotate(360deg)
+                transform: rotate(360deg);
             }
         }
 
-        .result {
-            text-align: center;
-            display: none
-        }
-
-        .preview {
-            max-width: 170px;
-            margin: 14px auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            image-rendering: crisp-edges;
-        }
-
+        /* Footer */
         footer {
+            margin-top: auto;
+            padding: 24px 16px;
             text-align: center;
             font-size: 13px;
             color: var(--muted);
-            padding: 18px 0;
             border-top: 1px solid var(--border);
-            background: #fff;
+            background: var(--card);
         }
 
-/* ===== CROP UI ===== */
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
 
-.crop-container {
-    display: none;
-    margin-top: 16px;
-}
+        footer a:hover {
+            text-decoration: underline;
+        }
 
-.crop-wrapper {
-    background: #f1f5f9;
-    border-radius: 12px;
-    padding: 24px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.crop-canvas-wrap {
-    position: relative;
-    display: inline-block;
-    max-width: 100%;
-    background: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-    touch-action: none;
-    overflow: hidden;
-}
-
-#cropCanvas {
-    max-width: 100%;
-    border-radius: 6px;
-    display: block;
-    background: #ffffff;
-    touch-action: none;
-}
-
-/* Modern crop overlay - SVG mask is GPU-accelerated, zero layout thrashing */
-.crop-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    pointer-events: none;
-    z-index: 5;
-}
-
-/* Modern crop box - sleek blue border with shadow */
-.crop-box {
-    position: absolute;
-    border: 3px solid #2563eb;
-    background: transparent;
-    cursor: move;
-    z-index: 10;
-    box-shadow: 0 0 0 1px rgba(37,99,235,0.2), 
-                0 0 20px rgba(37,99,235,0.15),
-                inset 0 0 0 1px rgba(255,255,255,0.1);
-    transition: box-shadow 0.2s ease;
-}
-
-.crop-box:hover {
-    box-shadow: 0 0 0 1px rgba(37,99,235,0.3),
-                0 0 24px rgba(37,99,235,0.25),
-                inset 0 0 0 1px rgba(255,255,255,0.15);
-}
-
-/* Grid overlay inside crop box */
-.crop-box::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-        linear-gradient(to right, rgba(255,255,255,0.3) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255,255,255,0.3) 1px, transparent 1px);
-    background-size: 33.333% 100%, 100% 33.333%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-/* Corner handles - modern minimal design with large touch targets */
-.crop-handle {
-    position: absolute;
-    width: 8px;
-    height: 8px;
-    background: #2563eb;
-    border: 1.5px solid #ffffff;
-    border-radius: 1px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    z-index: 11;
-    cursor: pointer;
-    transition: transform 0.15s ease;
-}
-
-/* Invisible touch target (44x44px minimum for mobile) */
-.crop-handle::after {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    pointer-events: auto;
-    z-index: 12;
-}
-
-.crop-handle:hover {
-    transform: scale(1.3);
-    box-shadow: 0 3px 6px rgba(0,0,0,0.4);
-}
-
-
-.crop-handle.n { top:-6px; left:50%; transform:translateX(-50%); cursor:ns-resize }
-.crop-handle.s { bottom:-6px; left:50%; transform:translateX(-50%); cursor:ns-resize }
-.crop-handle.e { right:-6px; top:50%; transform:translateY(-50%); cursor:ew-resize }
-.crop-handle.w { left:-6px; top:50%; transform:translateY(-50%); cursor:ew-resize }
-
-.crop-handle.nw { top:-6px; left:-6px; cursor:nwse-resize }
-.crop-handle.ne { top:-6px; right:-6px; cursor:nesw-resize }
-.crop-handle.sw { bottom:-6px; left:-6px; cursor:nesw-resize }
-.crop-handle.se { bottom:-6px; right:-6px; cursor:nwse-resize }
-
-/* Better touch targets on mobile */
-@media (max-width: 768px) {
-    .crop-handle {
-        width: 12px;
-        height: 12px;
-    }
-    .crop-handle.n { top:-8px; }
-    .crop-handle.s { bottom:-8px; }
-    .crop-handle.e { right:-8px; }
-    .crop-handle.w { left:-8px; }
-    .crop-handle.nw { top:-8px; left:-8px; }
-    .crop-handle.ne { top:-8px; right:-8px; }
-    .crop-handle.sw { bottom:-8px; left:-8px; }
-    .crop-handle.se { bottom:-8px; right:-8px; }
-}
-
-
-
-.crop-hint {
-    font-size: 13px;
-    color: #475569;
-    margin-bottom: 10px;
-    font-weight: 500;
-    padding: 0 12px;
-}
-
-@media (max-width: 768px) {
-    .crop-hint {
-        font-size: 12px;
-        margin-bottom: 8px;
-    }
-}
-
-.zoom-control {
-    margin: 12px auto 10px;
-    max-width: 320px;
-    background: #fff;
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #e2e8f0;
-}
-
-@media (max-width: 768px) {
-    .zoom-control {
-        margin: 8px auto 6px;
-        padding: 8px;
-    }
-}
-
-.zoom-label {
-    font-size: 11px;
-    color: #64748b;
-    margin-bottom: 6px;
-    text-align: center;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.zoom-slider {
-    width: 100%;
-    height: 6px;
-    border-radius: 3px;
-    background: #e2e8f0;
-    outline: none;
-    -webkit-appearance: none;
-    appearance: none;
-    cursor: pointer;
-}
-
-.zoom-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #2563eb;
-    cursor: pointer;
-    box-shadow: 0 2px 6px rgba(37,99,235,0.4);
-    transition: box-shadow 0.2s ease;
-}
-
-.zoom-slider::-webkit-slider-thumb:hover {
-    box-shadow: 0 2px 8px rgba(37,99,235,0.6);
-}
-
-.zoom-slider::-moz-range-thumb {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #2563eb;
-    cursor: pointer;
-    border: none;
-    box-shadow: 0 2px 6px rgba(37,99,235,0.4);
-}
-
-.crop-actions {
-    display: flex;
-    gap: 8px;
-    justify-content: center;
-    margin-top: 10px;
-    padding: 0 8px;
-    flex-wrap: wrap;
-}
-
-.crop-btn {
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 600;
-    font-size: 13px;
-    cursor: pointer;
-    border: none;
-    transition: all 0.2s ease;
-    min-width: 110px;
-}
-
-@media (max-width: 768px) {
-    .crop-actions {
-        gap: 6px;
-        margin-top: 8px;
-    }
-    .crop-btn {
-        padding: 9px 16px;
-        font-size: 12px;
-        min-width: 95px;
-    }
-}
-
-.crop-btn:active {
-    transform: scale(0.98);
-}
-
-.crop-btn-primary {
-    background: #2563eb;
-    color: #fff;
-    box-shadow: 0 4px 12px rgba(37,99,235,0.3);
-}
-
-.crop-btn-primary:hover {
-    background: #1d4ed8;
-    box-shadow: 0 6px 16px rgba(37,99,235,0.4);
-}
-
-.crop-btn-secondary {
-    background: #e5e7eb;
-    color: #374151;
-    border: 1px solid #d1d5db;
-}
-
-.crop-btn-secondary:hover {
-    background: #d1d5db;
-}
-        .promo {
-            background: #f1f5f9;
-            text-align: center
+        /* Hidden class */
+        .hidden {
+            display: none !important;
         }
     </style>
 </head>
 
 <body>
-
     <header>
         <a href="/" class="brand">
-            <img src="/icon.png" width="32" height="32" alt="Compressly logo">
+            <img src="/icon.png" width="32" height="32" alt="Compressly">
             <span>Compressly</span>
         </a>
     </header>
 
     <main>
-        <div class="wrap">
-
-            <nav class="breadcrumb">
-                <a href="/">Home</a><span>›</span><span>Kerala PSC Photo Tool</span>
-            </nav>
-
-            <div class="card">
-                <h1>Kerala PSC Photo Preparation Tool</h1>
-                <div class="trust">
-                    Prepare your Kerala PSC (KPSC Thulasi) photo exactly as required. Resize to official dimensions, add
-                    a clean name and date stamp, and compress to the correct file size - all securely in your browser.
-                </div>
+        <div class="container">
+            <!-- Step Indicator -->
+            <div class="step-indicator">
+                <div class="step-dot active" id="step1"></div>
+                <div class="step-dot" id="step2"></div>
+                <div class="step-dot" id="step3"></div>
+                <div class="step-dot" id="step4"></div>
             </div>
 
-    <div class="card">
-        <!-- ✅ STEP 1: Choose type FIRST -->
-    <div id="photoTypeSection" style="margin-bottom:20px">
-        <label>What do you want to prepare?</label>
-        <div class="photo-type-card-row">
-            <label class="photo-type-card active photo-type" data-type="photo" data-w="150" data-h="200">
-                <input type="radio" name="photo-type" value="photo" checked>
-                <div class="photo-type-card-content">
-                    <div class="photo-type-card-title">Passport Photo</div>
-                    <div class="photo-type-card-desc">150×200px for PSC applications</div>
-                </div>
-                <div class="photo-type-card-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
-                    </svg>
-                </div>
-            </label>
-            <label class="photo-type-card photo-type" data-type="signature" data-w="150" data-h="100">
-                <input type="radio" name="photo-type" value="signature">
-                <div class="photo-type-card-content">
-                    <div class="photo-type-card-title">Signature</div>
-                    <div class="photo-type-card-desc">150×100px signature</div>
-                </div>
-                <div class="photo-type-card-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
-                    </svg>
-                </div>
-            </label>
-        </div>
-        <div class="small-label" style="margin-top:8px" id="typeHint">
-            Standard passport-size photo for PSC applications
-        </div>
-    </div>
-    
-        <!-- ✅ STEP 2: Upload -->
-        <div id="uploadSection">
-            <label id="uploadLabel">Upload your <span id="uploadTypeLabel">photo</span></label>
-            <label class="file-btn" id="chooseBtn">
-                Choose <span id="btnTypeLabel">photo</span>
-                <input type="file" id="fileInput" accept="image/*">
-            </label>
-        </div>
-        <div id="fileName" class="file-name"></div>
-                <!-- CROP UI -->
-                <div class="crop-container" id="cropContainer">
-                <div class="crop-hint" id="cropHint">
-                    Adjust your photo (150×200 ratio) • Drag the box to reposition
-                </div>
+            <!-- Back Button -->
+            <button class="back-btn hidden" id="backBtn">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back
+            </button>
 
-                    <div class="crop-wrapper">
-                        <div class="crop-canvas-wrap" id="cropCanvasWrap">
-                            <canvas id="cropCanvas"></canvas>
-                            <svg class="crop-overlay" id="cropOverlay" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:5;">
-                                <defs>
-                                    <mask id="cropMask" x="0" y="0" width="100%" height="100%">
-                                        <rect x="0" y="0" width="100%" height="100%" fill="white"/>
-                                        <rect id="cropMaskRect" x="0" y="0" width="0" height="0" fill="black"/>
-                                    </mask>
-                                </defs>
-                                <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.5)" mask="url(#cropMask)"/>
+            <!-- Step 1: Choose Type -->
+            <div class="card" id="stepType">
+                <h1>Kerala PSC Photo Preparation</h1>
+                <p class="subtitle">Choose what you want to prepare for your PSC application</p>
+
+                <div class="type-grid">
+                    <div class="type-card" data-type="photo">
+                        <div class="type-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
                             </svg>
-
-                            <div class="crop-box" id="cropBox">
-                                <div class="crop-handle nw" data-handle="nw"></div>
-                                <div class="crop-handle ne" data-handle="ne"></div>
-                                <div class="crop-handle sw" data-handle="sw"></div>
-                                <div class="crop-handle se" data-handle="se"></div>
-                                <div class="crop-handle n" data-handle="n"></div>
-                                <div class="crop-handle e" data-handle="e"></div>
-                                <div class="crop-handle s" data-handle="s"></div>
-                                <div class="crop-handle w" data-handle="w"></div>
-
-                            </div>
-
                         </div>
+                        <div class="type-title">Passport Photo</div>
+                        <div class="type-desc">150×200px • 30KB</div>
                     </div>
 
-                    <div class="zoom-control">
-                        <div class="zoom-label">Zoom</div>
-                        <input type="range" class="zoom-slider" id="zoomRange" min="0.5" max="2.5" step="0.01" value="0.8">
-                    </div>
-
-                    <div class="crop-actions">
-                        <button class="crop-btn crop-btn-secondary" id="skipCrop">Skip crop</button>
-                        <button class="crop-btn crop-btn-primary" id="applyCrop">Use this crop</button>
-                    </div>
-                </div>
-
-                <!-- MAIN CONTROLS -->
-                <div id="mainControls">
-
-                    <div style="margin-top:16px">
-                        <label>Photo dimensions</label>
-                        <div class="row">
-                            <div>
-                                <div class="small-label">Width (px)</div>
-                                <input type="number" id="width" value="150">
-                            </div>
-                            <div>
-                                <div class="small-label">Height (px)</div>
-                                <input type="number" id="height" value="200">
-                            </div>
+                    <div class="type-card" data-type="signature">
+                        <div class="type-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                            </svg>
                         </div>
+                        <div class="type-title">Signature</div>
+                        <div class="type-desc">150×100px • 30KB</div>
                     </div>
-
-              
-                
-                <div style="margin-top:16px">
-                    <label>Target file size</label>
-                    <div class="file-size-btn-group">
-                        <label class="file-size-btn active file-size" data-kb="30">
-                            <input type="radio" name="file-size" value="30" checked>
-                            30 KB
-                        </label>
-                        <label class="file-size-btn file-size" data-kb="100">
-                            <input type="radio" name="file-size" value="100">
-                            100 KB
-                        </label>
-                    </div>
-                </div>
-
-                    <label class="stamp-toggle" style="display:flex;align-items:center;gap:10px;margin-top:10px;cursor:pointer">
-                        <input type="checkbox" id="toggleStamp" style="width:18px;height:18px;accent-color:var(--accent)">
-                        <span style="font-weight:600;color:var(--accent)">Add name & date stamp</span>
-                        <span style="font-size:12px;color:var(--muted);font-weight:500">(optional)</span>
-                    </label>
-
-                    <div id="stampFields" style="display:none;margin-top:14px">
-                        <div class="row">
-                            <div>
-                                <label>Name</label>
-                                <input type="text" id="stampName">
-                            </div>
-                            <div>
-                                <label>Date</label>
-                                <input type="date" id="stampDate">
-                            </div>
-                        </div>
-                        <div class="small-label" style="margin-top:6px">Date appears as DD-MM-YYYY</div>
-                    </div>
-
-                <button id="processBtn" class="btn-primary" disabled>
-                    Prepare PSC Photo
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-3px;margin-left:6px">
-                        <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z" />
-                    </svg>
-                </button>
-
-                    <div class="processing" id="processing">
-                        <span class="spinner"></span>Processing your photo…
-                    </div>
-
                 </div>
             </div>
 
-            <div class="card result" id="resultCard">
-                <h2>Your PSC photo is ready</h2>
-                <img id="preview" class="preview">
-                <div id="meta" class="trust"></div>
-            <a id="download" style="text-decoration:none">
-                <button class="btn-primary">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"
-                        style="vertical-align:-3px;margin-right:6px">
-                        <path
-                            d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
-                    </svg>
-                    Download Photo
-                </button>
-            </a>
+            <!-- Step 2: Upload -->
+            <div class="card hidden" id="stepUpload">
+                <h1 id="uploadTitle">Upload Your Photo</h1>
+                <p class="subtitle" id="uploadSubtitle">Will be resized to 150×200px and compressed to 30KB</p>
+
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
+                        </svg>
+                    </div>
+                    <div class="upload-text">Click to upload or drag & drop</div>
+                    <div class="upload-hint">JPG, PNG • Max 10MB</div>
+                    <input type="file" id="fileInput" accept="image/*">
+                </div>
             </div>
 
-            <div class="card">
-                <h2>PSC Photo Requirements Explained</h2>
-                <p class="trust">
+            <!-- Step 3: Crop -->
+            <div class="card hidden crop-section" id="stepCrop">
+                <div class="crop-hint" id="cropHint">Drag corners to resize • Pinch to zoom • Tap image to pan</div>
+
+                <div style="text-align: center;">
+                    <div class="crop-canvas-wrap" id="cropCanvasWrap">
+                        <canvas id="cropCanvas"></canvas>
+                        <svg class="crop-overlay">
+                            <defs>
+                                <mask id="cropMask">
+                                    <rect width="100%" height="100%" fill="white" />
+                                    <rect id="cropMaskRect" fill="black" />
+                                </mask>
+                            </defs>
+                            <rect width="100%" height="100%" fill="rgba(0,0,0,0.5)" mask="url(#cropMask)" />
+                        </svg>
+                        <div class="crop-box" id="cropBox">
+                            <div class="crop-handle nw" data-handle="nw"></div>
+                            <div class="crop-handle ne" data-handle="ne"></div>
+                            <div class="crop-handle sw" data-handle="sw"></div>
+                            <div class="crop-handle se" data-handle="se"></div>
+                            <div class="crop-handle n" data-handle="n"></div>
+                            <div class="crop-handle s" data-handle="s"></div>
+                            <div class="crop-handle e" data-handle="e"></div>
+                            <div class="crop-handle w" data-handle="w"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="zoom-control">
+                    <div class="zoom-label">Zoom</div>
+                    <input type="range" class="zoom-slider" id="zoomRange" min="0.5" max="2.5" step="0.01" value="1">
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="skipCrop">Skip Crop</button>
+                    <button class="btn btn-primary" id="applyCrop">Continue</button>
+                </div>
+            </div>
+
+            <!-- Step 4: Stamp (Optional) -->
+            <div class="card hidden" id="stepStamp">
+                <h1>Add Name & Date Stamp</h1>
+                <p class="subtitle">Optional: Add your name and date at the bottom</p>
+
+                <div class="stamp-section">
+                    <div class="input-group">
+                        <label>Full Name</label>
+                        <input type="text" id="stampName" placeholder="JOHN DOE">
+                    </div>
+                    <div class="input-group">
+                        <label>Date</label>
+                        <input type="date" id="stampDate">
+                        <div class="input-hint">Will appear as DD-MM-YYYY format</div>
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="skipStamp">Skip</button>
+                    <button class="btn btn-primary" id="addStamp">Add Stamp & Prepare</button>
+                </div>
+
+                <div class="processing" id="processing">
+                    <span class="spinner"></span>
+                    Processing your <span id="processingType">photo</span>...
+                </div>
+            </div>
+
+            <!-- Step 5: Result -->
+            <div class="card hidden result-section" id="stepResult">
+                <div class="success-icon">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                    </svg>
+                </div>
+
+                <h1 id="resultTitle">Your Photo is Ready!</h1>
+                <p class="subtitle">Download and use in your PSC application</p>
+
+                <img id="preview" class="result-preview">
+                <div class="result-meta" id="resultMeta"></div>
+
+                <a id="downloadLink" style="text-decoration: none;">
+                    <button class="btn btn-primary">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                        </svg>
+                        Download
+                    </button>
+                </a>
+
+                <div class="suggest-card" id="suggestCard">
+                    <div class="suggest-title" id="suggestTitle">Need a signature too?</div>
+                    <div class="suggest-desc" id="suggestDesc">Most PSC applications require both photo and signature
+                    </div>
+                    <button class="btn btn-secondary" id="suggestBtn" style="width: 100%;">
+                        Prepare Signature →
+                    </button>
+                </div>
+            </div>
+
+            <!-- Info Section -->
+            <div class="info-section" id="infoSection">
+                <div class="info-title">PSC Photo Requirements</div>
+                <p class="info-text">
                     Kerala PSC applications require photos to meet strict pixel and file-size rules. Images outside the
                     allowed range may be rejected by the Thulasi portal.
                 </p>
-                <p class="trust">
-                    This tool prepares photos using commonly accepted PSC standards such as 150×200 pixels and a 30 KB
-                    file size. Also, if you need to prepare a signature image, select the "Signature" option for a 150×100 pixel
-                     output with an appropriate aspect ratio and compression.
+                <p class="info-text">
+                    This tool prepares photos using Kerala PSC official standards: 150×200 pixels for passport photos,
+                    150×100 pixels for signatures, and 30 KB file size.
                 </p>
-                <p class="trust">
-                    All processing happens locally in your browser. Your image is never uploaded or stored.
+                <p class="info-text">
+                    All processing happens locally in your browser. Your image is never uploaded or stored on any
+                    server.
                 </p>
             </div>
-
-            <div class="card promo">
-                <p class="trust">Need to compress other images or formats?</p>
-                <a href="/" style="color:#2563eb;font-weight:600;text-decoration:none">
-                    Go to Compressly Image Compressor →
-                </a>
-            </div>
-
         </div>
     </main>
 
     <footer>
-        © 2026 Compressly · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/contact.html">Contact</a>
+        © 2026 Compressly ·
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/contact.html">Contact</a>
     </footer>
 
     <script>
+        // State
+        let currentStep = 1;
+        let selectedType = null;
+        let originalImage = null;
+        let croppedImage = null;
+        let zoom = 1;
+        let canvasWidth = 0;
+        let canvasHeight = 0;
+        let imageOffsetX = 0;
+        let imageOffsetY = 0;
+
+        // Config based on type
+        const CONFIG = {
+            photo: { width: 150, height: 200, title: 'Photo', desc: 'Will be resized to 150×200px and compressed to 30KB' },
+            signature: { width: 150, height: 100, title: 'Signature', desc: 'Will be resized to 150×100px and compressed to 30KB' }
+        };
+
+        // Elements
+        const stepType = document.getElementById('stepType');
+        const stepUpload = document.getElementById('stepUpload');
+        const stepCrop = document.getElementById('stepCrop');
+        const stepStamp = document.getElementById('stepStamp');
+        const stepResult = document.getElementById('stepResult');
+        const backBtn = document.getElementById('backBtn');
         const fileInput = document.getElementById('fileInput');
-        const fileNameEl = document.getElementById('fileName');
-        const cropContainer = document.getElementById('cropContainer');
+        const uploadArea = document.getElementById('uploadArea');
         const cropCanvas = document.getElementById('cropCanvas');
-        const cropCanvasWrap = document.getElementById('cropCanvasWrap');
         const cropBox = document.getElementById('cropBox');
-        const applyCrop = document.getElementById('applyCrop');
-        const skipCrop = document.getElementById('skipCrop');
         const zoomRange = document.getElementById('zoomRange');
-        const mainControls = document.getElementById('mainControls');
-        const processBtn = document.getElementById('processBtn');
-        const processing = document.getElementById('processing');
-        const preview = document.getElementById('preview');
-        const download = document.getElementById('download');
-        const meta = document.getElementById('meta');
-        const presets = document.querySelectorAll('.preset');
-        const toggleStamp = document.getElementById('toggleStamp');
-        const stampFields = document.getElementById('stampFields');
         const stampName = document.getElementById('stampName');
         const stampDate = document.getElementById('stampDate');
-        const uploadSection = document.getElementById('uploadSection');
-            const chooseBtn = document.getElementById('chooseBtn');
-            const uploadLabel = document.getElementById('uploadLabel');
-
-        let originalImage = null, croppedImage = null;
-            let zoom = 0.8, targetKB = 30, stampEnabled = false;
-            let canvasWidth = 0, canvasHeight = 0, imageOffsetX = 0, imageOffsetY = 0;
-            let selectedFileName = '';
-            let photoType = 'photo'; // 'photo' or 'signature'
-            let targetWidth = 150, targetHeight = 200; // Default photo dimensions
+        const preview = document.getElementById('preview');
+        const downloadLink = document.getElementById('downloadLink');
+        const suggestCard = document.getElementById('suggestCard');
+        const processing = document.getElementById('processing');
 
         stampDate.valueAsDate = new Date();
 
-      // File size selection handler
-        const updateFileSize = (p) => {
-            document.querySelectorAll('label.file-size-btn').forEach(x => x.classList.remove('active'));
-            p.classList.add('active');
-            
-            // Update radio button
-            const radio = p.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
-            
-            targetKB = +p.dataset.kb;
+        // Step 1: Type Selection
+        document.querySelectorAll('.type-card').forEach(card => {
+            card.onclick = () => {
+                document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedType = card.dataset.type;
+
+                setTimeout(() => goToStep(2), 300);
+            };
+        });
+
+        // Step 2: Upload
+        uploadArea.onclick = () => fileInput.click();
+
+        uploadArea.ondragover = (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
         };
 
-        // Click handler for file size buttons
-        document.querySelectorAll('label.file-size-btn').forEach(p => {
-            p.onclick = (e) => {
-                // Prevent default label behavior from radio input
-                if (e.target.tagName === 'INPUT') return;
-                updateFileSize(p);
-            }
-        });
+        uploadArea.ondragleave = () => {
+            uploadArea.classList.remove('dragover');
+        };
 
-        // Change handler for file size radio buttons
-        document.querySelectorAll('input[name="file-size"]').forEach(radio => {
-            radio.onchange = () => {
-                const btn = radio.closest('label.file-size-btn');
-                if (btn) updateFileSize(btn);
-            }
-        });
-
-       // Photo type selection handler
-        const updatePhotoType = (p) => {
-            document.querySelectorAll('label.photo-type-card').forEach(x => x.classList.remove('active'));
-            p.classList.add('active');
-            
-            // Update radio button
-            const radio = p.querySelector('input[type="radio"]');
-            if (radio) radio.checked = true;
-            
-            photoType = p.dataset.type;
-            targetWidth = +p.dataset.w;
-            targetHeight = +p.dataset.h;
-
-            // Update dimension inputs
-            document.getElementById('width').value = targetWidth;
-            document.getElementById('height').value = targetHeight;
-
-            // ✅ UPDATE UI LABELS dynamically
-            const isSignature = photoType === 'signature';
-            document.getElementById('uploadTypeLabel').textContent = isSignature ? 'signature' : 'photo';
-            document.getElementById('btnTypeLabel').textContent = isSignature ? 'signature' : 'photo';
-            document.getElementById('typeHint').textContent = isSignature
-                ? 'Your handwritten signature on white paper (black/blue pen)'
-                : 'Standard passport-size photo for PSC applications';
-
-            // Update crop hint text
-            updateCropHintText();
-
-            // If crop is showing, update crop box aspect ratio
-            if (cropContainer.style.display === 'block' && originalImage) {
-                updateCropBoxAspect();
+        uploadArea.ondrop = (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            if (e.dataTransfer.files.length) {
+                fileInput.files = e.dataTransfer.files;
+                handleFile();
             }
         };
 
-        // Click handler for card labels
-        document.querySelectorAll('label.photo-type-card').forEach(p => {
-            p.onclick = (e) => {
-                // Prevent default label behavior from radio input
-                if (e.target.tagName === 'INPUT') return;
-                updatePhotoType(p);
-            }
-        });
+        fileInput.onchange = handleFile;
 
-        // Change handler for radio buttons
-        document.querySelectorAll('input[name="photo-type"]').forEach(radio => {
-            radio.onchange = () => {
-                const card = radio.closest('label.photo-type-card');
-                if (card) updatePhotoType(card);
-            }
-        });
+        async function handleFile() {
+            if (!fileInput.files.length) return;
 
-        // Show/hide stamp fields when checkbox changes
-        toggleStamp.onchange = () => {
-            stampEnabled = !!toggleStamp.checked;
-            stampFields.style.display = stampEnabled ? 'block' : 'none';
-        };
+            const file = fileInput.files[0];
+            const img = new Image();
+            const url = URL.createObjectURL(file);
 
- fileInput.onchange = async () => {
-        if (!fileInput.files.length) return;
+            img.onload = async () => {
+                URL.revokeObjectURL(url);
 
-        // ✅ Clear previous result
-        document.getElementById('resultCard').style.display = 'none';
-        croppedImage = null;
-        preview.src = '';
-
-        selectedFileName = fileInput.files[0].name;
-        uploadSection.style.display = 'none';
-        document.getElementById('photoTypeSection').style.display = 'none';
-
-        fileNameEl.innerHTML = `
-        <svg width="16" height="16" viewBox="0 0 24 24"
-             xmlns="http://www.w3.org/2000/svg"
-             style="vertical-align:-2px;margin-right:6px;fill:#2563eb">
-          <path d="M3 6c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6z"/>
-        </svg>
-        ${selectedFileName} <span style="color:#2563eb">(loading...)</span>
-    `;
-        fileNameEl.classList.add('selected');
-
-        const img = new Image();
-        const objectUrl = URL.createObjectURL(fileInput.files[0]);
-
-        img.onload = async () => {
-            URL.revokeObjectURL(objectUrl);
-
-            // ✅ DOWNSAMPLE for mobile camera photos
-            const maxDimension = 1600;
-            if (img.width > maxDimension || img.height > maxDimension) {
-                try {
-                    originalImage = await downsampleLargeImage(img, maxDimension);
-                } catch (e) {
+                // Downsample large images
+                if (img.width > 1600 || img.height > 1600) {
+                    try {
+                        originalImage = await downsampleImage(img, 1600);
+                    } catch (e) {
+                        originalImage = img;
+                    }
+                } else {
                     originalImage = img;
                 }
-            } else {
-                originalImage = img;
+
+                goToStep(3);
+                initCrop();
+            };
+
+            img.src = url;
+        }
+
+        async function downsampleImage(img, maxDim) {
+            return new Promise((resolve) => {
+                const scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+                const w = Math.round(img.width * scale);
+                const h = Math.round(img.height * scale);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = w;
+                canvas.height = h;
+                const ctx = canvas.getContext('2d');
+
+                ctx.fillStyle = '#ffffff';
+                ctx.fillRect(0, 0, w, h);
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                ctx.drawImage(img, 0, 0, w, h);
+
+                canvas.toBlob((blob) => {
+                    const newImg = new Image();
+                    newImg.onload = () => resolve(newImg);
+                    newImg.src = URL.createObjectURL(blob);
+                }, 'image/jpeg', 0.98);
+            });
+        }
+
+        // Step 3: Crop
+        function initCrop() {
+            const config = CONFIG[selectedType];
+            const maxW = Math.min(800, window.innerWidth - 40);  /* ✅ CHANGED from 600 to 800 */
+            const imgAspect = originalImage.width / originalImage.height;
+            let canvasW = maxW;
+            let canvasH = canvasW / imgAspect;
+
+            if (canvasH > 500) {
+                canvasH = 500;
+                canvasW = canvasH * imgAspect;
             }
 
-            // Remove loading text
-            fileNameEl.innerHTML = `
-            <svg width="16" height="16" viewBox="0 0 24 24"
-                 xmlns="http://www.w3.org/2000/svg"
-                 style="vertical-align:-2px;margin-right:6px;fill:#2563eb">
-              <path d="M3 6c0-1.1.9-2 2-2h4l2 2h8c1.1 0 2 .9 2 2v10c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2V6z"/>
-            </svg>
-            ${selectedFileName}
-        `;
+            canvasWidth = canvasW;
+            canvasHeight = canvasH;
+            cropCanvas.width = canvasW;
+            cropCanvas.height = canvasH;
 
-            processBtn.disabled = false;
-            showCrop(originalImage);
-        };
+            const ctx = cropCanvas.getContext('2d');
+            zoom = 1;
+            zoomRange.value = 1;
+            imageOffsetX = 0;
+            imageOffsetY = 0;
 
-        img.src = objectUrl;
-        fileInput.value = '';
-    };
+            function redraw() {
+                ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                const dw = canvasWidth * zoom;
+                const dh = canvasHeight * zoom;
+                ctx.drawImage(originalImage, imageOffsetX, imageOffsetY, dw, dh);
+            }
 
-  async function downsampleLargeImage(img, maxDim) {
-        return new Promise((resolve) => {
-            let w = img.width;
-            let h = img.height;
-
-            const scale = Math.min(maxDim / w, maxDim / h, 1);
-            w = Math.round(w * scale);
-            h = Math.round(h * scale);
-
-            const c = document.createElement('canvas');
-            c.width = w;
-            c.height = h;
-            const ctx = c.getContext('2d');
-
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, w, h);
-            ctx.imageSmoothingEnabled = true;
-            ctx.imageSmoothingQuality = 'high';
-            ctx.drawImage(img, 0, 0, w, h);
-
-            c.toBlob((blob) => {
-                const newImg = new Image();
-                newImg.onload = () => resolve(newImg);
-                newImg.src = URL.createObjectURL(blob);
-            }, 'image/jpeg', 0.98); // ✅ CHANGED from 0.92 to 0.98
-        });
-    }
-   function showCrop(img) {
-        cropContainer.style.display = 'block';
-        document.getElementById('photoTypeSection').style.display = 'none';
-        updateCropHintText();
-        mainControls.style.display = 'none';
-
-        const maxW = Math.min(600, window.innerWidth - 80);
-        const imgAspect = img.width / img.height;
-        let canvasW = maxW;
-        let canvasH = canvasW / imgAspect;
-
-        if (canvasH > 500) {
-            canvasH = 500;
-            canvasW = canvasH * imgAspect;
-        }
-
-        canvasWidth = canvasW;
-        canvasHeight = canvasH;
-
-        cropCanvas.width = canvasW;
-        cropCanvas.height = canvasH;
-
-        const ctx = cropCanvas.getContext('2d');
-
-        // Fill canvas with image (zoom = 1, centered)
-        zoom = 1;
-        zoomRange.value = 1;
-        imageOffsetX = 0;
-        imageOffsetY = 0;
-
-        function redraw() {
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-            const dw = canvasWidth * zoom;
-            const dh = canvasHeight * zoom;
-            ctx.drawImage(img, imageOffsetX, imageOffsetY, dw, dh);
-        }
-
-        redraw();
-
-        // Initialize crop box with correct aspect ratio, centered, 60% size
-  // Initial default ratio
-       const aspect = targetWidth / targetHeight;
-       let bw = canvasWidth * 0.6;
-       let bh = bw / aspect;
-
-       cropBox.style.width = bw + 'px';
-       cropBox.style.height = bh + 'px';
-       cropBox.style.left = (canvasWidth - bw) / 2 + 'px';
-       cropBox.style.top = (canvasHeight - bh) / 2 + 'px';
-       updateOverlay(); // 🔑 ADD THIS LINE
-
-
-
-        enableImagePanAndZoom(redraw);
-
-        enableCropDrag(redraw);
-
-        setTimeout(() => {
-            try {
-                const rect = cropCanvas.getBoundingClientRect();
-                const targetY = window.scrollY + rect.top - window.innerHeight * 0.22;
-                window.scrollTo({ top: targetY, behavior: 'smooth' });
-            } catch (e) { }
-        }, 120);
-    }
- function enableImagePanAndZoom(redraw) {
-        let dragging = false;
-        let sx = 0, sy = 0;
-        let startX = 0, startY = 0;
-
-        // 🖱️ DESKTOP: mouse drag to pan
-        cropCanvas.addEventListener('mousedown', e => {
-            dragging = true;
-            sx = e.clientX;
-            sy = e.clientY;
-            startX = imageOffsetX;
-            startY = imageOffsetY;
-            cropCanvas.style.cursor = 'grabbing';
-        });
-
-        document.addEventListener('mousemove', e => {
-            if (!dragging) return;
-            imageOffsetX = startX + (e.clientX - sx);
-            imageOffsetY = startY + (e.clientY - sy);
-            clampImage();
             redraw();
-        });
 
-        document.addEventListener('mouseup', () => {
-            dragging = false;
-            cropCanvas.style.cursor = 'default';
-        });
+            // Init crop box
+            const aspect = config.width / config.height;
+            let bw = canvasW * 0.6;
+            let bh = bw / aspect;
 
-        // 📱 MOBILE: pinch zoom (works everywhere on crop area, including inside crop box)
-        let initialDist = 0;
-        let initialZoom = zoom;
-        let pinchCenterX = 0;
-        let pinchCenterY = 0;
+            cropBox.style.width = bw + 'px';
+            cropBox.style.height = bh + 'px';
+            cropBox.style.left = (canvasW - bw) / 2 + 'px';
+            cropBox.style.top = (canvasH - bh) / 2 + 'px';
+            updateOverlay();
 
-        // Add pinch zoom to wrapper so it works even when touching the SVG overlay or crop box
-        const cropWrapper = cropCanvasWrap || cropCanvas;
-
-        let lastTouches = [];
-
-        cropWrapper.addEventListener('touchstart', e => {
-            if (e.touches.length === 2) {
-                e.preventDefault();
-
-                lastTouches = [
-                    { x: e.touches[0].clientX, y: e.touches[0].clientY },
-                    { x: e.touches[1].clientX, y: e.touches[1].clientY }
-                ];
-
-                initialDist = getDistance(e.touches);
-                initialZoom = zoom;
-            }
-        }, { passive: false });
-
-        cropWrapper.addEventListener('touchmove', e => {
-            if (e.touches.length !== 2) return;
-            e.preventDefault();
-
-            const newDist = getDistance(e.touches);
-            let newZoom = initialZoom * (newDist / initialDist);
-            newZoom = Math.max(0.5, Math.min(2.5, newZoom));
-
-            // 🔥 FIND dominant finger (the one that moved more)
-            const move0 = Math.hypot(
-                e.touches[0].clientX - lastTouches[0].x,
-                e.touches[0].clientY - lastTouches[0].y
-            );
-            const move1 = Math.hypot(
-                e.touches[1].clientX - lastTouches[1].x,
-                e.touches[1].clientY - lastTouches[1].y
-            );
-
-            const dominantTouch = move0 > move1 ? e.touches[0] : e.touches[1];
-
-            // Convert dominant finger position to canvas space
-            const rect = cropCanvas.getBoundingClientRect();
-            const anchorX = dominantTouch.clientX - rect.left;
-            const anchorY = dominantTouch.clientY - rect.top;
-
-            // Image point under finger BEFORE zoom
-            const imgX = (anchorX - imageOffsetX) / zoom;
-            const imgY = (anchorY - imageOffsetY) / zoom;
-
-            // Apply zoom
-            zoom = newZoom;
-
-            // Keep image under finger AFTER zoom
-            imageOffsetX = anchorX - imgX * zoom;
-            imageOffsetY = anchorY - imgY * zoom;
-
-            lastTouches = [
-                { x: e.touches[0].clientX, y: e.touches[0].clientY },
-                { x: e.touches[1].clientX, y: e.touches[1].clientY }
-            ];
-
-            clampImage();
-            redraw();
-        }, { passive: false });
-
-
-        // Slider zoom (desktop + mobile)
-        zoomRange.oninput = () => {
-            zoom = +zoomRange.value;
-            clampImage();
-            redraw();
-        };
-
-        function clampImage() {
-            const dw = canvasWidth * zoom;
-            const dh = canvasHeight * zoom;
-
-            // If image is smaller than canvas, center it
-            if (dw <= canvasWidth) {
-                imageOffsetX = (canvasWidth - dw) / 2;
-            } else {
-                imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX));
-            }
-
-            if (dh <= canvasHeight) {
-                imageOffsetY = (canvasHeight - dh) / 2;
-            } else {
-                imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY));
-            }
+            enablePanZoom(redraw);
+            enableCropDrag();
         }
 
+        function enablePanZoom(redraw) {
+            let dragging = false;
+            let sx, sy, startX, startY;
 
-        function getDistance(t) {
-            const dx = t[0].clientX - t[1].clientX;
-            const dy = t[0].clientY - t[1].clientY;
-            return Math.hypot(dx, dy);
-        }
-    }
-
-
-    function enableCropDrag(redrawCallback) {
-        let dragging = false;
-        let resizing = false;
-        let resizeHandle = null;
-        let sx, sy, sw, sh, sl, st;
-      
-
-        // Move crop box
-        cropBox.addEventListener('mousedown', e => {
-            if (e.target.classList.contains('crop-handle')) return;
-            e.preventDefault();
-            dragging = true;
-            sx = e.clientX;
-            sy = e.clientY;
-            sl = parseFloat(cropBox.style.left);
-            st = parseFloat(cropBox.style.top);
-        });
-
-        cropBox.addEventListener('touchstart', e => {
-            if (e.target.classList.contains('crop-handle')) return;
-            e.preventDefault();
-            dragging = true;
-            const t = e.touches[0];
-            sx = t.clientX;
-            sy = t.clientY;
-            sl = parseFloat(cropBox.style.left);
-            st = parseFloat(cropBox.style.top);
-        }, { passive: false });
-
-        // Resize from corners
-        document.querySelectorAll('.crop-handle').forEach(handle => {
-            handle.addEventListener('mousedown', e => {
-                e.stopPropagation();
-                e.preventDefault();
-                resizing = true;
-                resizeHandle = e.target.dataset.handle;
+            cropCanvas.onmousedown = (e) => {
+                dragging = true;
                 sx = e.clientX;
                 sy = e.clientY;
-                sw = parseFloat(cropBox.style.width);
-                sh = parseFloat(cropBox.style.height);
-                sl = parseFloat(cropBox.style.left);
-                st = parseFloat(cropBox.style.top);
-            });
+                startX = imageOffsetX;
+                startY = imageOffsetY;
+            };
 
-            handle.addEventListener('touchstart', e => {
-                e.stopPropagation();
+            document.onmousemove = (e) => {
+                if (!dragging) return;
+                imageOffsetX = startX + (e.clientX - sx);
+                imageOffsetY = startY + (e.clientY - sy);
+                clampImage();
+                redraw();
+            };
+
+            document.onmouseup = () => {
+                dragging = false;
+            };
+
+            // Pinch zoom
+            let initialDist = 0;
+            let initialZoom = 1;
+
+            cropCanvas.ontouchstart = (e) => {
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    initialDist = getDistance(e.touches);
+                    initialZoom = zoom;
+                }
+            };
+
+            cropCanvas.ontouchmove = (e) => {
+                if (e.touches.length !== 2) return;
                 e.preventDefault();
-                resizing = true;
-                resizeHandle = e.target.dataset.handle;
-                const t = e.touches[0];
-                sx = t.clientX;
-                sy = t.clientY;
-                sw = parseFloat(cropBox.style.width);
-                sh = parseFloat(cropBox.style.height);
-                sl = parseFloat(cropBox.style.left);
-                st = parseFloat(cropBox.style.top);
-            }, { passive: false });
-        });
+                const newDist = getDistance(e.touches);
+                zoom = initialZoom * (newDist / initialDist);
+                zoom = Math.max(0.5, Math.min(2.5, zoom));
+                zoomRange.value = zoom;
+                clampImage();
+                redraw();
+            };
 
-        const move = e => {
-            const touch = e.touches ? e.touches[0] : e;
-            const dx = touch.clientX - sx;
-            const dy = touch.clientY - sy;
+            zoomRange.oninput = () => {
+                zoom = +zoomRange.value;
+                clampImage();
+                redraw();
+            };
 
-            if (dragging) {
-                let l = sl + dx;
-                let t = st + dy;
-                const { w, h } = getCanvasBounds();
-                l = Math.max(0, Math.min(l, w - cropBox.offsetWidth));
-                t = Math.max(0, Math.min(t, h - cropBox.offsetHeight));
-
-                cropBox.style.left = l + 'px';
-                cropBox.style.top = t + 'px';
-                updateOverlay();
-
-        } else if (resizing) {
-               const { w: CW, h: CH } = getCanvasBounds();
-
-                let minSize = 60;
-
-                // START from original
-                let newL = sl;
-                let newT = st;
-                let newW = sw;
-                let newH = sh;
-
-                // EAST (right)
-                if (resizeHandle.includes('e')) {
-                    newW = Math.min(sw + dx, CW - sl);
+            function clampImage() {
+                const dw = canvasWidth * zoom;
+                const dh = canvasHeight * zoom;
+                if (dw <= canvasWidth) {
+                    imageOffsetX = (canvasWidth - dw) / 2;
+                } else {
+                    imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX));
                 }
-
-                // SOUTH (bottom)
-                if (resizeHandle.includes('s')) {
-                    newH = Math.min(sh + dy, CH - st);
+                if (dh <= canvasHeight) {
+                    imageOffsetY = (canvasHeight - dh) / 2;
+                } else {
+                    imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY));
                 }
-
-                // WEST (left)
-                if (resizeHandle.includes('w')) {
-                    const maxDx = sw - minSize;
-                    const clampedDx = Math.min(dx, maxDx);
-                    ;
-
-                    newL = Math.max(0, sl + clampedDx);
-                    newW = sw - (newL - sl);
-                }
-
-                // NORTH (top)
-                if (resizeHandle.includes('n')) {
-                    const maxDy = sh - minSize;
-                    const clampedDy = Math.min(dy, maxDy);
-
-                    newT = Math.max(0, st + clampedDy);
-                    newH = sh - (newT - st);
-                }
-
-                // FINAL hard clamp (safety net)
-                newW = Math.max(minSize, Math.min(newW, CW - newL));
-                newH = Math.max(minSize, Math.min(newH, CH - newT));
-
-                cropBox.style.left = newL + 'px';
-                cropBox.style.top = newT + 'px';
-                cropBox.style.width = newW + 'px';
-                cropBox.style.height = newH + 'px';
-
-                updateOverlay();
-
-
-
-                cropBox.style.width = newW + 'px';
-                cropBox.style.height = newH + 'px';
-                cropBox.style.left = newL + 'px';
-                cropBox.style.top = newT + 'px';
-                updateOverlay();
-
             }
 
-
-        };
-
-        const end = () => {
-            dragging = false;
-            resizing = false;
-            resizeHandle = null;
-        };
-
-        document.addEventListener('mousemove', move);
-        document.addEventListener('touchmove', move, { passive: false });
-        document.addEventListener('mouseup', end);
-        document.addEventListener('touchend', end);
-    }
-
-         function updateOverlay() {
-            // GPU-accelerated SVG mask - single attribute update per drag
-            const maskRect = document.getElementById('cropMaskRect');
-            if (!maskRect) return;
-
-            let x = parseFloat(cropBox.style.left) || 0;
-            let y = parseFloat(cropBox.style.top) || 0;
-            let w = parseFloat(cropBox.style.width) || 0;
-            let h = parseFloat(cropBox.style.height) || 0;
-
-            // Round to avoid sub-pixel artifacts
-            x = Math.round(x);
-            y = Math.round(y);
-            w = Math.round(w);
-            h = Math.round(h);
-
-            // Update SVG mask rect (single operation, no layout thrashing)
-            maskRect.setAttribute('x', x);
-            maskRect.setAttribute('y', y);
-            maskRect.setAttribute('width', w);
-            maskRect.setAttribute('height', h);
+            function getDistance(touches) {
+                const dx = touches[0].clientX - touches[1].clientX;
+                const dy = touches[0].clientY - touches[1].clientY;
+                return Math.hypot(dx, dy);
+            }
         }
 
-        function getCanvasBounds() {
-                const rect = cropCanvas.getBoundingClientRect();
-                return {
-                    w: rect.width,
-                    h: rect.height
+        function enableCropDrag() {
+            let dragging = false;
+            let resizing = false;
+            let handle = null;
+            let sx, sy, sw, sh, sl, st;
+
+            cropBox.onmousedown = cropBox.ontouchstart = (e) => {
+                if (e.target.classList.contains('crop-handle')) return;
+                e.preventDefault();
+                dragging = true;
+                const t = e.touches ? e.touches[0] : e;
+                sx = t.clientX;
+                sy = t.clientY;
+                sl = parseFloat(cropBox.style.left);
+                st = parseFloat(cropBox.style.top);
+            };
+
+            document.querySelectorAll('.crop-handle').forEach(h => {
+                h.onmousedown = h.ontouchstart = (e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    resizing = true;
+                    handle = e.target.dataset.handle;
+                    const t = e.touches ? e.touches[0] : e;
+                    sx = t.clientX;
+                    sy = t.clientY;
+                    sw = parseFloat(cropBox.style.width);
+                    sh = parseFloat(cropBox.style.height);
+                    sl = parseFloat(cropBox.style.left);
+                    st = parseFloat(cropBox.style.top);
                 };
-            }
+            });
 
+            const move = (e) => {
+                const t = e.touches ? e.touches[0] : e;
+                const dx = t.clientX - sx;
+                const dy = t.clientY - sy;
 
+                if (dragging) {
+                    let l = sl + dx;
+                    let t2 = st + dy;
+                    l = Math.max(0, Math.min(l, canvasWidth - cropBox.offsetWidth));
+                    t2 = Math.max(0, Math.min(t2, canvasHeight - cropBox.offsetHeight));
+                    cropBox.style.left = l + 'px';
+                    cropBox.style.top = t2 + 'px';
+                    updateOverlay();
+                } else if (resizing) {
+                    let newW = sw, newH = sh, newL = sl, newT = st;
+                    const minSize = 60;
 
-              function updateCropHintText() {
-                    const cropHint = document.getElementById('cropHint');
-                    if (photoType === 'signature') {
-                        cropHint.textContent = 'Adjust your signature (150×100 ratio) • Drag the box to reposition';
-                    } else {
-                        cropHint.textContent = 'Adjust your photo (150×200 ratio) • Drag the box to reposition';
+                    if (handle.includes('e')) newW = Math.min(sw + dx, canvasWidth - sl);
+                    if (handle.includes('s')) newH = Math.min(sh + dy, canvasHeight - st);
+                    if (handle.includes('w')) {
+                        const maxDx = sw - minSize;
+                        const clampedDx = Math.min(dx, maxDx);
+                        newL = Math.max(0, sl + clampedDx);
+                        newW = sw - (newL - sl);
                     }
+                    if (handle.includes('n')) {
+                        const maxDy = sh - minSize;
+                        const clampedDy = Math.min(dy, maxDy);
+                        newT = Math.max(0, st + clampedDy);
+                        newH = sh - (newT - st);
+                    }
+
+                    newW = Math.max(minSize, Math.min(newW, canvasWidth - newL));
+                    newH = Math.max(minSize, Math.min(newH, canvasHeight - newT));
+
+                    cropBox.style.left = newL + 'px';
+                    cropBox.style.top = newT + 'px';
+                    cropBox.style.width = newW + 'px';
+                    cropBox.style.height = newH + 'px';
+                    updateOverlay();
                 }
+            };
 
-        applyCrop.onclick = () => {
-            mainControls.style.display = 'block';
-          const rect = cropCanvas.getBoundingClientRect();
+            const end = () => {
+                dragging = false;
+                resizing = false;
+                handle = null;
+            };
 
-            // how much CSS is scaling the canvas
-            const scaleCanvasX = canvasWidth / rect.width;
-            const scaleCanvasY = canvasHeight / rect.height;
+            document.onmousemove = document.ontouchmove = move;
+            document.onmouseup = document.ontouchend = end;
+        }
 
-            const scaleX = originalImage.width / (canvasWidth * zoom);
-            const scaleY = originalImage.height / (canvasHeight * zoom);
+        function updateOverlay() {
+            const rect = document.getElementById('cropMaskRect');
+            if (!rect) return;
+            const x = Math.round(parseFloat(cropBox.style.left));
+            const y = Math.round(parseFloat(cropBox.style.top));
+            const w = Math.round(parseFloat(cropBox.style.width));
+            const h = Math.round(parseFloat(cropBox.style.height));
+            rect.setAttribute('x', x);
+            rect.setAttribute('y', y);
+            rect.setAttribute('width', w);
+            rect.setAttribute('height', h);
+        }
 
-            const boxL = parseFloat(cropBox.style.left) * scaleCanvasX;
-            const boxT = parseFloat(cropBox.style.top) * scaleCanvasY;
-            const boxW = parseFloat(cropBox.style.width) * scaleCanvasX;
-            const boxH = parseFloat(cropBox.style.height) * scaleCanvasY;
+        document.getElementById('applyCrop').onclick = extractCrop;
+        document.getElementById('skipCrop').onclick = () => {
+            croppedImage = originalImage;
+            goToStep(4);
+        };
 
-            const sx = (boxL - imageOffsetX) * scaleX;
-            const sy = (boxT - imageOffsetY) * scaleY;
-            const sw = boxW * scaleX;
-            const sh = boxH * scaleY;
+        function extractCrop() {
+            const rect = cropCanvas.getBoundingClientRect();
+            const scaleX = canvasWidth / rect.width;
+            const scaleY = canvasHeight / rect.height;
+            const imgScaleX = originalImage.width / (canvasWidth * zoom);
+            const imgScaleY = originalImage.height / (canvasHeight * zoom);
 
-            const c = document.createElement('canvas');
-            c.width = sw;
-            c.height = sh;
-           const ctx = c.getContext('2d');
+            const boxL = parseFloat(cropBox.style.left) * scaleX;
+            const boxT = parseFloat(cropBox.style.top) * scaleY;
+            const boxW = parseFloat(cropBox.style.width) * scaleX;
+            const boxH = parseFloat(cropBox.style.height) * scaleY;
 
-            /* 🔒 FORCE WHITE BACKGROUND (PSC SAFE) */
+            const sx = (boxL - imageOffsetX) * imgScaleX;
+            const sy = (boxT - imageOffsetY) * imgScaleY;
+            const sw = boxW * imgScaleX;
+            const sh = boxH * imgScaleY;
+
+            const canvas = document.createElement('canvas');
+            canvas.width = sw;
+            canvas.height = sh;
+            const ctx = canvas.getContext('2d');
             ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, c.width, c.height);
-
+            ctx.fillRect(0, 0, sw, sh);
             ctx.drawImage(originalImage, sx, sy, sw, sh, 0, 0, sw, sh);
 
             const img = new Image();
             img.onload = () => {
                 croppedImage = img;
-                cropContainer.style.display = 'none';
-                mainControls.style.display = 'block';
-                uploadSection.style.display = 'block';
-                document.getElementById('photoTypeSection').style.display = 'block'; // Show photo type section again
-                zoom = 0.8;
-                zoomRange.value = 0.8;
-                fileNameEl.textContent = '✅ ' + selectedFileName + ' (cropped)';
-                    // Bring the prepare button into view so mobile users can act without scrolling
-                    setTimeout(() => {
-                        try {
-                            const btn = document.getElementById('processBtn');
-                            if (btn) {
-                                const r = btn.getBoundingClientRect();
-                                const targetY = window.scrollY + r.top - Math.round(window.innerHeight * 0.35);
-                                window.scrollTo({ top: targetY, behavior: 'smooth' });
-                            }
-                        } catch (e) {}
-                    }, 100);
+                goToStep(4);
             };
-            // ✅ USE PNG to preserve quality until final export
-            img.src = c.toDataURL('image/png');
-        };
-
-     skipCrop.onclick = () => {
-     mainControls.style.display = 'block';
-            croppedImage = originalImage;
-            cropContainer.style.display = 'none';
-            mainControls.style.display = 'block';
-            uploadSection.style.display = 'block'; // 👈 SHOW upload UI for potential second try
-            document.getElementById('photoTypeSection').style.display = 'block'; // Show photo type section again
-            zoom = 0.8;
-            zoomRange.value = 0.8;
-           fileNameEl.textContent = '✅ ' + selectedFileName + ' (original - no crop)';
-            // Bring the prepare button into view on mobile (no focus)
-            setTimeout(() => {
-                try {
-                    const btn = document.getElementById('processBtn');
-                    if (btn) {
-                        const r = btn.getBoundingClientRect();
-                        const targetY = window.scrollY + r.top - Math.round(window.innerHeight * 0.35);
-                        window.scrollTo({ top: targetY, behavior: 'smooth' });
-                    }
-                } catch (e) {}
-            }, 100);
-        };
-
-
-
-        function stepDownResize(img, w, h) {
-            let c = document.createElement('canvas'), ctx = c.getContext('2d');
-            c.width = img.width; c.height = img.height; ctx.drawImage(img, 0, 0);
-            while (c.width * 0.5 > w) {
-                let t = document.createElement('canvas');
-                t.width = Math.max(w, Math.round(c.width * 0.5));
-                t.height = Math.max(h, Math.round(c.height * 0.5));
-                const tCtx = t.getContext('2d');
-                tCtx.imageSmoothingEnabled = true;
-                tCtx.imageSmoothingQuality = 'high';
-                tCtx.drawImage(c, 0, 0, t.width, t.height);
-                c = t; ctx = tCtx;
-            }
-            let f = document.createElement('canvas');
-            f.width = w; f.height = h;
-            const fCtx = f.getContext('2d');
-           fCtx.imageSmoothingEnabled = true;
-            fCtx.imageSmoothingQuality = 'high';
-            fCtx.fillStyle = '#ffffff';          // ✅ FIX
-            fCtx.fillRect(0, 0, w, h);            // ✅ FIX
-            fCtx.drawImage(c, 0, 0, w, h);
-
-            return f;
+            img.src = canvas.toDataURL('image/png');
         }
 
-   function applyEdgeSharpen(ctx, w, h) {
-        const imgData = ctx.getImageData(0, 0, w, h);
-        const data = imgData.data;
-        const copy = new Uint8ClampedArray(data);
+        // Step 4: Stamp
+        document.getElementById('skipStamp').onclick = () => processImage(false);
+        document.getElementById('addStamp').onclick = () => processImage(true);
 
-        // ✅ ADAPTIVE sharpening: stronger for signatures (smaller height)
-        let strength = 0.45;
-        if (photoType === 'signature') {
-            strength = 0.35; // Extra sharp for tiny signatures
-        }
+        async function processImage(withStamp) {
+            processing.classList.add('active');
+            document.getElementById('processingType').textContent = selectedType === 'photo' ? 'photo' : 'signature';
 
-        for (let y = 1; y < h - 1; y++) {
-            for (let x = 1; x < w - 1; x++) {
-                const i = (y * w + x) * 4;
-                for (let c = 0; c < 3; c++) {
-                    const current = copy[i + c];
-                    const avg = (copy[i + c - 4] + copy[i + c + 4] +
-                        copy[i + c - w * 4] + copy[i + c + w * 4]) / 4;
-                    let val = current + (current - avg) * strength;
-                    data[i + c] = Math.max(0, Math.min(255, val));
-                }
-            }
-        }
-        ctx.putImageData(imgData, 0, 0);
-    }
+            await new Promise(r => setTimeout(r, 100));
 
-   async function compressToTarget(canvas, minKB, maxKB) {
-        // ✅ SIGNATURE-SPECIFIC: Start with higher quality baseline
-        let qLow, qHigh;
-        if (photoType === 'signature') {
-            qLow = 0.94;  // Much higher starting point for signatures
-            qHigh = 0.99;
-        } else {
-            qLow = 0.88;
-            qHigh = 0.99;
-        }
-
-        let best = null;
-
-        for (let i = 0; i < 15; i++) {
-            const q = (qLow + qHigh) / 2;
-            const b = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
-            const kb = b.size / 1024;
-
-            if (kb >= minKB && kb <= maxKB) {
-                best = b;
-                qLow = q; // Keep searching for better quality
-            } else if (kb > maxKB) {
-                qHigh = q;
-            } else {
-                qLow = q;
-            }
-        }
-
-        return best || await new Promise(r =>
-            canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2)
-        );
-    }
-
-        processBtn.onclick = async () => {
-            if (!croppedImage) return;
-            processBtn.disabled = true;
-            processing.style.display = 'block';
-            document.getElementById('resultCard').style.display = 'none';
-
-            const w = +width.value;
-            const h = +height.value;
-
-            // For signatures, apply triple sharpen for maximum clarity
-          const sharpenPasses = (photoType === 'signature') ? 1 : 2;
-
-
-            const resizedCanvas = stepDownResize(croppedImage, w, h);
-            const canvas = resizedCanvas;
+            const config = CONFIG[selectedType];
+            const canvas = stepDownResize(croppedImage, config.width, config.height);
             const ctx = canvas.getContext('2d');
 
-
-          // ✅ ADAPTIVE SHARPEN: 2x for photos, 3x for signatures
-            for (let i = 0; i < sharpenPasses; i++) {
-                applyEdgeSharpen(ctx, w, h);
+            // Sharpen
+            const passes = selectedType === 'signature' ? 1 : 2;
+            for (let i = 0; i < passes; i++) {
+                applyEdgeSharpen(ctx, config.width, config.height);
             }
 
-            if (stampEnabled) {
+            // Stamp
+            if (withStamp) {
                 const name = stampName.value.trim().toUpperCase();
-                let dateStr = '';
-                if (stampDate.value) {
-                    const d = new Date(stampDate.value);
-                    dateStr = `${String(d.getDate()).padStart(2, '0')}-${String(d.getMonth() + 1).padStart(2, '0')}-${d.getFullYear()}`;
-                }
-
+                const dateStr = stampDate.value ? formatDate(new Date(stampDate.value)) : '';
                 const lines = [name, dateStr].filter(Boolean);
+
                 if (lines.length) {
-                    const fontBase = Math.max(8, Math.min(13, Math.round(h * 0.06)));
+                    const fontBase = Math.max(8, Math.min(13, Math.round(config.height * 0.06)));
                     const lineHeight = Math.round(fontBase * 1.18);
                     const padding = Math.round(fontBase * 0.35);
                     const stripH = lines.length * lineHeight + padding * 2;
 
                     ctx.fillStyle = '#ffffff';
-                    ctx.fillRect(0, h - stripH, w, stripH);
+                    ctx.fillRect(0, config.height - stripH, config.width, stripH);
                     ctx.strokeStyle = '#cccccc';
-                    ctx.strokeRect(0, h - stripH, w, stripH);
+                    ctx.strokeRect(0, config.height - stripH, config.width, stripH);
 
-                    ctx.save();
-                    ctx.translate(0.5, 0.5);
                     ctx.fillStyle = '#000';
                     ctx.textAlign = 'center';
                     ctx.textBaseline = 'middle';
 
-                    let y = h - stripH + padding + (lineHeight / 2);
-                    lines.forEach(t => {
+                    let y = config.height - stripH + padding + (lineHeight / 2);
+                    lines.forEach(text => {
                         let fs = fontBase;
                         do {
                             ctx.font = `bold ${fs}px Tahoma, Arial, sans-serif`;
                             fs--;
-                        } while (ctx.measureText(t).width > w - 8 && fs > 6);
-                        ctx.fillText(t, w / 2, y);
+                        } while (ctx.measureText(text).width > config.width - 8 && fs > 6);
+                        ctx.fillText(text, config.width / 2, y);
                         y += lineHeight;
                     });
-                    ctx.restore();
                 }
             }
 
-            let blob;
-            if (targetKB === 30) {
-                if (photoType === 'signature') {
-                    // Signatures: aim for higher quality within 30KB
-                    blob = await compressToTarget(canvas, 20, 30);
-                } else {
-                    blob = await compressToTarget(canvas, 25, 30);
-                }
-            } else {
-                blob = await compressToTarget(canvas, 95, 100);
-            }
+            // Compress
+            const blob = await compressToTarget(canvas, 20, 30, selectedType);
 
+            // Show result
             const url = URL.createObjectURL(blob);
             preview.src = url;
-            download.href = url;
-            const filePrefix = photoType === 'signature' ? 'psc-signature' : 'psc-photo';
-            download.download = `${filePrefix}-${w}x${h}-${Math.round(blob.size / 1024)}kb.jpg`;
-            meta.textContent = `Final size: ${Math.round(blob.size / 1024)} KB · ${w}×${h}px · JPEG`;
+            downloadLink.href = url;
+            downloadLink.download = `psc-${selectedType}-${config.width}x${config.height}-${Math.round(blob.size / 1024)}kb.jpg`;
+
+            document.getElementById('resultMeta').textContent =
+                `${Math.round(blob.size / 1024)} KB · ${config.width}×${config.height}px · JPEG`;
+
+            document.getElementById('resultTitle').textContent =
+                `Your ${config.title} is Ready!`;
+
+            processing.classList.remove('active');
+            goToStep(5);
+
+            // Show suggest card after 2s
+            setTimeout(() => {
+                const opposite = selectedType === 'photo' ? 'signature' : 'photo';
+                document.getElementById('suggestTitle').textContent =
+                    selectedType === 'photo' ? 'Need a signature too?' : 'Need a photo too?';
+                document.getElementById('suggestDesc').textContent =
+                    'Most PSC applications require both photo and signature';
+                document.getElementById('suggestBtn').textContent =
+                    `Prepare ${opposite.charAt(0).toUpperCase() + opposite.slice(1)} →`;
+                suggestCard.classList.add('show');
+            }, 2000);
+
+            // Analytics
             gtag('event', 'psc_photo_prepared', {
                 file_size: Math.round(blob.size / 1024),
-                dimensions: `${w}x${h}`,
-                target_kb: targetKB,
-                stamp_enabled: stampEnabled
+                dimensions: `${config.width}x${config.height}`,
+                type: selectedType,
+                stamp_enabled: withStamp
             });
+        }
 
-            processing.style.display = 'none';
-            document.getElementById('resultCard').style.display = 'block';
-            document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
-            processBtn.disabled = false;
+        document.getElementById('suggestBtn').onclick = () => {
+            selectedType = selectedType === 'photo' ? 'signature' : 'photo';
+            resetState();
+            goToStep(2);
         };
-        download.onclick = () => {
-                gtag('event', 'psc_photo_downloaded', {
-                    file_size: Math.round(preview.src ? parseInt(meta.textContent) : 0),
-                    target_kb: targetKB
-                });
-            };
-        </script>
-    </script>
 
+        function stepDownResize(img, w, h) {
+            let canvas = document.createElement('canvas');
+            let ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            while (canvas.width * 0.5 > w) {
+                const temp = document.createElement('canvas');
+                temp.width = Math.max(w, Math.round(canvas.width * 0.5));
+                temp.height = Math.max(h, Math.round(canvas.height * 0.5));
+                const tempCtx = temp.getContext('2d');
+                tempCtx.imageSmoothingEnabled = true;
+                tempCtx.imageSmoothingQuality = 'high';
+                tempCtx.drawImage(canvas, 0, 0, temp.width, temp.height);
+                canvas = temp;
+                ctx = tempCtx;
+            }
+
+            const final = document.createElement('canvas');
+            final.width = w;
+            final.height = h;
+            const finalCtx = final.getContext('2d');
+            finalCtx.imageSmoothingEnabled = true;
+            finalCtx.imageSmoothingQuality = 'high';
+            finalCtx.fillStyle = '#ffffff';
+            finalCtx.fillRect(0, 0, w, h);
+            finalCtx.drawImage(canvas, 0, 0, w, h);
+
+            return final;
+        }
+
+        function applyEdgeSharpen(ctx, w, h) {
+            const imgData = ctx.getImageData(0, 0, w, h);
+            const data = imgData.data;
+            const copy = new Uint8ClampedArray(data);
+            const strength = selectedType === 'signature' ? 0.35 : 0.45;
+
+            for (let y = 1; y < h - 1; y++) {
+                for (let x = 1; x < w - 1; x++) {
+                    const i = (y * w + x) * 4;
+                    for (let c = 0; c < 3; c++) {
+                        const current = copy[i + c];
+                        const avg = (copy[i + c - 4] + copy[i + c + 4] +
+                            copy[i + c - w * 4] + copy[i + c + w * 4]) / 4;
+                        let val = current + (current - avg) * strength;
+                        data[i + c] = Math.max(0, Math.min(255, val));
+                    }
+                }
+            }
+            ctx.putImageData(imgData, 0, 0);
+        }
+
+        async function compressToTarget(canvas, minKB, maxKB, type) {
+            let qLow = type === 'signature' ? 0.94 : 0.88;
+            let qHigh = 0.99;
+            let best = null;
+
+            for (let i = 0; i < 15; i++) {
+                const q = (qLow + qHigh) / 2;
+                const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
+                const kb = blob.size / 1024;
+
+                if (kb >= minKB && kb <= maxKB) {
+                    best = blob;
+                    qLow = q;
+                } else if (kb > maxKB) {
+                    qHigh = q;
+                } else {
+                    qLow = q;
+                }
+            }
+
+            return best || await new Promise(r => canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2));
+        }
+
+        function formatDate(date) {
+            const d = String(date.getDate()).padStart(2, '0');
+            const m = String(date.getMonth() + 1).padStart(2, '0');
+            const y = date.getFullYear();
+            return `${d}-${m}-${y}`;
+        }
+
+        // Navigation
+   function goToStep(step) {
+        currentStep = step;
+
+        // Toggle hidden class for all steps
+        stepType.classList.toggle('hidden', step !== 1);
+        stepUpload.classList.toggle('hidden', step !== 2);
+        stepCrop.classList.toggle('hidden', step !== 3);
+        stepStamp.classList.toggle('hidden', step !== 4);
+        stepResult.classList.toggle('hidden', step !== 5);
+
+        // ✅ FIX: Toggle active class for crop and result sections
+        stepCrop.classList.toggle('active', step === 3);
+        stepResult.classList.toggle('active', step === 5);  // ✅ ADD THIS LINE
+
+        backBtn.classList.toggle('hidden', step === 1 || step === 5);
+        document.getElementById('infoSection').classList.toggle('hidden', step !== 1);
+
+        // Update step indicator
+        for (let i = 1; i <= 4; i++) {
+            const dot = document.getElementById(`step${i}`);
+            dot.classList.toggle('active', i === step);
+            dot.classList.toggle('done', i < step);
+        }
+
+        // Update titles
+        if (step === 2) {
+            const config = CONFIG[selectedType];
+            document.getElementById('uploadTitle').textContent = `Upload Your ${config.title}`;
+            document.getElementById('uploadSubtitle').textContent = config.desc;
+        }
+
+        if (step === 3) {
+            const config = CONFIG[selectedType];
+            document.getElementById('cropHint').textContent =
+                `Adjust your ${selectedType} (${config.width}×${config.height}) • Drag corners to resize`;
+        }
+
+        if (step === 4) {
+            document.getElementById('processingType').textContent = selectedType;
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+        backBtn.onclick = () => {
+            if (currentStep > 1) goToStep(currentStep - 1);
+        };
+
+        function resetState() {
+            originalImage = null;
+            croppedImage = null;
+            zoom = 1;
+            fileInput.value = '';
+            stampName.value = '';
+            stampDate.valueAsDate = new Date();
+            suggestCard.classList.remove('show');
+        }
+
+        downloadLink.onclick = () => {
+            gtag('event', 'psc_photo_downloaded', {
+                type: selectedType
+            });
+        };
+    </script>
 </body>
 
 </html>
