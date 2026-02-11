@@ -330,189 +330,162 @@
         /* Crop UI */
       /* Crop section visibility controlled by .hidden class */
 
-        .crop-canvas-wrap {
-            position: relative;
-            display: inline-block;
-            max-width: 100%;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            margin: 0 auto;
-            overflow: hidden;
-        }
+       /* Crop UI - Compact layout */
+.crop-section {
+    text-align: center;
+}
 
-        #cropCanvas {
-            display: block;
-            max-width: 100%;
-            border-radius: 12px;
-            touch-action: none;
-        }
+.crop-hint {
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 12px;
+    font-weight: 500;
+}
 
-        .crop-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 5;
-        }
+@media (max-width: 640px) {
+    .crop-hint { font-size: 12px; margin-bottom: 10px; }
+}
 
-        .crop-box {
-            position: absolute;
-            border: 3px solid var(--accent);
-            background: transparent;
-            cursor: move;
-            z-index: 10;
-            box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2),
-                0 4px 20px rgba(37, 99, 235, 0.3);
-        }
+.crop-canvas-wrap {
+    position: relative;
+    display: inline-block;
+    max-width: 100%;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    margin: 0 auto 16px;  /* ✅ Reduced bottom margin */
+    overflow: hidden;
+}
 
-        .crop-box::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(to right, rgba(255, 255, 255, 0.4) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255, 255, 255, 0.4) 1px, transparent 1px);
-            background-size: 33.333% 100%, 100% 33.333%;
-            pointer-events: none;
-        }
+#cropCanvas {
+    display: block;
+    max-width: 100%;
+    border-radius: 12px;
+    touch-action: none;
+}
 
-        .crop-handle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background: var(--accent);
-            border: 2px solid #fff;
-            border-radius: 2px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            z-index: 11;
-            transition: transform 0.15s;
-        }
+.crop-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 5;
+}
 
-        .crop-handle::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 44px;
-            height: 44px;
-        }
+.crop-box {
+    position: absolute;
+    border: 3px solid var(--accent);
+    background: transparent;
+    cursor: move;
+    z-index: 10;
+    box-shadow: 0 0 0 2px rgba(37,99,235,0.2),
+                0 4px 20px rgba(37,99,235,0.3);
+}
 
-        .crop-handle:hover {
-            transform: scale(1.3);
-        }
+.crop-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px);
+    background-size: 33.333% 100%, 100% 33.333%;
+    pointer-events: none;
+}
 
-        .crop-handle.nw {
-            top: -6px;
-            left: -6px;
-            cursor: nwse-resize;
-        }
+.crop-handle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--accent);
+    border: 2px solid #fff;
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    z-index: 11;
+    transition: transform 0.15s;
+}
 
-        .crop-handle.ne {
-            top: -6px;
-            right: -6px;
-            cursor: nesw-resize;
-        }
+.crop-handle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 44px;
+    height: 44px;
+}
 
-        .crop-handle.sw {
-            bottom: -6px;
-            left: -6px;
-            cursor: nesw-resize;
-        }
+.crop-handle:hover { transform: scale(1.3); }
 
-        .crop-handle.se {
-            bottom: -6px;
-            right: -6px;
-            cursor: nwse-resize;
-        }
+.crop-handle.nw { top: -6px; left: -6px; cursor: nwse-resize; }
+.crop-handle.ne { top: -6px; right: -6px; cursor: nesw-resize; }
+.crop-handle.sw { bottom: -6px; left: -6px; cursor: nesw-resize; }
+.crop-handle.se { bottom: -6px; right: -6px; cursor: nwse-resize; }
+.crop-handle.n { top: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+.crop-handle.s { bottom: -6px; left: 50%; transform: translateX(-50%); cursor: ns-resize; }
+.crop-handle.e { right: -6px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
+.crop-handle.w { left: -6px; top: 50%; transform: translateY(-50%); cursor: ew-resize; }
 
-        .crop-handle.n {
-            top: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: ns-resize;
-        }
+/* ✅ COMPACT ZOOM CONTROL - Inline layout */
+.zoom-control {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 100%;
+    margin: 0 auto 16px;  /* ✅ Reduced margin */
+    padding: 0;
+}
 
-        .crop-handle.s {
-            bottom: -6px;
-            left: 50%;
-            transform: translateX(-50%);
-            cursor: ns-resize;
-        }
+.zoom-label {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+    white-space: nowrap;
+    min-width: 50px;
+}
 
-        .crop-handle.e {
-            right: -6px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: ew-resize;
-        }
+.zoom-slider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: #e2e8f0;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
 
-        .crop-handle.w {
-            left: -6px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: ew-resize;
-        }
+.zoom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 2px 8px rgba(37,99,235,0.4);
+}
 
-        .crop-hint {
-            font-size: 14px;
-            color: var(--muted);
-            text-align: center;
-            margin-bottom: 16px;
-            font-weight: 500;
-        }
+.zoom-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: none;
+    box-shadow: 0 2px 8px rgba(37,99,235,0.4);
+}
 
-        .zoom-control {
-            max-width: 320px;
-            margin: 20px auto;
-            padding: 16px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-        }
-
-        .zoom-label {
-            font-size: 11px;
-            color: var(--muted);
-            text-align: center;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 8px;
-        }
-
-        .zoom-slider {
-            width: 100%;
-            height: 6px;
-            border-radius: 3px;
-            background: #e2e8f0;
-            outline: none;
-            -webkit-appearance: none;
-            appearance: none;  /* ✅ ADD THIS LINE */
-            cursor: pointer;
-        }
-
-        .zoom-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--accent);
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
-        }
-
-        .zoom-slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--accent);
-            border: none;
-            box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
-        }
-
+@media (max-width: 640px) {
+    .zoom-control {
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+    .zoom-label {
+        font-size: 12px;
+        min-width: 45px;
+    }
+}
         /* Stamp fields */
         .stamp-section {
             margin-top: 24px;
@@ -958,13 +931,13 @@
                         <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                     </svg>
                 </div>
-
+            
                 <h1 id="resultTitle">Your Photo is Ready!</h1>
                 <p class="subtitle">Download and use in your PSC application</p>
-
+            
                 <img id="preview" class="result-preview">
                 <div class="result-meta" id="resultMeta"></div>
-
+            
                 <a id="downloadLink" style="text-decoration: none;">
                     <button class="btn btn-primary">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -974,11 +947,18 @@
                         Download
                     </button>
                 </a>
-
+            
+                <!-- ✅ ADD BACK BUTTON HERE -->
+                <button class="btn btn-secondary" id="resultBackBtn" style="margin-top: 12px; width: 100%; max-width: 360px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Not Satisfied? Go Back
+                </button>
+            
                 <div class="suggest-card" id="suggestCard">
                     <div class="suggest-title" id="suggestTitle">Need a signature too?</div>
-                    <div class="suggest-desc" id="suggestDesc">Most PSC applications require both photo and signature
-                    </div>
+                    <div class="suggest-desc" id="suggestDesc">Most PSC applications require both photo and signature</div>
                     <button class="btn btn-secondary" id="suggestBtn" style="width: 100%;">
                         Prepare Signature →
                     </button>
@@ -1145,8 +1125,9 @@
             let canvasW = maxW;
             let canvasH = canvasW / imgAspect;
 
-            if (canvasH > 500) {
-                canvasH = 500;
+        // ✅ REDUCE max height for mobile visibility
+            if (canvasH > 400) {  // Changed from 500 to 400
+                canvasH = 400;
                 canvasW = canvasH * imgAspect;
             }
 
@@ -1209,11 +1190,14 @@
                 dragging = false;
             };
 
-            // Pinch zoom
+       // Pinch zoom - ✅ WORKS EVERYWHERE (including inside crop box)
             let initialDist = 0;
             let initialZoom = 1;
 
-            cropCanvas.ontouchstart = (e) => {
+            // ✅ Use cropCanvasWrap instead of cropCanvas for wider touch area
+            const touchTarget = document.getElementById('cropCanvasWrap');
+
+            touchTarget.ontouchstart = (e) => {
                 if (e.touches.length === 2) {
                     e.preventDefault();
                     initialDist = getDistance(e.touches);
@@ -1221,7 +1205,7 @@
                 }
             };
 
-            cropCanvas.ontouchmove = (e) => {
+            touchTarget.ontouchmove = (e) => {
                 if (e.touches.length !== 2) return;
                 e.preventDefault();
                 const newDist = getDistance(e.touches);
@@ -1496,6 +1480,10 @@
             resetState();
             goToStep(2);
         };
+        // ✅ ADD THIS - Result back button
+            document.getElementById('resultBackBtn').onclick = () => {
+                goToStep(4);  // Go back to stamp section
+            };
 
         function stepDownResize(img, w, h) {
             let canvas = document.createElement('canvas');
@@ -1595,7 +1583,7 @@
         stepCrop.classList.toggle('active', step === 3);
         stepResult.classList.toggle('active', step === 5);  // ✅ ADD THIS LINE
 
-        backBtn.classList.toggle('hidden', step === 1 || step === 5);
+        backBtn.classList.toggle('hidden', step === 1);  // ✅ Show back button on all steps except step 1
         document.getElementById('infoSection').classList.toggle('hidden', step !== 1);
 
         // Update step indicator
