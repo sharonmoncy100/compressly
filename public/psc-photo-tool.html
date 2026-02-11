@@ -609,6 +609,12 @@
         gap: 10px;
         margin-bottom: 12px;
     }
+    @media (max-width: 768px) {
+    .zoom-control {
+        display: none;
+    }
+}
+
     .zoom-label {
         font-size: 12px;
         min-width: 45px;
@@ -1270,8 +1276,8 @@
             let canvasH = canvasW / imgAspect;
 
         // ✅ REDUCE max height for mobile visibility
-            if (canvasH > 400) {  // Changed from 500 to 400
-                canvasH = 400;
+           if (canvasH > 340) {
+                canvasH = 340;
                 canvasW = canvasH * imgAspect;
             }
 
@@ -1814,20 +1820,17 @@
                 // Auto-scroll crop buttons into view (mobile only)
              if (window.innerWidth < 768) {
                 setTimeout(() => {
-                    const btn = document.getElementById('applyCrop');
-                    const rect = btn.getBoundingClientRect();
+                    const cropSection = document.getElementById('stepCrop');
                     const headerHeight = document.querySelector('header').offsetHeight;
 
-                    const scrollAmount = window.scrollY + rect.top - headerHeight - 20;
+                    const target = cropSection.offsetTop - headerHeight + 40;
 
                     window.scrollTo({
-                        top: scrollAmount,
+                        top: target,
                         behavior: 'smooth'
                     });
-                }, 300);
+                }, 250);
             }
-
-
 
 
         }

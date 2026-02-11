@@ -21,23 +21,26 @@
             --fg: #0f172a;
             --muted: #64748b;
             --accent: #2563eb;
-            --bg: #f8fafc;
+            --accent-light: #3b82f6;
+            --bg: #ffffff;
             --card: #ffffff;
             --border: #e2e8f0;
-            --radius: 14px;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            --radius: 16px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', system-ui, sans-serif;
         }
 
         body {
-            background: var(--bg);
+            background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
             color: var(--fg);
             line-height: 1.7;
         }
 
         header {
-            background: var(--card);
-            border-bottom: 1px solid var(--border);
-            padding: 18px 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
@@ -47,122 +50,339 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 28px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
         }
 
         .brand {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             text-decoration: none;
             color: var(--fg);
             font-weight: 700;
-            font-size: 18px;
+            font-size: 19px;
+            transition: transform 0.2s ease;
+        }
+
+        .brand:hover {
+            transform: scale(1.02);
+        }
+
+        .brand img {
+            border-radius: 8px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 8px;
         }
 
         .nav a {
             text-decoration: none;
             color: var(--muted);
-            margin-left: 22px;
             font-size: 14px;
-            transition: color 0.2s;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.2s;
         }
 
         .nav a:hover {
             color: var(--accent);
+            background: #eff6ff;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 60px 24px;
+            padding: 80px 32px 100px;
         }
 
+        /* Hero Section */
         .hero {
             text-align: center;
-            margin-bottom: 80px;
+            margin-bottom: 120px;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border: 1px solid #bfdbfe;
+            border-radius: 24px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 24px;
         }
 
         .hero h1 {
-            font-size: 38px;
-            margin-bottom: 18px;
+            font-size: 52px;
+            font-weight: 800;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
         }
 
         .hero p {
-            font-size: 18px;
+            font-size: 19px;
             color: var(--muted);
-            max-width: 650px;
+            max-width: 700px;
             margin: 0 auto;
+            line-height: 1.6;
         }
 
+        /* Section */
         .section {
-            margin-bottom: 70px;
+            margin-bottom: 100px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
         }
 
         .section h2 {
-            font-size: 24px;
-            margin-bottom: 16px;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 12px;
         }
 
-        .section p {
+        .section-subtitle {
+            font-size: 17px;
             color: var(--muted);
-            margin-bottom: 16px;
+            max-width: 600px;
+            margin: 0 auto;
         }
 
         .grid {
             display: grid;
-            gap: 24px;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         }
 
+        /* Modern Cards */
         .card {
             background: var(--card);
             border: 1px solid var(--border);
             border-radius: var(--radius);
-            padding: 26px;
-            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            padding: 32px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
         }
 
         .card h3 {
-            margin-bottom: 10px;
+            font-size: 20px;
+            margin-bottom: 12px;
+            font-weight: 600;
         }
 
         .card p {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--muted);
+            line-height: 1.7;
         }
 
+        /* Team Cards */
         .team-card {
             text-align: center;
         }
 
+        .team-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 32px;
+            font-weight: 700;
+            color: white;
+        }
+
         .team-card h3 {
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            font-size: 22px;
         }
 
         .role {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--accent);
-            margin-bottom: 10px;
+            font-weight: 600;
+            margin-bottom: 16px;
         }
 
+        /* Mission Section */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin-top: 32px;
+        }
+
+        .mission-item {
+            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+            padding: 28px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .mission-item h4 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .mission-item h4::before {
+            content: '✓';
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .mission-item p {
+            font-size: 14px;
+            color: var(--muted);
+            margin: 0;
+        }
+
+        /* Footer */
         footer {
-            padding: 40px 20px;
+            padding: 60px 32px;
             text-align: center;
-            font-size: 13px;
+            font-size: 14px;
             color: var(--muted);
             border-top: 1px solid var(--border);
-            background: var(--card);
+            background: #f8fafc;
         }
 
-        @media (max-width: 640px) {
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 60px 20px 80px;
+            }
+
+            .hero {
+                margin-bottom: 80px;
+            }
+
             .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 17px;
+            }
+
+            .section h2 {
                 font-size: 28px;
+            }
+
+            .section {
+                margin-bottom: 70px;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .nav {
+                gap: 4px;
+            }
+
+            .nav a {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+
+            .header-inner {
+                padding: 0 20px;
             }
         }
     </style>
@@ -173,13 +393,13 @@
     <header>
         <div class="header-inner">
             <a href="/" class="brand">
-                <img src="/icon.png" width="30" height="30" alt="Compressly">
+                <img src="/icon.png" width="32" height="32" alt="Compressly">
                 <span>Compressly</span>
             </a>
 
             <nav class="nav">
                 <a href="/">Home</a>
-                <a href="https://www.compressly.in">Main Tool</a>
+                <a href="https://www.compressly.in">Compress</a>
                 <a href="/psc-photo-tool.html">PSC Tool</a>
             </nav>
         </div>
@@ -188,98 +408,127 @@
     <main class="container">
 
         <section class="hero">
-            <h1>Built for Simplicity. Designed for Real Users.</h1>
+            <div class="hero-badge">🚀 Browser-based • Privacy-first • Lightning fast</div>
+            <h1>Built for Simplicity.<br>Designed for Real Users.</h1>
             <p>
-                Compressly is a growing browser-based tool platform focused on speed,
-                simplicity, and privacy. We build tools that solve real problems -
-                without unnecessary complexity.
+                Compressly is a modern browser-based platform focused on speed, simplicity, and privacy.
+                We build tools that solve real problems without unnecessary complexity.
             </p>
         </section>
 
         <section class="section">
-            <h2>What We Build</h2>
+            <div class="section-header">
+                <h2>What We Build</h2>
+                <p class="section-subtitle">Powerful tools that work entirely in your browser - no uploads, no servers,
+                    no tracking.</p>
+            </div>
+
             <div class="grid">
                 <div class="card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                        </svg>
+                    </div>
                     <h3>Image Compression Tool</h3>
                     <p>
-                        Our main compressor allows users to reduce image file sizes
-                        efficiently while maintaining quality - all processed locally
-                        in the browser for maximum privacy.
+                        Reduce image file sizes while maintaining quality. All processing happens locally
+                        in your browser for maximum privacy and speed.
                     </p>
                 </div>
 
                 <div class="card">
+                    <div class="card-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z" />
+                        </svg>
+                    </div>
                     <h3>Kerala PSC Photo Tool</h3>
                     <p>
-                        A dedicated preparation tool for Kerala PSC applicants to
-                        create perfectly sized passport photos and signatures that
-                        match official pixel and file size requirements.
+                        Prepare perfectly sized passport photos (150×200px) and signatures (150×100px)
+                        that match official Kerala PSC Thulasi requirements.
                     </p>
                 </div>
             </div>
         </section>
 
         <section class="section">
-            <h2>Our Mission</h2>
-            <p>
-                We believe software should feel effortless. Tools should not confuse,
-                overwhelm, or slow down users. Every detail in Compressly is built
-                with usability and clarity in mind.
-            </p>
-            <p>
-                We focus on clean interfaces, performance optimization, and
-                thoughtful user experience design - ensuring that even non-technical
-                users feel confident using our tools.
-            </p>
+            <div class="section-header">
+                <h2>Our Mission</h2>
+                <p class="section-subtitle">We believe software should feel effortless and respect your privacy.</p>
+            </div>
+
+            <div class="mission-grid">
+                <div class="mission-item">
+                    <h4>Simple by Design</h4>
+                    <p>Clean interfaces that anyone can use without confusion or frustration.</p>
+                </div>
+
+                <div class="mission-item">
+                    <h4>Privacy First</h4>
+                    <p>All processing happens in your browser. We never see or store your files.</p>
+                </div>
+
+                <div class="mission-item">
+                    <h4>Lightning Fast</h4>
+                    <p>Optimized performance means you get results in seconds, not minutes.</p>
+                </div>
+
+                <div class="mission-item">
+                    <h4>User Focused</h4>
+                    <p>Built for real people solving real problems, not just technical users.</p>
+                </div>
+            </div>
         </section>
 
         <section class="section">
-            <h2>Our Team</h2>
+            <div class="section-header">
+                <h2>Our Team</h2>
+                <p class="section-subtitle">Small team, big focus on quality and user experience.</p>
+            </div>
 
             <div class="grid">
-
                 <div class="card team-card">
+                    <div class="team-avatar">SM</div>
                     <h3>Sharon Moncy</h3>
                     <div class="role">Founder & Product Developer</div>
                     <p>
-                        Sharon leads the development and design of Compressly.
-                        With a strong focus on usability and performance,
-                        he builds tools that balance technical precision with
-                        intuitive user experience.
+                        Leads development and design with a strong focus on usability and performance.
+                        Builds tools that balance technical precision with intuitive user experience.
                     </p>
                 </div>
 
                 <div class="card team-card">
+                    <div class="team-avatar">MJ</div>
                     <h3>Moncy Joseph</h3>
                     <div class="role">User Experience Advisor</div>
                     <p>
-                        Moncy provides valuable feedback and practical suggestions
-                        that help refine user experience decisions.
-                        His insights ensure that Compressly remains simple,
-                        accessible, and user-focused.
+                        Provides valuable feedback and practical suggestions that refine UX decisions.
+                        Ensures Compressly remains simple, accessible, and user-focused.
                     </p>
                 </div>
-
             </div>
         </section>
 
-        <section class="section">
-            <h2>Growing Forward</h2>
-            <p>
-                Compressly is continuously evolving. We are expanding our tools,
-                refining performance, and exploring new ways to make browser-based
-                utilities smarter and more reliable.
-            </p>
-            <p>
-                Our journey has just begun - and we are committed to building tools
-                that users genuinely trust.
-            </p>
+        <section class="section" style="margin-bottom: 0;">
+            <div class="section-header">
+                <h2>Growing Forward</h2>
+                <p class="section-subtitle">
+                    Compressly is continuously evolving. We're expanding our tools, refining performance,
+                    and exploring new ways to make browser-based utilities smarter and more reliable.
+                </p>
+            </div>
         </section>
 
     </main>
 
     <footer>
-        © 2026 Compressly · Built with clarity and care.
+        © 2026 Compressly · Built with clarity and care ·
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/contact.html">Contact</a>
     </footer>
 
 </body>
