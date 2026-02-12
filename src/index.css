@@ -1644,12 +1644,20 @@ html[data-theme="dark"] .image-preview-frame {
   letter-spacing: 0.2px;
 }
 
+
 .comparison-wrap {
   margin-top: 14px;
   padding-top: 12px;
   border-top: 1px solid rgba(148,163,184,0.18);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+  will-change: opacity, transform;
 }
-
+.comparison-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
 /* Grid */
 .comparison-grid {
   display: grid;

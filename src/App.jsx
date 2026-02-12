@@ -739,7 +739,32 @@ export default function App() {
   const [progressPct, setProgressPct] = useState(0);
   const [hasAnimatedScrollCue, setHasAnimatedScrollCue] = useState(false);
   const [shouldAnimateScrollCue, setShouldAnimateScrollCue] = useState(false);
+  const [showComparison, setShowComparison] = useState(false);
 
+
+
+  // Pre-decode images for instant modal open (reduces INP)
+  useEffect(() => {
+    if (!outURL) return;
+
+    const img = new Image();
+    img.src = outURL;
+
+    if (img.decode) {
+      img.decode().catch(() => { });
+    }
+  }, [outURL]);
+
+  useEffect(() => {
+    if (!previewURL) return;
+
+    const img = new Image();
+    img.src = previewURL;
+
+    if (img.decode) {
+      img.decode().catch(() => { });
+    }
+  }, [previewURL]);
 
 
   // Auto-sync quality slider when Target KB is edited (JPEG only)
@@ -1047,6 +1072,7 @@ export default function App() {
     if (!file) return;
     setProcessing(true);
     setOutURL("");
+    setShowComparison(false);
     setOutSize(0);
     setOutMime("");
     setOutFilename("");
@@ -1251,6 +1277,17 @@ export default function App() {
   const toggleTheme = () =>
     setTheme((t) => (t === "light" ? "dark" : "light"));
 
+  function trackDownload() {
+    if (typeof window !== "undefined" && window.gtag) {
+      window.gtag("event", "download_click", {
+        event_category: "engagement",
+        event_label: format || "unknown",
+        value: outSize || 0,
+      });
+    }
+  }
+
+
   return (
     <div
       className="min-h-screen app-bg">
@@ -1375,7 +1412,13 @@ export default function App() {
                             src={outURL}
                             alt="Compressed image preview"
                             className="max-w-[88%] max-h-[88%] object-contain"
+                            onLoad={() => {
+                              setTimeout(() => {
+                                setShowComparison(true);
+                              }, 120); // slight delay feels premium
+                            }}
                           />
+
                         </div>
 
                         <div className="flex-1">
@@ -1446,7 +1489,13 @@ export default function App() {
                           {/* Download button - TIGHT spacing */}
                           {/* Download button - TIGHT spacing */}
                           <div className="result-download-row">
-                            <a href={outURL} download={downloadName} className="download-btn">
+                            <a
+                              href={outURL}
+                              download={downloadName}
+                              className="download-btn"
+                              onClick={trackDownload}
+                            >
+
                               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path
                                   d="M12 3v10m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"
@@ -1467,7 +1516,8 @@ export default function App() {
      =============================== */}
               
 
-                      <div className="comparison-wrap">
+                      <div className={`comparison-wrap ${showComparison ? "comparison-visible" : ""}`}>
+
                         <div className="comparison-heading">
                           Image comparison
                         </div>
@@ -1945,6 +1995,7 @@ export default function App() {
               <img
                 src={modalImage}
                 alt="Preview"
+                loading="eager"
                 style={{
                   maxWidth: "100%",
                   maxHeight: "90vh",
