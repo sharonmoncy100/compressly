@@ -1993,59 +1993,7 @@ html[data-theme="dark"] .rename-input::placeholder {
 /* Desktop result ready scroll cue (near controls) */
 /* Desktop result ready scroll cue — compact */
 /* Desktop result ready scroll cue — compact, readable */
-.result-ready-scroll-cue {
-  margin-top: 6px;
 
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  align-self: flex-start;       /* 🔑 prevents flex stretching */
-  width: auto;                  /* 🔑 natural width */
-  max-width: none;              /* 🔑 no forced expansion */
-
-  padding: 6px 8px;             /* 🔑 tighter horizontally, same vertically */
-  border-radius: 999px;
-
-  background: linear-gradient(
-    135deg,
-    rgba(37, 99, 235, 0.05),
-    rgba(37, 99, 235, 0.015)
-  );
-
-  border: 1px solid rgba(37, 99, 235, 0.14);
-  font-size: 12px;              /* ✅ unchanged */
-  font-weight: 500;
-  line-height: 1.3;
-
-  color: var(--fg);
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
-}
-
-
-
-/* check icon */
-.result-ready-scroll-icon {
-  color: #2563eb;
-  font-size: 12px;
-  line-height: 1;
-}
-
-/* text */
-.result-ready-scroll-text {
-  color: var(--fg);
-  letter-spacing: 0.2px;
-}
-
-/* Dark mode */
-html[data-theme="dark"] .result-ready-scroll-cue {
-  background: linear-gradient(
-    135deg,
-    rgba(37, 99, 235, 0.12),
-    rgba(37, 99, 235, 0.05)
-  );
-  border-color: rgba(96, 165, 250, 0.3);
-}
 
 
 
@@ -2067,33 +2015,7 @@ html[data-theme="dark"] .result-ready-badge {
 html[data-theme="dark"] .result-ready-dot {
   background: #4ade80;
 }
-/* Scroll cue animation */
-@keyframes scrollCueNudge {
-  0% {
-    opacity: 0;
-    transform: translateY(-4px);
-  }
-  40% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  70% {
-    transform: translateY(2px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
 
-.scroll-cue-animate {
-  animation: scrollCueNudge 1.2s ease-out 1;
-}
-@media (prefers-reduced-motion: reduce) {
-  .scroll-cue-animate {
-    animation: none;
-  }
-}
 
 /* Modal context: remove heavy backgrounds from image frames */
 .image-preview-frame,

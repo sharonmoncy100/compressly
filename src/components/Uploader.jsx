@@ -68,26 +68,7 @@ export default function Uploader({
     format,
     setFormat,
     openPreview = () => {},  // Default handler if not provided
-    hasAnimatedScrollCue,
-    shouldAnimateScrollCue,
-    setShouldAnimateScrollCue
-    
-    
 }) {
-    const [animateCue, setAnimateCue] = useState(false);
-    useEffect(() => {
-        if (shouldAnimateScrollCue) {
-            setAnimateCue(true);
-
-            const t = setTimeout(() => {
-                setAnimateCue(false);
-                setShouldAnimateScrollCue(false); // 🔒 reset trigger
-            }, 1300);
-
-            return () => clearTimeout(t);
-        }
-    }, [shouldAnimateScrollCue, setShouldAnimateScrollCue]);
-
     const [dragActive, setDragActive] = useState(false);
 
     return (
@@ -351,25 +332,7 @@ export default function Uploader({
                             {lastNote || "Processing image…"}
                         </div>
                     </>
-                ) : (
-                        outURL &&
-                        typeof window !== "undefined" &&
-                        window.innerWidth >= 1024 && (
-                            <div
-                                className={
-                                    "result-ready-scroll-cue" +
-                                    (animateCue ? " scroll-cue-animate" : "")
-                                }
-                            >
-
-                                <span className="result-ready-scroll-icon">↓</span>
-                                <span className="result-ready-scroll-text">
-                                    Scroll down to download
-                                </span>
-                            </div>
-                        )
-
-                )}
+                ) : null}
             </div>
 
 
