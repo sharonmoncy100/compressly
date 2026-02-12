@@ -1532,6 +1532,7 @@ html[data-theme="dark"] .compressly-title {
   box-sizing: border-box;
   border-top: 1px solid rgba(148,163,184,0.18);
    margin-top: 14px;
+   min-height: 480px; /* use your measured value */
 }
 .result-card .page-h2 {
   margin-bottom: 6px;
