@@ -1201,10 +1201,23 @@ export default function App() {
 
         if (typeof window !== "undefined") {
           const resultSection = document.getElementById("compressed-result");
-          if (resultSection && window.innerWidth < 1024) {
-            resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+          if (resultSection) {
+            if (window.innerWidth < 1024) {
+              // Mobile / tablet → full scroll to result
+              resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            } else {
+              const rect = resultSection.getBoundingClientRect();
+              const offset = rect.top - 100; // leave some space from top
+              window.scrollBy({
+                top: offset,
+                behavior: "smooth"
+              });
+            }
+
           }
         }
+
       }, 500);
 
 
