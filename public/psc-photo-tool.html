@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
 
     <script>
-        if (location.hostname === "localhost") {
+        const allowedHosts = ["compressly.in", "www.compressly.in"];
+
+        if (!allowedHosts.includes(location.hostname)) {
             window['ga-disable-G-K9Z1H2JLZQ'] = true;
         }
     </script>
