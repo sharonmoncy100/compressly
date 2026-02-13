@@ -2039,3 +2039,40 @@ html[data-theme="dark"] .result-preview-frame,
 html[data-theme="dark"] .comparison-frame {
   border-color: rgba(148,163,184,0.3);
 }
+
+/* ===== Improve existing quality slider (no redesign) ===== */
+
+input[type="range"] {
+  touch-action: pan-y;      /* allow vertical scroll, block horizontal scroll */
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Increase invisible hit area without changing design */
+input[type="range"]::-webkit-slider-runnable-track {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+input[type="range"]::-moz-range-track {
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+/* Smooth thumb movement */
+input[type="range"]::-webkit-slider-thumb {
+  transition: transform 0.08s ease;
+   will-change: transform;   /* 👈 ADD HERE */
+}
+
+input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.05);
+}
+
+input[type="range"]::-moz-range-thumb {
+  transition: transform 0.08s ease;
+    will-change: transform;   /* 👈 ADD HERE */
+}
+
+input[type="range"]:active::-moz-range-thumb {
+  transform: scale(1.05);
+}

@@ -110,7 +110,7 @@ export default function Uploader({
                         <input
                             ref={inputRef}
                             type="file"
-                            accept="image/*,image/heic,.heic,.heif"
+                            accept="image/*"
                             className="hidden"
                             onChange={(e) => handleFiles(e.target.files)}
                         />
@@ -268,17 +268,17 @@ export default function Uploader({
 
 
                         <input
-                            id="quality-slider"
+                            id="quality-slider"    
                             type="range"
                             min="0.05"
                             max="0.98"
                             step="0.01"
                             value={quality}
                             onChange={(e) => setQuality(Number(e.target.value))}
-                            className="quality-slider w-full"
+                            className="w-full"
                             aria-describedby="quality-value"
+                            
                         />
-
                         <div id="quality-value" className="w-8 text-right text-xs small-muted">
                             {Math.round(quality * 100)}%
                         </div>
