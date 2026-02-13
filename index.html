@@ -3,10 +3,13 @@
 <head>
 <!-- Disable GA on localhost -->
 <script>
-  if (location.hostname === "localhost") {
+  const allowedHosts = ["compressly.in", "www.compressly.in"];
+
+  if (!allowedHosts.includes(location.hostname)) {
     window['ga-disable-G-K9Z1H2JLZQ'] = true;
   }
 </script>
+
 
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
