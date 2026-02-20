@@ -1,0 +1,2190 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Amazon Product Image Resizer - Resize to 1000×1000, White Background | Compressly</title>
+    <meta name="description"
+        content="Meet Amazon main image guidelines instantly. Resize product photos to 1000×1000 px, add pure white background, check frame coverage, and compress under 1MB — free, in your browser." />
+    <link rel="canonical" href="https://www.compressly.in/amazon-image-resizer/" />
+    <link rel="icon" type="image/png" href="/favicon-64.png" />
+   
+    <meta property="og:title" content="Amazon Product Image Resizer - 1000x1000 & White Background">
+    <meta property="og:description"
+        content="Resize Amazon images to 1000x1000, add pure white background, and pass Amazon review instantly.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.compressly.in/amazon-image-resizer/">
+
+    <!-- GA – restricted to production only -->
+    <script>
+        const _allowedHosts = ["compressly.in", "www.compressly.in"];
+        if (!_allowedHosts.includes(location.hostname)) {
+            window['ga-disable-G-K9Z1H2JLZQ'] = true;
+        }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K9Z1H2JLZQ', { anonymize_ip: true });
+        gtag('event', 'amazon_resizer_opened', { page: 'amazon-image-resizer' });
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap"
+        rel="stylesheet" />
+
+    <style>
+        /* ── Reset ─────────────────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #F7F6F3;
+            --surface: #FFFFFF;
+            --surface2: #F0EEE9;
+            --border: #E4E1DA;
+            --border2: #CCC9C0;
+            --text: #1A1916;
+            --text-muted: #6B6860;
+            --text-xmuted: #9B9890;
+            --accent: #FF9900;
+            --accent-dark: #E68A00;
+            --accent-light: #FFF3DC;
+            --accent-ring: rgba(255, 153, 0, 0.22);
+            --green: #16A34A;
+            --green-bg: #F0FDF4;
+            --red: #DC2626;
+            --red-bg: #FEF2F2;
+            --amber: #D97706;
+            --amber-bg: #FFFBEB;
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, .06), 0 1px 2px rgba(0, 0, 0, .04);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, .08), 0 1px 3px rgba(0, 0, 0, .04);
+            --shadow-lg: 0 12px 40px rgba(0, 0, 0, .10), 0 4px 12px rgba(0, 0, 0, .06);
+            --font-display: 'Syne', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+            --header-h: 60px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 15px;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* ── Header ────────────────────────────────────────────── */
+        .site-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-h);
+            background: rgba(247, 246, 243, .92);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border-bottom: 1px solid var(--border);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: var(--text);
+            flex-shrink: 0;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .logo-name {
+            font-family: var(--font-display);
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -0.2px;
+        }
+
+        .logo-badge {
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            padding: 2px 8px;
+            border-radius: 99px;
+        }
+
+        .header-nav {
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .header-nav a {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 6px 12px;
+            border-radius: 6px;
+            transition: color .15s, background .15s;
+            white-space: nowrap;
+        }
+
+        .header-nav a:hover {
+            color: var(--text);
+            background: var(--surface2);
+        }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            background: var(--surface);
+            border-radius: 8px;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            flex-direction: column;
+            gap: 0;
+            transition: background .15s;
+        }
+
+        .hamburger:hover {
+            background: var(--surface2);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 16px;
+            height: 1.5px;
+            background: var(--text);
+            border-radius: 2px;
+            transition: transform .25s, opacity .2s;
+            margin: 2px 0;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(5.5px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            transform: scaleX(0);
+            transform-origin: center;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-5.5px) rotate(-45deg);
+        }
+
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: var(--header-h);
+            left: 0;
+            right: 0;
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            z-index: 190;
+            padding: 8px 16px 12px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .mobile-nav.open {
+            display: block;
+        }
+
+        .mobile-nav a {
+            display: block;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 15px;
+            font-weight: 400;
+            padding: 11px 12px;
+            border-radius: 8px;
+            transition: background .15s;
+        }
+
+        .mobile-nav a:hover {
+            background: var(--bg);
+        }
+
+        @media (max-width: 640px) {
+            .header-nav {
+                display: none;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .logo-badge {
+                display: none;
+            }
+        }
+
+        /* ── Page Shell ────────────────────────────────────────── */
+        .page-wrap {
+            padding-top: var(--header-h);
+        }
+
+        /* ── Hero ──────────────────────────────────────────────── */
+        .hero {
+            text-align: center;
+            padding: 44px 24px 40px;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--accent-dark);
+            background: var(--accent-light);
+            border: 1px solid rgba(255, 153, 0, .3);
+            padding: 4px 13px;
+            border-radius: 99px;
+            margin-bottom: 18px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 90vw;
+        }
+
+        @media(max-width:380px) {
+            .hero-badge {
+                font-size: 11px;
+                padding: 4px 10px;
+                gap: 5px;
+            }
+        }
+
+        /* H1 – balanced weight, no over-squish */
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(22px, 4vw, 34px);
+            font-weight: 700;
+             line-height: 1.4;            /* 1.35 → 1.4, gives descenders room */
+            letter-spacing: -0.2px;
+            color: var(--text);
+            margin-bottom: 12px;
+          
+            overflow-wrap: break-word;
+            padding-bottom: 4px;
+        }
+
+        h1 span {
+            color: var(--accent);
+        }
+
+        .hero-sub {
+            color: var(--text-muted);
+            font-size: 15px;
+            font-weight: 300;
+            max-width: 480px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* ── Tool Card ─────────────────────────────────────────── */
+        .tool-section {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 20px 80px;
+        }
+
+        .tool-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* ── Upload Zone ───────────────────────────────────────── */
+        .upload-zone-wrap {
+            padding: 24px 24px 0;
+        }
+
+        @media(max-width:600px) {
+            .upload-zone-wrap {
+                padding: 16px 16px 0;
+            }
+        }
+
+        .upload-zone {
+            border: 2px dashed var(--border2);
+            border-radius: var(--radius);
+            background: var(--bg);
+            padding: 32px 24px 28px;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color .2s, background .2s;
+            position: relative;
+        }
+
+        .upload-zone:hover,
+        .upload-zone.drag-over {
+            border-color: var(--accent);
+            background: var(--accent-light);
+        }
+
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-icon {
+            width: 46px;
+            height: 46px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .upload-zone h2 {
+            font-family: var(--font-display);
+            font-size: 15.5px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            letter-spacing: -0.1px;
+           
+            overflow-wrap: break-word;
+        }
+
+        .upload-zone p {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .btn-upload-ghost {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--font-body);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            padding: 8px 16px;
+            border-radius: 8px;
+            box-shadow: var(--shadow-sm);
+            pointer-events: none;
+        }
+
+        .upload-zone:hover .btn-upload-ghost {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-ring), var(--shadow-sm);
+        }
+
+        /* ── File Ready Banner ─────────────────────────────────── */
+        /*  Shown immediately after file selected - tells user what to do next */
+        .file-ready-banner {
+            display: none;
+            align-items: center;
+            gap: 12px;
+            margin: 10px 0 0;
+            padding: 12px 16px;
+            background: var(--green-bg);
+            border: 1px solid #BBF7D0;
+            border-radius: var(--radius-sm);
+        }
+
+        .file-ready-banner.visible {
+            display: flex;
+        }
+
+        .file-ready-thumb {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 7px;
+            border: 1px solid #BBF7D0;
+            flex-shrink: 0;
+            background: #e0e0e0;
+        }
+
+        .file-ready-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .file-ready-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #15803D;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-ready-meta {
+            font-size: 12px;
+            color: #22C55E;
+            margin-top: 1px;
+        }
+
+        .file-ready-arrow {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: #15803D;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        @media(max-width:440px) {
+            .file-ready-arrow {
+                display: none;
+            }
+        }
+
+        /* ── Options Label ─────────────────────────────────────── */
+        .options-label {
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: var(--text-muted);
+            padding: 12px 20px 8px 20px;
+        }
+
+        @media(max-width:600px) {
+            .options-label {
+                padding: 10px 16px 6px 16px;
+            }
+        }
+
+        /* ── Options ───────────────────────────────────────────── */
+        .options-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-top: 1px solid var(--border);
+        }
+
+        @media(max-width:720px) {
+            .options-bar {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media(max-width:380px) {
+            .options-bar {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .opt-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 14px 16px;
+            border-right: 1px solid var(--border);
+            cursor: pointer;
+            transition: background .15s;
+            user-select: none;
+        }
+
+        .opt-item:last-child {
+            border-right: none;
+        }
+
+        @media(max-width:720px) {
+            .opt-item {
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .opt-item:last-child {
+                border-bottom: none;
+            }
+
+            .opt-item:nth-child(odd) {
+                border-right: 1px solid var(--border);
+            }
+
+            .opt-item:nth-child(even) {
+                border-right: none;
+            }
+        }
+
+        @media(max-width:380px) {
+            .opt-item:nth-child(odd) {
+                border-right: none;
+            }
+        }
+
+        .opt-item:hover {
+            background: var(--bg);
+        }
+
+        /* custom checkbox */
+        .opt-chk {
+            display: none;
+        }
+
+        .opt-box {
+            width: 17px;
+            height: 17px;
+            border: 1.5px solid var(--border2);
+            border-radius: 5px;
+            background: var(--surface);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+            transition: background .15s, border-color .15s;
+        }
+
+        .opt-chk:checked+.opt-box {
+            background: var(--green);
+            border-color: var(--green);
+        }
+
+        .opt-box svg {
+            opacity: 0;
+            transition: opacity .12s;
+        }
+
+        .opt-chk:checked+.opt-box svg {
+            opacity: 1;
+        }
+
+        .opt-label strong {
+            display: block;
+            font-size: 12.5px;
+            font-weight: 600;
+            margin-bottom: 1px;
+        }
+
+        .opt-label span {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* ── Size Strip ────────────────────────────────────────── */
+        .size-strip {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 13px 20px;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        @media(max-width:600px) {
+            .size-strip {
+                padding: 11px 16px;
+            }
+        }
+
+        .size-label {
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-right: 2px;
+        }
+
+        .size-btn {
+            font-family: var(--font-body);
+            font-size: 12.5px;
+            font-weight: 500;
+            color: var(--text-muted);
+            background: var(--bg);
+            border: 1px solid var(--border);
+            padding: 5px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .size-btn:hover {
+            color: var(--text);
+            background: var(--surface);
+            border-color: var(--border2);
+        }
+
+        .size-btn.active {
+            color: var(--accent-dark);
+            background: var(--accent-light);
+            border-color: rgba(255, 153, 0, .5);
+            font-weight: 600;
+        }
+
+        /* ── Process Bar ───────────────────────────────────────── */
+        .process-bar {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            transition: background .3s;
+        }
+
+        .process-bar.ready {
+            background: #FFFDF8;
+        }
+
+        @media(max-width:600px) {
+            .process-bar {
+                padding: 14px 16px;
+            }
+        }
+
+        /* Buttons */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--text);
+            border: none;
+            padding: 11px 22px;
+            border-radius: 9px;
+            cursor: pointer;
+            letter-spacing: -0.1px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .12), 0 3px 10px rgba(0, 0, 0, .13);
+            transition: background .15s, box-shadow .15s, transform .1s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(255, 255, 255, .07), transparent);
+            pointer-events: none;
+        }
+
+        .btn-primary:not(:disabled):hover {
+            background: #111;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .14), 0 5px 18px rgba(0, 0, 0, .18);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: .38;
+            cursor: not-allowed;
+        }
+
+        /* Pulse when image is ready & unprocessed */
+        .btn-primary.pulse-ready {
+            background: var(--accent);
+            box-shadow: 0 1px 2px rgba(255, 153, 0, .18), 0 3px 12px rgba(255, 153, 0, .32);
+            animation: subtlePulse 2s ease-in-out infinite;
+        }
+
+        .btn-primary.pulse-ready:not(:disabled):hover {
+            background: var(--accent-dark);
+            box-shadow: 0 1px 2px rgba(255, 153, 0, .22), 0 5px 20px rgba(255, 153, 0, .44);
+            animation: none;
+            transform: translateY(-1px);
+        }
+
+        @keyframes subtlePulse {
+
+            0%,
+            100% {
+                box-shadow: 0 1px 2px rgba(255, 153, 0, .18), 0 3px 12px rgba(255, 153, 0, .28);
+            }
+
+            50% {
+                box-shadow: 0 1px 2px rgba(255, 153, 0, .22), 0 5px 24px rgba(255, 153, 0, .5);
+            }
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            font-family: var(--font-body);
+            font-size: 13.5px;
+            font-weight: 500;
+            color: var(--text);
+            background: var(--surface);
+            border: 1px solid var(--border2);
+            padding: 10px 16px;
+            border-radius: 9px;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+            transition: all .15s;
+        }
+
+        .btn-secondary:not(:disabled):hover {
+            background: var(--bg);
+        }
+
+        .btn-secondary:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+        }
+
+        .btn-accent {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-body);
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            background: var(--accent);
+            border: none;
+            padding: 11px 22px;
+            border-radius: 9px;
+            cursor: pointer;
+            box-shadow: 0 1px 2px rgba(255, 153, 0, .16), 0 3px 12px rgba(255, 153, 0, .28);
+            transition: background .15s, box-shadow .15s, transform .1s;
+        }
+
+        .btn-accent:not(:disabled):hover {
+            background: var(--accent-dark);
+            box-shadow: 0 1px 2px rgba(255, 153, 0, .2), 0 5px 20px rgba(255, 153, 0, .42);
+            transform: translateY(-1px);
+        }
+
+        .btn-accent:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-accent:disabled {
+            opacity: .4;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .process-hint {
+            font-size: 12.5px;
+            color: var(--text-xmuted);
+        }
+
+        .process-hint.ready-hint {
+            color: var(--accent-dark);
+            font-weight: 500;
+        }
+
+        /* ── Progress ──────────────────────────────────────────── */
+        .progress-wrap {
+            display: none;
+            padding: 0 20px 16px;
+        }
+
+        .progress-wrap.visible {
+            display: block;
+        }
+
+        .progress-track {
+            height: 4px;
+            background: var(--bg);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            border-radius: 99px;
+            width: 0%;
+            transition: width .3s ease;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* ── Results ───────────────────────────────────────────── */
+        .results-section {
+            display: none;
+            border-top: 1px solid var(--border);
+            padding: 22px 24px 26px;
+        }
+
+        .results-section.visible {
+            display: block;
+        }
+
+        @media(max-width:600px) {
+            .results-section {
+                padding: 16px 16px 20px;
+            }
+        }
+
+        .results-title {
+            font-family: var(--font-display);
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -0.2px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .results-badge {
+            font-family: var(--font-body);
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green);
+            background: var(--green-bg);
+            border: 1px solid #BBF7D0;
+            padding: 2px 9px;
+            border-radius: 99px;
+        }
+
+        .preview-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        @media(max-width:500px) {
+            .preview-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .preview-pane {
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .preview-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 13px;
+            border-bottom: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .preview-header span {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .preview-meta {
+            font-size: 11px;
+            color: var(--text-xmuted);
+        }
+
+        .preview-img-wrap {
+            background: #aaa;
+            background-image: repeating-conic-gradient(#bbb 0% 25%, #d5d5d5 0% 50%);
+            background-size: 14px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 190px;
+            padding: 4px;
+        }
+
+        .preview-img-wrap img,
+        .preview-img-wrap canvas {
+            max-width: 100%;
+            max-height: 250px;
+            display: block;
+            object-fit: contain;
+        }
+
+        /* ── Checklist ─────────────────────────────────────────── */
+        .checklist {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+            gap: 6px;
+            margin-bottom: 18px;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            font-weight: 500;
+            border: 1px solid transparent;
+        }
+
+        .check-item.pass {
+            background: var(--green-bg);
+            border-color: #BBF7D0;
+            color: #15803D;
+        }
+
+        .check-item.warn {
+            background: var(--amber-bg);
+            border-color: #FDE68A;
+            color: #92400E;
+        }
+
+        .check-item.fail {
+            background: var(--red-bg);
+            border-color: #FECACA;
+            color: var(--red);
+        }
+
+        .check-item svg {
+            flex-shrink: 0;
+        }
+
+        /* ── Coverage ──────────────────────────────────────────── */
+        .coverage-bar-wrap {
+            margin-bottom: 16px;
+        }
+
+        .coverage-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        .coverage-track {
+            height: 6px;
+            background: var(--bg);
+            border-radius: 99px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .coverage-fill {
+            height: 100%;
+            border-radius: 99px;
+            transition: width .5s ease;
+        }
+
+        .coverage-fill.good {
+            background: var(--green);
+        }
+
+        .coverage-fill.warn {
+            background: var(--amber);
+        }
+
+        .coverage-fill.bad {
+            background: var(--red);
+        }
+
+        .coverage-warn-msg {
+            display: none;
+            align-items: flex-start;
+            gap: 8px;
+            margin-top: 8px;
+            padding: 10px 13px;
+            background: var(--amber-bg);
+            border: 1px solid #FDE68A;
+            border-radius: var(--radius-sm);
+            font-size: 12.5px;
+            color: #92400E;
+            line-height: 1.55;
+        }
+
+        .coverage-warn-msg.visible {
+            display: flex;
+        }
+
+        .coverage-warn-msg svg {
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        /* ── Download Row ──────────────────────────────────────── */
+        .download-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .file-out-info {
+            display: none;
+            align-items: center;
+            gap: 5px;
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .file-out-info strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        /* ── Info Section ──────────────────────────────────────── */
+        .info-section {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 20px 96px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .info-card-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--accent-light);
+            border: 1px solid rgba(255, 153, 0, .2);
+            border-radius: 9px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .info-card h3 {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 7px;
+            letter-spacing: -0.1px;
+        }
+
+        .info-card p {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.65;
+        }
+
+        .rejection-list {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .rejection-list-header {
+            padding: 15px 22px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .rejection-list-header h3 {
+            font-family: var(--font-display);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: -0.1px;
+        }
+
+        .rejection-row {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px 22px;
+            border-bottom: 1px solid var(--border);
+            font-size: 13.5px;
+        }
+
+        .rejection-row:last-child {
+            border-bottom: none;
+        }
+
+        .rejection-row .fix-tag {
+            margin-left: auto;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--green);
+            background: var(--green-bg);
+            border: 1px solid #BBF7D0;
+            padding: 2px 9px;
+            border-radius: 99px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        /* ── Footer ────────────────────────────────────────────── */
+        .site-footer {
+            border-top: 1px solid var(--border);
+            background: var(--surface);
+            padding: 20px 24px;
+        }
+
+        .footer-inner {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .footer-copy {
+            font-size: 12.5px;
+            color: var(--text-muted);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .footer-links a {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color .15s;
+        }
+
+        .footer-links a:hover {
+            color: var(--text);
+        }
+
+        /* ── Spinner ───────────────────────────────────────────── */
+        .spinner {
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255, 255, 255, .3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Fade-up ───────────────────────────────────────────── */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-up {
+            animation: fadeUp .4s ease both;
+        }
+    </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "Amazon Product Image Resizer",
+      "url": "https://www.compressly.in/amazon-image-resizer/",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "INR"
+      },
+      "description": "Free browser-based tool to resize Amazon product images to 1000x1000, add pure white background, check frame coverage and compress under 1MB.",
+      "featureList": [
+        "Resize to 1000x1000 px",
+        "Pure white background (#FFFFFF)",
+        "Frame coverage check",
+        "Compress under 1MB"
+      ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the Amazon main image size requirement?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Amazon requires main product images to be at least 1000 x 1000 pixels on the shortest side to enable the hover-zoom feature. A square format (1000x1000) is recommended."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why does Amazon reject images with non-white backgrounds?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Amazon mandates a pure white background (#FFFFFF) for all main product images. Off-white, grey, or light-coloured walls are rejected because they affect the consistent look of search results."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much of the frame should a product fill on Amazon?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Amazon recommends the product occupies at least 85% of the image frame. Products that are too small appear unprofessional and reduce the effectiveness of the zoom feature."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What file size does Amazon accept for product images?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Amazon accepts images up to 10MB, but sellers typically keep images under 1-2MB for faster page loading. JPEG format at 85-90% quality is recommended."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is this Amazon image resizer free to use?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, it is completely free. All image processing happens locally in your browser — your images are never uploaded to any server."
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body>
+
+    <!-- ── Header ──────────────────────────────────────────────── -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="/" class="logo">
+                <img src="/favicon-64.png" alt="Compressly" class="logo-icon" />
+                <span class="logo-name">Compressly</span>
+                <span class="logo-badge">Amazon Tools</span>
+            </a>
+
+            <nav class="header-nav">
+                <a href="#how-it-works">How it works</a>
+            </nav>
+
+            <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile nav -->
+    <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+        <a href="#how-it-works" class="mnav-link">How it works</a>
+    </nav>
+
+    <!-- ── Page ────────────────────────────────────────────────── -->
+    <div class="page-wrap">
+
+        <section class="hero">
+            <div class="hero-badge">
+                <svg width="8" height="8" viewBox="0 0 8 8">
+                    <circle cx="4" cy="4" r="3" fill="#FF9900" fill-opacity=".3" />
+                    <circle cx="4" cy="4" r="1.75" fill="#FF9900" />
+                </svg>
+                Free &nbsp;&mdash;&nbsp; 100% browser-based &nbsp;&mdash;&nbsp; No server upload
+            </div>
+            <h1>Amazon Product Image<br><span>Resizer &amp; Compliance Tool</span></h1>
+            <p class="hero-sub">Fix white background, resize to 1000&times;1000, compress and verify Amazon main image
+                requirements - instantly, in your browser.</p>
+        </section>
+
+        <main class="tool-section">
+            <div class="tool-card fade-up">
+
+                <!-- Upload -->
+                <div class="upload-zone-wrap">
+                    <div class="upload-zone" id="uploadZone">
+                        <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp" />
+                        <div class="upload-icon">
+                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="#6B6860"
+                                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="2" width="18" height="18" rx="3" />
+                                <circle cx="7.5" cy="7.5" r="1.75" />
+                                <polyline points="21 15 15 9 4 21" />
+                            </svg>
+                        </div>
+                        <h2>Drop your product image here</h2>
+                        <p>JPEG, PNG or WebP &nbsp;&middot;&nbsp; Any size &nbsp;&middot;&nbsp; Max 20 MB</p>
+                        <div class="btn-upload-ghost">
+                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M6.5 9V1.5M3.5 4.5l3-3 3 3" />
+                                <path d="M1 9.5v1A1.5 1.5 0 002.5 12h8A1.5 1.5 0 0012 10.5v-1" />
+                            </svg>
+                            Choose Image
+                        </div>
+                    </div>
+
+                    <!-- Visible file-ready state - key UX improvement -->
+                    <div class="file-ready-banner" id="fileReadyBanner">
+                        <img class="file-ready-thumb" id="fileReadyThumb" src="" alt="preview thumbnail" />
+                        <div class="file-ready-info">
+                            <div class="file-ready-name" id="fileReadyName">filename.jpg</div>
+                            <div class="file-ready-meta" id="fileReadyMeta">Loading&hellip;</div>
+                        </div>
+                        <div class="file-ready-arrow">
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="3 6 7 10 11 6" />
+                            </svg>
+                            Click &ldquo;Process Image&rdquo; below
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processing settings label -->
+                <div class="options-label">Processing settings</div>
+
+                <!-- Options -->
+                <div class="options-bar">
+                    <label class="opt-item">
+                        <input class="opt-chk" type="checkbox" id="optSquare" checked />
+                        <div class="opt-box">
+                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 4 7 9 1" />
+                            </svg>
+                        </div>
+                        <div class="opt-label">
+                            <strong>Square Resize</strong>
+                            <span>Pad to square with white fill</span>
+                        </div>
+                    </label>
+                    <label class="opt-item">
+                        <input class="opt-chk" type="checkbox" id="optWhiten" checked />
+                        <div class="opt-box">
+                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 4 7 9 1" />
+                            </svg>
+                        </div>
+                        <div class="opt-label">
+                            <strong>Whiten Background</strong>
+                            <span>Push near-white pixels to #FFFFFF</span>
+                        </div>
+                    </label>
+                    <label class="opt-item">
+                        <input class="opt-chk" type="checkbox" id="optCompress" checked />
+                        <div class="opt-box">
+                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 4 7 9 1" />
+                            </svg>
+                        </div>
+                        <div class="opt-label">
+                            <strong>Compress &lt;1 MB</strong>
+                            <span>JPEG 87% quality, fast loading</span>
+                        </div>
+                    </label>
+                    <label class="opt-item">
+                        <input class="opt-chk" type="checkbox" id="optCoverage" checked />
+                        <div class="opt-box">
+                            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" stroke="white" stroke-width="1.8"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="1 4 4 7 9 1" />
+                            </svg>
+                        </div>
+                        <div class="opt-label">
+                            <strong>Coverage Check</strong>
+                            <span>Warn if product &lt;70% of frame</span>
+                        </div>
+                    </label>
+                </div>
+
+                <!-- Size + Process (always visible, no scroll needed) -->
+                <div class="size-strip">
+                    <span class="size-label">Output size:</span>
+                    <button class="size-btn active" data-size="1000">1000 &times; 1000</button>
+                    <button class="size-btn" data-size="1500">1500 &times; 1500</button>
+                    <button class="size-btn" data-size="2000">2000 &times; 2000</button>
+                </div>
+
+                <div class="process-bar" id="processBar">
+                    <button class="btn-primary" id="btnProcess" disabled>
+                        <svg id="btnIcon" width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor"
+                            stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M11.5 7a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+                            <polyline points="7 4.5 7 7 9 9" />
+                        </svg>
+                        <span id="btnLabel">Process Image</span>
+                    </button>
+                    <span class="process-hint" id="processHint">Upload an image to begin</span>
+                </div>
+
+                <div class="progress-wrap" id="progressWrap">
+                    <div class="progress-track">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <div class="progress-label" id="progressLabel">Processing&hellip;</div>
+                </div>
+
+                <!-- Results -->
+                <div class="results-section" id="resultsSection">
+                    <div class="results-title">
+                        Results
+                        <span class="results-badge">Amazon Ready</span>
+                    </div>
+
+                    <div class="preview-grid">
+                        <div class="preview-pane">
+                            <div class="preview-header">
+                                <span>Original</span>
+                                <span class="preview-meta" id="origMeta">&mdash;</span>
+                            </div>
+                            <div class="preview-img-wrap">
+                                <img id="previewOrig" src="" alt="Original" style="display:none" />
+                            </div>
+                        </div>
+                        <div class="preview-pane">
+                            <div class="preview-header">
+                                <span>Processed</span>
+                                <span class="preview-meta" id="procMeta">&mdash;</span>
+                            </div>
+                            <div class="preview-img-wrap">
+                                <canvas id="previewCanvas"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="coverage-bar-wrap" id="coverageWrap" style="display:none">
+                        <div class="coverage-label">
+                            <span>Product frame coverage</span>
+                            <span id="coveragePct">&mdash;</span>
+                        </div>
+                        <div class="coverage-track">
+                            <div class="coverage-fill" id="coverageFill" style="width:0%"></div>
+                        </div>
+                        <div class="coverage-warn-msg" id="coverageWarn">
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#D97706"
+                                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+                                style="flex-shrink:0;margin-top:1px">
+                                <path d="M7.5 1L14 13H1L7.5 1z" />
+                                <line x1="7.5" y1="5.5" x2="7.5" y2="9" />
+                                <circle cx="7.5" cy="11" r=".5" fill="#D97706" />
+                            </svg>
+                            <span>Your product fills less than 70% of the frame. Amazon recommends at least 85% coverage
+                                for zoom to work well. Consider cropping closer before uploading.</span>
+                        </div>
+                    </div>
+
+                    <div class="checklist" id="checklist"></div>
+
+                    <div class="download-row">
+                        <button class="btn-accent" id="btnDownload" disabled>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor"
+                                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 10v1.5A1.5 1.5 0 002.5 13h9A1.5 1.5 0 0013 11.5V10" />
+                                <path d="M7 1v8M4.5 6.5L7 9l2.5-2.5" />
+                            </svg>
+                            Download Image
+                        </button>
+                        <button class="btn-secondary" id="btnReset">
+                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 6.5A5.5 5.5 0 106.5 1" />
+                                <path d="M1 1v3h3" />
+                            </svg>
+                            Start over
+                        </button>
+                        <div class="file-out-info" id="fileOutInfo">
+                            <strong id="fileOutSize">&mdash;</strong>
+                            <span>&middot; amazon_product.jpg</span>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- /tool-card -->
+        </main>
+
+        <!-- Info / SEO -->
+        <section class="info-section" id="requirements">
+            <h2
+                style="font-family:var(--font-display);font-size:clamp(18px,3vw,24px);font-weight:700;letter-spacing:-0.2px;margin-bottom:20px;color:var(--text)">
+                Amazon Image Requirements (2026)</h2>
+            <div class="info-grid" id="how-it-works">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#E68A00" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="14" height="14" rx="2.5" />
+                            <path d="M6 9h6M9 6v6" />
+                        </svg>
+                    </div>
+                    <h3>Why 1000&times;1000 px?</h3>
+                    <p>Amazon requires at least 1000 px on the shortest side to activate the hover-zoom feature. Zoom
+                        increases buyer confidence and conversion - without it your listing loses a key selling
+                        advantage.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#E68A00" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="2" width="14" height="14" rx="2.5" />
+                            <rect x="5" y="5" width="8" height="8" rx="1" fill="#FF9900" fill-opacity=".18" />
+                        </svg>
+                    </div>
+                    <h3>Pure White Background (#FFFFFF)</h3>
+                    <p>Amazon mandates a pure white background for all main product images. Off-white walls or subtle
+                        shadows fail review. Our whitening engine detects near-white pixels and converts them to exact
+                        #FFFFFF.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="#E68A00" stroke-width="1.6"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="9" r="7" />
+                            <path d="M9 5.5v3.5l2.5 2.5" />
+                        </svg>
+                    </div>
+                    <h3>85% Frame Coverage</h3>
+                    <p>Amazon recommends the product fills at least 85% of the frame. A product that is too small looks
+                        unprofessional and loses zoom impact. Our coverage checker warns you before you upload.</p>
+                </div>
+            </div>
+
+        <h2
+            style="font-family:var(--font-display);font-size:clamp(18px,3vw,24px);font-weight:700;letter-spacing:-0.2px;margin:32px 0 16px;color:var(--text)">
+            How to Fix Amazon Image Rejection</h2>
+        <div class="rejection-list">
+                <div class="rejection-list-header">
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#DC2626" stroke-width="1.6"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="7.5" cy="7.5" r="6.5" />
+                        <line x1="7.5" y1="4.5" x2="7.5" y2="8.5" />
+                        <circle cx="7.5" cy="10.5" r=".5" fill="#DC2626" />
+                    </svg>
+                    <h3>Common Amazon Image Rejection Reasons &amp; How We Fix Them</h3>
+                </div>
+                <div class="rejection-row">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#DC2626" stroke-width="1.5"
+                        stroke-linecap="round">
+                        <line x1="3.5" y1="3.5" x2="10.5" y2="10.5" />
+                        <line x1="10.5" y1="3.5" x2="3.5" y2="10.5" />
+                    </svg>
+                    <span>Main image must have a pure white background</span>
+                    <span class="fix-tag">Auto-fixed</span>
+                </div>
+                <div class="rejection-row">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#DC2626" stroke-width="1.5"
+                        stroke-linecap="round">
+                        <line x1="3.5" y1="3.5" x2="10.5" y2="10.5" />
+                        <line x1="10.5" y1="3.5" x2="3.5" y2="10.5" />
+                    </svg>
+                    <span>Image too small to enable zoom (less than 1000 px)</span>
+                    <span class="fix-tag">Auto-fixed</span>
+                </div>
+                <div class="rejection-row">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#DC2626" stroke-width="1.5"
+                        stroke-linecap="round">
+                        <line x1="3.5" y1="3.5" x2="10.5" y2="10.5" />
+                        <line x1="10.5" y1="3.5" x2="3.5" y2="10.5" />
+                    </svg>
+                    <span>Image is not square &mdash; aspect ratio mismatch</span>
+                    <span class="fix-tag">Auto-fixed</span>
+                </div>
+                <div class="rejection-row">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#DC2626" stroke-width="1.5"
+                        stroke-linecap="round">
+                        <line x1="3.5" y1="3.5" x2="10.5" y2="10.5" />
+                        <line x1="10.5" y1="3.5" x2="3.5" y2="10.5" />
+                    </svg>
+                    <span>Product does not fill enough of the frame</span>
+                    <span class="fix-tag">Warns you</span>
+                </div>
+                <div class="rejection-row">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="#DC2626" stroke-width="1.5"
+                        stroke-linecap="round">
+                        <line x1="3.5" y1="3.5" x2="10.5" y2="10.5" />
+                        <line x1="10.5" y1="3.5" x2="3.5" y2="10.5" />
+                    </svg>
+                    <span>Image file size too large (over 10 MB)</span>
+                    <span class="fix-tag">Auto-fixed</span>
+                </div>
+            </div>
+        </section>
+
+    </div><!-- /page-wrap -->
+
+    <footer class="site-footer">
+        <div class="footer-inner">
+            <span class="footer-copy">&copy; 2026 Compressly &mdash; All processing happens locally in your
+                browser.</span>
+            <nav class="footer-links">
+                <a href="/">Home</a>
+                <a href="/privacy.html">Privacy</a>
+                <a href="/terms.html">Terms</a>
+                <a href="/contact.html">Contact</a>
+            </nav>
+        </div>
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+
+            /* ── State ─────────────────────────────────────────────────── */
+            let originalFile = null;
+            let outputSize = 1000;
+            let outputBlob = null;
+
+            /* ── DOM refs ──────────────────────────────────────────────── */
+            const uploadZone = document.getElementById('uploadZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileReadyBanner = document.getElementById('fileReadyBanner');
+            const fileReadyThumb = document.getElementById('fileReadyThumb');
+            const fileReadyName = document.getElementById('fileReadyName');
+            const fileReadyMeta = document.getElementById('fileReadyMeta');
+            const processBar = document.getElementById('processBar');
+            const btnProcess = document.getElementById('btnProcess');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnLabel = document.getElementById('btnLabel');
+            const processHint = document.getElementById('processHint');
+            const btnDownload = document.getElementById('btnDownload');
+            const btnReset = document.getElementById('btnReset');
+            const progressWrap = document.getElementById('progressWrap');
+            const progressFill = document.getElementById('progressFill');
+            const progressLabel = document.getElementById('progressLabel');
+            const resultsSection = document.getElementById('resultsSection');
+            const previewOrig = document.getElementById('previewOrig');
+            const previewCanvas = document.getElementById('previewCanvas');
+            const origMeta = document.getElementById('origMeta');
+            const procMeta = document.getElementById('procMeta');
+            const checklist = document.getElementById('checklist');
+            const fileOutInfo = document.getElementById('fileOutInfo');
+            const fileOutSize = document.getElementById('fileOutSize');
+            const coverageWrap = document.getElementById('coverageWrap');
+            const coveragePct = document.getElementById('coveragePct');
+            const coverageFill = document.getElementById('coverageFill');
+            const coverageWarn = document.getElementById('coverageWarn');
+            const hamburger = document.getElementById('hamburger');
+            const mobileNav = document.getElementById('mobileNav');
+
+            /* ── Mobile hamburger ──────────────────────────────────────── */
+            hamburger.addEventListener('click', () => {
+                const isOpen = mobileNav.classList.toggle('open');
+                hamburger.classList.toggle('open', isOpen);
+                hamburger.setAttribute('aria-expanded', isOpen);
+            });
+            document.querySelectorAll('.mnav-link').forEach(a => {
+                a.addEventListener('click', () => {
+                    mobileNav.classList.remove('open');
+                    hamburger.classList.remove('open');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                });
+            });
+            document.addEventListener('click', e => {
+                if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+                    mobileNav.classList.remove('open');
+                    hamburger.classList.remove('open');
+                    hamburger.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            /* ── Size buttons ──────────────────────────────────────────── */
+            document.querySelectorAll('.size-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    outputSize = parseInt(btn.dataset.size, 10);
+                });
+            });
+
+            /* ── Drag & drop ───────────────────────────────────────────── */
+            uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+            uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+            uploadZone.addEventListener('drop', e => {
+                e.preventDefault();
+                uploadZone.classList.remove('drag-over');
+                const f = e.dataTransfer.files[0];
+                if (f && f.type.startsWith('image/')) setFile(f);
+            });
+            fileInput.addEventListener('change', () => { if (fileInput.files[0]) setFile(fileInput.files[0]); });
+
+            /* ── setFile - show rich feedback immediately after upload ─── */
+            function setFile(f) {
+                if (f.size > 20 * 1024 * 1024) { alert('File too large. Max 20 MB.'); return; }
+                originalFile = f;
+
+                const objectURL = URL.createObjectURL(f);
+
+                // Thumbnail banner
+                fileReadyThumb.src = objectURL;
+                fileReadyName.textContent = f.name;
+                fileReadyMeta.textContent = formatBytes(f.size) + ' - detecting dimensions\u2026';
+                fileReadyBanner.classList.add('visible');
+
+                // Load image to get dimensions
+                const tmp = new Image();
+                tmp.onload = () => {
+                    const dim = tmp.naturalWidth + '\u202F\u00d7\u202F' + tmp.naturalHeight + ' px';
+                    fileReadyMeta.textContent = dim + '   \u00b7   ' + formatBytes(f.size);
+                    origMeta.textContent = tmp.naturalWidth + '\u00d7' + tmp.naturalHeight + ' \u00b7 ' + formatBytes(f.size);
+                };
+                tmp.src = objectURL;
+
+                // Pre-load preview
+                previewOrig.src = objectURL;
+                previewOrig.style.display = 'block';
+
+                // Make process button call-to-action
+                btnProcess.disabled = false;
+                btnProcess.classList.add('pulse-ready');
+                processBar.classList.add('ready');
+                processHint.textContent = 'Image ready \u2014 click \u201cProcess Image\u201d to continue';
+                processHint.className = 'process-hint ready-hint';
+
+                // Reset previous results
+                resultsSection.classList.remove('visible');
+                progressWrap.classList.remove('visible');
+                outputBlob = null;
+                btnDownload.disabled = true;
+                fileOutInfo.style.display = 'none';
+                checklist.innerHTML = '';
+                coverageWrap.style.display = 'none';
+                btnLabel.textContent = 'Process Image';
+            }
+
+            /* ── Process ────────────────────────────────────────────────── */
+            btnProcess.addEventListener('click', async () => {
+                if (!originalFile) return;
+
+                // GA
+                _gtag('event', 'amazon_image_processed', {
+                    output_size: outputSize,
+                    whiten: document.getElementById('optWhiten').checked,
+                    compress: document.getElementById('optCompress').checked
+                });
+
+                btnProcess.disabled = true;
+                btnProcess.classList.remove('pulse-ready');
+
+                // Swap icon → spinner
+                btnIcon.style.display = 'none';
+                const spinnEl = document.createElement('div');
+                spinnEl.className = 'spinner';
+                btnProcess.insertBefore(spinnEl, btnLabel);
+                btnLabel.textContent = 'Processing\u2026';
+
+                progressWrap.classList.add('visible');
+                setProgress(10, 'Loading image\u2026');
+
+                try {
+                    const img = await loadImage(originalFile);
+                    setProgress(28, 'Building white canvas\u2026');
+                    await delay(20);
+
+                    const canvas = document.createElement('canvas');
+                    const ctx = canvas.getContext('2d');
+                    const size = document.getElementById('optSquare').checked
+                        ? outputSize
+                        : Math.max(img.naturalWidth, img.naturalHeight);
+
+                    canvas.width = canvas.height = size;
+                    ctx.fillStyle = '#FFFFFF';
+                    ctx.fillRect(0, 0, size, size);
+
+                    const scale = Math.min(size / img.naturalWidth, size / img.naturalHeight);
+                    const dw = img.naturalWidth * scale;
+                    const dh = img.naturalHeight * scale;
+                    ctx.drawImage(img, (size - dw) / 2, (size - dh) / 2, dw, dh);
+
+                    setProgress(52, 'Whitening background\u2026');
+                    await delay(20);
+                    if (document.getElementById('optWhiten').checked) whitenBackground(ctx, size);
+
+                    setProgress(72, 'Analysing frame coverage\u2026');
+                    await delay(20);
+                    const coverage = document.getElementById('optCoverage').checked
+                        ? estimateCoverage(ctx, size) : 0;
+
+                    setProgress(86, 'Compressing\u2026');
+                    await delay(20);
+
+                    // Write to visible preview canvas
+                    previewCanvas.width = previewCanvas.height = size;
+                    previewCanvas.getContext('2d').drawImage(canvas, 0, 0);
+
+                    // JPEG encode with optional compression loop
+                    let quality = 0.87;
+                    let blob = await canvasToBlob(canvas, 'image/jpeg', quality);
+                    if (document.getElementById('optCompress').checked) {
+                        let attempts = 0;
+                        while (blob.size > 1_048_576 && quality > 0.55 && attempts < 8) {
+                            quality -= 0.05;
+                            attempts += 1;
+                            blob = await canvasToBlob(canvas, 'image/jpeg', quality);
+                        }
+                    }
+
+                    outputBlob = blob;
+                    setProgress(100, 'Done');
+                    await delay(250);
+
+                    // Populate result UI
+                    procMeta.textContent = size + '\u00d7' + size + ' \u00b7 ' + formatBytes(blob.size);
+                    fileOutSize.textContent = formatBytes(blob.size);
+                    fileOutInfo.style.display = 'flex';
+
+                    renderChecklist(size, blob.size, coverage,
+                        document.getElementById('optWhiten').checked,
+                        document.getElementById('optSquare').checked
+                    );
+
+                    if (document.getElementById('optCoverage').checked) {
+                        const pct = Math.round(coverage * 100);
+                        coverageWrap.style.display = 'block';
+                        coveragePct.textContent = pct + '%';
+                        coverageFill.style.width = pct + '%';
+                       coverageFill.className = 'coverage-fill ' + (pct >= 70 ? 'good' : pct >= 50 ? 'warn' : 'bad');
+                        coverageWarn.classList.toggle('visible', pct < 55);
+                    } else {
+                        coverageWrap.style.display = 'none';
+                    }
+
+                    progressWrap.classList.remove('visible');
+                    resultsSection.classList.add('visible');
+                    btnDownload.disabled = false;
+
+                    // Scroll results into view (smooth, avoids layout shift)
+                    requestAnimationFrame(() => {
+                        resultsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    });
+
+                } catch (err) {
+                    console.error(err);
+                    alert('Something went wrong while processing. Please try another image.');
+                    progressWrap.classList.remove('visible');
+                }
+
+                // Restore button
+                const sp = btnProcess.querySelector('.spinner');
+                if (sp) sp.remove();
+                btnIcon.style.display = '';
+                btnLabel.textContent = 'Process Again';
+                processBar.classList.remove('ready');
+                processHint.textContent = '';
+                processHint.className = 'process-hint';
+                btnProcess.disabled = false;
+            });
+
+            /* ── Download ───────────────────────────────────────────────── */
+            btnDownload.addEventListener('click', () => {
+                if (!outputBlob) return;
+                _gtag('event', 'amazon_image_downloaded', {
+                    output_size: outputSize,
+                    file_size_kb: Math.round(outputBlob.size / 1024)
+                });
+                const url = URL.createObjectURL(outputBlob);
+                const a = Object.assign(document.createElement('a'), {
+                    href: url,
+                    download: 'amazon_product_' + outputSize + 'x' + outputSize + '.jpg'
+                });
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            /* ── Reset ──────────────────────────────────────────────────── */
+            btnReset.addEventListener('click', () => {
+                originalFile = null;
+                outputBlob = null;
+                fileInput.value = '';
+
+                fileReadyBanner.classList.remove('visible');
+                fileReadyThumb.src = '';
+
+                previewOrig.src = '';
+                previewOrig.style.display = 'none';
+                origMeta.textContent = '\u2014';
+                procMeta.textContent = '\u2014';
+
+                btnProcess.disabled = true;
+                btnProcess.classList.remove('pulse-ready');
+                processBar.classList.remove('ready');
+                btnLabel.textContent = 'Process Image';
+                btnIcon.style.display = '';
+                processHint.textContent = 'Upload an image to begin';
+                processHint.className = 'process-hint';
+
+                btnDownload.disabled = true;
+                fileOutInfo.style.display = 'none';
+                resultsSection.classList.remove('visible');
+                progressWrap.classList.remove('visible');
+                checklist.innerHTML = '';
+                coverageWrap.style.display = 'none';
+
+                uploadZone.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+
+            /* ── Utilities ──────────────────────────────────────────────── */
+            function loadImage(file) {
+                return new Promise((res, rej) => {
+                    const url = URL.createObjectURL(file);
+                    const img = new Image();
+                    img.onload = () => { URL.revokeObjectURL(url); res(img); };
+                    img.onerror = rej;
+                    img.src = url;
+                });
+            }
+
+            function canvasToBlob(canvas, type, quality) {
+                return new Promise((res, rej) =>
+                    canvas.toBlob(b => b ? res(b) : rej(new Error('toBlob failed')), type, quality)
+                );
+            }
+
+            function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+            function setProgress(pct, label) {
+                progressFill.style.width = pct + '%';
+                progressLabel.textContent = label;
+            }
+
+            function formatBytes(b) {
+                if (b < 1024) return b + ' B';
+                if (b < 1_048_576) return (b / 1024).toFixed(1) + ' KB';
+                return (b / 1_048_576).toFixed(2) + ' MB';
+            }
+
+            /* Push pixels with R,G,B > 220 to pure white with smooth transition */
+            function whitenBackground(ctx, size) {
+                const THRESH_HARD = 235;  // definitely background — flood fill
+                const THRESH_SHADOW = 160;  // below this = product colour, never touch
+
+                const imgData = ctx.getImageData(0, 0, size, size);
+                const px = imgData.data;
+
+                // state: 0 = unvisited interior, 1 = confirmed background, 2 = shadow zone boundary
+                const state = new Uint8Array(size * size);
+
+                // Use min channel (most conservative) — avoids eating coloured product edges
+                function minCh(pos) {
+                    const i = pos * 4;
+                    return Math.min(px[i], px[i + 1], px[i + 2]);
+                }
+
+                // ── Pass 1: Flood fill from edges with hard threshold ──────────────────────
+                const queue = new Int32Array(size * size);
+                let head = 0, tail = 0;
+
+                function enqueue(x, y) {
+                    if (x < 0 || x >= size || y < 0 || y >= size) return;
+                    const pos = y * size + x;
+                    if (state[pos]) return;
+                    if (minCh(pos) >= THRESH_HARD) {
+                        state[pos] = 1;          // confirmed background
+                        queue[tail++] = pos;
+                    } else {
+                        state[pos] = 2;          // shadow boundary — stop here
+                    }
+                }
+
+                for (let x = 0; x < size; x++) { enqueue(x, 0); enqueue(x, size - 1); }
+                for (let y = 1; y < size - 1; y++) { enqueue(0, y); enqueue(size - 1, y); }
+
+                while (head < tail) {
+                    const pos = queue[head++];
+                    const x = pos % size, y = (pos / size) | 0;
+                    enqueue(x - 1, y); enqueue(x + 1, y);
+                    enqueue(x, y - 1); enqueue(x, y + 1);
+                }
+
+                // ── Pass 2: From shadow boundaries, propagate inward through shadow gradient ──
+                // Re-seed queue with all state=2 pixels and flood through the shadow zone
+                head = 0; tail = 0;
+                for (let i = 0; i < size * size; i++) {
+                    if (state[i] === 2) queue[tail++] = i;
+                }
+
+                function enqueueShadow(x, y) {
+                    if (x < 0 || x >= size || y < 0 || y >= size) return;
+                    const pos = y * size + x;
+                    if (state[pos] !== 0) return;                 // already assigned
+                    const m = minCh(pos);
+                    if (m >= THRESH_SHADOW) {
+                        state[pos] = 2;                           // extend shadow zone
+                        queue[tail++] = pos;
+                    }
+                    // below THRESH_SHADOW → leave at 0 (definite product interior)
+                }
+
+                while (head < tail) {
+                    const pos = queue[head++];
+                    const x = pos % size, y = (pos / size) | 0;
+                    enqueueShadow(x - 1, y); enqueueShadow(x + 1, y);
+                    enqueueShadow(x, y - 1); enqueueShadow(x, y + 1);
+                }
+
+                // ── Apply: confirmed bg → white; shadow zone → proportional blend ──────────
+                for (let i = 0; i < size * size; i++) {
+                    const px4 = i * 4;
+
+                    if (state[i] === 1) {
+                        // Confirmed background — fully white
+                        px[px4] = px[px4 + 1] = px[px4 + 2] = 255;
+
+                    } else if (state[i] === 2) {
+                        // Shadow zone — blend toward white proportionally by brightness
+                        // A pixel at THRESH_HARD (235) blends 100%, at THRESH_SHADOW (160) blends 0%
+                        const m = minCh(i);
+                        const t = Math.max(0, (m - THRESH_SHADOW) / (THRESH_HARD - THRESH_SHADOW));
+
+                        // Quadratic ease: lighter shadows get more aggressively whitened,
+                        // darker (deeper) shadows stay closer to their original colour
+                        const blend = t * t;
+
+                        for (let c = 0; c < 3; c++) {
+                            px[px4 + c] = Math.min(255,
+                                Math.round(px[px4 + c] + (255 - px[px4 + c]) * blend)
+                            );
+                        }
+                        // Alpha untouched — keeps any existing transparency
+                    }
+                    // state 0 → definite product interior, untouched
+                }
+
+                ctx.putImageData(imgData, 0, 0);
+            }
+
+            /* Fraction of pixels that are NOT near-white (proxy for product area) */
+         function estimateCoverage(ctx, size) {
+                const THRESH = 240;
+                const px = ctx.getImageData(0, 0, size, size).data;
+
+                let minX = size, maxX = 0, minY = size, maxY = 0;
+                let found = false;
+
+                for (let y = 0; y < size; y++) {
+                    for (let x = 0; x < size; x++) {
+                        const i = (y * size + x) * 4;
+                        // A pixel is "product" if it's meaningfully darker than pure white
+                        if (px[i] < THRESH || px[i + 1] < THRESH || px[i + 2] < THRESH) {
+                            if (x < minX) minX = x;
+                            if (x > maxX) maxX = x;
+                            if (y < minY) minY = y;
+                            if (y > maxY) maxY = y;
+                            found = true;
+                        }
+                    }
+                }
+
+                if (!found) return 0;
+
+                // Use bounding box area as coverage - much more intuitive than raw pixel count
+                const bboxW = (maxX - minX + 1);
+                const bboxH = (maxY - minY + 1);
+                return (bboxW * bboxH) / (size * size);
+            }
+
+            function renderChecklist(size, bytes, coverage, whitened, squared) {
+                const items = [
+                    { label: size + ' \u00d7 ' + size + ' px \u2014 zoom enabled', pass: true },
+                    { label: 'Square format \u2014 ' + (squared ? 'white-padded' : 'skipped'), pass: squared },
+                    { label: 'White background \u2014 ' + (whitened ? 'applied' : 'skipped'), pass: whitened },
+                    {
+                        label: 'File size: ' + formatBytes(bytes),
+                        pass: bytes < 10_485_760,
+                        warn: bytes > 2_097_152
+                    },
+                    { label: 'Amazon upload ready', pass: true }
+                ];
+
+                const icons = {
+                    pass: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 7.5 5.5 10.5 11.5 4"/></svg>`,
+                    warn: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 1L13.5 12H.5L7 1z"/><line x1="7" y1="5" x2="7" y2="8.5"/><circle cx="7" cy="10.5" r=".5" fill="currentColor"/></svg>`,
+                    fail: `<svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="3.5" y1="3.5" x2="10.5" y2="10.5"/><line x1="10.5" y1="3.5" x2="3.5" y2="10.5"/></svg>`
+                };
+
+                checklist.innerHTML = items.map(it => {
+                    const cls = it.warn ? 'warn' : it.pass ? 'pass' : 'fail';
+                    return `<div class="check-item ${cls}">${icons[cls]}${it.label}</div>`;
+                }).join('');
+            }
+
+            /* Safe gtag wrapper (no-op if blocked) */
+            function _gtag(...args) {
+                try { if (typeof gtag === 'function') gtag(...args); } catch (e) { }
+            }
+
+        })();
+    </script>
+</body>
+
+</html>
