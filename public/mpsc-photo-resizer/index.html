@@ -1,0 +1,2275 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- GA – restricted to production only -->
+    <script>
+        const allowedHosts = ["compressly.in", "www.compressly.in"];
+        if (!allowedHosts.includes(location.hostname)) {
+            window['ga-disable-G-K9Z1H2JLZQ'] = true;
+        }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K9Z1H2JLZQ', { anonymize_ip: true });
+        gtag('event', 'mpsc_tool_opened', { page: 'mpsc-photo-resizer' });
+    </script>
+
+    <title>MPSC Photo &amp; Signature Size Resizer 2026 - 50KB JPEG Format | Compressly</title>
+    <meta name="description"
+        content="Free MPSC photo and signature resizer. Resize to 275×354 px photo and 275×118 px signature under 50KB JPG. Fully compliant with MPSC official rules. No upload required." />
+    <link rel="canonical" href="https://www.compressly.in/mpsc-photo-resizer/" />
+    <link rel="icon" type="image/png" href="/favicon-64.png" />
+
+    <!-- Schema: SoftwareApplication -->
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "MPSC Photo & Signature Resizer",
+    "url": "https://www.compressly.in/mpsc-photo-resizer/",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "INR" },
+    "description": "Free browser-based tool to resize MPSC passport photos to 275×354 px and signatures to 275×118 px under 50KB JPEG format, fully compliant with Maharashtra Public Service Commission rules.",
+    "featureList": [
+      "Resize photo to 275×354 px",
+      "Resize signature to 275×118 px",
+      "Compress under 50KB",
+      "Auto-correct filename to 10 characters",
+      "Compliance checklist"
+    ]
+  }
+  </script>
+
+    <!-- Schema: FAQPage -->
+    <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is the MPSC photo size in pixels?",
+        "acceptedAnswer": { "@type": "Answer", "text": "MPSC requires passport photos to be 275×354 pixels, in JPEG format, and under 50KB in file size." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the MPSC signature size?",
+        "acceptedAnswer": { "@type": "Answer", "text": "MPSC signature images must be 275×118 pixels, JPEG format, and under 50KB." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does MPSC require a specific background colour for the photo?",
+        "acceptedAnswer": { "@type": "Answer", "text": "MPSC recommends a plain, solid background. Avoid watermarks, logos, or decorative borders in the main image." }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if the MPSC photo exceeds 50KB?",
+        "acceptedAnswer": { "@type": "Answer", "text": "The portal may reject the file during upload, causing your application to be incomplete. Always keep the file under 50KB." }
+      },
+      {
+        "@type": "Question",
+        "name": "What is the maximum file name length for MPSC uploads?",
+        "acceptedAnswer": { "@type": "Answer", "text": "MPSC portals enforce a maximum file name of 10 characters (excluding the extension). This tool automatically renames files to mpscphoto.jpg or mpscsign.jpg." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this MPSC photo resizer free?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes, completely free. All processing happens locally in your browser. Your image is never uploaded to any server." }
+      }
+    ]
+  }
+  </script>
+
+    <style>
+        /* ── Reset ─────────────────────────────────────────────── */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --fg: #0f172a;
+            --muted: #64748b;
+            --accent: #1a56db;
+            --accent-hover: #1e429f;
+            --accent-light: #eff6ff;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --success-bg: #f0fdf4;
+            --success-brd: #bbf7d0;
+            --warn: #d97706;
+            --warn-bg: #fffbeb;
+            --warn-brd: #fde68a;
+            --radius: 12px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        /* ── Header ─────────────────────────────────────────────── */
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+        }
+
+        .header-inner {
+            width: 100%;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        @media(max-width:768px) {
+            .header-inner {
+                padding: 0 16px;
+            }
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .brand-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: block;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 500;
+            transition: color .2s;
+            white-space: nowrap;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent);
+        }
+
+        /* Hamburger */
+        .menu-toggle {
+            display: none;
+            width: 28px;
+            height: 22px;
+            position: relative;
+            cursor: pointer;
+            background: none;
+            border: none;
+            flex-shrink: 0;
+        }
+
+        .menu-toggle span {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: var(--fg);
+            left: 0;
+            transition: all .3s ease;
+            border-radius: 2px;
+        }
+
+        .menu-toggle span:nth-child(1) {
+            top: 0;
+        }
+
+        .menu-toggle span:nth-child(2) {
+            top: 9px;
+        }
+
+        .menu-toggle span:nth-child(3) {
+            bottom: 0;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg);
+            top: 9px;
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg);
+            bottom: 10px;
+        }
+
+        @media(max-width:768px) {
+            .nav-menu {
+                position: absolute;
+                top: 62px;
+                right: 16px;
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 14px;
+                flex-direction: column;
+                gap: 10px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, .10);
+                display: none;
+                z-index: 200;
+            }
+
+            .nav-menu.show {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* ── Page layout ────────────────────────────────────────── */
+        main {
+            flex: 1;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 880px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+        }
+
+        @media(max-width:640px) {
+            .container {
+                padding: 20px 12px 40px;
+            }
+        }
+
+        @media(min-width:769px) {
+            .container {
+                padding-top: 20px;
+            }
+        }
+
+        /* ── Step indicator ─────────────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        @media(min-width:769px) {
+            .step-indicator {
+                margin-bottom: 12px;
+            }
+        }
+
+        .step-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--border);
+            transition: all .3s ease;
+        }
+
+        .step-dot.active {
+            width: 32px;
+            border-radius: 5px;
+            background: var(--accent);
+        }
+
+        .step-dot.done {
+            background: var(--success);
+        }
+
+        /* ── Back button ────────────────────────────────────────── */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            margin-bottom: 20px;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all .2s;
+            position: sticky;
+            top: 78px;
+            z-index: 90;
+            align-self: flex-start;
+        }
+
+        .back-btn:hover {
+            background: var(--card);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        @media(max-width:768px) {
+            .back-btn {
+                position: fixed;
+                top: 68px;
+                left: 16px;
+                z-index: 200;
+                background: var(--card);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+            }
+
+            .container {
+                padding-top: 56px;
+            }
+        }
+
+        /* ── Card ───────────────────────────────────────────────── */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+        }
+
+        @media(max-width:640px) {
+            .card {
+                padding: 22px 16px;
+            }
+        }
+
+        @media(min-width:769px) {
+            .card {
+                padding: 22px;
+            }
+        }
+
+        /* ── Typography ─────────────────────────────────────────── */
+        h1 {
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: var(--fg);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        @media(max-width:640px) {
+            h1 {
+                font-size: 22px;
+            }
+        }
+
+        .marathi-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 400;
+            color: var(--muted);
+            margin-bottom: 8px;
+            text-align: center;
+            letter-spacing: 0.2px;
+        }
+
+        .subtitle {
+            font-size: 14.5px;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        @media(max-width:640px) {
+            .subtitle {
+                font-size: 13.5px;
+                margin-bottom: 22px;
+            }
+        }
+
+        @media(min-width:769px) {
+            .subtitle {
+                margin-bottom: 14px;
+            }
+        }
+
+        /* ── Type selection ─────────────────────────────────────── */
+        .type-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        @media(max-width:480px) {
+            .type-grid {
+                gap: 12px;
+            }
+        }
+
+        .type-card {
+            position: relative;
+            padding: 26px 18px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius);
+            background: var(--card);
+            cursor: pointer;
+            transition: all .2s cubic-bezier(.4, 0, .2, 1);
+            text-align: center;
+        }
+
+        .type-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 8px 20px rgba(26, 86, 219, .12);
+            transform: translateY(-3px);
+        }
+
+        .type-card:active {
+            transform: translateY(-1px);
+        }
+
+        .type-card.selected {
+            border-color: var(--accent);
+            background: var(--accent-light);
+            box-shadow: 0 6px 16px rgba(26, 86, 219, .18);
+            transform: translateY(-2px);
+        }
+
+        @media(max-width:480px) {
+            .type-card {
+                padding: 20px 12px;
+            }
+        }
+
+        .type-icon {
+            width: 46px;
+            height: 46px;
+            margin: 0 auto 14px;
+            padding: 11px;
+            background: var(--accent);
+            border-radius: 12px;
+            color: white;
+            transition: transform .2s;
+        }
+
+        .type-card:hover .type-icon {
+            transform: scale(1.08);
+        }
+
+        .type-card.selected .type-icon {
+            background: var(--accent-hover);
+        }
+
+        @media(max-width:480px) {
+            .type-icon {
+                width: 40px;
+                height: 40px;
+                margin-bottom: 10px;
+            }
+        }
+
+        .type-title {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--fg);
+        }
+
+        .type-desc {
+            font-size: 12.5px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        @media(max-width:480px) {
+            .type-title {
+                font-size: 14px;
+            }
+
+            .type-desc {
+                font-size: 12px;
+            }
+        }
+
+        /* ── Upload area ─────────────────────────────────────────── */
+        .upload-area {
+            position: relative;
+            padding: 48px 24px;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius);
+            text-align: center;
+            background: #fafbfc;
+            transition: all .2s;
+            cursor: pointer;
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            background: #f0f9ff;
+        }
+
+        .upload-area.dragover {
+            border-color: var(--accent);
+            background: #dbeafe;
+        }
+
+        @media(max-width:640px) {
+            .upload-area {
+                padding: 36px 18px;
+            }
+        }
+
+        .upload-icon {
+            width: 52px;
+            height: 52px;
+            margin: 0 auto 14px;
+            padding: 13px;
+            background: var(--accent);
+            border-radius: 50%;
+            color: white;
+        }
+
+        .upload-text {
+            font-size: 15.5px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .upload-hint {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        /* ── Crop section ─────────────────────────────────────────── */
+        .crop-section {
+            text-align: center;
+        }
+
+        .crop-hint {
+            font-size: 13px;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        @media(max-width:640px) {
+            .crop-hint {
+                font-size: 12px;
+                margin-bottom: 10px;
+            }
+
+            .crop-section {
+                padding-bottom: 36px;
+            }
+        }
+
+        .crop-canvas-wrap {
+            position: relative;
+            display: inline-block;
+            max-width: 100%;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, .12);
+            margin: 0 auto 16px;
+            overflow: hidden;
+        }
+
+        #cropCanvas {
+            display: block;
+            max-width: 100%;
+            border-radius: 12px;
+            touch-action: none;
+        }
+
+        .crop-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .crop-box {
+            position: absolute;
+            border: 3px solid var(--accent);
+            background: transparent;
+            cursor: move;
+            z-index: 10;
+            box-shadow: 0 0 0 2px rgba(26, 86, 219, .2), 0 4px 20px rgba(26, 86, 219, .28);
+        }
+
+        .crop-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(to right, rgba(255, 255, 255, .4) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, .4) 1px, transparent 1px);
+            background-size: 33.333% 100%, 100% 33.333%;
+            pointer-events: none;
+        }
+
+        .crop-handle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent);
+            border: 2px solid #fff;
+            border-radius: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
+            z-index: 11;
+            transition: transform .15s;
+        }
+
+        .crop-handle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 44px;
+            height: 44px;
+        }
+
+        .crop-handle:hover {
+            transform: scale(1.3);
+        }
+
+        .crop-handle.nw {
+            top: -6px;
+            left: -6px;
+            cursor: nwse-resize;
+        }
+
+        .crop-handle.ne {
+            top: -6px;
+            right: -6px;
+            cursor: nesw-resize;
+        }
+
+        .crop-handle.sw {
+            bottom: -6px;
+            left: -6px;
+            cursor: nesw-resize;
+        }
+
+        .crop-handle.se {
+            bottom: -6px;
+            right: -6px;
+            cursor: nwse-resize;
+        }
+
+        .crop-handle.n {
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ns-resize;
+        }
+
+        .crop-handle.s {
+            bottom: -6px;
+            left: 50%;
+            transform: translateX(-50%);
+            cursor: ns-resize;
+        }
+
+        .crop-handle.e {
+            right: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: ew-resize;
+        }
+
+        .crop-handle.w {
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: ew-resize;
+        }
+
+        /* ── Zoom control ─────────────────────────────────────────── */
+        .zoom-control {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            max-width: 100%;
+            margin: 0 auto 16px;
+        }
+
+        .zoom-label {
+            font-size: 13px;
+            color: var(--muted);
+            font-weight: 600;
+            white-space: nowrap;
+            min-width: 48px;
+        }
+
+        .zoom-slider {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+        }
+
+        .zoom-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 2px 8px rgba(26, 86, 219, .35);
+        }
+
+        .zoom-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--accent);
+            border: none;
+            box-shadow: 0 2px 8px rgba(26, 86, 219, .35);
+        }
+
+        @media(max-width:768px) {
+            .zoom-control {
+                display: none;
+            }
+        }
+
+        /* ── Buttons ─────────────────────────────────────────────── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 13px 22px;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+            line-height: 1;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            box-shadow: 0 4px 12px rgba(26, 86, 219, .28);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 6px 20px rgba(26, 86, 219, .38);
+            transform: translateY(-1px);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-primary:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #f1f5f9;
+            color: var(--fg);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+
+        @media(max-width:480px) {
+            .btn {
+                padding: 12px 18px;
+                font-size: 14px;
+            }
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-group .btn {
+            flex: 1;
+        }
+
+        /* ── Processing spinner ───────────────────────────────────── */
+        .processing {
+            display: none;
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--accent);
+        }
+
+        .processing.active {
+            display: block;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--accent);
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin .6s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ── Result section ──────────────────────────────────────── */
+        .result-section {
+            display: none;
+            text-align: center;
+        }
+
+        .result-section.active {
+            display: block;
+        }
+
+        #stepResult.card {
+            padding: 20px 16px;
+        }
+
+      @media(max-width:768px){ #stepResult { padding-top: 54px; padding-bottom: 72px; } }
+
+        .result-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .result-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+        }
+
+        .success-icon-inline {
+            color: var(--success);
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .result-preview {
+        max-width: 138px;
+        height: auto;
+        margin: 10px auto 12px;
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0,0,0,.12);
+        image-rendering: crisp-edges;
+        display: block;
+        }
+
+        .result-meta {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 16px;
+        }
+
+        /* ── Compliance panel ──────────────────────────────────────── */
+        .compliance-panel {
+            margin-top: 20px;
+            padding: 16px;
+            background: var(--success-bg);
+            border: 1px solid var(--success-brd);
+            border-radius: 10px;
+            text-align: left;
+        }
+
+        .compliance-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--fg);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 7px;
+        }
+
+        .compliance-list {
+            list-style: none;
+        }
+
+        .compliance-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 9px;
+            font-size: 13px;
+            color: #065f46;
+            padding: 5px 0;
+            border-bottom: 1px solid rgba(0, 0, 0, .05);
+            line-height: 1.4;
+        }
+
+        .compliance-list li:last-child {
+            border-bottom: none;
+        }
+
+        .compliance-list .ci-icon {
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .compliance-list .ci-label {
+            color: var(--muted);
+            font-size: 11.5px;
+            display: block;
+            margin-top: 1px;
+        }
+
+        .compliance-warn {
+            background: var(--warn-bg);
+            border-color: var(--warn-brd);
+        }
+
+        .compliance-warn li {
+            color: #92400e;
+        }
+
+        /* ── Suggest card ─────────────────────────────────────────── */
+        .suggest-card {
+            margin-top: 14px;
+            padding: 16px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 10px;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity .3s ease;
+            min-height: 76px;
+        }
+
+        .suggest-card.show {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .suggest-title {
+            font-size: 14.5px;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--fg);
+        }
+
+        .suggest-desc {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 14px;
+        }
+
+        /* ── Info / FAQ / SEO section ─────────────────────────────── */
+        .info-section {
+            margin-top: 40px;
+        }
+
+        .seo-block {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+        }
+
+        .seo-block h2 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--fg);
+            margin-bottom: 14px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .seo-block h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--fg);
+            margin: 16px 0 6px;
+        }
+
+        .seo-block p {
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.65;
+            margin-bottom: 10px;
+        }
+
+        .seo-block p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Requirements table */
+        .req-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 14px 0;
+        }
+
+        @media(max-width:480px) {
+            .req-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .req-card {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+        }
+
+        .req-card-title {
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--fg);
+        }
+
+        .req-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12.5px;
+            padding: 3px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .req-row:last-child {
+            border-bottom: none;
+        }
+
+        .req-row span:first-child {
+            color: var(--muted);
+        }
+
+        .req-row span:last-child {
+            font-weight: 600;
+            color: var(--fg);
+        }
+
+        /* FAQ */
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+            padding: 14px 0;
+        }
+
+        .faq-item:first-child {
+            padding-top: 0;
+        }
+
+        .faq-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .faq-q {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--fg);
+            margin-bottom: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .faq-a {
+            font-size: 13.5px;
+            color: var(--muted);
+            line-height: 1.6;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease;
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 200px;
+        }
+
+        .faq-chevron {
+            flex-shrink: 0;
+            transition: transform .25s;
+        }
+
+        .faq-item.open .faq-chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Internal links */
+        .internal-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .internal-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            text-decoration: none;
+            background: var(--accent-light);
+            border: 1px solid #bfdbfe;
+            padding: 7px 14px;
+            border-radius: 8px;
+            transition: all .2s;
+        }
+
+        .internal-link:hover {
+            background: #dbeafe;
+            border-color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        /* ── Footer ───────────────────────────────────────────────── */
+        footer {
+            margin-top: auto;
+            padding: 22px 16px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            border-top: 1px solid var(--border);
+            background: var(--card);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── Header ──────────────────────────────────────────── -->
+    <header>
+        <div class="header-inner">
+            <a href="/" class="brand">
+                <img src="/favicon-64.png" width="32" height="32" alt="Compressly" class="brand-img" />
+                <span>Compressly</span>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+                <a href="/image-compressor/">Image Compressor</a>
+                <a href="/psc-photo-tool.html">Kerala PSC Tool</a>
+                <a href="/amazon-image-resizer/">Amazon Resizer</a>
+            </nav>
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ── Main ────────────────────────────────────────────── -->
+    <main>
+        <div class="container">
+
+            <!-- Step indicator: 3 dots (type, upload, crop) -->
+            <div class="step-indicator">
+                <div class="step-dot active" id="dot1"></div>
+                <div class="step-dot" id="dot2"></div>
+                <div class="step-dot" id="dot3"></div>
+            </div>
+
+            <!-- Back button -->
+            <button class="back-btn hidden" id="backBtn" aria-label="Go back">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Back
+            </button>
+
+            <!-- ── Step 1: Select Type ──────────────────────────── -->
+            <div class="card" id="stepType">
+                <span class="marathi-label">महाराष्ट्र लोकसेवा आयोग (MPSC)</span>
+                <h1>MPSC Photo &amp; Signature Size Resizer</h1>
+                <p class="subtitle">Official 50&nbsp;KB JPEG format - fully compliant with MPSC portal
+                    requirements. No upload to server. Free.</p>
+
+                <div class="type-grid">
+                    <div class="type-card" data-type="photo" id="typePhoto" role="button" tabindex="0"
+                        aria-label="Passport Photo 275x354px">
+                        <div class="type-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                            </svg>
+                        </div>
+                        <div class="type-title">Passport Photo</div>
+                        <div class="type-desc">275 &times; 354 px &middot; max 50 KB</div>
+                    </div>
+                    <div class="type-card" data-type="signature" id="typeSignature" role="button" tabindex="0"
+                        aria-label="Signature 275x118px">
+                        <div class="type-icon">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+                            </svg>
+                        </div>
+                        <div class="type-title">Signature</div>
+                        <div class="type-desc">275 &times; 118 px &middot; max 50 KB</div>
+                    </div>
+                </div>
+
+                <!-- SEO content visible on landing -->
+                <div class="info-section" id="infoSection">
+
+                    <div class="seo-block">
+                        <h2>MPSC Photo &amp; Signature Requirements 2026</h2>
+                        <p>The Maharashtra Public Service Commission (MPSC) portal enforces strict size and format rules
+                            for passport photos and signatures. Images outside the allowed specifications are
+                            automatically rejected during upload, which can delay your application.</p>
+                        <div class="req-grid">
+                            <div class="req-card">
+                                <div class="req-card-title">Passport Photo</div>
+                                <div class="req-row"><span>Width</span><span>275 px</span></div>
+                                <div class="req-row"><span>Height</span><span>354 px</span></div>
+                                <div class="req-row"><span>Max size</span><span>50 KB</span></div>
+                                <div class="req-row"><span>Format</span><span>JPEG</span></div>
+                                <div class="req-row"><span>Filename</span><span>Max 10 chars</span></div>
+                            </div>
+                            <div class="req-card">
+                                <div class="req-card-title">Signature</div>
+                                <div class="req-row"><span>Width</span><span>275 px</span></div>
+                                <div class="req-row"><span>Height</span><span>118 px</span></div>
+                                <div class="req-row"><span>Max size</span><span>50 KB</span></div>
+                                <div class="req-row"><span>Format</span><span>JPEG</span></div>
+                                <div class="req-row"><span>Filename</span><span>Max 10 chars</span></div>
+                            </div>
+                        </div>
+                        <p>This tool automatically resizes, crops, compresses, and renames your image to meet all MPSC
+                            requirements - so you can upload without errors on the first try.</p>
+                    </div>
+
+                    <div class="seo-block">
+                        <h2>Frequently Asked Questions</h2>
+                        <div class="faq-item" id="faq1">
+                            <div class="faq-q" onclick="toggleFaq('faq1')">
+                                What is the MPSC photo size in pixels?
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="4 6 8 10 12 6" />
+                                </svg>
+                            </div>
+                            <div class="faq-a">MPSC requires passport photos to be exactly 275&times;354 pixels, in JPEG
+                                format, and under 50&nbsp;KB in file size. Photos outside these dimensions are rejected
+                                by the portal.</div>
+                        </div>
+                        <div class="faq-item" id="faq2">
+                            <div class="faq-q" onclick="toggleFaq('faq2')">
+                                What is the MPSC signature size?
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="4 6 8 10 12 6" />
+                                </svg>
+                            </div>
+                            <div class="faq-a">MPSC signature images must be 275&times;118 pixels, JPEG format, and
+                                under 50&nbsp;KB. Sign on white paper, scan or photograph it, then upload here to resize
+                                and compress it instantly.</div>
+                        </div>
+                        <div class="faq-item" id="faq3">
+                            <div class="faq-q" onclick="toggleFaq('faq3')">
+                                Does MPSC require a specific background colour?
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="4 6 8 10 12 6" />
+                                </svg>
+                            </div>
+                            <div class="faq-a">MPSC recommends a plain, solid background for passport photos. Avoid busy
+                                patterns, watermarks, logos, or decorative borders. A white or light-coloured background
+                                is the safest choice.</div>
+                        </div>
+                        <div class="faq-item" id="faq4">
+                            <div class="faq-q" onclick="toggleFaq('faq4')">
+                                What happens if my MPSC photo exceeds 50&nbsp;KB?
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="4 6 8 10 12 6" />
+                                </svg>
+                            </div>
+                            <div class="faq-a">The MPSC portal will reject the upload with an error, leaving your
+                                application incomplete. This tool compresses your image to the 40&ndash;49&nbsp;KB safe
+                                zone, well within the 50&nbsp;KB limit.</div>
+                        </div>
+                        <div class="faq-item" id="faq5">
+                            <div class="faq-q" onclick="toggleFaq('faq5')">
+                                What is the maximum filename length for MPSC uploads?
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="4 6 8 10 12 6" />
+                                </svg>
+                            </div>
+                            <div class="faq-a">MPSC portals typically enforce a maximum filename of 10 characters
+                                (excluding the extension). This tool automatically saves your file as
+                                <strong>mpscphoto.jpg</strong> or <strong>mpscsign.jpg</strong> - both are exactly 9
+                                characters, well within the limit.</div>
+                        </div>
+                        <div class="faq-item" id="faq6">
+                            <div class="faq-q" onclick="toggleFaq('faq6')">
+                                Is this MPSC resizer free to use?
+                                <svg class="faq-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                    stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="4 6 8 10 12 6" />
+                                </svg>
+                            </div>
+                            <div class="faq-a">Yes, completely free. All processing happens locally inside your browser
+                                using the Canvas API. Your image is never sent to any server or stored anywhere.</div>
+                        </div>
+                    </div>
+
+                    <div class="seo-block">
+                        <h2>Other Tools You May Need</h2>
+                        <p>Preparing for other state or central examinations? Explore our related tools below.</p>
+                        <div class="internal-links">
+                            <a href="/psc-photo-tool.html" class="internal-link">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="1" width="12" height="12" rx="2" />
+                                    <path d="M4.5 7h5M7 4.5v5" />
+                                </svg>
+                                Kerala PSC Photo Tool
+                            </a>
+                            <a href="/image-compressor/" class="internal-link">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="1" width="12" height="12" rx="2" />
+                                    <path d="M4 7h6M7 4l3 3-3 3" />
+                                </svg>
+                                Image Compressor
+                            </a>
+                            <a href="/amazon-image-resizer/" class="internal-link">
+                                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor"
+                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="1" y="1" width="12" height="12" rx="2" />
+                                    <path d="M3 10l3-3 2 2 3-4" />
+                                </svg>
+                                Amazon Image Resizer
+                            </a>
+                        </div>
+                    </div>
+
+                </div><!-- /infoSection -->
+            </div><!-- /stepType -->
+
+            <!-- ── Step 2: Upload ──────────────────────────────── -->
+            <div class="card hidden" id="stepUpload">
+                <h1 id="uploadTitle">Upload Your Photo</h1>
+                <p class="subtitle" id="uploadSubtitle">Will be resized and compressed to meet MPSC specifications</p>
+                <div class="upload-area" id="uploadArea">
+                    <div class="upload-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z" />
+                        </svg>
+                    </div>
+                    <div class="upload-text">Click to upload or drag &amp; drop</div>
+                    <div class="upload-hint">JPG, PNG &middot; Max 15 MB</div>
+                    <input type="file" id="fileInput" accept="image/*" />
+                </div>
+            </div>
+
+            <!-- ── Step 3: Crop ────────────────────────────────── -->
+            <div class="card hidden crop-section" id="stepCrop">
+                <div class="crop-hint" id="cropHint">Drag corners to resize &middot; Pinch to zoom &middot; Drag image
+                    to pan</div>
+                <div style="text-align:center">
+                    <div class="crop-canvas-wrap" id="cropCanvasWrap">
+                        <canvas id="cropCanvas"></canvas>
+                        <svg class="crop-overlay">
+                            <defs>
+                                <mask id="cropMask">
+                                    <rect width="100%" height="100%" fill="white" />
+                                    <rect id="cropMaskRect" fill="black" />
+                                </mask>
+                            </defs>
+                            <rect width="100%" height="100%" fill="rgba(0,0,0,0.5)" mask="url(#cropMask)" />
+                        </svg>
+                        <div class="crop-box" id="cropBox">
+                            <div class="crop-handle nw" data-handle="nw"></div>
+                            <div class="crop-handle ne" data-handle="ne"></div>
+                            <div class="crop-handle sw" data-handle="sw"></div>
+                            <div class="crop-handle se" data-handle="se"></div>
+                            <div class="crop-handle n" data-handle="n"></div>
+                            <div class="crop-handle s" data-handle="s"></div>
+                            <div class="crop-handle e" data-handle="e"></div>
+                            <div class="crop-handle w" data-handle="w"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="zoom-control">
+                    <div class="zoom-label">Zoom</div>
+                    <input type="range" class="zoom-slider" id="zoomRange" min="0.5" max="2.5" step="0.01" value="1" />
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" id="skipCrop">Use Full Image</button>
+                    <button class="btn btn-primary" id="applyCrop">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor"
+                            stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 8 6.5 11.5 13 4" />
+                        </svg>
+                        Crop &amp; Prepare
+                    </button>
+                </div>
+                <div class="processing" id="processing">
+                    <span class="spinner"></span>
+                    Preparing your <span id="processingType">photo</span>&hellip;
+                </div>
+            </div>
+
+            <!-- ── Step 4: Result ─────────────────────────────── -->
+            <div class="card hidden result-section" id="stepResult">
+
+                <div class="result-header">
+                    <div class="result-title-row">
+                        <div class="success-icon-inline">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                            </svg>
+                        </div>
+                        <h1 id="resultTitle" style="margin:0;font-size:22px">Your Photo is Ready!</h1>
+                    </div>
+                    <p class="subtitle" style="margin:0">Download and upload directly to the MPSC portal</p>
+                </div>
+
+                <!-- Reserve exact aspect ratio to prevent CLS -->
+                <img id="preview" class="result-preview" alt="Processed MPSC image" width="138" height="178" />
+                <div class="result-meta" id="resultMeta"></div>
+
+                <a id="downloadLink" style="text-decoration:none">
+                    <button class="btn btn-primary" id="downloadBtn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                        </svg>
+                        Download MPSC Image
+                    </button>
+                </a>
+
+                <!-- Compliance panel -->
+                <div class="compliance-panel" id="compliancePanel">
+                    <div class="compliance-title">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="#065f46" stroke-width="1.8"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="2 9 6 13 14 3" />
+                        </svg>
+                        MPSC Compliance Check
+                    </div>
+                    <ul class="compliance-list" id="complianceList">
+                        <!-- filled by JS -->
+                    </ul>
+                </div>
+
+                <!-- Suggest opposite type -->
+                <div class="suggest-card" id="suggestCard">
+                    <div class="suggest-title" id="suggestTitle">Need a signature too?</div>
+                    <div class="suggest-desc" id="suggestDesc">Most MPSC applications require both photo and signature
+                    </div>
+                    <button class="btn btn-secondary" id="suggestBtn" style="width:100%">Prepare Signature
+                        &rarr;</button>
+                </div>
+
+            </div><!-- /stepResult -->
+        </div><!-- /container -->
+    </main>
+
+    <!-- ── Footer ──────────────────────────────────────────── -->
+    <footer>
+        &copy; 2026 Compressly &middot;
+        <a href="/psc-photo-tool.html">Kerala PSC Tool</a> &middot;
+        <a href="/image-compressor/">Image Compressor</a> &middot;
+        <a href="/privacy.html">Privacy</a> &middot;
+        <a href="/contact.html">Contact</a>
+    </footer>
+
+    <script>
+        (function () {
+            'use strict';
+
+            /* ── Config ─────────────────────────────────────────── */
+            const CONFIG = {
+                photo: {
+                    width: 275, height: 354,
+                    label: 'Photo',
+                    filename: 'mpscphoto.jpg',
+                    desc: 'Will be resized to 275\u00d7354 px and compressed under 50 KB'
+                },
+                signature: {
+                    width: 275, height: 118,
+                    label: 'Signature',
+                    filename: 'mpscsign.jpg',
+                    desc: 'Will be resized to 275\u00d7118 px and compressed under 50 KB'
+                }
+            };
+
+            /* ── State ──────────────────────────────────────────── */
+            let currentStep = 1;
+            let selectedType = null;
+            let originalImage = null;
+            let croppedImage = null;
+            let zoom = 1;
+            let canvasWidth = 0;
+            let canvasHeight = 0;
+            let imageOffsetX = 0;
+            let imageOffsetY = 0;
+            let redrawFn = null; // stored so crop drag can trigger redraw
+
+            /* ── DOM refs ───────────────────────────────────────── */
+            const stepType = document.getElementById('stepType');
+            const stepUpload = document.getElementById('stepUpload');
+            const stepCrop = document.getElementById('stepCrop');
+            const stepResult = document.getElementById('stepResult');
+            const backBtn = document.getElementById('backBtn');
+            const fileInput = document.getElementById('fileInput');
+            const uploadArea = document.getElementById('uploadArea');
+            const cropCanvas = document.getElementById('cropCanvas');
+            const cropBox = document.getElementById('cropBox');
+            const zoomRange = document.getElementById('zoomRange');
+            const preview = document.getElementById('preview');
+            const downloadLink = document.getElementById('downloadLink');
+            const suggestCard = document.getElementById('suggestCard');
+            const processing = document.getElementById('processing');
+            const infoSection = document.getElementById('infoSection');
+
+            /* ── Mobile menu ──────────────────────────────────── */
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            menuToggle.addEventListener('click', e => {
+                e.stopPropagation();
+                navMenu.classList.toggle('show');
+                menuToggle.classList.toggle('active');
+            });
+            document.addEventListener('click', e => {
+                if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                    navMenu.classList.remove('show');
+                    menuToggle.classList.remove('active');
+                }
+            });
+            navMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+                navMenu.classList.remove('show');
+                menuToggle.classList.remove('active');
+            }));
+
+            /* ── FAQ accordion ──────────────────────────────────── */
+            window.toggleFaq = function (id) {
+                const item = document.getElementById(id);
+                const wasOpen = item.classList.contains('open');
+                document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('open'));
+                if (!wasOpen) item.classList.add('open');
+            };
+
+            /* ── Step 1: Type selection ─────────────────────────── */
+            document.querySelectorAll('.type-card').forEach(card => {
+                card.addEventListener('click', () => handleTypeSelect(card));
+                card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleTypeSelect(card); } });
+            });
+
+            function handleTypeSelect(card) {
+                document.querySelectorAll('.type-card').forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedType = card.dataset.type;
+                _gtag('event', 'mpsc_type_selected', { type: selectedType });
+                setTimeout(() => goToStep(2), 280);
+            }
+
+            /* ── Step 2: Upload ─────────────────────────────────── */
+            uploadArea.addEventListener('click', () => { fileInput.value = ''; fileInput.click(); });
+            uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+            uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+            uploadArea.addEventListener('drop', e => {
+                e.preventDefault();
+                uploadArea.classList.remove('dragover');
+                if (e.dataTransfer.files.length) {
+                    fileInput.value = '';
+                    handleFileFromList(e.dataTransfer.files[0]);
+                }
+            });
+            fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFileFromList(fileInput.files[0]); });
+
+            function handleFileFromList(file) {
+                if (!file.type.startsWith('image/')) { alert('Please select a valid image file.'); return; }
+                if (file.size > 15 * 1024 * 1024) { alert('File too large. Max 15 MB.'); return; }
+
+                const url = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = async () => {
+                    URL.revokeObjectURL(url);
+                    // Downsample very large images first to keep INP low
+                    if (img.width > 1600 || img.height > 1600) {
+                        originalImage = await downsampleImage(img, 1600);
+                    } else {
+                        originalImage = img;
+                    }
+                    goToStep(3);
+                    // Yield to browser before heavy crop init
+                    requestAnimationFrame(() => setTimeout(initCrop, 0));
+                };
+                img.onerror = () => alert('Could not load that image. Please try another file.');
+                img.src = url;
+            }
+
+            function downsampleImage(img, maxDim) {
+                return new Promise(resolve => {
+                    const scale = Math.min(maxDim / img.width, maxDim / img.height, 1);
+                    const w = Math.round(img.width * scale);
+                    const h = Math.round(img.height * scale);
+                    const canvas = document.createElement('canvas');
+                    canvas.width = w; canvas.height = h;
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, w, h);
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(img, 0, 0, w, h);
+                    canvas.toBlob(blob => {
+                        const newImg = new Image();
+                        newImg.onload = () => resolve(newImg);
+                        newImg.src = URL.createObjectURL(blob);
+                    }, 'image/jpeg', 0.97);
+                });
+            }
+
+            /* ── Step 3: Crop ─────────────────────────────────── */
+            function initCrop() {
+                const config = CONFIG[selectedType];
+                const maxW = Math.min(800, window.innerWidth - 40);
+                const imgAsp = originalImage.width / originalImage.height;
+                let cW = maxW;
+                let cH = cW / imgAsp;
+
+               if (cH > 300) { cH = 300; cW = cH * imgAsp; }
+
+                canvasWidth = cW;
+                canvasHeight = cH;
+                cropCanvas.width = cW;
+                cropCanvas.height = cH;
+
+                const ctx = cropCanvas.getContext('2d');
+                zoom = 1; zoomRange.value = 1;
+                imageOffsetX = 0; imageOffsetY = 0;
+
+                function redraw() {
+                    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+                    let baseW = canvasWidth;
+                    let baseH = baseW / imgAsp;
+                    if (baseH < canvasHeight) { baseH = canvasHeight; baseW = baseH * imgAsp; }
+                    ctx.drawImage(originalImage, imageOffsetX, imageOffsetY, baseW * zoom, baseH * zoom);
+                }
+                redrawFn = redraw;
+                redraw();
+
+                // Init crop box with correct aspect ratio
+                const aspect = config.width / config.height;
+                let bw = cW * 0.62;
+                let bh = bw / aspect;
+                if (bh > cH * 0.82) { bh = cH * 0.82; bw = bh * aspect; }
+
+                cropBox.style.width = bw + 'px';
+                cropBox.style.height = bh + 'px';
+                cropBox.style.left = (cW - bw) / 2 + 'px';
+                cropBox.style.top = (cH - bh) / 2 + 'px';
+                updateOverlay();
+
+                enablePanZoom(redraw);
+                enableCropDrag();
+            }
+
+            function clampImage(baseW, baseH) {
+                const dw = baseW * zoom;
+                const dh = baseH * zoom;
+                if (dw <= canvasWidth) { imageOffsetX = (canvasWidth - dw) / 2; }
+                else { imageOffsetX = Math.min(0, Math.max(canvasWidth - dw, imageOffsetX)); }
+                if (dh <= canvasHeight) { imageOffsetY = (canvasHeight - dh) / 2; }
+                else { imageOffsetY = Math.min(0, Math.max(canvasHeight - dh, imageOffsetY)); }
+            }
+
+            function getBaseSize() {
+                const imgAsp = originalImage.width / originalImage.height;
+                let baseW = canvasWidth;
+                let baseH = baseW / imgAsp;
+                if (baseH < canvasHeight) { baseH = canvasHeight; baseW = baseH * imgAsp; }
+                return { baseW, baseH };
+            }
+
+            function enablePanZoom(redraw) {
+                let dragging = false, sx, sy, startX, startY;
+
+                cropCanvas.addEventListener('mousedown', e => {
+                    dragging = true;
+                    sx = e.clientX; sy = e.clientY;
+                    startX = imageOffsetX; startY = imageOffsetY;
+                });
+                window.addEventListener('mousemove', e => {
+                    if (!dragging) return;
+                    imageOffsetX = startX + (e.clientX - sx);
+                    imageOffsetY = startY + (e.clientY - sy);
+                    const { baseW, baseH } = getBaseSize();
+                    clampImage(baseW, baseH);
+                    redraw();
+                });
+                window.addEventListener('mouseup', () => { dragging = false; });
+
+                // Pinch zoom
+                let initDist = 0, initZoom = 1, pinchCenter = { x: 0, y: 0 };
+                const touchTarget = document.getElementById('cropCanvasWrap');
+
+                touchTarget.addEventListener('touchstart', e => {
+                    if (e.touches.length === 2) {
+                        e.preventDefault();
+                        const rect = cropCanvas.getBoundingClientRect();
+                        pinchCenter.x = ((e.touches[0].clientX + e.touches[1].clientX) / 2) - rect.left;
+                        pinchCenter.y = ((e.touches[0].clientY + e.touches[1].clientY) / 2) - rect.top;
+                        initDist = getDist(e.touches);
+                        initZoom = zoom;
+                    }
+                }, { passive: false });
+
+                touchTarget.addEventListener('touchmove', e => {
+                    if (e.touches.length !== 2) return;
+                    e.preventDefault();
+                    const newDist = getDist(e.touches);
+                    const newZoom = Math.max(0.5, Math.min(2.5, initZoom * (newDist / initDist)));
+                    const zf = newZoom / zoom;
+                    imageOffsetX -= (pinchCenter.x - imageOffsetX) * (zf - 1);
+                    imageOffsetY -= (pinchCenter.y - imageOffsetY) * (zf - 1);
+                    zoom = newZoom;
+                    zoomRange.value = zoom;
+                    const { baseW, baseH } = getBaseSize();
+                    clampImage(baseW, baseH);
+                    redraw();
+                }, { passive: false });
+
+                zoomRange.addEventListener('input', () => {
+                    zoom = +zoomRange.value;
+                    const { baseW, baseH } = getBaseSize();
+                    clampImage(baseW, baseH);
+                    redraw();
+                });
+            }
+
+            function getDist(touches) {
+                const dx = touches[0].clientX - touches[1].clientX;
+                const dy = touches[0].clientY - touches[1].clientY;
+                return Math.hypot(dx, dy);
+            }
+
+            function enableCropDrag() {
+                let dragging = false, resizing = false, handle = null;
+                let sx, sy, sw, sh, sl, st;
+
+                cropBox.addEventListener('mousedown', e => {
+                    if (e.target.classList.contains('crop-handle')) return;
+                    e.preventDefault();
+                    dragging = true;
+                    sx = e.clientX; sy = e.clientY;
+                    sl = parseFloat(cropBox.style.left);
+                    st = parseFloat(cropBox.style.top);
+                });
+                cropBox.addEventListener('touchstart', e => {
+                    if (e.target.classList.contains('crop-handle')) return;
+                    e.preventDefault();
+                    dragging = true;
+                    sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+                    sl = parseFloat(cropBox.style.left);
+                    st = parseFloat(cropBox.style.top);
+                }, { passive: false });
+
+                document.querySelectorAll('.crop-handle').forEach(h => {
+                    const startResize = e => {
+                        e.stopPropagation(); e.preventDefault();
+                        resizing = true;
+                        handle = e.target.dataset.handle;
+                        const t = e.touches ? e.touches[0] : e;
+                        sx = t.clientX; sy = t.clientY;
+                        sw = parseFloat(cropBox.style.width);
+                        sh = parseFloat(cropBox.style.height);
+                        sl = parseFloat(cropBox.style.left);
+                        st = parseFloat(cropBox.style.top);
+                    };
+                    h.addEventListener('mousedown', startResize);
+                    h.addEventListener('touchstart', startResize, { passive: false });
+                });
+
+                const move = e => {
+                    const t = e.touches ? e.touches[0] : e;
+                    const dx = t.clientX - sx;
+                    const dy = t.clientY - sy;
+                    const minSize = 50;
+
+                    if (dragging) {
+                        let l = Math.max(0, Math.min(sl + dx, canvasWidth - cropBox.offsetWidth));
+                        let tp = Math.max(0, Math.min(st + dy, canvasHeight - cropBox.offsetHeight));
+                        cropBox.style.left = l + 'px';
+                        cropBox.style.top = tp + 'px';
+                        updateOverlay();
+                    } else if (resizing) {
+                        let nw = sw, nh = sh, nl = sl, nt = st;
+                        if (handle.includes('e')) nw = Math.min(sw + dx, canvasWidth - sl);
+                        if (handle.includes('s')) nh = Math.min(sh + dy, canvasHeight - st);
+                        if (handle.includes('w')) {
+                            const clampDx = Math.min(dx, sw - minSize);
+                            nl = Math.max(0, sl + clampDx);
+                            nw = sw - (nl - sl);
+                        }
+                        if (handle.includes('n')) {
+                            const clampDy = Math.min(dy, sh - minSize);
+                            nt = Math.max(0, st + clampDy);
+                            nh = sh - (nt - st);
+                        }
+                       // Signature: lock crop to 275:118 aspect ratio before clamping
+                       if (selectedType === 'signature') {
+                            const ratio = 275 / 118;
+                        if (handle === 'n' || handle === 's') {
+                               // Height dragged — width follows ratio
+                               nw = nh * ratio;
+                               // Re-center horizontally but clamp so it never exits canvas
+                               nl = sl + (sw - nw) / 2;
+                               nl = Math.max(0, Math.min(nl, canvasWidth - nw));
+                               // If clamping changed nl, shrink nw to fit and recalculate nh to stay in ratio
+                               nw = Math.min(nw, canvasWidth - nl);
+                               nh = nw / ratio;
+                           } else if (handle === 'e' || handle === 'w') {
+                                // Width dragged — height follows, re-center vertically so no vertical jump
+                                nh = nw / ratio;
+                                nt = st + (sh - nh) / 2;
+                            } else {
+                                // Corner drag — width drives, height follows
+                                nh = nw / ratio;
+                                // If top edge is involved, keep bottom fixed instead of top
+                                if (handle.includes('n')) nt = (st + sh) - nh;
+                            }
+                        }
+
+                        nw = Math.max(minSize, Math.min(nw, canvasWidth - nl));
+                        nh = Math.max(minSize, Math.min(nh, canvasHeight - nt));
+                        cropBox.style.left = nl + 'px'; cropBox.style.top = nt + 'px';
+                        cropBox.style.width = nw + 'px'; cropBox.style.height = nh + 'px';
+                        updateOverlay();
+                    }
+                };
+                const end = () => { dragging = false; resizing = false; handle = null; };
+
+                document.addEventListener('mousemove', move);
+                document.addEventListener('touchmove', move, { passive: false });
+                document.addEventListener('mouseup', end);
+                document.addEventListener('touchend', end);
+            }
+
+            function updateOverlay() {
+                const rect = document.getElementById('cropMaskRect');
+                if (!rect) return;
+                rect.setAttribute('x', Math.round(parseFloat(cropBox.style.left)));
+                rect.setAttribute('y', Math.round(parseFloat(cropBox.style.top)));
+                rect.setAttribute('width', Math.round(parseFloat(cropBox.style.width)));
+                rect.setAttribute('height', Math.round(parseFloat(cropBox.style.height)));
+            }
+
+            /* Apply crop button */
+            document.getElementById('applyCrop').addEventListener('click', async () => {
+                const btn = document.getElementById('applyCrop');
+                btn.disabled = true;
+                btn.textContent = 'Processing\u2026';
+                processing.classList.add('active');
+                document.getElementById('processingType').textContent = selectedType;
+
+                // Yield frame so UI updates before heavy work
+                await new Promise(r => requestAnimationFrame(() => setTimeout(r, 50)));
+                await extractAndProcess(true);
+
+                btn.disabled = false;
+                btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 8 6.5 11.5 13 4"/></svg> Crop &amp; Prepare';
+            });
+
+            /* Skip crop button */
+            document.getElementById('skipCrop').addEventListener('click', async () => {
+                croppedImage = originalImage;
+                processing.classList.add('active');
+                document.getElementById('processingType').textContent = selectedType;
+                await new Promise(r => requestAnimationFrame(() => setTimeout(r, 50)));
+                await processImage();
+            });
+
+            /* Extract crop region from canvas coordinates */
+            async function extractAndProcess(fromCropBox) {
+                if (fromCropBox) {
+                    const rect = cropCanvas.getBoundingClientRect();
+                    const scaleX = canvasWidth / rect.width;
+                    const scaleY = canvasHeight / rect.height;
+                    const { baseW, baseH } = getBaseSize();
+                    const imgScaleX = originalImage.width / (baseW * zoom);
+                    const imgScaleY = originalImage.height / (baseH * zoom);
+
+                    const boxL = parseFloat(cropBox.style.left) * scaleX;
+                    const boxT = parseFloat(cropBox.style.top) * scaleY;
+                    const boxW = parseFloat(cropBox.style.width) * scaleX;
+                    const boxH = parseFloat(cropBox.style.height) * scaleY;
+
+                    const sx = (boxL - imageOffsetX) * imgScaleX;
+                    const sy = (boxT - imageOffsetY) * imgScaleY;
+                    const sw = boxW * imgScaleX;
+                    const sh = boxH * imgScaleY;
+
+                    const tmpCanvas = document.createElement('canvas');
+                    tmpCanvas.width = Math.max(1, Math.round(sw));
+                    tmpCanvas.height = Math.max(1, Math.round(sh));
+                    const ctx = tmpCanvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, tmpCanvas.width, tmpCanvas.height);
+                    ctx.imageSmoothingEnabled = true;
+                    ctx.imageSmoothingQuality = 'high';
+                    ctx.drawImage(originalImage, sx, sy, sw, sh, 0, 0, tmpCanvas.width, tmpCanvas.height);
+
+                    await new Promise(resolve => {
+                        const img = new Image();
+                        img.onload = () => { croppedImage = img; resolve(); };
+                        img.src = tmpCanvas.toDataURL('image/png');
+                    });
+                }
+                await processImage();
+            }
+
+            /* Final processing: resize → sharpen → compress */
+            async function processImage() {
+                const config = CONFIG[selectedType];
+                const canvas = stepDownResize(croppedImage, config.width, config.height);
+                const ctx = canvas.getContext('2d');
+
+                // Light sharpen for photo (1 pass), skip for signature to keep it clean
+                if (selectedType === 'photo') {
+                    applyEdgeSharpen(ctx, config.width, config.height, 0.38);
+                }
+
+                // Compress to 40–49 KB safe zone
+                const blob = await compressToTarget(canvas, 38, 49);
+
+                // Build result URL
+                const url = URL.createObjectURL(blob);
+
+                // Set image dimensions explicitly BEFORE setting src - prevents CLS
+                preview.width = config.width;
+                preview.height = config.height;
+                preview.style.aspectRatio = config.width + '/' + config.height;
+                preview.alt = 'MPSC ' + config.label;
+                preview.src = url;
+
+                downloadLink.href = url;
+                downloadLink.download = config.filename;
+
+                document.getElementById('resultMeta').textContent =
+                    Math.round(blob.size / 1024) + ' KB \u00b7 ' + config.width + '\u00d7' + config.height + ' px \u00b7 JPEG';
+
+                document.getElementById('resultTitle').textContent =
+                    'Your ' + config.label + ' is Ready!';
+
+                // Build compliance checklist
+                renderCompliance(config, blob.size, config.filename);
+
+                processing.classList.remove('active');
+                goToStep(4);
+
+                // GA
+                _gtag('event', 'mpsc_image_processed', {
+                    type: selectedType,
+                    file_size: Math.round(blob.size / 1024),
+                    dims: config.width + 'x' + config.height
+                });
+
+                // Show suggest card after 1.8s
+                setTimeout(() => {
+                    const opp = selectedType === 'photo' ? 'signature' : 'photo';
+                    document.getElementById('suggestTitle').textContent =
+                        selectedType === 'photo' ? 'Need a signature too?' : 'Need a photo too?';
+                    document.getElementById('suggestDesc').textContent =
+                        'Most MPSC applications require both passport photo and signature.';
+                    document.getElementById('suggestBtn').textContent =
+                        'Prepare ' + (opp.charAt(0).toUpperCase() + opp.slice(1)) + ' \u2192';
+                    suggestCard.classList.add('show');
+                }, 1800);
+            }
+
+            function renderCompliance(config, blobSize, filename) {
+                const sizeKB = Math.round(blobSize / 1024);
+                const sizeOk = sizeKB <= 50;
+                const nameLen = filename.replace(/\.[^.]+$/, '').length; // exclude extension
+                const nameOk = nameLen <= 10;
+
+                const items = [
+                    { label: 'Dimensions: ' + config.width + '\u00d7' + config.height + ' px', detail: 'MPSC required size', ok: true },
+                    { label: 'Format: JPEG', detail: 'Accepted by MPSC portal', ok: true },
+                    { label: 'File size: ' + sizeKB + ' KB', detail: sizeOk ? 'Within 50 KB limit' : 'Exceeds 50 KB limit', ok: sizeOk },
+                    { label: 'Filename: ' + filename, detail: nameOk ? nameLen + ' characters \u2014 valid' : 'Exceeds 10 character limit', ok: nameOk },
+                    { label: 'No watermark applied', detail: 'Advisory \u2014 ensure original has none', ok: true }
+                ];
+
+                const panel = document.getElementById('compliancePanel');
+                const list = document.getElementById('complianceList');
+                const allOk = items.every(i => i.ok);
+
+                panel.className = 'compliance-panel' + (allOk ? '' : ' compliance-warn');
+
+                list.innerHTML = items.map(it => `
+        <li>
+          <span class="ci-icon">
+            ${it.ok
+                        ? '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#059669" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="2.5 8 6 11.5 12.5 4"/></svg>'
+                        : '<svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="#d97706" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="3" x2="12" y2="12"/><line x1="12" y1="3" x2="3" y2="12"/></svg>'
+                    }
+          </span>
+          <span><strong>${it.label}</strong><span class="ci-label">${it.detail}</span></span>
+        </li>
+      `).join('');
+            }
+
+            /* Suggest other type */
+            document.getElementById('suggestBtn').addEventListener('click', () => {
+                selectedType = selectedType === 'photo' ? 'signature' : 'photo';
+                resetState();
+                goToStep(2);
+            });
+
+            /* Download GA */
+            document.getElementById('downloadBtn').addEventListener('click', () => {
+                _gtag('event', 'mpsc_image_downloaded', { type: selectedType });
+            });
+
+            /* ── Image processing utilities ─────────────────────── */
+            function stepDownResize(img, targetW, targetH) {
+                let canvas = document.createElement('canvas');
+                let ctx = canvas.getContext('2d');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+
+                // Step-down halving for high quality downscale
+                while (canvas.width * 0.5 > targetW) {
+                    const tmp = document.createElement('canvas');
+                    tmp.width = Math.max(targetW, Math.round(canvas.width * 0.5));
+                    tmp.height = Math.max(targetH, Math.round(canvas.height * 0.5));
+                    const tctx = tmp.getContext('2d');
+                    tctx.imageSmoothingEnabled = true;
+                    tctx.imageSmoothingQuality = 'high';
+                    tctx.drawImage(canvas, 0, 0, tmp.width, tmp.height);
+                    canvas = tmp; ctx = tctx;
+                }
+
+                const final = document.createElement('canvas');
+                final.width = targetW;
+                final.height = targetH;
+                const fctx = final.getContext('2d');
+                fctx.imageSmoothingEnabled = true;
+                fctx.imageSmoothingQuality = 'high';
+                fctx.fillStyle = '#ffffff';
+                fctx.fillRect(0, 0, targetW, targetH);
+                fctx.drawImage(canvas, 0, 0, targetW, targetH);
+                return final;
+            }
+
+            function applyEdgeSharpen(ctx, w, h, strength) {
+                const imgData = ctx.getImageData(0, 0, w, h);
+                const data = imgData.data;
+                const copy = new Uint8ClampedArray(data);
+                for (let y = 1; y < h - 1; y++) {
+                    for (let x = 1; x < w - 1; x++) {
+                        const i = (y * w + x) * 4;
+                        for (let c = 0; c < 3; c++) {
+                            const cur = copy[i + c];
+                            const avg = (copy[i + c - 4] + copy[i + c + 4] +
+                                copy[i + c - w * 4] + copy[i + c + w * 4]) / 4;
+                            data[i + c] = Math.max(0, Math.min(255, cur + (cur - avg) * strength));
+                        }
+                    }
+                }
+                ctx.putImageData(imgData, 0, 0);
+            }
+
+            function compressToTarget(canvas, minKB, maxKB) {
+                return new Promise(async resolve => {
+                    let qLow = 0.82, qHigh = 0.99, best = null;
+                    for (let i = 0; i < 14; i++) {
+                        const q = (qLow + qHigh) / 2;
+                        const blob = await canvasToBlob(canvas, 'image/jpeg', q);
+                        const kb = blob.size / 1024;
+                        if (kb >= minKB && kb <= maxKB) { best = blob; qLow = q; }
+                        else if (kb > maxKB) { qHigh = q; }
+                        else { qLow = q; }
+                    }
+                    resolve(best || await canvasToBlob(canvas, 'image/jpeg', (qLow + qHigh) / 2));
+                });
+            }
+
+            function canvasToBlob(canvas, type, quality) {
+                return new Promise(resolve => canvas.toBlob(resolve, type, quality));
+            }
+
+            /* ── Navigation ─────────────────────────────────────── */
+            function goToStep(step) {
+                currentStep = step;
+
+                stepType.classList.toggle('hidden', step !== 1);
+                stepUpload.classList.toggle('hidden', step !== 2);
+                stepCrop.classList.toggle('hidden', step !== 3);
+                stepResult.classList.toggle('hidden', step !== 4);
+
+                stepCrop.classList.toggle('active', step === 3);
+                stepResult.classList.toggle('active', step === 4);
+
+                backBtn.classList.toggle('hidden', step === 1);
+                infoSection.classList.toggle('hidden', step !== 1);
+
+                // Update dots (dots cover steps 1-3; step 4 = result has no dot)
+                for (let i = 1; i <= 3; i++) {
+                    const dot = document.getElementById('dot' + i);
+                    dot.classList.toggle('active', i === step);
+                    dot.classList.toggle('done', i < step);
+                }
+
+                if (step === 2) {
+                    const cfg = CONFIG[selectedType];
+                    document.getElementById('uploadTitle').textContent = 'Upload Your ' + cfg.label;
+                    document.getElementById('uploadSubtitle').textContent = cfg.desc;
+                }
+
+                if (step === 3) {
+                    const cfg = CONFIG[selectedType];
+                    document.getElementById('cropHint').textContent =
+                        'Adjust crop for ' + cfg.label + ' (' + cfg.width + '\u00d7' + cfg.height + ' px) \u2014 drag corners to resize';
+
+                    setTimeout(() => {
+                        const header = document.querySelector('header');
+                        const headerH = header ? header.offsetHeight : 60;
+                        const el = document.getElementById('stepCrop');
+                        const target = window.innerWidth < 768
+                            ? el.offsetTop - headerH - 44
+                            : el.offsetTop - headerH + 32;
+                        window.scrollTo({ top: target, behavior: 'smooth' });
+                    }, 220);
+                }
+
+                if (step === 4) {
+                    if (window.innerWidth < 768) {
+                        window.scrollTo({ top: 0, behavior: 'instant' });
+                        setTimeout(() => {
+                            const headerH = (document.querySelector('header') || { offsetHeight: 60 }).offsetHeight;
+                            window.scrollTo({ top: stepResult.offsetTop - headerH - 8, behavior: 'smooth' });
+                        }, 60);
+                    } else {
+                        setTimeout(() => {
+                            const headerH = (document.querySelector('header') || { offsetHeight: 60 }).offsetHeight;
+                            window.scrollTo({ top: stepResult.offsetTop - headerH - 20, behavior: 'smooth' });
+                        }, 80);
+                    }
+                }
+
+                if (step !== 3 && step !== 4) {
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            backBtn.addEventListener('click', () => {
+                if (currentStep > 1) {
+                    // Going back from crop: clean up processing state
+                    if (currentStep === 3) processing.classList.remove('active');
+                    goToStep(currentStep - 1);
+                }
+            });
+
+            /* ── Reset state ────────────────────────────────────── */
+            function resetState() {
+                originalImage = null;
+                croppedImage = null;
+                zoom = 1;
+                fileInput.value = '';
+                suggestCard.classList.remove('show');
+            }
+
+            /* ── Safe GA wrapper ────────────────────────────────── */
+            function _gtag(...args) {
+                try { if (typeof gtag === 'function') gtag(...args); } catch (e) { }
+            }
+
+        })();
+    </script>
+</body>
+
+</html>
