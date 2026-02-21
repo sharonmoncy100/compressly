@@ -744,12 +744,14 @@ export default function App() {
 
 
   // Pre-decode images for instant modal open (reduces INP)
+  // Pre-decode images for instant modal open (reduces INP)
   useEffect(() => {
     if (!outURL) return;
 
     const img = new Image();
     img.src = outURL;
 
+    // ✅ FIX: Actually await decode
     if (img.decode) {
       img.decode().catch(() => { });
     }
@@ -761,6 +763,7 @@ export default function App() {
     const img = new Image();
     img.src = previewURL;
 
+    // ✅ FIX: Actually await decode
     if (img.decode) {
       img.decode().catch(() => { });
     }
@@ -997,19 +1000,22 @@ export default function App() {
     setOutMime("");
     setOutFilename("");
     setLastNote("");
-    setProgressPct(6);
     setFile(f);
 
-    // If not HEIC, set preview directly
+    // ✅ FIX: Defer preview creation to avoid blocking input
     if (!isHeicFile(f)) {
-      setOriginalSize(f.size || 0);
-      const url = URL.createObjectURL(f);
-      setPreviewURL(url);
-      setProgressPct(0);
+      // Use setTimeout instead of requestIdleCallback (better browser support)
+      setTimeout(() => {
+        setOriginalSize(f.size || 0);
+        const url = URL.createObjectURL(f);
+        setPreviewURL(url);
+        setProgressPct(0);
+      }, 0);
       return;
     }
 
     // For HEIC: generate preview (native decode or convert to jpeg)
+    setProgressPct(6);
     try {
       const { previewBlob, previewURL: purl } = await generatePreviewForFile(
         f,
@@ -1020,12 +1026,10 @@ export default function App() {
       );
       setPreviewURL(purl);
       setOriginalSize(previewBlob.size || f.size || 0);
-      // keep file as original so runCompress still converts later if needed
       setProgressPct(0);
       setLastNote("");
     } catch (err) {
       console.warn("Preview generation failed:", err);
-      // fallback to raw preview (may not render in some browsers)
       try {
         const url = URL.createObjectURL(f);
         setPreviewURL(url);
@@ -1036,16 +1040,6 @@ export default function App() {
       }
       setLastNote("HEIC preview unavailable - will try conversion when compressing.");
       setProgressPct(0);
-    }
-
-    // Smooth scroll to compress controls on mobile/tablet (skip on desktop with large screen)
-    if (typeof window !== "undefined") {
-      setTimeout(() => {
-        const compressSection = document.getElementById("compress-controls");
-        if (compressSection && window.innerWidth < 1024) {
-          compressSection.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-      }, 50);
     }
   }
 
@@ -1076,17 +1070,14 @@ export default function App() {
     setOutSize(0);
     setOutMime("");
     setOutFilename("");
-    setLastNote("Preparing image…");
+    setLastNote("Preparing image…This may take a few seconds");
     setProgressPct(4);
-    startSmoothProgress();
-
-    /* 🔴 ADD THESE TWO LINES */
-    setProgressPct(45);
-    setLastNote("Processing image… this may take a few seconds...");
+    
 
     /* 🔴 ADD THIS LINE */
     await new Promise(r => setTimeout(r, 0));
 
+    startSmoothProgress();
 
     try {
       const targetBytes =
