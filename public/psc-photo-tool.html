@@ -1719,9 +1719,13 @@
             document.body.style.cursor = 'default';
         };
 
-        document.getElementById('skipCrop').onclick = () => {
+          document.getElementById('skipCrop').onclick = () => {
             croppedImage = originalImage;
-            goToStep(4);
+            if (selectedType === 'signature') {
+                processImage(false);
+            } else {
+                goToStep(4);
+            }
         };
 
         function extractCrop() {
@@ -1751,10 +1755,14 @@
             ctx.imageSmoothingQuality = 'high';
             ctx.drawImage(originalImage, sx, sy, sw, sh, 0, 0, sw, sh);
 
-            const img = new Image();
+           const img = new Image();
             img.onload = () => {
                 croppedImage = img;
-                goToStep(4);
+                if (selectedType === 'signature') {
+                    processImage(false);
+                } else {
+                    goToStep(4);
+                }
             };
             img.src = canvas.toDataURL('image/png');
         }
@@ -2053,8 +2061,15 @@
 
 
         backBtn.onclick = () => {
-            if (currentStep > 1) goToStep(currentStep - 1);
-        };
+                if (currentStep > 1) {
+                    // Signature skipped stamp step, so back from result goes to crop not stamp
+                    if (currentStep === 5 && selectedType === 'signature') {
+                        goToStep(3);
+                    } else {
+                        goToStep(currentStep - 1);
+                    }
+                }
+            };
 
         function resetState() {
             originalImage = null;
