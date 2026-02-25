@@ -713,6 +713,308 @@ async function compressFileOptimized(fileBlob, opts = {}) {
   return finalBlob;
 }
 
+const StaticSections = React.memo(() => (
+  <>
+    {/* ===============================
+    How to Get the Best Compression Results
+   =============================== */}
+    <section id="compression-tips" className="mt-6">
+      <h2
+        id="compression-tips-heading"
+        className="section-h2"
+        style={{ paddingLeft: 20 }}
+      >
+        How to get the best compression results
+      </h2>
+
+      <div className="container-card mt-2">
+        {/* ⬅ MATCH ABOUT SECTION PADDING */}
+        <div className="small-muted text-sm leading-relaxed px-[20px] py-[6px]">
+          <p>
+            Compressing images is not only about reducing file size. It's about choosing
+            the right format, keeping visual quality intact, and making sure the image
+            fits its purpose - whether that's a website, an online form, or sharing.
+          </p>
+
+          <div className="mt-3 space-y-2">
+            <div>
+              <strong className="text-slate-900">
+                Choose the right format:
+              </strong>{" "}
+              JPEG works best for photographs, WebP usually produces smaller files for
+              websites, and PNG is ideal for logos or images with text. HEIC files take a little more time to convert but can be compressed well.
+            </div>
+
+            <div>
+              <strong className="text-slate-900">
+                Use Target (KB) when size matters:
+              </strong>{" "}
+              If an upload requires a strict file size, enter a target size instead of
+              adjusting quality manually. Compressly automatically balances quality
+              and file size for you.
+            </div>
+
+            <div>
+              <strong className="text-slate-900">
+                Compare before downloading:
+              </strong>{" "}
+              Use the before and after comparison to make sure important details,
+              edges, and text remain clear after compression.
+            </div>
+
+            <div>
+              <strong className="text-slate-900">
+                Rename files when needed:
+              </strong>{" "}
+              Rename the compressed image before downloading to keep your files
+              organized for forms, projects, or sharing.
+            </div>
+
+            <div>
+              <strong className="text-slate-900">
+                Your images stay private:
+              </strong>{" "}
+              All compression happens locally in your browser. Images are never uploaded
+              or stored on any server.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ===============================
+   Why Image Compression Matters
+   =============================== */}
+    <section id="why-compression-matters" className="mt-6">
+      <h2 className="section-h2" style={{ paddingLeft: 20 }}>
+        Why image compression matters for websites and forms
+      </h2>
+
+      <div className="container-card mt-2">
+        {/* INNER WRAPPER - matches About section indent */}
+        <div className="small-muted text-sm leading-relaxed" style={{ padding: "12px 20px" }}>
+          <p>
+            Image compression plays an important role in how quickly images load
+            and whether they are accepted by websites, online forms, and upload
+            systems. Many government portals, job applications, and college forms
+            enforce strict file size limits, which can cause uncompressed images
+            to be rejected even if the image quality is good.
+          </p>
+
+          <p className="mt-2">
+            For websites and blogs, large image files can slow down page loading,
+            especially on mobile devices or slower internet connections. Smaller,
+            optimized images help pages load faster, improve user experience, and
+            reduce unnecessary data usage for visitors.
+          </p>
+
+          <p className="mt-2">
+            Compression is not about making images blurry or unusable. When done
+            correctly, it reduces file size while preserving visual clarity, text
+            readability, and important details. Choosing the right format and
+            compression method ensures images remain suitable for their intended
+            purpose.
+          </p>
+
+          <p className="mt-2">
+            With Compressly, you can quickly prepare images for uploads, sharing,
+            or publishing without installing software or creating an account -
+            making image compression simple, private, and accessible to everyone.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ===============================
+   When and why you should compress images
+   =============================== */}
+    <section id="when-to-compress-images" className="mt-6">
+      <h2 className="section-h2" style={{ paddingLeft: 20 }}>
+        When and why you should compress images
+      </h2>
+
+      <div className="container-card mt-2">
+        {/* INNER WRAPPER - same indent as About */}
+        <div className="small-muted text-sm leading-relaxed" style={{ padding: "12px 20px" }}>
+          <p>
+            Image compression becomes important whenever images need to be uploaded,
+            shared, or displayed efficiently. This is especially common when submitting
+            documents to government portals, job applications, college admissions,
+            or online forms that enforce strict file size limits.
+          </p>
+
+          <p className="mt-2">
+            Compression is also useful for everyday sharing. Sending images through
+            email, messaging apps, or cloud uploads can be slower and less reliable
+            when files are large. Smaller image sizes upload faster, use less data,
+            and are easier for recipients to download and view.
+          </p>
+
+          <p className="mt-2">
+            For websites and online projects, compressing images helps maintain a
+            smooth browsing experience. Optimized images reduce page load time,
+            lower bandwidth usage, and make sites more accessible for users on
+            mobile devices or slower internet connections.
+          </p>
+
+          <p className="mt-2">
+            Compressly is designed to handle these situations without complexity.
+            You can upload an image, choose the right format or target size, preview
+            the result, and download the optimized file - all without installing
+            software or worrying about privacy.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    {/* informational cards */}
+    {/* FAQ section */}
+    <section className="md:col-span-12 mt-4" aria-labelledby="faq-heading">
+      <h2 id="faq-heading" className="section-h2">
+        Frequently Asked Questions
+      </h2>
+
+      <div className="faq-card container-card mb-10">
+
+        <div className="faq-item faq-item--blue">
+          <div className="faq-stripe" />
+          <div className="faq-content">
+            <h3 className="faq-q">
+              Is it really free to compress images with Compressly?
+            </h3>
+            <p className="faq-a">
+              Yes, Compressly is completely free to use with no accounts,
+              watermarks or hidden limits. You can compress as many JPG, PNG
+              and WebP images as you need for web, forms and email.
+            </p>
+          </div>
+        </div>
+
+        <div className="faq-item faq-item--green">
+          <div className="faq-stripe" />
+          <div className="faq-content">
+            <h3 className="faq-q">
+              How secure is it to compress images online?
+            </h3>
+            <p className="faq-a">
+              All compression happens locally in your browser, so your images
+              are never uploaded to a server. This keeps personal photos and
+              documents private on your own device.
+            </p>
+          </div>
+        </div>
+
+        <div className="faq-item faq-item--purple">
+          <div className="faq-stripe" />
+          <div className="faq-content">
+            <h3 className="faq-q">
+              What is the maximum file size I can compress?
+            </h3>
+            <p className="faq-a">
+              Compressly is tuned for everyday photos, screenshots and form
+              uploads. Very large files may take longer, but most images from
+              phones and cameras work great.
+            </p>
+          </div>
+        </div>
+
+        <div className="faq-item faq-item--orange">
+          <div className="faq-stripe" />
+          <div className="faq-content">
+            <h3 className="faq-q">
+              Can I compress images for government or job portals?
+            </h3>
+            <p className="faq-a">
+              Yes, you can quickly reduce file size inorder to meet KB limits that is used by
+              government sites, job portals and college forms while keeping the
+              image readable.
+            </p>
+          </div>
+        </div>
+
+        <div className="faq-item faq-item--neutral">
+          <div className="faq-stripe" />
+          <div className="faq-content">
+            <h3 className="faq-q">
+              Are JPEG and JPG the same format?
+            </h3>
+            <p className="faq-a">
+              Yes. JPEG and JPG are the same image format with identical quality and
+              compression. The only difference is the file extension. Both JPEG and JPG
+              files are accepted by websites, government portals and exam forms.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+    {/* About section */}
+    <section
+      id="about"
+      className="md:col-span-12 mt-6"
+      aria-labelledby="about-heading"
+    >
+
+      {/* Section heading (OUTSIDE card, like FAQ) */}
+      <h2 id="about-heading" className="section-h2">
+        About Compressly
+      </h2>
+
+      {/* Content card */}
+      <div className="container-card p-4 soft-shadow mt-2">
+        <div className="small-muted text-sm leading-relaxed">
+          <strong>Compressly</strong> is a free, privacy-first image
+          compressor that runs entirely in your browser - no uploads, no
+          accounts, and no tracking. Compressly reduces JPG, PNG and WebP
+          images to much smaller sizes while keeping visual quality,
+          helping you meet file-size limits for web forms, email
+          attachments, government portals, and job application uploads.
+          <br />
+          <br />
+          Key features:
+          <ul>
+            <li>
+              Fast client-side compression - everything happens locally in
+              your browser.
+            </li>
+            <li>
+              Target-size compression (for example: compress image to 100
+              KB) with smart quality search and adaptive downscaling.
+            </li>
+            <li>
+              Support for JPEG, PNG and WebP formats, plus easy download
+              options.
+            </li>
+            <li>
+              Mobile-friendly and tuned for low-end phones - perfect for
+              users with limited bandwidth.
+            </li>
+          </ul>
+          <br />
+          How to use: choose an image, pick a format or enter a target size
+          (KB), press <strong>Compress</strong>, then{" "}
+          <strong>Download</strong>. Use WebP + Target for the smallest
+          files.
+          <br />
+          <br />
+          Compressly is ideal for anyone who needs to quickly reduce image
+          file sizes: students submitting forms, job applicants, bloggers,
+          small business owners, and web developers aiming to speed up page
+          load times.
+          <br />
+          <br />
+          Learn more: try the quick links below to compress a JPEG or
+          compress an image to 100 KB.
+        </div>
+      </div>
+    </section>
+
+  </>
+));
+
 /* ----------------- App component (mostly unchanged) ----------------- */
 
 export default function App() {
@@ -722,6 +1024,7 @@ export default function App() {
   const [previewURL, setPreviewURL] = useState("");
   const [originalSize, setOriginalSize] = useState(0);
   const [modalImage, setModalImage] = useState(null);
+  const [isPendingModal, startModalTransition] = React.useTransition();
 
   const [outURL, setOutURL] = useState("");
   const [outSize, setOutSize] = useState(0);
@@ -745,27 +1048,31 @@ export default function App() {
 
   // Pre-decode images for instant modal open (reduces INP)
   // Pre-decode images for instant modal open (reduces INP)
+  const decodedURLs = useRef(new Set());
+
   useEffect(() => {
     if (!outURL) return;
-
     const img = new Image();
     img.src = outURL;
-
-    // ✅ FIX: Actually await decode
     if (img.decode) {
-      img.decode().catch(() => { });
+      img.decode()
+        .then(() => decodedURLs.current.add(outURL))
+        .catch(() => decodedURLs.current.add(outURL)); // mark even on failure
+    } else {
+      decodedURLs.current.add(outURL);
     }
   }, [outURL]);
 
   useEffect(() => {
     if (!previewURL) return;
-
     const img = new Image();
     img.src = previewURL;
-
-    // ✅ FIX: Actually await decode
     if (img.decode) {
-      img.decode().catch(() => { });
+      img.decode()
+        .then(() => decodedURLs.current.add(previewURL))
+        .catch(() => decodedURLs.current.add(previewURL));
+    } else {
+      decodedURLs.current.add(previewURL);
     }
   }, [previewURL]);
 
@@ -789,7 +1096,7 @@ export default function App() {
     function handleEsc(e) {
       if (e.key === "Escape") {
         document.activeElement?.blur(); // ✅ IMPORTANT
-        setModalImage(null);
+        startModalTransition(() => setModalImage(null));
       }
     }
 
@@ -828,9 +1135,7 @@ export default function App() {
   }, [modalImage]);
 
 
-  useEffect(() => {
-    console.log("MODAL STATE CHANGED:", modalImage);
-  }, [modalImage]);
+
 
   useEffect(() => {
     if (file && !previewURL) {
@@ -1050,9 +1355,9 @@ export default function App() {
       let fake = 10;
       setProgressPct(fake);
       smoothTimer = setInterval(() => {
-        fake += Math.random() * 2.5 + 0.5;
+        fake += Math.random() * 4 + 1;
         setProgressPct((p) => Math.min(85, Math.max(p, fake)));
-      }, 160);
+      }, 400);
     };
 
     const stopSmoothProgress = () => {
@@ -1277,7 +1582,7 @@ export default function App() {
       });
     }
   }
-
+ 
 
   return (
     <div
@@ -1342,7 +1647,7 @@ export default function App() {
             lastNote={lastNote}
             format={format}
             setFormat={setFormat}
-              openPreview={(url) => setModalImage(url)}
+              openPreview={(url) => startModalTransition(() => setModalImage(url))}
               hasAnimatedScrollCue={hasAnimatedScrollCue}
               shouldAnimateScrollCue={shouldAnimateScrollCue}
               setShouldAnimateScrollCue={setShouldAnimateScrollCue}
@@ -1389,13 +1694,13 @@ export default function App() {
                       <div className="result-header flex items-start gap-4">
                         <div
                           className="image-preview-frame result-preview-frame cursor-pointer"
-                          onClick={() => setModalImage(outURL)}
+                          onClick={() => startModalTransition(() => setModalImage(outURL))}
                           role="button"
                           tabIndex={0}
                           onKeyDown={(e) => {
                             if (e.key === "Enter" || e.key === " ") {
                               e.preventDefault();
-                              setModalImage(outURL);
+                              startModalTransition(() => setModalImage(outURL));
                             }
                           }}
                         >
@@ -1516,14 +1821,14 @@ export default function App() {
                         <div className="comparison-grid">
                           <div
                             className="comparison-item"
-                            onClick={() => setModalImage(previewURL)}
+                            onClick={() => startModalTransition(() => setModalImage(previewURL))}
                             role="button"
                             tabIndex={0}
                           >
                           
                             <div className="comparison-frame">
                               <span className="comparison-badge">Before</span>
-                              <img src={previewURL} alt="Original image" loading="lazy"/>
+                              <img src={previewURL} alt="Original image" loading="eager"/>
                             </div>
 
                             <div className="comparison-size">
@@ -1533,7 +1838,7 @@ export default function App() {
 
                           <div
                             className="comparison-item"
-                            onClick={() => setModalImage(outURL)}
+                            onClick={() => startModalTransition(() => setModalImage(outURL))}
                             role="button"
                             tabIndex={0}
                           >
@@ -1542,7 +1847,7 @@ export default function App() {
                               <span className="comparison-badge comparison-badge--after">
                                 After
                               </span>
-                              <img src={outURL} alt="Compressed image" loading="lazy" />
+                              <img src={outURL} alt="Compressed image" loading="eager" />
                             </div>
 
                             <div className="comparison-size">
@@ -1589,303 +1894,7 @@ export default function App() {
 
           </aside>
       
-            {/* ===============================
-    How to Get the Best Compression Results
-   =============================== */}
-            <section id="compression-tips" className="mt-6">
-              <h2
-                id="compression-tips-heading"
-                className="section-h2"
-                style={{ paddingLeft: 20 }}
-              >
-                How to get the best compression results
-              </h2>
-
-              <div className="container-card mt-2">
-                {/* ⬅ MATCH ABOUT SECTION PADDING */}
-                <div className="small-muted text-sm leading-relaxed px-[20px] py-[6px]">
-                  <p>
-                    Compressing images is not only about reducing file size. It's about choosing
-                    the right format, keeping visual quality intact, and making sure the image
-                    fits its purpose - whether that's a website, an online form, or sharing. 
-                  </p>
-
-                  <div className="mt-3 space-y-2">
-                    <div>
-                      <strong className="text-slate-900">
-                        Choose the right format:
-                      </strong>{" "}
-                      JPEG works best for photographs, WebP usually produces smaller files for
-                      websites, and PNG is ideal for logos or images with text. HEIC files take a little more time to convert but can be compressed well.
-                    </div>
-
-                    <div>
-                      <strong className="text-slate-900">
-                        Use Target (KB) when size matters:
-                      </strong>{" "}
-                      If an upload requires a strict file size, enter a target size instead of
-                      adjusting quality manually. Compressly automatically balances quality
-                      and file size for you.
-                    </div>
-
-                    <div>
-                      <strong className="text-slate-900">
-                        Compare before downloading:
-                      </strong>{" "}
-                      Use the before and after comparison to make sure important details,
-                      edges, and text remain clear after compression.
-                    </div>
-
-                    <div>
-                      <strong className="text-slate-900">
-                        Rename files when needed:
-                      </strong>{" "}
-                      Rename the compressed image before downloading to keep your files
-                      organized for forms, projects, or sharing.
-                    </div>
-
-                    <div>
-                      <strong className="text-slate-900">
-                        Your images stay private:
-                      </strong>{" "}
-                      All compression happens locally in your browser. Images are never uploaded
-                      or stored on any server.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-            {/* ===============================
-   Why Image Compression Matters
-   =============================== */}
-            <section id="why-compression-matters" className="mt-6">
-              <h2 className="section-h2" style={{ paddingLeft: 20 }}>
-                Why image compression matters for websites and forms
-              </h2>
-
-              <div className="container-card mt-2">
-                {/* INNER WRAPPER - matches About section indent */}
-                <div className="small-muted text-sm leading-relaxed" style={{ padding: "12px 20px" }}>
-                  <p>
-                    Image compression plays an important role in how quickly images load
-                    and whether they are accepted by websites, online forms, and upload
-                    systems. Many government portals, job applications, and college forms
-                    enforce strict file size limits, which can cause uncompressed images
-                    to be rejected even if the image quality is good.
-                  </p>
-
-                  <p className="mt-2">
-                    For websites and blogs, large image files can slow down page loading,
-                    especially on mobile devices or slower internet connections. Smaller,
-                    optimized images help pages load faster, improve user experience, and
-                    reduce unnecessary data usage for visitors.
-                  </p>
-
-                  <p className="mt-2">
-                    Compression is not about making images blurry or unusable. When done
-                    correctly, it reduces file size while preserving visual clarity, text
-                    readability, and important details. Choosing the right format and
-                    compression method ensures images remain suitable for their intended
-                    purpose.
-                  </p>
-
-                  <p className="mt-2">
-                    With Compressly, you can quickly prepare images for uploads, sharing,
-                    or publishing without installing software or creating an account -
-                    making image compression simple, private, and accessible to everyone.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-            {/* ===============================
-   When and why you should compress images
-   =============================== */}
-            <section id="when-to-compress-images" className="mt-6">
-              <h2 className="section-h2" style={{ paddingLeft: 20 }}>
-                When and why you should compress images
-              </h2>
-
-              <div className="container-card mt-2">
-                {/* INNER WRAPPER - same indent as About */}
-                <div className="small-muted text-sm leading-relaxed" style={{ padding: "12px 20px" }}>
-                  <p>
-                    Image compression becomes important whenever images need to be uploaded,
-                    shared, or displayed efficiently. This is especially common when submitting
-                    documents to government portals, job applications, college admissions,
-                    or online forms that enforce strict file size limits.
-                  </p>
-
-                  <p className="mt-2">
-                    Compression is also useful for everyday sharing. Sending images through
-                    email, messaging apps, or cloud uploads can be slower and less reliable
-                    when files are large. Smaller image sizes upload faster, use less data,
-                    and are easier for recipients to download and view.
-                  </p>
-
-                  <p className="mt-2">
-                    For websites and online projects, compressing images helps maintain a
-                    smooth browsing experience. Optimized images reduce page load time,
-                    lower bandwidth usage, and make sites more accessible for users on
-                    mobile devices or slower internet connections.
-                  </p>
-
-                  <p className="mt-2">
-                    Compressly is designed to handle these situations without complexity.
-                    You can upload an image, choose the right format or target size, preview
-                    the result, and download the optimized file - all without installing
-                    software or worrying about privacy.
-                  </p>
-                </div>
-              </div>
-            </section>
-
-
-          {/* informational cards */}
-          {/* FAQ section */}
-          <section className="md:col-span-12 mt-4" aria-labelledby="faq-heading">
-              <h2 id="faq-heading" className="section-h2">
-                Frequently Asked Questions
-              </h2>
-
-              <div className="faq-card container-card mb-10">
-
-              <div className="faq-item faq-item--blue">
-                <div className="faq-stripe" />
-                <div className="faq-content">
-                  <h3 className="faq-q">
-                    Is it really free to compress images with Compressly?
-                  </h3>
-                  <p className="faq-a">
-                    Yes, Compressly is completely free to use with no accounts,
-                    watermarks or hidden limits. You can compress as many JPG, PNG
-                    and WebP images as you need for web, forms and email.
-                  </p>
-                </div>
-              </div>
-
-              <div className="faq-item faq-item--green">
-                <div className="faq-stripe" />
-                <div className="faq-content">
-                  <h3 className="faq-q">
-                    How secure is it to compress images online?
-                  </h3>
-                  <p className="faq-a">
-                    All compression happens locally in your browser, so your images
-                    are never uploaded to a server. This keeps personal photos and
-                    documents private on your own device.
-                  </p>
-                </div>
-              </div>
-
-              <div className="faq-item faq-item--purple">
-                <div className="faq-stripe" />
-                <div className="faq-content">
-                  <h3 className="faq-q">
-                    What is the maximum file size I can compress?
-                  </h3>
-                  <p className="faq-a">
-                    Compressly is tuned for everyday photos, screenshots and form
-                    uploads. Very large files may take longer, but most images from
-                    phones and cameras work great.
-                  </p>
-                </div>
-              </div>
-
-              <div className="faq-item faq-item--orange">
-                <div className="faq-stripe" />
-                <div className="faq-content">
-                  <h3 className="faq-q">
-                    Can I compress images for government or job portals?
-                  </h3>
-                  <p className="faq-a">
-                    Yes, you can quickly reduce file size inorder to meet KB limits that is used by
-                    government sites, job portals and college forms while keeping the
-                    image readable.
-                  </p>
-                </div>
-              </div>
-
-              <div className="faq-item faq-item--neutral">
-                <div className="faq-stripe" />
-                <div className="faq-content">
-                  <h3 className="faq-q">
-                    Are JPEG and JPG the same format?
-                  </h3>
-                  <p className="faq-a">
-                    Yes. JPEG and JPG are the same image format with identical quality and
-                    compression. The only difference is the file extension. Both JPEG and JPG
-                    files are accepted by websites, government portals and exam forms.
-                  </p>
-                </div>
-              </div>
-
-            </div>
-          </section>
-          
-
-            {/* About section */}
-            <section
-              id="about"
-              className="md:col-span-12 mt-6"
-              aria-labelledby="about-heading"
-            >
-
-              {/* Section heading (OUTSIDE card, like FAQ) */}
-              <h2 id="about-heading" className="section-h2">
-                About Compressly
-              </h2>
-
-              {/* Content card */}
-              <div className="container-card p-4 soft-shadow mt-2">
-                <div className="small-muted text-sm leading-relaxed">
-                  <strong>Compressly</strong> is a free, privacy-first image
-                  compressor that runs entirely in your browser - no uploads, no
-                  accounts, and no tracking. Compressly reduces JPG, PNG and WebP
-                  images to much smaller sizes while keeping visual quality,
-                  helping you meet file-size limits for web forms, email
-                  attachments, government portals, and job application uploads.
-                  <br />
-                  <br />
-                  Key features:
-                  <ul>
-                    <li>
-                      Fast client-side compression - everything happens locally in
-                      your browser.
-                    </li>
-                    <li>
-                      Target-size compression (for example: compress image to 100
-                      KB) with smart quality search and adaptive downscaling.
-                    </li>
-                    <li>
-                      Support for JPEG, PNG and WebP formats, plus easy download
-                      options.
-                    </li>
-                    <li>
-                      Mobile-friendly and tuned for low-end phones - perfect for
-                      users with limited bandwidth.
-                    </li>
-                  </ul>
-                  <br />
-                  How to use: choose an image, pick a format or enter a target size
-                  (KB), press <strong>Compress</strong>, then{" "}
-                  <strong>Download</strong>. Use WebP + Target for the smallest
-                  files.
-                  <br />
-                  <br />
-                  Compressly is ideal for anyone who needs to quickly reduce image
-                  file sizes: students submitting forms, job applicants, bloggers,
-                  small business owners, and web developers aiming to speed up page
-                  load times.
-                  <br />
-                  <br />
-                  Learn more: try the quick links below to compress a JPEG or
-                  compress an image to 100 KB.
-                </div>
-              </div>
-            </section>
-
+            <StaticSections />
         </main>
         
         </div> {/* end app-wrap */}
@@ -1988,6 +1997,7 @@ export default function App() {
                 src={modalImage}
                 alt="Preview"
                 loading="eager"
+                decoding="async"
                 style={{
                   maxWidth: "100%",
                   maxHeight: "90vh",
