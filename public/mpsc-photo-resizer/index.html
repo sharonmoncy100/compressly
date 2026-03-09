@@ -1257,9 +1257,8 @@
 
             <!-- ── Step 1: Select Type ──────────────────────────── -->
             <div class="card" id="stepType">
-                <span class="marathi-label">महाराष्ट्र लोकसेवा आयोग (MPSC)</span>
                 <h1>MPSC Photo &amp; Signature Size Resizer</h1>
-                <p class="subtitle">Official 50&nbsp;KB JPEG format - fully compliant with MPSC portal
+                <p class="subtitle">Official 20 - 50&nbsp;KB JPEG format - fully compliant with MPSC portal
                     requirements. No upload to server. Free.</p>
 
                 <div class="type-grid">
@@ -1271,8 +1270,8 @@
                                     d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
                             </svg>
                         </div>
-                        <div class="type-title">Passport Photo</div>
-                        <div class="type-desc">275 &times; 354 px &middot; max 50 KB</div>
+                        <div class="type-title">Photo</div>
+                        <div class="type-desc">3.5 &times; 4.5 cm</div>
                     </div>
                     <div class="type-card" data-type="signature" id="typeSignature" role="button" tabindex="0"
                         aria-label="Signature 275x118px">
@@ -1283,7 +1282,7 @@
                             </svg>
                         </div>
                         <div class="type-title">Signature</div>
-                        <div class="type-desc">275 &times; 118 px &middot; max 50 KB</div>
+                        <div class="type-desc">3.5 &times; 1.5 cm</div>
                     </div>
                 </div>
 
@@ -1298,16 +1297,16 @@
                         <div class="req-grid">
                             <div class="req-card">
                                 <div class="req-card-title">Passport Photo</div>
-                                <div class="req-row"><span>Width</span><span>275 px</span></div>
-                                <div class="req-row"><span>Height</span><span>354 px</span></div>
+                                <div class="req-row"><span>Width</span><span>3.5 cm</span></div>
+                                <div class="req-row"><span>Height</span><span>4.5 cm</span></div>
                                 <div class="req-row"><span>Max size</span><span>50 KB</span></div>
                                 <div class="req-row"><span>Format</span><span>JPEG</span></div>
                                 <div class="req-row"><span>Filename</span><span>Max 10 chars</span></div>
                             </div>
                             <div class="req-card">
                                 <div class="req-card-title">Signature</div>
-                                <div class="req-row"><span>Width</span><span>275 px</span></div>
-                                <div class="req-row"><span>Height</span><span>118 px</span></div>
+                                <div class="req-row"><span>Width</span><span>3.5 cm</span></div>
+                                <div class="req-row"><span>Height</span><span>1.5 cm</span></div>
                                 <div class="req-row"><span>Max size</span><span>50 KB</span></div>
                                 <div class="req-row"><span>Format</span><span>JPEG</span></div>
                                 <div class="req-row"><span>Filename</span><span>Max 10 chars</span></div>
@@ -1328,7 +1327,7 @@
                                     <polyline points="4 6 8 10 12 6" />
                                 </svg>
                             </div>
-                            <div class="faq-a">MPSC requires passport photos to be exactly 275&times;354 pixels, in JPEG
+                            <div class="faq-a">MPSC requires passport photos to be exactly 275&times;354 pixels(3.5 cm &times; 4.5 cm), in JPEG
                                 format, and under 50&nbsp;KB in file size. Photos outside these dimensions are rejected
                                 by the portal.</div>
                         </div>
@@ -1572,13 +1571,13 @@
                     width: 275, height: 354,
                     label: 'Photo',
                     filename: 'mpscphoto.jpg',
-                    desc: 'Will be resized to 275\u00d7354 px and compressed under 50 KB'
+                    desc: 'Will be resized to 3.5 × 4.5 cm and compressed under 50 KB'
                 },
                 signature: {
                     width: 275, height: 118,
                     label: 'Signature',
                     filename: 'mpscsign.jpg',
-                    desc: 'Will be resized to 275\u00d7118 px and compressed under 50 KB'
+                    desc: 'Will be resized to 3.5 × 1.5 cm and compressed under 50 KB'
                 }
             };
 
@@ -2035,8 +2034,13 @@
                 downloadLink.href = url;
                 downloadLink.download = config.filename;
 
+              const cmText = selectedType === 'photo'
+                    ? '3.5 × 4.5 cm'
+                    : '3.5 × 1.5 cm';
+
                 document.getElementById('resultMeta').textContent =
-                    Math.round(blob.size / 1024) + ' KB \u00b7 ' + config.width + '\u00d7' + config.height + ' px \u00b7 JPEG';
+                    Math.round(blob.size / 1024) + ' KB · ' +
+                    config.width + '×' + config.height + ' px (' + cmText + ') · JPEG';
 
                 document.getElementById('resultTitle').textContent =
                     'Your ' + config.label + ' is Ready!';
@@ -2072,9 +2076,12 @@
                 const sizeOk = sizeKB <= 50;
                 const nameLen = filename.replace(/\.[^.]+$/, '').length; // exclude extension
                 const nameOk = nameLen <= 10;
+                const cmText = selectedType === 'photo'
+                    ? '3.5 × 4.5 cm'
+                    : '3.5 × 1.5 cm';
 
                 const items = [
-                    { label: 'Dimensions: ' + config.width + '\u00d7' + config.height + ' px', detail: 'MPSC required size', ok: true },
+                    { label: 'Dimensions: ' + config.width + '\u00d7' + config.height + ' px (' + cmText + ')', detail: 'MPSC required size', ok: true },
                     { label: 'Format: JPEG', detail: 'Accepted by MPSC portal', ok: true },
                     { label: 'File size: ' + sizeKB + ' KB', detail: sizeOk ? 'Within 50 KB limit' : 'Exceeds 50 KB limit', ok: sizeOk },
                     { label: 'Filename: ' + filename, detail: nameOk ? nameLen + ' characters \u2014 valid' : 'Exceeds 10 character limit', ok: nameOk },
@@ -2211,8 +2218,12 @@
 
                 if (step === 3) {
                     const cfg = CONFIG[selectedType];
+                   const cmText = selectedType === 'photo'
+                        ? '3.5 × 4.5 cm'
+                        : '3.5 × 1.5 cm';
+
                     document.getElementById('cropHint').textContent =
-                        'Adjust crop for ' + cfg.label + ' (' + cfg.width + '\u00d7' + cfg.height + ' px) \u2014 drag corners to resize';
+                        'Adjust crop for ' + cfg.label + ' (' + cfg.width + ' × ' + cfg.height + ' px • ' + cmText + ') — drag corners to resize';
 
                     setTimeout(() => {
                         const header = document.querySelector('header');
