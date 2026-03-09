@@ -277,6 +277,7 @@
             color: var(--accent);
         }
 
+
         /* Card */
         .card {
             background: var(--card);
@@ -904,6 +905,15 @@
             margin-bottom: 14px;
         }
 
+        @media (min-width: 769px) {
+            #downloadLink {
+                flex: 0 0 auto;
+            }
+            #downloadLink button {
+                width: auto;
+                padding: 13px 32px;
+            }
+        }  
 
         .success-icon {
             width: 48px;
@@ -1110,6 +1120,7 @@
                 Back
             </button>
 
+
             <!-- Step 1: Choose Type -->
             <div class="card" id="stepType">
                 <h1>Kerala PSC Photo & Signature Resize Tool (150×200 px, Under 30KB)</h1>
@@ -1207,11 +1218,11 @@
                 <div class="stamp-section">
                     <div class="input-group">
                         <label>Full Name</label>
-                        <input type="text" id="stampName" placeholder="Enter your full name">
+                        <input type="text" id="stampName" placeholder="Enter your full name" autocomplete="name" enterkeyhint="next">
                     </div>
                     <div class="input-group">
                         <label>Date</label>
-                        <input type="date" id="stampDate">
+                        <input type="date" id="stampDate" enterkeyhint="done">
                         <div class="input-hint">Will appear as DD-MM-YYYY format</div>
                     </div>
                 </div>
@@ -1245,50 +1256,50 @@
                 <img id="preview" class="result-preview">
                 <div class="result-meta" id="resultMeta"></div>
 
-                <a id="downloadLink" style="text-decoration: none;">
-                    <button class="btn btn-primary">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                            <path
-                                d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
-                        </svg>
-                        Download
-                    </button>
-                </a>
+                    <div style="display:flex;justify-content:center;align-items:center;gap:10px;">
+                        <a id="downloadLink" style="text-decoration:none;">
+                            <button class="btn btn-primary" style="padding:13px 48px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                                </svg>
+                                Download
+                            </button>
+                        </a>
+                        <button id="resetBtn" class="hidden" title="Prepare Another"
+                            style="width:44px;height:44px;border-radius:10px;border:1px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all .2s;box-shadow:0 1px 3px rgba(0,0,0,.06);"
+                            onmouseover="this.style.borderColor='var(--accent)';this.style.color='var(--accent)'"
+                            onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--muted)'">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                                <path d="M3 3v5h5" />
+                            </svg>
+                        </button>
+                    </div>
                 
-                <div style="margin-top:14px;text-align:center;">
+        <div
+            style="margin-top:14px;padding:12px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;text-align:center;">
+        
+            <a href="https://razorpay.me/@compressly" target="_blank" rel="noopener noreferrer"
+                onclick="gtag('event','donation_click',{page:'psc-tool'});"
+                style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:13px;font-weight:600;color:#2563eb;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;text-decoration:none;">
+                🙏 Support this free PSC tool
+            </a>
+        
+            <div style="font-size:12px;color:#64748b;margin-top:6px;">
+                No ads. No uploads. Runs entirely free for PSC applicants.
+            </div>
+        
+        </div>
 
-                    <a href="https://razorpay.me/@compressly" target="_blank" rel="noopener noreferrer"
-                        onclick="gtag('event','donation_click',{page:'psc-tool'});" style="
-                    display:inline-flex;
-                    align-items:center;
-                    gap:6px;
-                    padding:8px 16px;
-                    font-size:13px;
-                    font-weight:600;
-                    color:#2563eb;
-                    background:#eff6ff;
-                    border:1px solid #bfdbfe;
-                    border-radius:999px;
-                    text-decoration:none;
-                    transition:all .2s;
-                " onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background='#eff6ff'">
-                        🙏 Support this free PSC tool
-                    </a>
-
-                    <div style="font-size:12px;color:#64748b;margin-top:6px;">
-                        This tool runs free without ads. Small support helps keep it online.
-                    </div>
-
-                </div>
-
-                <div class="suggest-card" id="suggestCard">
-                    <div class="suggest-title" id="suggestTitle">Need a signature too?</div>
-                    <div class="suggest-desc" id="suggestDesc">Most PSC applications require both photo and signature
-                    </div>
-                    <button class="btn btn-secondary" id="suggestBtn" style="width: 100%;">
-                        Prepare Signature →
-                    </button>
-                </div>
+            <div class="suggest-card" id="suggestCard">
+                <div class="suggest-title" id="suggestTitle">Prepare Your Signature</div>
+                <div class="suggest-desc" id="suggestDesc">Most PSC applications require both photo and signature</div>
+                <button class="btn btn-secondary" id="suggestBtn" style="width: 100%;">
+                    Prepare Signature →
+                </button>
+            </div>
             </div>
 
             <!-- Info Section -->
@@ -1880,8 +1891,8 @@
             // Show suggest card after 2s
             setTimeout(() => {
                 const opposite = selectedType === 'photo' ? 'signature' : 'photo';
-                document.getElementById('suggestTitle').textContent =
-                    selectedType === 'photo' ? 'Need a signature too?' : 'Need a photo too?';
+               document.getElementById('suggestTitle').textContent =
+                    selectedType === 'photo' ? 'Prepare Your Signature' : 'Prepare Your Photo';
                 document.getElementById('suggestDesc').textContent =
                     'Most PSC applications require both photo and signature';
                 document.getElementById('suggestBtn').textContent =
@@ -2010,6 +2021,7 @@
             stepResult.classList.toggle('active', step === 5);  // ✅ ADD THIS LINE
 
             backBtn.classList.toggle('hidden', step === 1);  // ✅ Show back button on all steps except step 1
+            document.getElementById('resetBtn').classList.toggle('hidden', step !== 5);
             document.getElementById('infoSection').classList.toggle('hidden', step !== 1);
 
             // Update step indicator
@@ -2089,6 +2101,11 @@
                 }
             };
 
+            document.getElementById('resetBtn').onclick = () => {
+                    resetState();
+                    goToStep(1);
+                };
+
         function resetState() {
             originalImage = null;
             croppedImage = null;
@@ -2098,6 +2115,20 @@
             stampDate.valueAsDate = new Date();
             suggestCard.classList.remove('show');
         }
+
+        stampName.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    stampDate.focus();
+                }
+            });
+
+            stampDate.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('addStamp').click();
+                }
+            });
 
         downloadLink.onclick = () => {
             gtag('event', 'psc_photo_downloaded', {
