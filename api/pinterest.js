@@ -62,11 +62,6 @@ export default async function handler(req, res) {
 
         let imageUrl = ogMatch[1];
 
-        // Pinterest serves 736x images — upgrade to originals where possible
-        imageUrl = imageUrl
-            .replace(/\/236x\//, '/originals/')
-            .replace(/\/474x\//, '/originals/')
-            .replace(/\/736x\//, '/originals/');
 
         // Extract title if available
         const titleMatch = html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
