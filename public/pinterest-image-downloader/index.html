@@ -395,10 +395,16 @@
 
         /* Result */
             .result-state {
-                margin-top: 24px;
-                min-height: 220px;
+                margin-top: 0;
+                min-height: 0;
                 visibility: hidden;
                 pointer-events: none;
+                transition: margin-top 0.1s;
+            }
+
+            .result-state.active {
+                margin-top: 24px;
+                min-height: 220px;
             }
 
             .result-state.show {
@@ -407,7 +413,7 @@
             }
 
             @media (max-width: 560px) {
-                .result-state {
+                .result-state.active {
                     min-height: 480px;
                 }
             }
@@ -1320,6 +1326,8 @@
 
                 if (state === 'loading') {
                     resultState.classList.add('show');
+                    resultState.classList.add('active'); // ← add this
+
                     document.getElementById('inlineLoading').style.display = 'block';
                     if (window.innerWidth < 768) {
                         setTimeout(() => {
@@ -1330,6 +1338,7 @@
                 if (state === 'error') errorState.classList.add('show');
                 if (state === 'result') {
                     resultState.classList.add('show');
+                    resultState.classList.add('active'); // ← add this
                     document.getElementById('resultInner').style.display = 'flex';
                     document.getElementById('stickyBar').classList.remove('hidden');
                 }
@@ -1456,6 +1465,7 @@
                 previewImg.style.display = 'none';
                 document.getElementById('resultTitle').textContent = '';
                 showState(null);
+                resultState.classList.remove('active');
                 urlInput.focus();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
