@@ -325,15 +325,20 @@
             min-height: 0;
         }
 
-        /* Loading */
         .loading-state {
             text-align: center;
             padding: 32px 0;
-            display: none;
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
         }
 
         .loading-state.show {
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
+            height: auto;
+            overflow: visible;
         }
 
         .spinner-ring {
@@ -358,9 +363,10 @@
             color: var(--muted);
         }
 
-        /* Error */
         .error-state {
-            display: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
             padding: 14px 16px;
             background: #fff1f2;
             border: 1px solid #fecdd3;
@@ -368,22 +374,39 @@
             font-size: 14px;
             color: #be123c;
             margin-top: 16px;
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
+            padding: 0;
+            margin-top: 0;
+            border: none;
         }
 
         .error-state.show {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            opacity: 1;
+            pointer-events: auto;
+            height: auto;
+            overflow: visible;
+            padding: 14px 16px;
+            margin-top: 16px;
+            border: 1px solid #fecdd3;
         }
 
         /* Result */
         .result-state {
-            display: none;
             margin-top: 24px;
+            opacity: 0;
+            pointer-events: none;
+            height: 0;
+            overflow: hidden;
         }
 
         .result-state.show {
-            display: block;
+            opacity: 1;
+            pointer-events: auto;
+            height: auto;
+            overflow: visible;
         }
 
         .result-inner {
