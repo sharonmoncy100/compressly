@@ -389,7 +389,7 @@
         .result-inner {
             display: flex;
             gap: 24px;
-            align-items: flex-start;
+            align-items: center;
         }
 
         @media (max-width: 560px) {
@@ -425,10 +425,13 @@
             display: block;
         }
 
-        .result-info {
-            flex: 1;
-            min-width: 0;
-        }
+            .result-info {
+                flex: 1;
+                min-width: 0;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+            }
 
         .result-badge {
             display: inline-flex;
@@ -533,6 +536,12 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+        }
+
+        @media (max-width: 640px) {
+        .btn-actions {
+            display: none;
+        }
         }
 
         /* ── TRUST STRIP ── */
@@ -1338,6 +1347,7 @@
 
                 // Load preview
                 previewImg.onload = () => {
+                    previewImg.style.display = 'block';
                     showState('result');
                     fetchBtn.disabled = false;
                     // Scroll result into view on mobile
@@ -1405,15 +1415,17 @@
                 btn.disabled = false;
             }
         }
-
-        function resetTool() {
-            urlInput.value = '';
-            currentImageUrl = '';
-            previewImg.src = '';
-            showState(null);
-            urlInput.focus();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
+            function resetTool() {
+                urlInput.value = '';
+                currentImageUrl = '';
+                currentTitle = '';
+                previewImg.src = '';
+                previewImg.style.display = 'none';
+                document.getElementById('resultTitle').textContent = 'Pinterest Image';
+                showState(null);
+                urlInput.focus();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
 
         function toggleFaq(btn) {
             const item = btn.closest('.faq-item');
