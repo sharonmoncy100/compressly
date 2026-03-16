@@ -425,27 +425,29 @@
             display: block;
         }
 
-            .result-info {
-                flex: 1;
-                min-width: 0;
-                display: flex;
-                flex-direction: column;
-                gap: 4px;
-            }
-
-        .result-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--success);
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            border-radius: 999px;
-            padding: 3px 10px;
-            margin-bottom: 10px;
+         .result-info {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            text-align: left;
         }
+
+            .result-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 5px;
+                font-size: 12px;
+                font-weight: 600;
+                color: var(--success);
+                background: #f0fdf4;
+                border: 1px solid #bbf7d0;
+                border-radius: 999px;
+                padding: 3px 10px;
+                margin-bottom: 10px;
+                align-self: flex-start;
+            }
 
         .result-title {
             font-size: 15px;
@@ -1419,9 +1421,11 @@
                 urlInput.value = '';
                 currentImageUrl = '';
                 currentTitle = '';
+                previewImg.onload = null;
+                previewImg.onerror = null;
                 previewImg.src = '';
                 previewImg.style.display = 'none';
-                document.getElementById('resultTitle').textContent = 'Pinterest Image';
+                document.getElementById('resultTitle').textContent = '';
                 showState(null);
                 urlInput.focus();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
