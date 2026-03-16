@@ -394,20 +394,23 @@
         }
 
         /* Result */
-        .result-state {
-            margin-top: 24px;
-            opacity: 0;
-            pointer-events: none;
-            height: 0;
-            overflow: hidden;
-        }
+            .result-state {
+                margin-top: 24px;
+                min-height: 220px;
+                visibility: hidden;
+                pointer-events: none;
+            }
 
-        .result-state.show {
-            opacity: 1;
-            pointer-events: auto;
-            height: auto;
-            overflow: visible;
-        }
+            .result-state.show {
+                visibility: visible;
+                pointer-events: auto;
+            }
+
+            @media (max-width: 560px) {
+                .result-state {
+                    min-height: 480px;
+                }
+            }
 
         .result-inner {
             display: flex;
@@ -962,7 +965,8 @@
                             </div>
                         </div>
                     </div>
-                    <div id="inlineLoading" style="text-align:center;padding:32px 0;display:none;">
+                <div id="inlineLoading"
+                    style="text-align:center;padding:32px 0;display:flex;align-items:center;justify-content:center;min-height:180px;display:none;">
                         <div class="spinner-ring"></div>
                         <div class="loading-text">Fetching image from Pinterest…</div>
                     </div>
