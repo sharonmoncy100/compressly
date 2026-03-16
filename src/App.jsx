@@ -1914,6 +1914,7 @@ export default function App() {
               <a className="touch-link" href="/compress-jpg-online.html">Compress JPG</a>
               <a className="touch-link" href="/psc-photo-tool.html">Kerala PSC Photo Tool</a>
               <a className="touch-link" href="/amazon-image-resizer/">Amazon Image Resizer</a>
+              <a className="touch-link" href="/pinterest-image-downloader/">Pinterest Image Downloader</a>
 
             </div>
 
