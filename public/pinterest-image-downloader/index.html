@@ -927,16 +927,9 @@
                     </svg>
                     <span id="errorMsg">Something went wrong.</span>
                 </div>
-
-                <!-- Loading -->
-                <div class="loading-state" id="loadingState">
-                    <div class="spinner-ring"></div>
-                    <div class="loading-text">Fetching image from Pinterest…</div>
-                </div>
-
-                <!-- Result -->
+                <!-- Result (shown immediately on click, loading spinner inside) -->
                 <div class="result-state" id="resultState">
-                    <div class="result-inner">
+                    <div class="result-inner" id="resultInner" style="display:none;">
                         <div class="preview-wrap" id="previewWrap">
                             <img id="previewImg" class="preview-img" alt="Pinterest image preview" />
                         </div>
@@ -947,9 +940,9 @@
                                 </svg>
                                 Image Ready
                             </div>
-                            <div class="result-title" id="resultTitle">Pinterest Image</div>
-                            <div class="result-hint">High-quality photo extracted from Pinterest. Click Download to save
-                                it to your device.</div>
+                            <div class="result-title" id="resultTitle"></div>
+                            <div class="result-hint">High-quality photo extracted from Pinterest. Click Download to save it to your
+                                device.</div>
                             <div class="btn-actions">
                                 <button class="btn-download" id="downloadBtn" onclick="triggerDownload()">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
@@ -959,8 +952,8 @@
                                     Download Image
                                 </button>
                                 <button class="btn-new" onclick="resetTool()">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                                         <path d="M3 3v5h5" />
                                     </svg>
@@ -968,6 +961,10 @@
                                 </button>
                             </div>
                         </div>
+                    </div>
+                    <div id="inlineLoading" style="text-align:center;padding:32px 0;display:none;">
+                        <div class="spinner-ring"></div>
+                        <div class="loading-text">Fetching image from Pinterest…</div>
                     </div>
                 </div>
 
@@ -1288,7 +1285,7 @@
 
         const urlInput = document.getElementById('urlInput');
         const fetchBtn = document.getElementById('fetchBtn');
-        const loadingState = document.getElementById('loadingState');
+       
         const errorState = document.getElementById('errorState');
         const resultState = document.getElementById('resultState');
         const previewImg = document.getElementById('previewImg');
@@ -1310,20 +1307,29 @@
                     urlInput.select();
                 }
             }
+            function showState(state) {
+                errorState.classList.remove('show');
+                resultState.classList.remove('show');
+                document.getElementById('resultInner').style.display = 'none';
+                document.getElementById('inlineLoading').style.display = 'none';
+                document.getElementById('stickyBar').classList.add('hidden');
 
-        function showState(state) {
-            loadingState.classList.remove('show');
-            errorState.classList.remove('show');
-            resultState.classList.remove('show');
-            if (state === 'loading') loadingState.classList.add('show');
-            if (state === 'error') errorState.classList.add('show');
-            if (state === 'result') {
-                resultState.classList.add('show');
-                document.getElementById('stickyBar').classList.remove('hidden'); // ← add this
-            } else {
-                document.getElementById('stickyBar').classList.add('hidden'); // ← add this
+                if (state === 'loading') {
+                    resultState.classList.add('show');
+                    document.getElementById('inlineLoading').style.display = 'block';
+                    if (window.innerWidth < 768) {
+                        setTimeout(() => {
+                            resultState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }, 50);
+                    }
+                }
+                if (state === 'error') errorState.classList.add('show');
+                if (state === 'result') {
+                    resultState.classList.add('show');
+                    document.getElementById('resultInner').style.display = 'flex';
+                    document.getElementById('stickyBar').classList.remove('hidden');
+                }
             }
-        }
 
         function showError(msg) {
             document.getElementById('errorMsg').textContent = msg;
