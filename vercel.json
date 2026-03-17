@@ -11,31 +11,5 @@
       "destination": "https://www.compressly.in/:path*",
       "permanent": true
     }
-  ],
-  "rewrites": [
-    {
-      "source": "/pinterest-image-downloader",
-      "destination": "/pinterest-image-downloader/index.html"
-    },
-    {
-      "source": "/pinterest-image-downloader/",
-      "destination": "/pinterest-image-downloader/index.html"
-    },
-    {
-      "source": "/amazon-image-resizer",
-      "destination": "/amazon-image-resizer/index.html"
-    },
-    {
-      "source": "/amazon-image-resizer/",
-      "destination": "/amazon-image-resizer/index.html"
-    },
-    {
-      "source": "/mpsc-photo-resizer",
-      "destination": "/mpsc-photo-resizer/index.html"
-    },
-    {
-      "source": "/mpsc-photo-resizer/",
-      "destination": "/mpsc-photo-resizer/index.html"
-    }
   ]
 }
