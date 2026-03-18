@@ -1,0 +1,1576 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+
+    <script>
+        const allowedHosts = ["compressly.in", "www.compressly.in"];
+        if (!allowedHosts.includes(location.hostname)) {
+            window['ga-disable-G-K9Z1H2JLZQ'] = true;
+        }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K9Z1H2JLZQ', { anonymize_ip: true });
+        gtag('event', 'signature_maker_opened', { page: 'signature-maker' });
+    </script>
+
+    <title>Draw Signature Online Free - Smooth Mobile Signature Maker</title>
+    <meta name="description"
+        content="Create your signature online free. Draw with smooth pen-like strokes on mobile or desktop, then download as PNG. No install needed. Works on iPhone, Android, PC." />
+    <link rel="canonical" href="https://www.compressly.in/signature-maker/" />
+    <link rel="icon" type="image/png" href="/favicon-64.png" />
+
+    <meta property="og:title" content="Draw Signature Online Free | Compressly" />
+    <meta property="og:description"
+        content="Draw your signature online and download as PNG. Smooth strokes on mobile and desktop. Free, no login." />
+    <meta property="og:url" content="https://www.compressly.in/signature-maker/" />
+    <meta property="og:type" content="website" />
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Online Signature Maker",
+      "url": "https://www.compressly.in/signature-maker/",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Free online signature maker. Draw your signature on mobile or desktop and download as PNG with transparent background.",
+      "creator": { "@type": "Organization", "name": "Compressly", "url": "https://www.compressly.in" }
+    }
+    </script>
+
+    <!-- Signature Pad library -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --fg: #0f172a;
+            --muted: #64748b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --radius: 14px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ── HEADER ── */
+        header {
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        @media (max-width: 768px) {
+            .header-inner {
+                padding: 0 16px;
+            }
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 700;
+            font-size: 18px;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            font-size: 14px;
+            color: var(--muted);
+            font-weight: 500;
+            transition: color .2s;
+        }
+
+        .nav-menu a:hover {
+            color: var(--accent);
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 28px;
+            height: 22px;
+            position: relative;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .menu-toggle span {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background: var(--fg);
+            left: 0;
+            transition: all .3s ease;
+            border-radius: 2px;
+        }
+
+        .menu-toggle span:nth-child(1) {
+            top: 0;
+        }
+
+        .menu-toggle span:nth-child(2) {
+            top: 9px;
+        }
+
+        .menu-toggle span:nth-child(3) {
+            bottom: 0;
+        }
+
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg);
+            top: 9px;
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg);
+            bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: absolute;
+                top: 64px;
+                right: 16px;
+                background: var(--card);
+                border: 1px solid var(--border);
+                border-radius: 10px;
+                padding: 16px;
+                flex-direction: column;
+                gap: 12px;
+                box-shadow: 0 8px 24px rgba(0, 0, 0, .1);
+                display: none;
+            }
+
+            .nav-menu.show {
+                display: flex;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+
+        /* ── HERO ── */
+        .hero {
+            text-align: center;
+            padding: 48px 16px 40px;
+            background: linear-gradient(135deg, #eff6ff 0%, #fff 60%);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 14px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 16px;
+        }
+
+        .hero h1 {
+            font-size: clamp(24px, 4vw, 40px);
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--fg);
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        .hero h1 span {
+            color: var(--accent);
+        }
+
+        .hero p {
+            font-size: clamp(14px, 2vw, 16px);
+            color: var(--muted);
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* ── TOOL WRAPPER ── */
+        main {
+            flex: 1;
+        }
+
+        .tool-wrapper {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 32px 16px 48px;
+        }
+
+        /* ── TOOL CARD ── */
+        .tool-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
+            overflow: hidden;
+        }
+
+        /* ── TABS ── */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid var(--border);
+            background: #f8fafc;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 14px 16px;
+            border: none;
+            background: none;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all .2s;
+            border-bottom: 2px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+        .tab-btn:hover {
+            color: var(--accent);
+        }
+
+        .tab-btn.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+            background: var(--card);
+        }
+
+        /* ── DRAW TAB ── */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .canvas-area {
+            padding: 20px 20px 0;
+        }
+
+        .canvas-hint {
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .canvas-wrap {
+            position: relative;
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            background: #fafbfc;
+            overflow: hidden;
+            cursor: crosshair;
+            transition: border-color .2s;
+        }
+
+        .canvas-wrap:hover {
+            border-color: #93c5fd;
+        }
+
+        .canvas-wrap.drawing {
+            border-color: var(--accent);
+            border-style: solid;
+        }
+
+        #sigCanvas {
+            display: block;
+            width: 100%;
+            height: 260px;
+            touch-action: none;
+        }
+
+        @media (max-width: 640px) {
+            #sigCanvas {
+                height: 220px;
+            }
+        }
+
+        /* Sign here guide line */
+        .sign-line {
+            position: absolute;
+            bottom: 44px;
+            left: 5%;
+            right: 5%;
+            height: 1px;
+            background: #e2e8f0;
+            pointer-events: none;
+        }
+
+        .sign-line::before {
+            content: 'Sign here';
+            position: absolute;
+            left: 0;
+            bottom: 4px;
+            font-size: 11px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        /* Empty state overlay */
+        .canvas-empty {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            pointer-events: none;
+            opacity: 1;
+            transition: opacity .2s;
+        }
+
+        .canvas-empty.hidden {
+            opacity: 0;
+        }
+
+        .canvas-empty svg {
+            color: #cbd5e1;
+        }
+
+        .canvas-empty span {
+            font-size: 13px;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        /* ── TYPE TAB ── */
+        .type-area {
+            padding: 24px 20px;
+        }
+
+        .type-input-wrap {
+            margin-bottom: 20px;
+        }
+
+        .type-input-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--fg);
+            margin-bottom: 8px;
+        }
+
+        .type-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 18px;
+            background: #f8fafc;
+            color: var(--fg);
+            outline: none;
+            transition: all .2s;
+        }
+
+        .type-input:focus {
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .08);
+        }
+
+        .type-input::placeholder {
+            color: #94a3b8;
+        }
+
+        /* Font picker */
+        .font-picker-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--fg);
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .font-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .font-option {
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            padding: 14px 10px;
+            cursor: pointer;
+            text-align: center;
+            transition: all .2s;
+            background: #f8fafc;
+        }
+
+        .font-option:hover {
+            border-color: #93c5fd;
+            background: #f0f9ff;
+        }
+
+        .font-option.selected {
+            border-color: var(--accent);
+            background: #eff6ff;
+        }
+
+        .font-option .font-preview {
+            font-size: 22px;
+            color: var(--fg);
+            line-height: 1.2;
+            margin-bottom: 4px;
+        }
+
+        .font-option .font-name {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        /* Typed preview canvas */
+        .type-preview-wrap {
+            border: 2px dashed var(--border);
+            border-radius: 12px;
+            background: #fafbfc;
+            overflow: hidden;
+            height: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #typeCanvas {
+            display: block;
+            width: 100%;
+            height: 180px;
+        }
+
+        /* ── CONTROLS ── */
+        .controls {
+            padding: 16px 20px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--border);
+        }
+
+        /* Color picker row */
+        .color-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .color-label {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .color-swatch {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all .15s;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.15);
+        }
+
+        .color-swatch.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent);
+        }
+
+        /* Size row */
+        .size-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .size-label {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .size-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: #f8fafc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .15s;
+        }
+
+        .size-btn:hover {
+            border-color: var(--accent);
+        }
+
+        .size-btn.active {
+            border-color: var(--accent);
+            background: #eff6ff;
+        }
+
+        .size-dot {
+            border-radius: 50%;
+            background: #0f172a;
+        }
+
+        /* Action buttons */
+        .btn-group-right {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .btn-clear {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 16px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #f8fafc;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+        }
+
+        .btn-clear:hover {
+            border-color: #f87171;
+            color: #ef4444;
+            background: #fff1f2;
+        }
+
+        .btn-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: var(--accent);
+            color: #fff;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all .2s;
+            box-shadow: 0 3px 10px rgba(37, 99, 235, .3);
+            white-space: nowrap;
+        }
+
+        .btn-download:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-download:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Undo button */
+        .btn-undo {
+            width: 34px;
+            height: 34px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #f8fafc;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--muted);
+            transition: all .2s;
+        }
+
+        .btn-undo:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ── BACKGROUND OPTION ── */
+        .bg-row {
+            padding: 0 20px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .bg-label {
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 600;
+        }
+
+        .bg-btn {
+            padding: 5px 14px;
+            border-radius: 999px;
+            border: 1.5px solid var(--border);
+            background: #f8fafc;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--muted);
+            transition: all .15s;
+        }
+
+        .bg-btn.active {
+            border-color: var(--accent);
+            background: #eff6ff;
+            color: var(--accent);
+        }
+
+        .bg-btn:hover {
+            border-color: #93c5fd;
+        }
+
+        /* ── TRUST STRIP ── */
+        .trust-strip {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+            padding: 16px;
+            background: #f8fafc;
+            border-top: 1px solid var(--border);
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .trust-item svg {
+            color: var(--success);
+        }
+
+        /* ── INFO SECTIONS ── */
+        .section {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 16px 40px;
+        }
+
+        .section-title {
+            font-size: clamp(18px, 3vw, 22px);
+            font-weight: 700;
+            color: var(--fg);
+            margin-bottom: 8px;
+        }
+
+        .section-sub {
+            font-size: 14px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .step-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .step-num {
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .step-card h3 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .step-card p {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+        }
+
+        /* FAQ */
+        .faq-list {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 16px 48px;
+        }
+
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card);
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .faq-q {
+            width: 100%;
+            text-align: left;
+            padding: 15px 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--fg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .faq-q svg {
+            flex-shrink: 0;
+            transition: transform .25s;
+            color: var(--muted);
+        }
+
+        .faq-item.open .faq-q svg {
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height .3s ease;
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 200px;
+        }
+
+        .faq-a p {
+            padding: 0 18px 14px;
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* Related tools */
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 12px;
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 0 16px 48px;
+        }
+
+        .related-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+            text-decoration: none;
+            color: var(--fg);
+            transition: all .2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .related-card:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(37, 99, 235, .1);
+            transform: translateY(-2px);
+        }
+
+        .related-icon {
+            width: 36px;
+            height: 36px;
+            background: #eff6ff;
+            border-radius: 8px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+        }
+
+        .related-card span {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 24px 16px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 480px) {
+            .controls {
+                padding: 12px 14px 14px;
+                gap: 8px;
+            }
+
+            .btn-clear {
+                padding: 8px 12px;
+                font-size: 12px;
+            }
+
+            .btn-download {
+                padding: 8px 14px;
+                font-size: 12px;
+            }
+
+            .color-swatch {
+                width: 24px;
+                height: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── HEADER ── -->
+    <header>
+        <div class="header-inner">
+            <a href="https://www.compressly.in" class="brand">
+                <img src="/icon.png" width="32" height="32" alt="Compressly" loading="lazy">
+                <span>Compressly</span>
+            </a>
+            <nav class="nav-menu" id="navMenu">
+                <a href="https://www.compressly.in">Image Compressor</a>
+                <a href="/psc-photo-tool.html">PSC Photo Tool</a>
+                <a href="/pinterest-image-downloader/">Pinterest Downloader</a>
+                <a href="https://www.compressly.in/about.html">About</a>
+            </nav>
+            <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- ── HERO ── -->
+    <div class="hero">
+        <div class="hero-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" />
+            </svg>
+            Free · No Login · Instant Download
+        </div>
+        <h1>Draw Your <span>Signature</span> Online</h1>
+        <p>Create a smooth, pen-like signature on mobile or desktop. Download as PNG with transparent or white
+            background.</p>
+    </div>
+
+    <main>
+        <div class="tool-wrapper">
+
+            <div class="tool-card">
+
+                <!-- TABS -->
+                <div class="tabs">
+                    <button class="tab-btn active" id="tabDraw" onclick="switchTab('draw')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" />
+                        </svg>
+                        Draw
+                    </button>
+                    <button class="tab-btn" id="tabType" onclick="switchTab('type')">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M2.5 4v3h5v12h3V7h5V4h-13zm19 5h-9v3h3v7h3v-7h3V9z" />
+                        </svg>
+                        Type
+                    </button>
+                </div>
+
+                <!-- DRAW TAB -->
+                <div class="tab-content active" id="drawTab">
+                    <div class="canvas-area">
+                        <div class="canvas-hint" id="drawHint">Use your finger or mouse to draw your signature</div>
+                        <div class="canvas-wrap" id="canvasWrap">
+                            <canvas id="sigCanvas"></canvas>
+                            <div class="sign-line"></div>
+                            <div class="canvas-empty" id="canvasEmpty">
+                                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="1.5">
+                                    <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25z" />
+                                </svg>
+                                <span>Draw your signature here</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Color & Size controls -->
+                    <div class="controls">
+                        <div class="color-row">
+                            <span class="color-label">Color</span>
+                            <button class="color-swatch active" style="background:#0f172a;" data-color="#0f172a"
+                                onclick="setColor(this)" title="Black" aria-label="Black"></button>
+                            <button class="color-swatch" style="background:#1d4ed8;" data-color="#1d4ed8"
+                                onclick="setColor(this)" title="Blue" aria-label="Blue"></button>
+                            <button class="color-swatch" style="background:#15803d;" data-color="#15803d"
+                                onclick="setColor(this)" title="Green" aria-label="Green"></button>
+                            <button class="color-swatch" style="background:#b91c1c;" data-color="#b91c1c"
+                                onclick="setColor(this)" title="Red" aria-label="Red"></button>
+                        </div>
+
+                        <div class="size-row">
+                            <span class="size-label">Size</span>
+                            <button class="size-btn active" data-min="0.5" data-max="2" onclick="setSize(this)"
+                                title="Thin" aria-label="Thin stroke">
+                                <div class="size-dot" style="width:6px;height:6px;"></div>
+                            </button>
+                            <button class="size-btn" data-min="1" data-max="4" onclick="setSize(this)" title="Medium"
+                                aria-label="Medium stroke">
+                                <div class="size-dot" style="width:9px;height:9px;"></div>
+                            </button>
+                            <button class="size-btn" data-min="2" data-max="6" onclick="setSize(this)" title="Thick"
+                                aria-label="Thick stroke">
+                                <div class="size-dot" style="width:13px;height:13px;"></div>
+                            </button>
+                        </div>
+
+                        <div class="btn-group-right">
+                            <button class="btn-undo" onclick="undoStroke()" title="Undo last stroke"
+                                aria-label="Undo last stroke">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 7v6h6" />
+                                    <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13" />
+                                </svg>
+                            </button>
+                            <button class="btn-clear" onclick="clearCanvas()" aria-label="Clear signature">
+                                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 6h18M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2" />
+                                </svg>
+                                Clear
+                            </button>
+                            <button class="btn-download" id="drawDownloadBtn" onclick="downloadSignature('draw')"
+                                aria-label="Download signature as PNG" disabled>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                                </svg>
+                                Download PNG
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Background option -->
+                    <div class="bg-row">
+                        <span class="bg-label">Background</span>
+                        <button class="bg-btn active" data-bg="transparent" onclick="setBg(this)">Transparent</button>
+                        <button class="bg-btn" data-bg="white" onclick="setBg(this)">White</button>
+                    </div>
+                </div>
+
+                <!-- TYPE TAB -->
+                <div class="tab-content" id="typeTab">
+                    <div class="type-area">
+                        <div class="type-input-wrap">
+                            <label class="type-input-label" for="typeInput">Enter your name</label>
+                            <input type="text" id="typeInput" class="type-input" placeholder="e.g. John Smith"
+                                autocomplete="name" oninput="renderTyped()" />
+                        </div>
+
+                        <span class="font-picker-label">Choose a style</span>
+                        <div class="font-grid" id="fontGrid">
+                            <div class="font-option selected" data-font="'Dancing Script', cursive"
+                                onclick="selectFont(this)">
+                                <div class="font-preview" style="font-family:'Dancing Script',cursive;">Signature</div>
+                                <div class="font-name">Classic</div>
+                            </div>
+                            <div class="font-option" data-font="'Great Vibes', cursive" onclick="selectFont(this)">
+                                <div class="font-preview" style="font-family:'Great Vibes',cursive;">Signature</div>
+                                <div class="font-name">Elegant</div>
+                            </div>
+                            <div class="font-option" data-font="'Caveat', cursive" onclick="selectFont(this)">
+                                <div class="font-preview" style="font-family:'Caveat',cursive;">Signature</div>
+                                <div class="font-name">Handwritten</div>
+                            </div>
+                            <div class="font-option" data-font="'Pacifico', cursive" onclick="selectFont(this)">
+                                <div class="font-preview" style="font-family:'Pacifico',cursive;">Signature</div>
+                                <div class="font-name">Bold</div>
+                            </div>
+                        </div>
+
+                        <div class="type-preview-wrap">
+                            <canvas id="typeCanvas"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="controls">
+                        <div class="color-row">
+                            <span class="color-label">Color</span>
+                            <button class="color-swatch active" style="background:#0f172a;" data-color="#0f172a"
+                                onclick="setTypedColor(this)" aria-label="Black"></button>
+                            <button class="color-swatch" style="background:#1d4ed8;" data-color="#1d4ed8"
+                                onclick="setTypedColor(this)" aria-label="Blue"></button>
+                            <button class="color-swatch" style="background:#15803d;" data-color="#15803d"
+                                onclick="setTypedColor(this)" aria-label="Green"></button>
+                            <button class="color-swatch" style="background:#b91c1c;" data-color="#b91c1c"
+                                onclick="setTypedColor(this)" aria-label="Red"></button>
+                        </div>
+                        <div class="btn-group-right">
+                            <button class="btn-download" id="typeDownloadBtn" onclick="downloadSignature('type')"
+                                aria-label="Download typed signature" disabled>
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                                </svg>
+                                Download PNG
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-row">
+                        <span class="bg-label">Background</span>
+                        <button class="bg-btn active" data-bg="transparent" onclick="setBg(this)">Transparent</button>
+                        <button class="bg-btn" data-bg="white" onclick="setBg(this)">White</button>
+                    </div>
+                </div>
+
+                <!-- TRUST STRIP -->
+                <div class="trust-strip">
+                    <div class="trust-item">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                        </svg>
+                        No registration
+                    </div>
+                    <div class="trust-item">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                        </svg>
+                        PNG with transparent background
+                    </div>
+                    <div class="trust-item">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                        </svg>
+                        Works on iPhone & Android
+                    </div>
+                    <div class="trust-item">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                        </svg>
+                        100% free
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOW TO USE -->
+        <div class="section">
+            <h2 class="section-title">How to Create Your Signature</h2>
+            <p class="section-sub">Three simple steps — done in seconds.</p>
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-num">1</div>
+                    <h3>Draw or Type</h3>
+                    <p>Use the Draw tab to sign with your finger or mouse, or use the Type tab to enter your name in a
+                        signature style.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">2</div>
+                    <h3>Customize</h3>
+                    <p>Choose ink color, stroke size, and background (transparent or white) to match your needs.</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-num">3</div>
+                    <h3>Download</h3>
+                    <p>Click Download PNG to save your signature. Use it in documents, forms, emails, or anywhere you
+                        need.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ -->
+        <div class="faq-list">
+            <h2 class="section-title" style="padding:0 0 8px;">Frequently Asked Questions</h2>
+            <p class="section-sub">Everything you need to know.</p>
+
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    Can I use this signature for official documents?
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>You can use your downloaded signature for many purposes including email sign-offs, digital forms,
+                        PDFs, and online documents. For legally binding contracts, check the requirements in your
+                        country — in many cases a drawn digital signature is accepted.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    Does this work on iPhone and Android?
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>Yes. The drawing canvas is fully optimized for touch screens. We use a high-DPI canvas that
+                        scales for Retina displays, and smooth Bézier curve interpolation so your signature looks
+                        pen-like on any device.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    Is my signature stored or uploaded anywhere?
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>No. Everything happens entirely in your browser. Your signature is never sent to any server,
+                        stored in any database, or shared in any way. When you close the tab, it is gone.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    What format does the download come in?
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>Your signature downloads as a PNG file. If you choose the transparent background option, the PNG
+                        has no background so it can be placed on any colored document. If you choose white, it has a
+                        solid white background.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    My signature looks too thick on mobile — what should I do?
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>Select the "Thin" size option in the controls. Our tool uses variable stroke width — strokes get
+                        thinner as you move faster and thicker when you slow down, just like a real pen. Try writing a
+                        little faster for naturally thinner lines.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- RELATED TOOLS -->
+        <div style="padding: 0 16px 12px; max-width: 860px; margin: 0 auto;">
+            <h2 class="section-title">More Free Tools from Compressly</h2>
+            <p class="section-sub" style="margin-bottom:16px;">Everything you need for images and documents.</p>
+        </div>
+        <div class="related-grid">
+            <a href="https://www.compressly.in" class="related-card">
+                <div class="related-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                    </svg>
+                </div>
+                <span>Image Compressor</span>
+            </a>
+            <a href="/psc-photo-tool.html" class="related-card">
+                <div class="related-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                    </svg>
+                </div>
+                <span>PSC Photo Tool</span>
+            </a>
+            <a href="/pinterest-image-downloader/" class="related-card">
+                <div class="related-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                    </svg>
+                </div>
+                <span>Pinterest Downloader</span>
+            </a>
+            <a href="/amazon-image-resizer/" class="related-card">
+                <div class="related-icon">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                        <path
+                            d="M3 5v4h2V5h4V3H5c-1.1 0-2 .9-2 2zm2 10H3v4c0 1.1.9 2 2 2h4v-2H5v-4zm14 4h-4v2h4c1.1 0 2-.9 2-2v-4h-2v4zm0-16h-4v2h4v4h2V5c0-1.1-.9-2-2-2z" />
+                    </svg>
+                </div>
+                <span>Amazon Image Resizer</span>
+            </a>
+        </div>
+
+    </main>
+
+    <footer>
+        © 2026 <a href="https://www.compressly.in">Compressly</a> ·
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/contact.html">Contact</a>
+    </footer>
+
+    <!-- Load signature fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Great+Vibes&family=Caveat:wght@700&family=Pacifico&display=swap"
+        rel="stylesheet">
+
+    <script>
+        // ── STATE ──
+        let signaturePad = null;
+        let currentTab = 'draw';
+        let currentBg = 'transparent';
+        let typedColor = '#0f172a';
+        let typedFont = "'Dancing Script', cursive";
+        let isEmpty = true;
+
+        // ── INIT SIGNATURE PAD ──
+        function initPad() {
+            const canvas = document.getElementById('sigCanvas');
+            const wrap = document.getElementById('canvasWrap');
+
+            // HiDPI
+            function resizeCanvas() {
+                const ratio = Math.max(window.devicePixelRatio || 1, 1);
+                const rect = wrap.getBoundingClientRect();
+                canvas.width = rect.width * ratio;
+                canvas.height = canvas.offsetHeight * ratio;
+                canvas.getContext('2d').scale(ratio, ratio);
+                if (signaturePad) signaturePad.clear();
+            }
+
+            resizeCanvas();
+
+            signaturePad = new SignaturePad(canvas, {
+                minWidth: 0.5,
+                maxWidth: 2,
+                penColor: '#0f172a',
+                backgroundColor: 'rgba(0,0,0,0)',
+                velocityFilterWeight: 0.7,
+            });
+
+            signaturePad.addEventListener('beginStroke', () => {
+                document.getElementById('canvasWrap').classList.add('drawing');
+            });
+
+            signaturePad.addEventListener('endStroke', () => {
+                document.getElementById('canvasWrap').classList.remove('drawing');
+                const empty = signaturePad.isEmpty();
+                document.getElementById('canvasEmpty').classList.toggle('hidden', !empty);
+                document.getElementById('drawDownloadBtn').disabled = empty;
+                isEmpty = empty;
+            });
+
+            window.addEventListener('resize', resizeCanvas);
+        }
+
+        // Wait for SignaturePad to load
+        if (typeof SignaturePad !== 'undefined') {
+            initPad();
+        } else {
+            window.addEventListener('load', initPad);
+        }
+
+        // ── TAB SWITCHING ──
+        function switchTab(tab) {
+            currentTab = tab;
+            document.getElementById('tabDraw').classList.toggle('active', tab === 'draw');
+            document.getElementById('tabType').classList.toggle('active', tab === 'type');
+            document.getElementById('drawTab').classList.toggle('active', tab === 'draw');
+            document.getElementById('typeTab').classList.toggle('active', tab === 'type');
+
+            if (tab === 'type') {
+                setTimeout(renderTyped, 50);
+            }
+        }
+
+        // ── COLOR ──
+        function setColor(btn) {
+            document.querySelectorAll('#drawTab .color-swatch').forEach(s => s.classList.remove('active'));
+            btn.classList.add('active');
+            if (signaturePad) signaturePad.penColor = btn.dataset.color;
+        }
+
+        function setTypedColor(btn) {
+            document.querySelectorAll('#typeTab .color-swatch').forEach(s => s.classList.remove('active'));
+            btn.classList.add('active');
+            typedColor = btn.dataset.color;
+            renderTyped();
+        }
+
+        // ── STROKE SIZE ──
+        function setSize(btn) {
+            document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            if (signaturePad) {
+                signaturePad.minWidth = parseFloat(btn.dataset.min);
+                signaturePad.maxWidth = parseFloat(btn.dataset.max);
+            }
+        }
+
+        // ── BACKGROUND ──
+        function setBg(btn) {
+            document.querySelectorAll('.bg-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            currentBg = btn.dataset.bg;
+        }
+
+        // ── CLEAR ──
+        function clearCanvas() {
+            if (signaturePad) {
+                signaturePad.clear();
+                document.getElementById('canvasEmpty').classList.remove('hidden');
+                document.getElementById('drawDownloadBtn').disabled = true;
+                isEmpty = true;
+            }
+        }
+
+        // ── UNDO ──
+        function undoStroke() {
+            if (!signaturePad) return;
+            const data = signaturePad.toData();
+            if (data && data.length > 0) {
+                data.pop();
+                signaturePad.fromData(data);
+                const empty = signaturePad.isEmpty();
+                document.getElementById('canvasEmpty').classList.toggle('hidden', !empty);
+                document.getElementById('drawDownloadBtn').disabled = empty;
+            }
+        }
+
+        // ── TYPE SIGNATURE ──
+        function renderTyped() {
+            const input = document.getElementById('typeInput').value.trim();
+            const canvas = document.getElementById('typeCanvas');
+            const wrap = canvas.parentElement;
+
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = wrap.offsetWidth * ratio;
+            canvas.height = wrap.offsetHeight * ratio;
+
+            const ctx = canvas.getContext('2d');
+            ctx.scale(ratio, ratio);
+            ctx.clearRect(0, 0, wrap.offsetWidth, wrap.offsetHeight);
+
+            if (!input) {
+                document.getElementById('typeDownloadBtn').disabled = true;
+                // Draw placeholder
+                ctx.font = `italic 16px system-ui`;
+                ctx.fillStyle = '#cbd5e1';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText('Your signature will appear here', wrap.offsetWidth / 2, wrap.offsetHeight / 2);
+                return;
+            }
+
+            document.getElementById('typeDownloadBtn').disabled = false;
+
+            const fontSize = Math.min(72, wrap.offsetWidth / (input.length * 0.55));
+            ctx.font = `${fontSize}px ${typedFont}`;
+            ctx.fillStyle = typedColor;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(input, wrap.offsetWidth / 2, wrap.offsetHeight / 2);
+        }
+
+        function selectFont(el) {
+            document.querySelectorAll('.font-option').forEach(o => o.classList.remove('selected'));
+            el.classList.add('selected');
+            typedFont = el.dataset.font;
+            renderTyped();
+        }
+
+        // ── DOWNLOAD ──
+        function downloadSignature(type) {
+            gtag('event', 'signature_downloaded', { type });
+
+            let dataUrl;
+
+            if (type === 'draw') {
+                if (!signaturePad || signaturePad.isEmpty()) return;
+
+                if (currentBg === 'white') {
+                    // Composite on white
+                    const orig = document.getElementById('sigCanvas');
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = orig.width;
+                    tempCanvas.height = orig.height;
+                    const ctx = tempCanvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                    ctx.drawImage(orig, 0, 0);
+                    dataUrl = tempCanvas.toDataURL('image/png');
+                } else {
+                    dataUrl = signaturePad.toDataURL('image/png');
+                }
+            } else {
+                const canvas = document.getElementById('typeCanvas');
+                if (currentBg === 'white') {
+                    const tempCanvas = document.createElement('canvas');
+                    tempCanvas.width = canvas.width;
+                    tempCanvas.height = canvas.height;
+                    const ctx = tempCanvas.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+                    ctx.drawImage(canvas, 0, 0);
+                    dataUrl = tempCanvas.toDataURL('image/png');
+                } else {
+                    dataUrl = canvas.toDataURL('image/png');
+                }
+            }
+
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = 'signature.png';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+
+        // ── FAQ ──
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        }
+
+        // ── HEADER MENU ──
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('show');
+            menuToggle.classList.toggle('active');
+        });
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                navMenu.classList.remove('show');
+                menuToggle.classList.remove('active');
+            }
+        });
+
+        // Init typed preview on load
+        window.addEventListener('load', () => {
+            renderTyped();
+        });
+    </script>
+</body>
+
+</html>
