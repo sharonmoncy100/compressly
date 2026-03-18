@@ -820,6 +820,8 @@ const StaticSections = React.memo(() => (
             With Compressly, you can quickly prepare images for uploads, sharing,
             or publishing without installing software or creating an account -
             making image compression simple, private, and accessible to everyone.
+            Beyond compression, tools like our <a href="/pinterest-image-downloader/" style={{ color: "#0b66d1", textDecoration: "none" }}>
+            Pinterest image downloader</a> make it easy to save and reuse images you find online.
           </p>
         </div>
       </div>
@@ -1007,7 +1009,7 @@ const StaticSections = React.memo(() => (
           <br />
           <br />
           Learn more: try the quick links below to compress a JPEG or
-          compress an image to 100 KB.
+          compress an image to 100 KB. You can also <a href="/pinterest-image-downloader/" style={{ color: "#0b66d1", textDecoration: "none" }}>download Pinterest images</a> directly to your device using our free Pinterest tool.
         </div>
       </div>
     </section>
