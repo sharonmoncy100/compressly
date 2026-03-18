@@ -1009,7 +1009,13 @@ const StaticSections = React.memo(() => (
           <br />
           <br />
           Learn more: try the quick links below to compress a JPEG or
-          compress an image to 100 KB. You can also <a href="/pinterest-image-downloader/" style={{ color: "#0b66d1", textDecoration: "none" }}>download Pinterest images</a> directly to your device using our free Pinterest tool.
+          compress an image to 100 KB. You can also{" "}
+          <a href="/pinterest-image-downloader/" style={{ color: "#0b66d1", textDecoration: "none" }}>
+            download Pinterest images</a> or{" "}
+          <a href="/signature-maker/" style={{ color: "#0b66d1", textDecoration: "none" }}>
+            create a digital signature</a> using our other free tools.
+
+          
         </div>
       </div>
     </section>
