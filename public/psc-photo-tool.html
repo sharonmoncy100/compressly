@@ -22,6 +22,11 @@
         gtag('event', 'psc_tool_opened', { page: 'psc-photo-tool' });
     </script>
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+
     <title>Kerala PSC Photo & Signature Resize Tool (Official 150×200px, 30KB) | Compressly</title>
     <meta name="description"
     content="Free online tool to resize and prepare Kerala PSC passport photos (150×200px) and signatures (150×100px) to exact 30KB for Thulasi portal. Crop, stamp, download instantly." />
@@ -1830,6 +1835,7 @@
 
             // Stamp
             if (withStamp) {
+                await document.fonts.load(`700 ${12}px Roboto`);
                 const name = stampName.value.trim().toUpperCase();
                 const dateStr = stampDate.value ? formatDate(new Date(stampDate.value)) : '';
                 const lines = [name, dateStr].filter(Boolean);
@@ -1851,7 +1857,7 @@
                     lines.forEach(text => {
                         let fs = fontBase;
                         do {
-                            ctx.font = `bold ${fs}px Tahoma, Arial, sans-serif`;
+                            ctx.font = `700 ${fs}px Roboto`;
                             fs--;
                         } while (ctx.measureText(text).width > config.width - 8 && fs > 6);
                         ctx.fillText(text, config.width / 2, y);
