@@ -1080,6 +1080,94 @@
                 padding: 20px;
             }
         }
+
+        /* =========================
+   UPI Card — FINAL (Aligned with system)
+   ========================= */
+
+.upi-card {
+    margin-top: 14px;
+    padding: 16px;
+    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+    border: 1px solid #bfdbfe;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.upi-title {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #1e40af;
+    margin-bottom: 4px;
+}
+
+.upi-subtitle {
+    font-size: 12px;
+    color: #3b82f6;
+    margin-bottom: 14px;
+}
+
+.upi-id-wrap {
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1.5px solid #93c5fd;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.upi-id-value {
+    flex: 1;
+    min-width: 0;
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #1e3a8a;
+    font-family: monospace;
+    letter-spacing: 0.3px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.upi-id-label {
+    font-size: 9px;
+    font-weight: 700;
+    color: #2563eb;
+    background: #dbeafe;
+    border-radius: 4px;
+    padding: 1px 5px;
+    margin-right: 6px;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+.copy-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-left: 1.5px solid #bfdbfe;
+    background: #eff6ff;
+    color: #2563eb;
+    cursor: pointer;
+    transition: background 0.12s, color 0.12s;
+}
+
+.copy-btn:hover { background: #dbeafe; }
+.copy-btn.copied { background: #dcfce7; color: #16a34a; }
+
+.upi-hint {
+    font-size: 11.5px;
+    color: #3b82f6;
+    line-height: 1.5;
+}
     </style>
 </head>
 
@@ -1283,20 +1371,26 @@
                         </button>
                     </div>
                 
-        <div
-            style="margin-top:14px;padding:12px 16px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;text-align:center;">
-        
-            <a href="https://razorpay.me/@compressly" target="_blank" rel="noopener noreferrer"
-                onclick="gtag('event','donation_click',{page:'psc-tool'});"
-                style="display:inline-flex;align-items:center;gap:6px;padding:8px 16px;font-size:13px;font-weight:600;color:#2563eb;background:#eff6ff;border:1px solid #bfdbfe;border-radius:999px;text-decoration:none;">
-                Give a small tip to the developer 🙏
-            </a>
-        
-            <div style="font-size:12px;color:#64748b;margin-top:6px;">
-                No ads. No uploads. Runs entirely free for PSC applicants.
-            </div>
-        
-        </div>
+                            <div class="upi-card">
+                                <div class="upi-title">Support the developer ❤️</div>
+                                <div class="upi-subtitle">Support this free tool - no ads. Always free.</div>
+
+                                <div class="upi-id-wrap">
+                                        <div class="upi-id-value">
+                                            <span class="upi-id-label">UPI</span>
+                                            sharonmoncy47@okicici
+                                        </div>
+                                    <button class="copy-btn" onclick="copyUPI()" title="Copy UPI ID">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round">
+                                            <rect x="9" y="9" width="13" height="13" rx="2" />
+                                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <div class="upi-hint">Open GPay, PhonePe, or Paytm → Send money → Paste UPI ID</div>
+                            </div>
 
             <div class="suggest-card" id="suggestCard">
                 <div class="suggest-title" id="suggestTitle">Prepare Your Signature</div>
@@ -2163,6 +2257,25 @@
             });
         });
 
+        function copyUPI() {
+            navigator.clipboard.writeText('sharonmoncy47@okicici').then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.classList.add('copied');
+                btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`;
+                setTimeout(() => {
+                    btn.classList.remove('copied');
+                    btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`;
+                }, 2000);
+            }).catch(() => {
+                // Fallback for browsers that block clipboard
+                const el = document.createElement('textarea');
+                el.value = 'sharonmoncy47@okicici';
+                document.body.appendChild(el);
+                el.select();
+                document.execCommand('copy');
+                document.body.removeChild(el);
+            });
+        }
 
 
 
