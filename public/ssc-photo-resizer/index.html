@@ -932,14 +932,15 @@
         }
 
         .result-preview {
-            width: 150px;
-            max-width: 150px;
+            max-width: 220px;
+            max-height: 160px;
+            width: auto;
             height: auto;
             display: block;
             margin: 12px auto;
             border-radius: 10px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            image-rendering: crisp-edges;
+            
         }
 
         .result-meta {
@@ -1142,7 +1143,7 @@
                             </svg>
                         </div>
                         <div class="type-title">Passport Photo</div>
-                        <div class="type-desc">150×200px • 20–50KB</div>
+                        <div class="type-desc">150×200px<br>20-50KB</div>
                     </div>
                     <div class="type-card" data-type="signature">
                         <div class="type-icon">
@@ -1152,7 +1153,7 @@
                             </svg>
                         </div>
                         <div class="type-title">Signature</div>
-                        <div class="type-desc">140×60px • 10–20KB</div>
+                        <div class="type-desc">6 cm × 2 cm<br>10-20KB</div>
                     </div>
                 </div>
             </div>
@@ -1341,7 +1342,7 @@
         // ── CONFIG (easy to extend for MTS, GD later) ──
         const EXAM_CONFIG = {
             photo: { width: 150, height: 200, minKB: 20, maxKB: 40, title: 'Photo', desc: 'Will be resized to 150×200px and compressed for SSC' },
-            signature: { width: 140, height: 60, minKB: 10, maxKB: 18, title: 'Signature', desc: 'Will be resized to 140×60px and compressed for SSC' }
+           signature: { width: 472, height: 236, minKB: 10, maxKB: 20, title: 'Signature', desc: 'Will be resized to 472×236px (6cm×2cm at 300 DPI) for SSC' }
         };
 
         // ── STATE ──
@@ -1859,6 +1860,23 @@
                 img.src = canvas.toDataURL('image/png');
             });
         }
+          // newly added 26-05-2026 
+        async function patchJpegDPI(blob, dpi) {
+                const buffer = await blob.arrayBuffer();
+                const data = new Uint8Array(buffer);
+                // JFIF header: FF D8 FF E0 ... JFIF\0 ... units, Xdensity, Ydensity
+                if (data[0] === 0xFF && data[1] === 0xD8 &&
+                    data[2] === 0xFF && data[3] === 0xE0 &&
+                    data[6] === 0x4A && data[7] === 0x46) {
+                    data[13] = 1;                      // units = DPI
+                    data[14] = (dpi >> 8) & 0xFF;      // X high byte
+                    data[15] = dpi & 0xFF;             // X low byte
+                    data[16] = (dpi >> 8) & 0xFF;      // Y high byte
+                    data[17] = dpi & 0xFF;             // Y low byte
+                }
+                return new Blob([data], { type: 'image/jpeg' });
+            }
+            //newly ends here
 
         // ── PROCESS IMAGE ──
         async function processImage() {
@@ -1875,21 +1893,24 @@
             applyEdgeSharpen(ctx, config.width, config.height);
 
             // Binary search compress to target KB range
+  // Compressed blob for download (10-20KB, 300 DPI)
             const blob = await compressToTarget(canvas, config.minKB, config.maxKB, selectedType);
+            const dpiBlob = await patchJpegDPI(blob, 300);
 
-            const url = URL.createObjectURL(blob);
+            // High quality blob just for preview display (crisp, not compressed)
+            const previewBlob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', 0.92));
+            const previewUrl = URL.createObjectURL(previewBlob);
+            const downloadUrl = URL.createObjectURL(dpiBlob);
 
-            // CLS fix: set explicit dimensions before src
-            preview.width = config.width;
-            preview.height = config.height;
+            // CLS fix: set dimensions before src
             preview.style.aspectRatio = `${config.width}/${config.height}`;
-            preview.src = url;
+            preview.src = previewUrl;
 
-            downloadLink.href = url;
-            downloadLink.download = `ssc-${selectedType}-${selectedExam}-${config.width}x${config.height}-${Math.round(blob.size / 1024)}kb.jpg`;
+            downloadLink.href = downloadUrl;
+            downloadLink.download = `ssc-${selectedType}-${selectedExam}-${config.width}x${config.height}-${Math.round(dpiBlob.size / 1024)}kb.jpg`;
 
             document.getElementById('resultMeta').textContent =
-                `${Math.round(blob.size / 1024)} KB · ${config.width}×${config.height}px · SSC ${selectedExam}`;
+                `${Math.round(dpiBlob.size / 1024)} KB · ${config.width}×${config.height}px(6cm×2cm) · 300 DPI · SSC ${selectedExam}`;
 
             document.getElementById('resultTitle').textContent =
                 `Your ${config.title} is Ready!`;
@@ -1980,22 +2001,70 @@
             ctx.putImageData(imgData, 0, 0);
         }
 
-        async function compressToTarget(canvas, minKB, maxKB, type) {
-            let qLow = type === 'signature' ? 0.80 : 0.75;
-            let qHigh = 0.99;
-            let best = null;
+       async function compressToTarget(canvas, minKB, maxKB, type) {
+            let workCanvas = canvas;
 
-            for (let i = 0; i < 15; i++) {
-                const q = (qLow + qHigh) / 2;
-                const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', q));
-                const kb = blob.size / 1024;
+            // For signatures: if image compresses too small even at max quality,
+            // upscale the canvas to force file size up
+            let scale = 1;
+            const MAX_SCALE = 3;
 
-                if (kb >= minKB && kb <= maxKB) { best = blob; qLow = q; }
-                else if (kb > maxKB) qHigh = q;
-                else qLow = q;
+            while (scale <= MAX_SCALE) {
+                let qLow = 0.3;
+                let qHigh = 0.99;
+                let best = null;
+                let bestKB = 0;
+
+                // Check max quality first
+                const maxBlob = await new Promise(r => workCanvas.toBlob(r, 'image/jpeg', 0.99));
+                const maxKBCheck = maxBlob.size / 1024;
+
+                // If even at max quality we're under minKB, upscale and try again
+                if (maxKBCheck < minKB) {
+                    scale += 0.5;
+                    if (scale > MAX_SCALE) {
+                        // Last resort: return max quality blob even if under target
+                        return maxBlob;
+                    }
+                    // Upscale canvas
+                    const sc = document.createElement('canvas');
+                    sc.width = Math.round(canvas.width * scale);
+                    sc.height = Math.round(canvas.height * scale);
+                    const sctx = sc.getContext('2d');
+                    sctx.imageSmoothingEnabled = true;
+                    sctx.imageSmoothingQuality = 'high';
+                    sctx.drawImage(canvas, 0, 0, sc.width, sc.height);
+                    workCanvas = sc;
+                    continue;
+                }
+
+                // Binary search for quality within range
+                for (let i = 0; i < 20; i++) {
+                    const q = (qLow + qHigh) / 2;
+                    const blob = await new Promise(r => workCanvas.toBlob(r, 'image/jpeg', q));
+                    const kb = blob.size / 1024;
+
+                    if (kb >= minKB && kb <= maxKB) {
+                        best = blob;
+                        bestKB = kb;
+                        qLow = q;
+                        if (kb >= minKB + 2 && kb <= maxKB - 1) break; // good enough
+                    } else if (kb > maxKB) {
+                        qHigh = q;
+                    } else {
+                        qLow = q;
+                    }
+
+                    await new Promise(r => setTimeout(r, 0)); // prevent INP freeze
+                }
+
+                if (best) return best;
+
+                // If we got here, binary search didn't find range — return closest
+                return await new Promise(r => workCanvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2));
             }
 
-            return best || await new Promise(r => canvas.toBlob(r, 'image/jpeg', (qLow + qHigh) / 2));
+            return await new Promise(r => workCanvas.toBlob(r, 'image/jpeg', 0.99));
         }
     </script>
 </body>
