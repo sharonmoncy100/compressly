@@ -48,7 +48,7 @@
       "creator": { "@type": "Organization", "name": "Compressly", "url": "https://www.compressly.in" },
       "featureList": [
         "Resize SSC CGL photo to 150x200px",
-        "Resize SSC CHSL signature to 140x60px",
+        "Resize SSC signature to 6cm x 2cm at 300 DPI",
         "Compress to SSC-required KB range",
         "Crop tool with grid overlay",
         "No upload - works in browser"
@@ -932,15 +932,14 @@
         }
 
         .result-preview {
-            max-width: 220px;
-            max-height: 160px;
-            width: auto;
+            max-width: 320px;
+            max-height: none;
+            width: 100%;
             height: auto;
             display: block;
             margin: 12px auto;
             border-radius: 10px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-            
+            box-shadow: 0 8px 24px rgba(0,0,0,.12);
         }
 
         .result-meta {
@@ -1220,10 +1219,7 @@
                             <div class="crop-handle ne" data-handle="ne"></div>
                             <div class="crop-handle sw" data-handle="sw"></div>
                             <div class="crop-handle se" data-handle="se"></div>
-                            <div class="crop-handle n" data-handle="n"></div>
-                            <div class="crop-handle s" data-handle="s"></div>
-                            <div class="crop-handle e" data-handle="e"></div>
-                            <div class="crop-handle w" data-handle="w"></div>
+                          
                         </div>
                     </div>
                 </div>
@@ -1342,7 +1338,14 @@
         // ── CONFIG (easy to extend for MTS, GD later) ──
         const EXAM_CONFIG = {
             photo: { width: 150, height: 200, minKB: 20, maxKB: 40, title: 'Photo', desc: 'Will be resized to 150×200px and compressed for SSC' },
-           signature: { width: 472, height: 236, minKB: 10, maxKB: 20, title: 'Signature', desc: 'Will be resized to 472×236px (6cm×2cm at 300 DPI) for SSC' }
+           signature: {
+                width: 709,
+                height: 236,
+                minKB: 10,
+                maxKB: 20,
+                title: 'Signature',
+                desc: 'Will be resized to 709×236px (6cm×2cm at 300 DPI) for SSC'
+            }
         };
 
         // ── STATE ──
@@ -1752,31 +1755,69 @@
                     cropBox.style.top = t2 + 'px';
                     updateOverlay();
                 } else if (resizing) {
-                    let newW = sw, newH = sh, newL = sl, newT = st;
-                    const minSize = 60;
 
-                    if (handle.includes('e')) newW = Math.min(sw + dx, canvasWidth - sl);
-                    if (handle.includes('s')) newH = Math.min(sh + dy, canvasHeight - st);
-                    if (handle.includes('w')) {
-                        const maxDx = sw - minSize;
-                        const clampedDx = Math.min(dx, maxDx);
-                        newL = Math.max(0, sl + clampedDx);
-                        newW = sw - (newL - sl);
-                    }
-                    if (handle.includes('n')) {
-                        const maxDy = sh - minSize;
-                        const clampedDy = Math.min(dy, maxDy);
-                        newT = Math.max(0, st + clampedDy);
-                        newH = sh - (newT - st);
+                    const aspect =
+                        EXAM_CONFIG[selectedType].width /
+                        EXAM_CONFIG[selectedType].height;
+
+                    let newW = sw;
+                    let newH = sh;
+                    let newL = sl;
+                    let newT = st;
+
+                    const minWidth = 80;
+
+                    if (handle === 'se') {
+                        newW = Math.max(minWidth, sw + dx);
+                        newH = newW / aspect;
                     }
 
-                    newW = Math.max(minSize, Math.min(newW, canvasWidth - newL));
-                    newH = Math.max(minSize, Math.min(newH, canvasHeight - newT));
+                    if (handle === 'nw') {
+                        newW = Math.max(minWidth, sw - dx);
+                        newH = newW / aspect;
+                        newL = sl + (sw - newW);
+                        newT = st + (sh - newH);
+                    }
+
+                    if (handle === 'ne') {
+                        newW = Math.max(minWidth, sw + dx);
+                        newH = newW / aspect;
+                        newT = st + (sh - newH);
+                    }
+
+                    if (handle === 'sw') {
+                        newW = Math.max(minWidth, sw - dx);
+                        newH = newW / aspect;
+                        newL = sl + (sw - newW);
+                    }
+
+                    if (newL < 0) {
+                        newW += newL;
+                        newL = 0;
+                        newH = newW / aspect;
+                    }
+
+                    if (newT < 0) {
+                        newH += newT;
+                        newT = 0;
+                        newW = newH * aspect;
+                    }
+
+                    if (newL + newW > canvasWidth) {
+                        newW = canvasWidth - newL;
+                        newH = newW / aspect;
+                    }
+
+                    if (newT + newH > canvasHeight) {
+                        newH = canvasHeight - newT;
+                        newW = newH * aspect;
+                    }
 
                     cropBox.style.left = newL + 'px';
                     cropBox.style.top = newT + 'px';
                     cropBox.style.width = newW + 'px';
                     cropBox.style.height = newH + 'px';
+
                     updateOverlay();
                 }
             };
