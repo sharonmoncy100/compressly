@@ -84,24 +84,25 @@
 </head>
 
 <body>
+
+      <!-- Monetag Ad Script -->
+      <script>
+        (function (s) {
+          s.dataset.zone = '11140575';
+          s.src = 'https://nap5k.com/tag.min.js';
+        })(
+          [document.documentElement, document.body]
+            .filter(Boolean)
+            .pop()
+            .appendChild(document.createElement('script'))
+        );
+      </script>
+      
   <!-- React app root -->
   <div id="root"></div>
 
   <!-- Modal portal root (IMPORTANT) -->
   <div id="modal-root"></div>
-
-    <!-- Monetag Ad Script -->
-    <script>
-      (function (s) {
-        s.dataset.zone = '11140575';
-        s.src = 'https://nap5k.com/tag.min.js';
-      })(
-        [document.documentElement, document.body]
-          .filter(Boolean)
-          .pop()
-          .appendChild(document.createElement('script'))
-      );
-    </script>
 
   <!-- Vite entry -->
   <script type="module" src="/src/main.jsx"></script>
