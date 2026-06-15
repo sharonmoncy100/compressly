@@ -1509,12 +1509,11 @@
                 }, 250);
             }
 
-                 if (step === 5) {
+            if (step === 5) {
                 setTimeout(() => {
-                    const resultTitle = document.getElementById('resultTitle');
+                    const resultSection = document.getElementById('stepResult');
                     const headerHeight = document.querySelector('header').offsetHeight;
-                    const rect = resultTitle.getBoundingClientRect();
-                    const target = window.scrollY + rect.bottom - headerHeight + 16;
+                    const target = resultSection.offsetTop - headerHeight + 80;
                     window.scrollTo({ top: target, behavior: 'smooth' });
                 }, 400);
             } else if (step !== 4) {
@@ -1856,10 +1855,16 @@
                 }
             };
 
-            const end = () => { dragging = false; resizing = false; handle = null; };
+            const end = () => {
+                dragging = false;
+                resizing = false;
+                handle = null;
+            };
 
-            document.onmousemove = document.ontouchmove = move;
-            document.onmouseup = document.ontouchend = end;
+            document.addEventListener('mousemove', move, { passive: true });
+            document.addEventListener('touchmove', move, { passive: false });
+            document.addEventListener('mouseup', end);
+            document.addEventListener('touchend', end);
         }
 
         function updateOverlay() {
@@ -1965,7 +1970,10 @@
             const ctx = canvas.getContext('2d');
 
             // Sharpen
+            // Sharpen (yielded to prevent INP block)
+            await new Promise(r => setTimeout(r, 0));
             applyEdgeSharpen(ctx, config.width, config.height);
+            await new Promise(r => setTimeout(r, 0));
 
             // Binary search compress to target KB range
   // Compressed blob for download (10-20KB, 300 DPI)
