@@ -1308,7 +1308,7 @@
                         </div>
 
                         <a href="https://amzn.to/4vNJjtX" target="_blank" rel="nofollow sponsored noopener"
-                            onclick="gtag('event','amazon_ssc_banner_click');" style="display:block;">
+                            onclick="gtag('event','amazon_ssc_banner_click');" style="display:block; aspect-ratio: 824/412;">
                             <img src="/ssc-cgl-book1.webp" alt="SSC Books" loading="lazy" width="824" height="412" style="
                                     width:100%;
                                     height:auto;
@@ -1509,14 +1509,14 @@
                 }, 250);
             }
 
-            if (step === 5) {
-                // EXACT same auto-scroll as Kerala PSC tool
+                 if (step === 5) {
                 setTimeout(() => {
-                    const resultSection = document.getElementById('stepResult');
+                    const resultTitle = document.getElementById('resultTitle');
                     const headerHeight = document.querySelector('header').offsetHeight;
-                    const target = resultSection.offsetTop - headerHeight - 10;
+                    const rect = resultTitle.getBoundingClientRect();
+                    const target = window.scrollY + rect.bottom - headerHeight + 16;
                     window.scrollTo({ top: target, behavior: 'smooth' });
-                }, 80);
+                }, 400);
             } else if (step !== 4) {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }
