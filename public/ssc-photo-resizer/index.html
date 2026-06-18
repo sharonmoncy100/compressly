@@ -990,15 +990,16 @@
 
         /* ── PROCESSING ── */
         .processing {
-            display: none;
+            visibility: hidden;
             text-align: center;
             margin-top: 16px;
             font-size: 14px;
             color: var(--accent);
+            min-height: 28px;
         }
 
         .processing.active {
-            display: block;
+            visibility: visible;
         }
 
         .spinner {
