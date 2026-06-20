@@ -2036,18 +2036,13 @@
         };
 
         // Track download click with analytics and show ad
-        downloadLink.onclick = () => {
+        downloadLink.onclick = () => 
 
                 gtag('event', 'ssc_download_clicked', {
                     type: selectedType
                 });
-
-                const s = document.createElement('script');
-                s.dataset.zone = '11165245';
-                s.src = 'https://n6wxm.com/vignette.min.js';
-                document.body.appendChild(s);
-            };
-            // just replace and paste  : downloadLink.onclick = () => gtag('event', 'ssc_download_clicked', { type: selectedType });
+            
+          
 
         // ── IMAGE UTILS ──
         function stepDownResize(img, w, h) {
