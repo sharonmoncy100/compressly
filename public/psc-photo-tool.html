@@ -999,15 +999,16 @@
 
         /* Processing spinner */
         .processing {
-            display: none;
+            visibility: hidden;
             text-align: center;
             margin-top: 16px;
             font-size: 14px;
             color: var(--accent);
+            min-height: 28px;
         }
 
         .processing.active {
-            display: block;
+            visibility: visible;
         }
 
         .spinner {
@@ -1395,10 +1396,10 @@
                             Sponsored Books
                         </div>
 
-                        <a href="https://amzn.to/49XOgIg" target="_blank" rel="nofollow sponsored noopener"
-                            onclick="gtag('event','amazon_psc_banner_click');" style="display:block; aspect-ratio: 824/440;">
-                            <img src="/rankFile-degree-compressed.webp" alt="Kerala PSC Books" loading="lazy" width="824" 
-                            height="440" style="
+                        <a href="https://amzn.to/4uRe2p2" target="_blank" rel="nofollow sponsored noopener"
+                            onclick="gtag('event','amazon_psc_banner_click');" style="display:block; aspect-ratio: 1056/528;">
+                            <img src="/bat-final.webp" alt="Kerala PSC Books" loading="lazy" width="1056" 
+                            height="528" style="
                                     width:100%;
                                     height:auto;
                                     display:block;
@@ -2213,13 +2214,14 @@
             }
 
             // ✅ AUTO-SCROLL FOR RESULT STEP (Step 5)
-           if (step === 5) {
+            if (step === 5) {
                 setTimeout(() => {
-                    const resultSection = document.getElementById('stepResult');
+                    const resultTitle = document.getElementById('resultTitle');
                     const headerHeight = document.querySelector('header').offsetHeight;
-                    const target = resultSection.offsetTop - headerHeight - 10;
+                    const rect = resultTitle.getBoundingClientRect();
+                    const target = window.scrollY + rect.bottom - headerHeight + 16;
                     window.scrollTo({ top: target, behavior: 'smooth' });
-                }, 80);
+                }, 400);
             } else if (step !== 3) {
                 // For other steps (1, 2, 4), scroll to top
                 window.scrollTo({ top: 0, behavior: 'smooth' });
