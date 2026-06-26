@@ -896,8 +896,10 @@
 
             .side-ad img {
                 width: 100%;
+                aspect-ratio: 160/600;
                 border-radius: 10px;
                 box-shadow: 0 4px 16px rgba(0,0,0,.1);
+                object-fit: cover;
             }
         }
 
@@ -962,10 +964,12 @@
 
 <body>
 
-        <a href="https://amzn.to/44uT3gX" target="_blank" rel="nofollow sponsored noopener" class="side-ad left">
+        <a href="https://amzn.to/44uT3gX" target="_blank" rel="nofollow sponsored noopener" class="side-ad left" 
+        onclick="gtag('event','pinterest_side_ad_click',{position:'left'});">
             <img src="/clock-vintage.webp" alt="Sponsored" loading="lazy">
         </a>
-        <a href="https://amzn.to/44uT3gX" target="_blank" rel="nofollow sponsored noopener" class="side-ad right">
+        <a href="https://amzn.to/44uT3gX" target="_blank" rel="nofollow sponsored noopener" class="side-ad right"
+         onclick="gtag('event','pinterest_side_ad_click',{position:'right'});">
             <img src="/clock-vintage.webp" alt="Sponsored" loading="lazy">
         </a>
 
