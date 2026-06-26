@@ -867,9 +867,63 @@
             text-decoration: underline;
         }
 
-        .hidden {
+            .hidden {
             display: none !important;
         }
+
+
+        .side-ad {
+            display: none;
+        }
+
+        @media (min-width: 1440px) {
+            .side-ad {
+                display: block;
+                position: fixed;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 160px;
+                z-index: 50;
+            }
+
+            .side-ad.left {
+                left: 24px;
+            }
+
+            .side-ad.right {
+                right: 24px;
+            }
+
+            .side-ad img {
+                width: 100%;
+                border-radius: 10px;
+                box-shadow: 0 4px 16px rgba(0,0,0,.1);
+            }
+        }
+
+        .inline-mobile-ad {
+            display: none;
+        }
+
+        @media (max-width: 1439px) {
+            .inline-mobile-ad {
+                display: block;
+                max-width: 728px;
+                margin: 32px auto;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                overflow: hidden;
+                background: #fff;
+            }
+
+            .inline-mobile-ad img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+        }
+
+
     </style>
 
     <script type="application/ld+json">
@@ -908,8 +962,15 @@
 
 <body>
 
-    <!-- ── HEADER ── -->
-    <header>
+        <a href="https://amzn.to/44uT3gX" target="_blank" rel="nofollow sponsored noopener" class="side-ad left">
+            <img src="/clock-vintage.webp" alt="Sponsored" loading="lazy">
+        </a>
+        <a href="https://amzn.to/44uT3gX" target="_blank" rel="nofollow sponsored noopener" class="side-ad right">
+            <img src="/clock-vintage.webp" alt="Sponsored" loading="lazy">
+        </a>
+
+        <!-- ── HEADER ── -->
+        <header>
         <div class="header-inner">
             <a href="https://www.compressly.in" class="brand">
                 <img src="/icon.png" width="32" height="32" alt="Compressly" loading="lazy">
