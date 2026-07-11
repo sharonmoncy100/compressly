@@ -1456,12 +1456,25 @@
                 return;
             }
 
-            const isPinterest =
-                rawUrl.includes('pinterest.com') ||
-                rawUrl.includes('pinterest.co.uk') ||
-                rawUrl.includes('pinterest.in') ||
-                rawUrl.includes('pinterest.ca') ||
-                rawUrl.includes('pin.it');
+            let isPinterest = false;
+
+            try {
+                const hostname = new URL(rawUrl).hostname.toLowerCase();
+
+                isPinterest =
+                    hostname === 'pin.it' ||
+                    hostname === 'www.pin.it' ||
+                    hostname === 'pinterest.com' ||
+                    hostname.endsWith('.pinterest.com') ||
+                    hostname === 'pinterest.in' ||
+                    hostname.endsWith('.pinterest.in') ||
+                    hostname === 'pinterest.co.uk' ||
+                    hostname.endsWith('.pinterest.co.uk') ||
+                    hostname === 'pinterest.ca' ||
+                    hostname.endsWith('.pinterest.ca');
+            } catch {
+                isPinterest = false;
+            }
 
             if (!isPinterest) {
                 showError('That doesn\'t look like a Pinterest URL. Please paste a pin link.');

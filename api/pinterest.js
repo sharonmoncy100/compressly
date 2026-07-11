@@ -20,15 +20,19 @@ export default async function handler(req, res) {
         return res.status(400).json({ error: 'Please enter a valid Pinterest URL.' });
     }
 
-    const allowedPinterestHosts = [
-        'pinterest.com', 'www.pinterest.com',
-        'pinterest.co.uk', 'www.pinterest.co.uk',
-        'pinterest.in', 'www.pinterest.in',
-        'pinterest.ca', 'www.pinterest.ca',
-        'pin.it',
-    ];
+    const hostname = parsedInput.hostname.toLowerCase();
 
-    const isPinterest = allowedPinterestHosts.some(h => parsedInput.hostname === h);
+    const isPinterest =
+        hostname === 'pin.it' ||
+        hostname === 'www.pin.it' ||
+        hostname === 'pinterest.com' ||
+        hostname.endsWith('.pinterest.com') ||
+        hostname === 'pinterest.in' ||
+        hostname.endsWith('.pinterest.in') ||
+        hostname === 'pinterest.co.uk' ||
+        hostname.endsWith('.pinterest.co.uk') ||
+        hostname === 'pinterest.ca' ||
+        hostname.endsWith('.pinterest.ca');
 
     if (!isPinterest) {
         return res.status(400).json({ error: 'Please enter a valid Pinterest URL.' });
