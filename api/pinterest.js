@@ -13,12 +13,22 @@ export default async function handler(req, res) {
 
     const decoded = decodeURIComponent(url).trim();
 
-    const isPinterest =
-        decoded.includes('pinterest.com') ||
-        decoded.includes('pinterest.co.uk') ||
-        decoded.includes('pinterest.in') ||
-        decoded.includes('pinterest.ca') ||
-        decoded.includes('pin.it');
+    let parsedInput;
+    try {
+        parsedInput = new URL(decoded);
+    } catch {
+        return res.status(400).json({ error: 'Please enter a valid Pinterest URL.' });
+    }
+
+    const allowedPinterestHosts = [
+        'pinterest.com', 'www.pinterest.com',
+        'pinterest.co.uk', 'www.pinterest.co.uk',
+        'pinterest.in', 'www.pinterest.in',
+        'pinterest.ca', 'www.pinterest.ca',
+        'pin.it',
+    ];
+
+    const isPinterest = allowedPinterestHosts.some(h => parsedInput.hostname === h);
 
     if (!isPinterest) {
         return res.status(400).json({ error: 'Please enter a valid Pinterest URL.' });
