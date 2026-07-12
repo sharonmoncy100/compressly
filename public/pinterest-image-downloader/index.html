@@ -1389,8 +1389,9 @@
     </footer>
 
     <script>
-        let currentImageUrl = '';
+       let currentImageUrl = '';
         let currentTitle = '';
+        let currentCategory = '';
 
         const urlInput = document.getElementById('urlInput');
         const fetchBtn = document.getElementById('fetchBtn');
@@ -1497,6 +1498,7 @@
 
                 currentImageUrl = data.imageUrl;
                 currentTitle = data.title || 'Pinterest Image';
+                currentCategory = data.category || 'Other';
 
                 previewImg.onload = null;
                 previewImg.onerror = null;
@@ -1526,7 +1528,11 @@
         async function triggerDownload() {
             if (!currentImageUrl) return;
 
-             gtag('event', 'pinterest_image_downloaded', { page: 'pinterest-image-downloader' });
+            gtag('event', 'pinterest_image_downloaded', {
+                page: 'pinterest-image-downloader',
+                image_title: currentTitle,
+                image_category: currentCategory
+            });
 
             const btn = document.getElementById('downloadBtn');
             btn.textContent = 'Downloading…';

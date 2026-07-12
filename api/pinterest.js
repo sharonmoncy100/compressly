@@ -82,7 +82,23 @@ export default async function handler(req, res) {
             html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
         const title = titleMatch ? titleMatch[1].trim() : 'Pinterest Image';
 
-        return res.status(200).json({ imageUrl, title });
+        let category = 'Other';
+
+        const t = title.toLowerCase();
+
+        if (t.includes('wallpaper') || t.includes('background')) category = 'Wallpapers';
+        else if (t.includes('bedroom') || t.includes('living room') || t.includes('interior') || t.includes('home decor')) category = 'Home Decor';
+        else if (t.includes('mehndi') || t.includes('henna')) category = 'Mehndi';
+        else if (t.includes('recipe') || t.includes('food') || t.includes('cake')) category = 'Food';
+        else if (t.includes('car') || t.includes('bike')) category = 'Vehicles';
+        else if (t.includes('cat') || t.includes('dog')) category = 'Animals';
+        else if (t.includes('hair') || t.includes('hairstyle')) category = 'Hairstyles';
+        else if (t.includes('dress') || t.includes('fashion')) category = 'Fashion';
+        else if (t.includes('logo')) category = 'Logos';
+        else if (t.includes('tattoo')) category = 'Tattoo';
+        else if (t.includes('drawing') || t.includes('art')) category = 'Art';
+
+        return res.status(200).json({ imageUrl, title, category });
     } catch (err) {
         if (err.name === 'AbortError') {
             return res.status(504).json({ error: 'Request timed out. Pinterest took too long to respond.' });
