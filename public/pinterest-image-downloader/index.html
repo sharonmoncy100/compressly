@@ -394,18 +394,15 @@
             border: 1px solid #fecdd3;
         }
 
-        /* Result */
-            .result-state {
-                margin-top: 0;
-                min-height: 220px;
-                visibility: hidden;
-                pointer-events: none;
-                transition: margin-top 0.1s;
+            /* Result */
+                .result-state {
+                display: none;
             }
 
             .result-state.active {
+                display: block;
                 margin-top: 24px;
-        
+                min-height: 220px;
             }
 
             .result-state.show {
@@ -1449,6 +1446,7 @@
             function showState(state) {
                 errorState.classList.remove('show');
                 resultState.classList.remove('show');
+                resultState.classList.remove('active');
                 document.getElementById('resultInner').style.display = 'none';
                 document.getElementById('inlineLoading').style.display = 'none';
                 document.getElementById('stickyBar').classList.add('hidden');
