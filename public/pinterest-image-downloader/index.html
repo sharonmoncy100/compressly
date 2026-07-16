@@ -191,7 +191,7 @@
         /* ── HERO ── */
         .hero {
             background: linear-gradient(135deg, #fff1f2 0%, #fff 60%);
-            padding: 56px 16px 48px;
+            padding: 28px 16px 24px;
             text-align: center;
             border-bottom: 1px solid var(--border);
         }
@@ -207,7 +207,7 @@
             font-size: 12px;
             font-weight: 600;
             color: var(--accent);
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .hero h1 {
@@ -215,7 +215,7 @@
             font-weight: 800;
             line-height: 1.2;
             color: var(--fg);
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             letter-spacing: -0.5px;
         }
 
@@ -585,7 +585,7 @@
         .trust-strip {
             display: flex;
             justify-content: center;
-            gap: 24px;
+            gap: 18px;
             flex-wrap: wrap;
             margin-top: 20px;
             padding-top: 20px;
@@ -925,6 +925,32 @@
             }
         }
 
+                .affiliate-banner{
+            display:block;
+            max-width:780px;
+            margin:0 auto;
+            padding:0 16px;
+        }
+
+        .affiliate-banner img{
+            display:block;
+            width:100%;
+            height:auto;
+            aspect-ratio:1056 / 550;
+            object-fit:cover;
+            border-radius:14px;
+            border:1px solid var(--border);
+            box-shadow:0 4px 18px rgba(0,0,0,.06);
+        }
+        .affiliate-label{
+        max-width:780px;
+        margin:8px auto 6px;
+        padding:0 16px;
+        font-size:13px;
+        color:#64748b;
+        font-weight:600;
+              }
+
 
     </style>
 
@@ -1085,29 +1111,30 @@
                         </svg>
                         No registration
                     </div>
-                    <div class="trust-item">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                        </svg>
-                        No watermark
-                    </div>
+                 
                     <div class="trust-item">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
                             <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
                         </svg>
                         High-quality HD
                     </div>
-                    <div class="trust-item">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                        </svg>
-                        100% free
-                    </div>
+                 
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="affiliate-label">
+        Recommended Product
+    </div>
+    <a href="https://link.amazon/B0iyvPk9v" class="affiliate-banner" target="_blank" rel="nofollow sponsored noopener"
+        onclick="gtag('event','affiliate_banner_sty_click',{tool:'pinterest'});" style="aspect-ratio: 1056/550;">
+
+        <img src="/stylus1.webp" alt="Stylus Pen available on Amazon" width="1056" height="550" loading="lazy"
+            decoding="async" style="width:100%;height:auto;display:block;">
+
+    </a>
+    
     <main>
 
         <!-- HOW TO -->
