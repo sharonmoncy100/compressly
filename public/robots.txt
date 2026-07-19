@@ -1,4 +1,9 @@
 User-agent: *
 Allow: /
 
+User-agent: Googlebot-Image
+Disallow: /bat-final.webp
+Disallow: /soft-panda2.webp
+Disallow: /stylus1.webp
+
 Sitemap: https://www.compressly.in/sitemap.xml
