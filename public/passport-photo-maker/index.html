@@ -1,0 +1,2083 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/png" href="/favicon-64.png" />
+
+    <title>Passport Size Photo Maker - Free Online AI Tool | Compressly</title>
+    <meta name="description"
+        content="Make passport and visa size photos in seconds. Free AI background removal, size presets, and background color options. No sign-up, no watermark." />
+    <link rel="canonical" href="https://www.compressly.in/passport-photo-maker/" />
+
+    <meta property="og:title" content="Passport Photo Maker - Free AI Background Removal | Compressly" />
+    <meta property="og:description"
+        content="Make passport and visa size photos in seconds. Free AI background removal, size presets, and background color options. No sign-up, no watermark." />
+    <meta property="og:url" content="https://www.compressly.in/passport-photo-maker/" />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Passport Photo Maker - Free AI Background Removal | Compressly" />
+    <meta name="twitter:description"
+        content="Make passport and visa size photos in seconds. Free AI background removal, size presets, and background color options. No sign-up, no watermark." />
+
+    <!-- GA4 -->
+    <script>
+        const allowedHosts = ["compressly.in", "www.compressly.in"];
+        if (!allowedHosts.includes(location.hostname)) {
+            window['ga-disable-G-K9Z1H2JLZQ'] = true;
+        }
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K9Z1H2JLZQ', { anonymize_ip: true });
+    </script>
+
+    <!-- Schema -->
+    <script type="application/ld+json">
+  [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Passport Size Photo Maker",
+      "url": "https://www.compressly.in/passport-photo-maker/",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Any",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+      "description": "Make passport and visa size photos in seconds. Free AI background removal, size presets, and background color options.",
+      "creator": { "@type": "Organization", "name": "Compressly", "url": "https://www.compressly.in" }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.compressly.in" },
+        { "@type": "ListItem", "position": 2, "name": "Passport Photo Maker", "item": "https://www.compressly.in/passport-photo-maker/" }
+      ]
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is this passport photo maker completely free?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, completely free. No registration, no watermark, no limits." }
+        },
+        {
+          "@type": "Question",
+          "name": "How is my photo processed?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Your photo is sent securely to our AI processing service for background removal and returned to your browser for editing and download." }
+        },
+        {
+          "@type": "Question",
+          "name": "What photo sizes are available?",
+          "acceptedAnswer": { "@type": "Answer", "text": "You can choose from a simple set of popular presets including Passport Size Photo, Indian Passport Photo, US Visa Photo, and Schengen Visa Photo." }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I change the background color?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. You can choose from White, Light Grey, Sky Blue, Soft White, Light Blue, and Cream backgrounds." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is there a file size limit?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes, uploaded photos must be under 10MB. Most phone photos are well within this limit." }
+        },
+        {
+          "@type": "Question",
+          "name": "Does it work on mobile phones?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Yes. The tool works on all modern smartphones and tablets. You can pinch to zoom and drag to reposition the photo." }
+        }
+      ]
+    }
+  ]
+  </script>
+
+    <style>
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --fg: #0f172a;
+            --fg2: #334155;
+            --muted: #64748b;
+            --accent: #2563eb;
+            --accent-hover: #1d4ed8;
+            --accent-light: #eff6ff;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --border: #e2e8f0;
+            --success: #10b981;
+            --radius: 12px;
+            --radius-lg: 20px;
+            --header-h: 64px;
+            --shadow-sm: 0 1px 2px rgba(15, 23, 42, .05);
+            --shadow-md: 0 12px 32px -12px rgba(15, 23, 42, .18);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--fg);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+        }
+
+        button:focus-visible,
+        .upload-zone:focus-visible,
+        .size-select:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* ── HEADER ── */
+        header {
+            height: var(--header-h);
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .header-inner {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            text-decoration: none;
+            color: var(--fg);
+            font-weight: 700;
+            font-size: 17px;
+            letter-spacing: -0.3px;
+        }
+
+        .hamburger {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            border-radius: 6px;
+            transition: background 0.15s;
+            gap: 0;
+        }
+
+        .hamburger:hover {
+            background: var(--bg);
+        }
+
+        .hamburger span {
+            display: block;
+            width: 18px;
+            height: 2px;
+            background: var(--fg);
+            border-radius: 2px;
+            transition: all 0.25s;
+            margin: 2.5px 0;
+        }
+
+        .hamburger.open span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.open span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.open span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .nav-drawer {
+            position: fixed;
+            inset: var(--header-h) 0 0 0;
+            background: rgba(15, 23, 42, 0.4);
+            z-index: 190;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .nav-drawer.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .nav-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 260px;
+            height: 100%;
+            background: var(--card);
+            border-left: 1px solid var(--border);
+            padding: 24px 0;
+            transform: translateX(100%);
+            transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .nav-drawer.open .nav-panel {
+            transform: translateX(0);
+        }
+
+        .nav-panel a {
+            display: block;
+            padding: 11px 24px;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--fg2);
+            text-decoration: none;
+            transition: background 0.12s, color 0.12s;
+        }
+
+        .nav-panel a:hover {
+            background: var(--accent-light);
+            color: var(--accent);
+        }
+
+        .nav-panel a.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        /* ── MAIN ── */
+        main {
+            flex: 1;
+            min-height: calc(100vh - var(--header-h));
+            position: relative;
+        }
+
+        @supports (height: 100dvh) {
+            main {
+                min-height: calc(100dvh - var(--header-h));
+            }
+        }
+
+        /* ── STEP 1: UPLOAD ── */
+        #step-upload {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 16px 36px;
+            gap: 14px;
+            opacity: 1;
+            pointer-events: auto;
+            transition: opacity 0.2s;
+        }
+
+        #step-upload.hidden-step {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #step-upload h1 {
+            font-size: clamp(22px, 4vw, 32px);
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--fg);
+            text-align: center;
+        }
+
+        #step-upload>p {
+            font-size: 15px;
+            color: var(--muted);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+
+        .upload-zone {
+            width: 100%;
+            max-width: 420px;
+            min-height: 288px;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            background: var(--card);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            cursor: pointer;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm), var(--shadow-md);
+        }
+
+        .upload-zone:hover,
+        .upload-zone.drag {
+            border-color: var(--accent);
+            box-shadow: var(--shadow-sm), 0 20px 44px -14px rgba(37, 99, 235, .3);
+            transform: translateY(-2px);
+        }
+
+        .upload-zone input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent-light), #dbeafe);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            flex-shrink: 0;
+        }
+
+        .upload-label {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--fg);
+        }
+
+        .upload-hint {
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .btn-upload {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 26px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+            pointer-events: none;
+        }
+
+        .upload-zone:hover .btn-upload {
+            background: var(--accent-hover);
+        }
+
+        .upload-trust-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            font-size: 11.5px;
+            color: var(--muted);
+            font-weight: 500;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* ── PHOTO SIZE PRESET ── */
+        .size-picker {
+            width: 100%;
+            max-width: 420px;
+            margin-bottom: 2px;
+        }
+
+        .size-picker-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--fg2);
+            margin-bottom: 7px;
+        }
+
+        .size-select-wrap {
+            position: relative;
+        }
+
+        .size-select {
+            width: 100%;
+            appearance: none;
+            -webkit-appearance: none;
+            padding: 12px 42px 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: var(--card);
+            color: var(--fg);
+            font: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            outline: none;
+            transition: border-color .15s, box-shadow .15s;
+        }
+
+        .size-select:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, .1);
+        }
+
+        .size-select-chevron {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            color: var(--muted);
+        }
+
+        .size-helper {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 6px;
+            text-align: left;
+        }
+
+        /* ── PROCESSING OVERLAY ── */
+        #processing-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s;
+        }
+
+        #processing-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .proc-card {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            width: 320px;
+            max-width: 88vw;
+            height: 270px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .proc-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 16px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* FIX (CLS): title/sub reserve fixed vertical space so switching between
+           processing messages of different lengths never resizes the card. */
+        .proc-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--fg);
+            height: 48px;
+            line-height: 1.4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .proc-sub {
+            font-size: 13px;
+            color: var(--muted);
+            line-height: 1.5;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .proc-progress {
+            margin-top: auto;
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .proc-bar {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 2px;
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* ── STEP 2: EDITOR ── */
+        #step-editor {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+            overflow-y: auto;
+        }
+
+        #step-editor.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .editor-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+            padding: 0 20px;
+            height: 52px;
+
+            display: grid;
+            grid-template-columns: 120px 1fr 120px;
+            align-items: center;
+
+            flex-shrink: 0;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            background: none;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-back:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .toolbar-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--fg);
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 6px;
+        }
+
+        .btn-zoom {
+            width: 32px;
+            height: 32px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: none;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--fg2);
+            transition: all 0.15s;
+        }
+
+        .btn-zoom:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .zoom-label {
+            font-size: 12px;
+            color: var(--muted);
+            min-width: 42px;
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+
+            .editor-toolbar {
+                height: 46px;
+                padding: 0 12px;
+                grid-template-columns: 80px 1fr 80px;
+            }
+
+            .zoom-controls {
+                visibility: hidden;
+                pointer-events: none;
+            }
+
+            .toolbar-title {
+                font-size: 13px;
+            }
+        }
+
+        /* Editor body */
+        .editor-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 18px 16px 28px;
+            gap: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .editor-body {
+                padding: 10px 16px 14px;
+                gap: 10px;
+            }
+        }
+
+            .result-success {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 9px;
+            text-align: left;
+            }
+
+        .result-success-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #ecfdf5;
+            color: #059669;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .result-success-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--fg);
+            line-height: 1.3;
+        }
+
+        .result-success-sub {
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        @media (max-width: 640px) {
+            .result-success {
+                margin-bottom: 2px;
+            }
+
+            .result-success-sub {
+                font-size: 10px;
+            }
+        }
+
+        /* Background swatch selector */
+        .bg-selector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bg-swatch-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .bg-swatch-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--swatch-color);
+            padding: 0;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: transform .15s, box-shadow .15s, border-color .15s;
+        }
+
+        .bg-swatch-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .bg-swatch-btn[aria-pressed="true"] {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light), 0 4px 10px rgba(37, 99, 235, .25);
+            transform: scale(1.1);
+        }
+
+        .bg-swatch-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--fg);
+            min-height: 18px;
+        }
+
+        /* Canvas wrapper — height-driven sizing keeps the whole editor
+           (swatches + photo + download button) on screen without scrolling,
+           on both short and tall devices. Width is derived from height via
+           aspect-ratio, so the photo never overgrows the viewport. */
+        .canvas-wrap {
+            position: relative;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            touch-action: none;
+            user-select: none;
+            cursor: grab;
+            background: #e2e8f0;
+            width: auto;
+            height: clamp(260px, 42vh, 460px);
+            aspect-ratio: var(--photo-aspect, 413 / 531);
+            max-width: calc(100vw - 32px);
+        }
+
+        @supports (height: 100dvh) {
+            .canvas-wrap {
+                height: clamp(260px, 42dvh, 460px);
+            }
+        }
+
+        @media (max-width: 640px) {
+            .canvas-wrap {
+                height: clamp(190px, 38vh, 360px);
+            }
+        }
+
+        @supports (height: 100dvh) {
+            @media (max-width: 640px) {
+                .canvas-wrap {
+                    height: clamp(190px, 38dvh, 360px);
+                }
+            }
+        }
+
+        .canvas-wrap:active {
+            cursor: grabbing;
+        }
+
+        #output-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+            border-radius: var(--radius);
+        }
+
+        /* Download section */
+        .download-section {
+            width: 100%;
+            max-width: 413px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-download {
+            width: 100%;
+            padding: 15px;
+            background: var(--accent);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: background 0.2s, transform 0.15s;
+            box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-download:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-download:active {
+            transform: none;
+        }
+
+        @media (max-width: 640px) {
+            .btn-download {
+                padding: 13px;
+                font-size: 14px;
+            }
+        }
+
+        .privacy-note {
+            font-size: 12px;
+            color: var(--muted);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* ── SEO SECTION ── */
+        .seo-section {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 56px 24px;
+        }
+
+        .seo-inner {
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .seo-inner h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--fg);
+            margin: 32px 0 12px;
+            letter-spacing: -0.3px;
+        }
+
+        .seo-inner h2:first-child {
+            margin-top: 0;
+        }
+
+        .seo-inner p {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.75;
+            margin-bottom: 14px;
+        }
+
+        .seo-inner ol {
+            padding-left: 20px;
+            margin-bottom: 14px;
+        }
+
+        .seo-inner li {
+            font-size: 15px;
+            color: #475569;
+            line-height: 1.75;
+            margin-bottom: 6px;
+        }
+
+        /* FAQ */
+        .faq-item {
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .faq-q {
+            width: 100%;
+            text-align: left;
+            padding: 15px 18px;
+            background: none;
+            border: none;
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--fg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .faq-q svg {
+            flex-shrink: 0;
+            color: var(--muted);
+            transition: transform 0.25s;
+        }
+
+        .faq-item.open .faq-q svg {
+            transform: rotate(180deg);
+        }
+
+        .faq-a {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.open .faq-a {
+            max-height: 200px;
+        }
+
+        .faq-a p {
+            padding: 0 18px 15px;
+            font-size: 14px;
+            color: var(--muted);
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--card);
+            border-top: 1px solid var(--border);
+            padding: 20px 24px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(80px);
+            background: #1e293b;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            z-index: 600;
+            transition: transform 0.3s;
+            max-width: 90vw;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-inner">
+            <a href="https://www.compressly.in" class="brand">
+                <img src="/icon.png" width="30" height="30" alt="Compressly logo" loading="eager" />
+                Compressly
+            </a>
+            <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- NAV DRAWER -->
+    <div class="nav-drawer" id="navDrawer" role="dialog" aria-label="Navigation menu">
+        <div class="nav-panel">
+            <a href="https://www.compressly.in">Home</a>
+            <a href="https://www.compressly.in">Image Compressor</a>
+            <a href="/pinterest-image-downloader/">Pinterest Downloader</a>
+            <a href="/psc-photo-tool.html">PSC Photo Tool</a>
+            <a href="/ssc-photo-resizer/">SSC Photo Tool</a>
+            <a href="/passport-photo-maker/" class="active">Passport Photo Maker</a>
+            <a href="/about.html">About</a>
+            <a href="/privacy.html">Privacy Policy</a>
+            <a href="/contact.html">Contact</a>
+        </div>
+    </div>
+
+    <main>
+
+        <!-- STEP 1: UPLOAD -->
+        <section id="step-upload" aria-label="Upload your photo">
+            <h1>Create Passport & Visa Photo</h1>
+            <p>Choose a popular size, then upload a clear front-facing portrait.</p>
+
+            <div class="size-picker">
+                <label class="size-picker-label" for="photoSizeSelect">Photo type</label>
+                <div class="size-select-wrap">
+                    <select class="size-select" id="photoSizeSelect" aria-label="Choose passport or visa photo size">
+                        <option value="passport" selected>Passport Size Photo - 35 x 45 mm</option>
+                        <option value="india-passport">Indian Passport Photo - 35 x 45 mm</option>
+                        <option value="us-visa">US Visa Photo - 2 x 2 in</option>
+                        <option value="schengen">Schengen Visa Photo - 35 x 45 mm</option>
+                    </select>
+                    <svg class="size-select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </div>
+                <div class="size-helper" id="sizeHelper">Output: 413 × 531 px · 35 × 45 mm</div>
+            </div>
+
+            <label class="upload-zone" id="uploadZone" tabindex="0" role="button" aria-label="Upload photo">
+                <input type="file" id="fileInput" accept="image/jpeg,image/jpg,image/png"
+                    aria-label="Choose image file" />
+                <div class="upload-icon" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                </div>
+                <span class="upload-label">Click or drag photo here</span>
+                <span class="upload-hint">JPG or PNG - up to 10MB</span>
+                <div class="btn-upload" aria-hidden="true">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        <polyline points="17 8 12 3 7 8" />
+                        <line x1="12" y1="3" x2="12" y2="15" />
+                    </svg>
+                    Choose Photo
+                </div>
+                <div class="upload-trust-row" aria-hidden="true">
+                    <span>Free</span><span>·</span><span>No sign-up</span><span>·</span><span>AI background
+                        removal</span>
+                </div>
+            </label>
+        </section>
+
+        <!-- PROCESSING OVERLAY -->
+        <div id="processing-overlay" role="status" aria-live="polite" aria-label="Processing photo">
+            <div class="proc-card">
+                <div class="proc-spinner" aria-hidden="true"></div>
+                <div class="proc-title" id="procTitle">Preparing your photo…</div>
+                <div class="proc-sub" id="procSub">We're getting your image ready for secure AI processing.</div>
+                <div class="proc-progress">
+                    <div class="proc-bar" id="procBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: EDITOR -->
+        <section id="step-editor" aria-label="Edit and download passport photo">
+
+            <div class="editor-toolbar">
+                <button class="btn-back" id="btnBack" aria-label="Back to upload">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                </button>
+                <span class="toolbar-title">Edit Your Photo</span>
+                <div class="zoom-controls" aria-label="Zoom controls">
+                    <button class="btn-zoom" id="btnZoomOut" aria-label="Zoom out">−</button>
+                    <span class="zoom-label" id="zoomLabel" aria-live="polite">100%</span>
+                    <button class="btn-zoom" id="btnZoomIn" aria-label="Zoom in">+</button>
+                </div>
+            </div>
+
+            <div class="editor-body">
+                
+                    <div class="result-success">
+                        <div class="result-success-icon">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 6L9 17l-5-5" />
+                            </svg>
+                        </div>
+                    
+                        <div>
+                            <div class="result-success-title">Your photo is ready</div>
+                            <div class="result-success-sub">Background removed and portrait automatically framed</div>
+                        </div>
+                    </div>
+
+
+                <div class="bg-selector" role="group" aria-label="Choose background color">
+                    <div class="bg-swatch-row" id="bgSwatchRow"></div>
+                    <span class="bg-swatch-name" id="bgName" aria-live="polite">White</span>
+                </div>
+
+                <div class="canvas-wrap" id="canvasWrap" aria-label="Passport photo preview. Drag to reposition.">
+                    <canvas id="output-canvas" width="413" height="531" aria-label="Passport photo preview"></canvas>
+                </div>
+
+                <div class="download-section">
+                    <button class="btn-download" id="btnDownload">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                            <path
+                                d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                        </svg>
+                        Download JPG
+                    </button>
+                    <p class="privacy-note">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" aria-hidden="true">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                        </svg>
+                        AI processed securely · Photos are not stored
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Reserved for a future credits/paywall modal (Razorpay). Inert and unused today. -->
+    <div id="paywallModal" hidden></div>
+
+    <!-- SEO SECTION -->
+    <div class="seo-section">
+        <div class="seo-inner">
+
+            <h2>Free Passport Size Photo Maker Online</h2>
+            <p>Getting a passport size photo ready used to mean visiting a photo studio, waiting, and paying for
+                prints you may not even need. This tool changes that. Upload any clear portrait photo, and the AI
+                automatically removes the background, centers your face, applies a clean background, and exports a
+                correctly sized passport photo - with a simple editor for final positioning and download.</p>
+
+            <p>Choose from a small set of popular presets, including 35×45 mm passport-style photos and a square US visa
+                preset. Always check the exact requirements of the authority receiving your photo, because rules can
+                vary by country, document type, and application portal.</p>
+
+            <h2>How to Make a Passport Size Photo</h2>
+            <ol>
+                <li><strong>Upload your photo.</strong> Use a clear, front-facing portrait with your face visible.
+                    Good lighting helps the AI produce cleaner edges around hair and shoulders. Files must be under
+                    10MB.</li>
+                <li><strong>Wait a moment.</strong> Your image is optimised in the browser and sent to our AI
+                    background-removal service. The processed result is then returned to the editor.</li>
+                <li><strong>Adjust if needed.</strong> Use drag to reposition and pinch-to-zoom on mobile, or the
+                    zoom buttons on desktop. Tap a swatch to change the background color.</li>
+                <li><strong>Download.</strong> Click the Download button to save your passport photo as a high
+                    quality JPEG.</li>
+            </ol>
+
+            <h2>How AI Background Removal Works</h2>
+            <p>When you choose a photo, Compressly first reduces unnecessarily large image dimensions in your browser
+                to make processing faster. The optimised image is then sent to our AI background-removal service,
+                which creates a transparent subject image and returns it to your browser.</p>
+
+            <p>The returned result is placed in the editor, where you can choose a background, reposition the portrait,
+                zoom, and create the final downloadable image. Because your photo is processed by a server, please
+                review our Privacy Policy for information about how uploaded images are handled.</p>
+
+            <h2>What Is a Passport Size Photo?</h2>
+            <p>A passport size photo is a standardised portrait photograph used for official identification
+                documents. In India, the standard size is 35×45 mm (approximately 3.5 cm × 4.5 cm) printed at 300
+                DPI, which corresponds to 413×531 pixels at that resolution. The photo should show a front-facing
+                view with a plain background, with the face clearly visible from chin to crown.</p>
+
+            <p>This format is required for Indian passports, Aadhaar card applications, PAN card applications,
+                driving license applications, government job applications, competitive exam forms, college
+                admissions, and visa applications.</p>
+
+            <h2>Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    Is this passport photo maker completely free?
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>Yes. No registration, no watermark, no payment required. Completely free to use.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    How is my photo processed?
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>Your photo is optimised in your browser and sent to our AI service for background removal.
+                        The transparent result is then returned to your browser for editing and download.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    What photo sizes can I choose?
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>The tool keeps the choices simple: Passport Size Photo (35×45 mm), Indian Passport Photo
+                        (35×45 mm), US Visa Photo (2×2 in), and Schengen Visa Photo (35×45 mm). Always verify the
+                        latest requirements for your specific application before submitting.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    Can I change the background color?
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>Yes. Tap a swatch to switch between White, Light Grey, Sky Blue, Soft White, Light Blue, and
+                        Cream backgrounds.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    Is there a file size limit?
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>Yes, uploaded photos must be under 10MB. Most phone photos are well within this limit.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-q" onclick="toggleFaq(this)">
+                    Does it work on mobile phones?
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="faq-a">
+                    <p>Yes. On mobile you can pinch to zoom and drag to reposition. The tool works on all modern
+                        Android and iPhone browsers.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- FOOTER -->
+    <footer>
+        © 2026 <a href="https://www.compressly.in">Compressly</a> ·
+        <a href="/privacy.html">Privacy</a> ·
+        <a href="/terms.html">Terms</a> ·
+        <a href="/contact.html">Contact</a>
+    </footer>
+
+    <script>
+        // ── CONSTANTS ──
+        // Use HTTPS production endpoint after api.compressly.in is configured.
+        // During direct Oracle testing, replace this with:
+        // http://140.245.244.182:8000/remove-background
+        const API_URL = 'https://api.compressly.in/remove-background';
+
+        // Our Oracle backend runs on 1 OCPU / 1GB RAM. Cap uploads client-side
+        // so we never hand the server a huge decode/inference job.
+        const MAX_UPLOAD_BYTES = 10 * 1024 * 1024; // 10MB
+
+        // ── FUTURE: CREDIT-BASED USAGE (Razorpay) ──
+        // Not active yet. When credits go live, flip creditsEnabled to true and
+        // implement hasCreditsAvailable()/showPaywall() for real. The call site
+        // in handleFile() already gates on this, so no flow changes are needed
+        // later — just fill in the two stub functions below.
+        const FEATURE_FLAGS = { creditsEnabled: false };
+        function hasCreditsAvailable() { return true; }
+        function showPaywall() { /* future: open Razorpay checkout in #paywallModal */ }
+
+        const PHOTO_PRESETS = {
+            passport: {
+                name: 'Passport Size Photo',
+                width: 413,
+                height: 531,
+                label: '35 × 45 mm'
+            },
+            'india-passport': {
+                name: 'Indian Passport Photo',
+                width: 413,
+                height: 531,
+                label: '35 × 45 mm'
+            },
+            'us-visa': {
+                name: 'US Visa Photo',
+                width: 600,
+                height: 600,
+                label: '2 × 2 in'
+            },
+            schengen: {
+                name: 'Schengen Visa Photo',
+                width: 413,
+                height: 531,
+                label: '35 × 45 mm'
+            }
+        };
+
+        let selectedPresetKey = 'passport';
+        let OUTPUT_W = PHOTO_PRESETS[selectedPresetKey].width;
+        let OUTPUT_H = PHOTO_PRESETS[selectedPresetKey].height;
+
+        // Reordered by how often each is actually needed for official photos.
+        // White leads because it's the default requirement for most passport
+        // and exam-form submissions; Red was dropped since it saw effectively
+        // no real-world use on this tool.
+        const BACKGROUNDS = [
+            { name: 'White', color: '#ffffff' },
+            { name: 'Light Grey', color: '#d6d6d6' },
+            { name: 'Sky Blue', color: '#87ceeb' },
+            { name: 'Soft White', color: '#f5f5f0' },
+            { name: 'Light Blue', color: '#c8daf5' },
+            { name: 'Cream', color: '#fff8e7' },
+        ];
+
+        // Per-preset framing targets used by the auto-crop. faceHeightFrac is
+        // how tall the detected face should be relative to the output height;
+        // centerYFrac is where the face's vertical center should land (0 = top,
+        // 1 = bottom). Centering at ~0.45 instead of 0.5 leaves more room above
+        // the head for hair and less wasted space below the chin.
+        const FACE_FRAME_CONFIG = {
+                passport: {
+                    faceHeightFrac: 0.36,
+                    centerYFrac: 0.40,
+                    maxAutoZoom: 1.45
+                },
+
+                'india-passport': {
+                    faceHeightFrac: 0.36,
+                    centerYFrac: 0.40,
+                    maxAutoZoom: 1.45
+                },
+
+                schengen: {
+                    faceHeightFrac: 0.36,
+                    centerYFrac: 0.40,
+                    maxAutoZoom: 1.45
+                },
+
+                'us-visa': {
+                    faceHeightFrac: 0.34,
+                    centerYFrac: 0.42,
+                    maxAutoZoom: 1.40
+                }
+            };
+
+        // ── STATE ──
+        let bgIndex = 0; // White by default
+        let subjectImageData = null;
+        let subjectCanvas = null;
+        let userZoom = 1;
+        let panX = 0;
+        let panY = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let dragStartPanX = 0;
+        let dragStartPanY = 0;
+        let lastTouchDist = 0;
+        let renderScheduled = false;
+
+        // ── ELEMENTS ──
+        const hamburger = document.getElementById('hamburger');
+        const navDrawer = document.getElementById('navDrawer');
+        const uploadZone = document.getElementById('uploadZone');
+        const photoSizeSelect = document.getElementById('photoSizeSelect');
+        const sizeHelper = document.getElementById('sizeHelper');
+        const fileInput = document.getElementById('fileInput');
+        const stepUpload = document.getElementById('step-upload');
+        const stepEditor = document.getElementById('step-editor');
+        const procOverlay = document.getElementById('processing-overlay');
+        const procTitle = document.getElementById('procTitle');
+        const procSub = document.getElementById('procSub');
+        const procBar = document.getElementById('procBar');
+        const btnBack = document.getElementById('btnBack');
+        const bgSwatchRow = document.getElementById('bgSwatchRow');
+        const bgName = document.getElementById('bgName');
+        const canvasWrap = document.getElementById('canvasWrap');
+        const outputCanvas = document.getElementById('output-canvas');
+        const btnDownload = document.getElementById('btnDownload');
+        const btnZoomIn = document.getElementById('btnZoomIn');
+        const btnZoomOut = document.getElementById('btnZoomOut');
+        const zoomLabel = document.getElementById('zoomLabel');
+        const toast = document.getElementById('toast');
+        const ctx = outputCanvas.getContext('2d');
+
+        // ── HAMBURGER ──
+        hamburger.addEventListener('click', () => {
+            const open = !navDrawer.classList.contains('open');
+            navDrawer.classList.toggle('open', open);
+            hamburger.classList.toggle('open', open);
+            hamburger.setAttribute('aria-expanded', open);
+        });
+        navDrawer.addEventListener('click', e => {
+            if (e.target === navDrawer) closeNav();
+        });
+        function closeNav() {
+            navDrawer.classList.remove('open');
+            hamburger.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', false);
+        }
+
+        // ── PHOTO SIZE PRESETS ──
+        function applyPhotoPreset(key) {
+            const preset = PHOTO_PRESETS[key] || PHOTO_PRESETS.passport;
+            selectedPresetKey = key in PHOTO_PRESETS ? key : 'passport';
+            OUTPUT_W = preset.width;
+            OUTPUT_H = preset.height;
+
+            outputCanvas.width = OUTPUT_W;
+            outputCanvas.height = OUTPUT_H;
+            canvasWrap.style.setProperty('--photo-aspect', `${OUTPUT_W} / ${OUTPUT_H}`);
+            sizeHelper.textContent = `Output: ${OUTPUT_W} × ${OUTPUT_H} px · ${preset.label}`;
+
+            if (subjectCanvas) renderCanvas();
+        }
+
+        photoSizeSelect.addEventListener('change', () => {
+            applyPhotoPreset(photoSizeSelect.value);
+            gtag('event', 'passport_size_change', { preset: photoSizeSelect.value });
+        });
+
+        applyPhotoPreset(selectedPresetKey);
+
+        // ── UPLOAD ──
+        uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+        uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+        uploadZone.addEventListener('drop', e => {
+            e.preventDefault();
+            uploadZone.classList.remove('drag');
+            const f = e.dataTransfer.files[0];
+            if (f) handleFile(f);
+        });
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files[0]) handleFile(fileInput.files[0]);
+        });
+        uploadZone.addEventListener('keydown', e => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); }
+        });
+
+        // ── MAIN FILE HANDLER ──
+        async function handleFile(file) {
+            if (!file.type.match(/image\/(jpeg|jpg|png)/)) {
+                showToast('Please upload a JPG or PNG image.');
+                return;
+            }
+
+            if (file.size > MAX_UPLOAD_BYTES) {
+                showToast('Please choose an image under 10MB.');
+                return;
+            }
+                // Always start every new photo with a white background.
+            bgIndex = 0;
+            // Future paywall gate — currently always passes (creditsEnabled: false).
+            if (FEATURE_FLAGS.creditsEnabled && !hasCreditsAvailable()) {
+                showPaywall();
+                return;
+            }
+
+            gtag('event', 'passport_upload', { preset: selectedPresetKey });
+
+            showProcessing(
+                'Preparing your photo…',
+                'Optimising the image first so the upload stays fast.',
+                8
+            );
+
+            try {
+                // Keep the original only for face detection / positioning.
+                const originalBitmap = await createImageBitmap(file);
+
+                setProgress(
+                    22,
+                    'Optimising for faster processing…'
+                    
+                );
+
+                const uploadBlob = await prepareImageForUpload(file, 1600, 0.88);
+
+                setProgress(
+                    38,
+                    'Sending securely to our AI…',
+                    'Your photo is being sent to the background-removal service.'
+                );
+
+                const transparentBlob = await removeBackgroundWithAPI(uploadBlob);
+
+                setProgress(
+                    78,
+                    'Background removed successfully…',
+                    'Almost done.'
+                );
+
+                const resultBitmap = await createImageBitmap(transparentBlob);
+
+                subjectCanvas = document.createElement('canvas');
+                subjectCanvas.width = resultBitmap.width;
+                subjectCanvas.height = resultBitmap.height;
+                const subjectCtx = subjectCanvas.getContext('2d');
+                subjectCtx.drawImage(resultBitmap, 0, 0);
+
+                subjectImageData = {
+                    width: resultBitmap.width,
+                    height: resultBitmap.height
+                };
+
+                setProgress(
+                    90,
+                    'Framing your portrait…',
+                    'Positioning your face for a clean passport-style composition.'
+                );
+
+                const faceBox = await withTimeout(detectFace(originalBitmap), 5000, null);
+                computeAutoCrop(resultBitmap.width, resultBitmap.height, faceBox);
+
+                setProgress(
+                    100,
+                    'Your photo is ready!',
+                    'Opening the editor now.'
+                );
+
+                setTimeout(() => {
+                    hideProcessing();
+                    showEditor();
+                    renderCanvas();
+                }, 350);
+
+            } catch (err) {
+                hideProcessing();
+                console.error(err);
+                showToast('We could not process this photo. Please try again.');
+            }
+        }
+
+        function withTimeout(promise, ms, fallbackValue) {
+            return Promise.race([
+                promise,
+                new Promise(resolve => setTimeout(() => resolve(fallbackValue), ms))
+            ]);
+        }
+
+        // ── CLIENT-SIDE UPLOAD OPTIMISATION ──
+        // Large camera photos are resized before being sent to Oracle.
+        // This reduces upload time, bandwidth and server memory pressure.
+        async function prepareImageForUpload(file, maxDimension = 1600, quality = 0.88) {
+            const bitmap = await createImageBitmap(file);
+
+            const scale = Math.min(
+                1,
+                maxDimension / Math.max(bitmap.width, bitmap.height)
+            );
+
+            const width = Math.max(1, Math.round(bitmap.width * scale));
+            const height = Math.max(1, Math.round(bitmap.height * scale));
+
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+
+            const c = canvas.getContext('2d');
+            c.imageSmoothingEnabled = true;
+            c.imageSmoothingQuality = 'high';
+            c.drawImage(bitmap, 0, 0, width, height);
+
+            return await new Promise((resolve, reject) => {
+                canvas.toBlob(
+                    blob => blob ? resolve(blob) : reject(new Error('Image compression failed')),
+                    'image/jpeg',
+                    quality
+                );
+            });
+        }
+
+        // ── MODNET API BACKGROUND REMOVAL ──
+        async function removeBackgroundWithAPI(imageBlob) {
+            const formData = new FormData();
+            formData.append('file', imageBlob, 'photo.jpg');
+
+            const response = await fetch(API_URL, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`Background removal failed: HTTP ${response.status}`);
+            }
+
+            return await response.blob();
+        }
+
+        // ── LIGHTWEIGHT FACE DETECTION ──
+        // MediaPipe is used only to estimate face position for automatic framing.
+        // MODNet on the Oracle server performs the actual background removal.
+        let faceDetectorPromise = null;
+
+        function ensureFaceDetector() {
+            if (faceDetectorPromise) return faceDetectorPromise;
+
+            faceDetectorPromise = (async () => {
+                const { FaceDetector, FilesetResolver } = await import(
+                    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/vision_bundle.mjs'
+                );
+
+                const vision = await FilesetResolver.forVisionTasks(
+                    'https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.3/wasm'
+                );
+
+                return await FaceDetector.createFromOptions(vision, {
+                    baseOptions: {
+                        modelAssetPath:
+                            'https://storage.googleapis.com/mediapipe-models/face_detector/blaze_face_short_range/float16/latest/blaze_face_short_range.tflite',
+                        // CPU is far more reliable than GPU across iOS Safari and
+                        // older Android WebViews, where the GPU delegate often
+                        // silently fails — this was the main cause of auto-crop
+                        // quietly falling back to "no face found".
+                        delegate: 'CPU',
+                    },
+                    runningMode: 'IMAGE',
+                });
+            })();
+
+            return faceDetectorPromise;
+        }
+
+        // ── FACE DETECTION ──
+        async function detectFace(imageBitmap) {
+            try {
+                const detector = await ensureFaceDetector();
+
+                // Downscale before detection: faster and more reliable across
+                // devices, especially on large camera-resolution photos.
+                const maxDim = 640;
+                const scale = Math.min(1, maxDim / Math.max(imageBitmap.width, imageBitmap.height));
+                const dw = Math.max(1, Math.round(imageBitmap.width * scale));
+                const dh = Math.max(1, Math.round(imageBitmap.height * scale));
+
+                const c = document.createElement('canvas');
+                c.width = dw;
+                c.height = dh;
+                c.getContext('2d').drawImage(imageBitmap, 0, 0, dw, dh);
+
+                const detection = detector.detect(c);
+                if (!detection || !detection.detections.length) return null;
+
+                const box = detection.detections[0].boundingBox;
+                return {
+                    cx: (box.originX + box.width / 2) / dw,
+                    y: box.originY / dh,
+                    w: box.width / dw,
+                    h: box.height / dh,
+                };
+            } catch (err) {
+                console.warn('Face detection unavailable, using default framing.', err);
+                return null;
+            }
+        }
+
+        // ── AUTO-CROP ──
+        function computeAutoCrop(imgW, imgH, faceBox) {
+                const baseScale = Math.max(
+                    OUTPUT_W / imgW,
+                    OUTPUT_H / imgH
+                );
+
+                const baseDrawW = imgW * baseScale;
+                const baseDrawH = imgH * baseScale;
+
+                // Safe default: normal centered cover crop.
+                userZoom = 1;
+
+                panX = (OUTPUT_W - baseDrawW) / 2;
+
+                // Slight upward bias works better for portrait photos.
+                const overflowH = Math.max(0, baseDrawH - OUTPUT_H);
+                panY = -(overflowH * 0.35);
+
+                // If detection failed or looks unreliable,
+                // keep the safe default instead of aggressively guessing.
+                if (
+                    !faceBox ||
+                    faceBox.h < 0.05 ||
+                    faceBox.w < 0.05 ||
+                    faceBox.h > 0.8 ||
+                    faceBox.w > 0.8
+                ) {
+                    zoomLabel.textContent = '100%';
+                    return;
+                }
+
+                const cfg =
+                    FACE_FRAME_CONFIG[selectedPresetKey] ||
+                    FACE_FRAME_CONFIG.passport;
+
+                const detectedFaceHeightPx = faceBox.h * imgH;
+
+                // How large the detected face currently appears
+                // after the normal cover crop.
+                const currentFaceHeight =
+                    detectedFaceHeightPx * baseScale;
+
+                const targetFaceHeight =
+                    OUTPUT_H * cfg.faceHeightFrac;
+
+                let desiredZoom =
+                    targetFaceHeight / currentFaceHeight;
+
+                // IMPORTANT:
+                // Auto-crop should make small adjustments,
+                // never perform extreme zooming.
+                desiredZoom = Math.max(
+                    0.9,
+                    Math.min(cfg.maxAutoZoom, desiredZoom)
+                );
+
+                userZoom = desiredZoom;
+
+                const drawW =
+                    imgW * baseScale * userZoom;
+
+                const drawH =
+                    imgH * baseScale * userZoom;
+
+                const faceCenterX =
+                    faceBox.cx * drawW;
+
+                const faceCenterY =
+                    (faceBox.y + faceBox.h / 2) * drawH;
+
+                // Center face horizontally.
+                panX =
+                    OUTPUT_W / 2 -
+                    faceCenterX;
+
+                // Place face slightly above center.
+                panY =
+                    OUTPUT_H * cfg.centerYFrac -
+                    faceCenterY;
+
+                // Prevent accidental blank areas.
+                if (drawW >= OUTPUT_W) {
+                    panX = Math.min(
+                        0,
+                        Math.max(
+                            OUTPUT_W - drawW,
+                            panX
+                        )
+                    );
+                }
+
+                if (drawH >= OUTPUT_H) {
+                    panY = Math.min(
+                        0,
+                        Math.max(
+                            OUTPUT_H - drawH,
+                            panY
+                        )
+                    );
+                }
+
+                zoomLabel.textContent =
+                    Math.round(userZoom * 100) + '%';
+            }
+
+        // ── CANVAS RENDERING ──
+        function renderCanvas() {
+            if (!subjectCanvas) return;
+
+            const bg = BACKGROUNDS[bgIndex].color;
+            ctx.clearRect(0, 0, OUTPUT_W, OUTPUT_H);
+            ctx.fillStyle = bg;
+            ctx.fillRect(0, 0, OUTPUT_W, OUTPUT_H);
+
+            const scaleX = OUTPUT_W / subjectImageData.width;
+            const scaleY = OUTPUT_H / subjectImageData.height;
+            const fitScale = Math.max(scaleX, scaleY) * userZoom;
+            const drawW = subjectImageData.width * fitScale;
+            const drawH = subjectImageData.height * fitScale;
+
+            ctx.globalCompositeOperation = 'source-over';
+            ctx.imageSmoothingEnabled = true;
+            ctx.imageSmoothingQuality = 'high';
+            ctx.drawImage(subjectCanvas, panX, panY, drawW, drawH);
+        }
+
+        // Batches high-frequency updates (drag / pinch / wheel) into a single
+        // paint per animation frame instead of redrawing on every pointer event.
+        function scheduleRender() {
+            if (renderScheduled) return;
+            renderScheduled = true;
+            requestAnimationFrame(() => {
+                renderScheduled = false;
+                renderCanvas();
+            });
+        }
+
+        // ── BACKGROUND SWATCHES ──
+        function renderBgSwatches() {
+            bgSwatchRow.innerHTML = '';
+            BACKGROUNDS.forEach((bg, i) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'bg-swatch-btn';
+                btn.style.setProperty('--swatch-color', bg.color);
+                btn.setAttribute('aria-label', bg.name + ' background');
+                btn.setAttribute('aria-pressed', i === bgIndex ? 'true' : 'false');
+                btn.addEventListener('click', () => {
+                    bgIndex = i;
+                    updateBgUI();
+                });
+                bgSwatchRow.appendChild(btn);
+            });
+        }
+
+        function updateBgUI() {
+            const bg = BACKGROUNDS[bgIndex];
+            bgName.textContent = bg.name;
+            const btns = bgSwatchRow.querySelectorAll('.bg-swatch-btn');
+            btns.forEach((btn, i) => btn.setAttribute('aria-pressed', i === bgIndex ? 'true' : 'false'));
+            renderCanvas();
+            gtag('event', 'passport_background_change', { background: bg.name });
+        }
+
+        renderBgSwatches();
+        updateBgUI();
+
+        // ── ZOOM ──
+        function setZoom(z) {
+            userZoom = Math.max(0.4, Math.min(3, z));
+            zoomLabel.textContent = Math.round(userZoom * 100) + '%';
+            scheduleRender();
+        }
+
+        btnZoomIn.addEventListener('click', () => { setZoom(userZoom + 0.15); gtag('event', 'passport_zoom'); });
+        btnZoomOut.addEventListener('click', () => { setZoom(userZoom - 0.15); gtag('event', 'passport_zoom'); });
+
+        canvasWrap.addEventListener('wheel', e => {
+            e.preventDefault();
+            setZoom(userZoom - e.deltaY * 0.001);
+        }, { passive: false });
+
+        // ── MOUSE DRAG ──
+        canvasWrap.addEventListener('mousedown', e => {
+            isDragging = true;
+            dragStartX = e.clientX;
+            dragStartY = e.clientY;
+            dragStartPanX = panX;
+            dragStartPanY = panY;
+            canvasWrap.style.cursor = 'grabbing';
+        });
+
+        window.addEventListener('mousemove', e => {
+            if (!isDragging) return;
+            panX = dragStartPanX + (e.clientX - dragStartX);
+            panY = dragStartPanY + (e.clientY - dragStartY);
+            scheduleRender();
+        });
+
+        window.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                canvasWrap.style.cursor = 'grab';
+                gtag('event', 'passport_drag');
+            }
+        });
+
+        // ── TOUCH: DRAG + PINCH ──
+        canvasWrap.addEventListener('touchstart', e => {
+            if (e.touches.length === 1) {
+                isDragging = true;
+                dragStartX = e.touches[0].clientX;
+                dragStartY = e.touches[0].clientY;
+                dragStartPanX = panX;
+                dragStartPanY = panY;
+            } else if (e.touches.length === 2) {
+                isDragging = false;
+                lastTouchDist = getTouchDist(e.touches);
+            }
+        }, { passive: true });
+
+        canvasWrap.addEventListener('touchmove', e => {
+            e.preventDefault();
+            if (e.touches.length === 1 && isDragging) {
+                panX = dragStartPanX + (e.touches[0].clientX - dragStartX);
+                panY = dragStartPanY + (e.touches[0].clientY - dragStartY);
+                scheduleRender();
+            } else if (e.touches.length === 2) {
+                const newDist = getTouchDist(e.touches);
+                setZoom(userZoom * (newDist / lastTouchDist));
+                lastTouchDist = newDist;
+                gtag('event', 'passport_zoom');
+            }
+        }, { passive: false });
+
+        canvasWrap.addEventListener('touchend', () => {
+            if (isDragging) {
+                isDragging = false;
+                gtag('event', 'passport_drag');
+            }
+        }, { passive: true });
+
+        function getTouchDist(touches) {
+            const dx = touches[0].clientX - touches[1].clientX;
+            const dy = touches[0].clientY - touches[1].clientY;
+            return Math.hypot(dx, dy);
+        }
+
+        // ── DOWNLOAD ──
+        btnDownload.addEventListener('click', () => {
+            if (!subjectCanvas) return;
+
+            const exportCanvas = document.createElement('canvas');
+            exportCanvas.width = OUTPUT_W;
+            exportCanvas.height = OUTPUT_H;
+            const exportCtx = exportCanvas.getContext('2d');
+
+            exportCtx.fillStyle = BACKGROUNDS[bgIndex].color;
+            exportCtx.fillRect(0, 0, OUTPUT_W, OUTPUT_H);
+
+            const scaleX = OUTPUT_W / subjectImageData.width;
+            const scaleY = OUTPUT_H / subjectImageData.height;
+            const fitScale = Math.max(scaleX, scaleY) * userZoom;
+            const drawW = subjectImageData.width * fitScale;
+            const drawH = subjectImageData.height * fitScale;
+
+            exportCtx.imageSmoothingEnabled = true;
+            exportCtx.imageSmoothingQuality = 'high';
+            exportCtx.drawImage(subjectCanvas, panX, panY, drawW, drawH);
+
+            const link = document.createElement('a');
+            link.download = 'passport-photo-compressly.jpg';
+            link.href = exportCanvas.toDataURL('image/jpeg', 0.95);
+            link.click();
+
+            gtag('event', 'passport_download');
+        });
+
+        // ── BACK ──
+        btnBack.addEventListener('click', () => {
+            stepEditor.classList.remove('show');
+            stepUpload.classList.remove('hidden-step');
+            fileInput.value = '';
+            subjectImageData = null;
+            subjectCanvas = null;
+            userZoom = 1; panX = 0; panY = 0;
+            gtag('event', 'passport_back');
+        });
+
+        // ── PROCESSING UI ──
+        function showProcessing(title, sub, pct) {
+            procTitle.textContent = title;
+            procSub.textContent = sub;
+            procBar.style.width = pct + '%';
+            procOverlay.classList.add('show');
+        }
+
+        function setProgress(pct, title, sub) {
+            procBar.style.width = pct + '%';
+            if (title) procTitle.textContent = title;
+            if (sub) procSub.textContent = sub;
+        }
+
+        function hideProcessing() {
+            procBar.style.width = '100%';
+            setTimeout(() => { procOverlay.classList.remove('show'); }, 300);
+        }
+
+        function showEditor() {
+            bgIndex = 0;
+
+            stepUpload.classList.add('hidden-step');
+            stepEditor.classList.add('show');
+
+            updateBgUI();
+
+            document.querySelector('main').scrollTop = 0;
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+
+        // ── TOAST ──
+        let toastTimer;
+        function showToast(msg) {
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toast.classList.remove('show'), 3500);
+        }
+
+        // ── FAQ ──
+        function toggleFaq(btn) {
+            const item = btn.closest('.faq-item');
+            const isOpen = item.classList.contains('open');
+            document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+            if (!isOpen) item.classList.add('open');
+        }
+    </script>
+
+</body>
+
+</html>
