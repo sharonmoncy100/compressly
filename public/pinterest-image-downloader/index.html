@@ -1600,6 +1600,70 @@
                 btn.disabled = false;
             }
         }
+
+
+        async function testDirectBrowserDownload() {
+                if (!currentImageUrl) {
+                    alert('First paste a Pinterest URL and click Get Image.');
+                    return;
+                }
+
+                console.log('Testing direct browser download from:', currentImageUrl);
+
+                try {
+                    const response = await fetch(currentImageUrl);
+
+                    console.log('Response status:', response.status);
+                    console.log('Response type:', response.type);
+
+                    if (!response.ok) {
+                        throw new Error(`HTTP error: ${response.status}`);
+                    }
+
+                    const blob = await response.blob();
+
+                    console.log('SUCCESS! Browser fetched image directly.');
+                    console.log('Image size:', blob.size, 'bytes');
+                    console.log('Image type:', blob.type);
+
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    const a = document.createElement('a');
+                    a.href = blobUrl;
+
+                    const ext =
+                        currentImageUrl.split('.').pop().split('?')[0] || 'jpg';
+
+                    const safeName = currentTitle
+                        .replace(/[^a-zA-Z0-9\s]/g, '')
+                        .trim()
+                        .replace(/\s+/g, '-')
+                        .slice(0, 40)
+                        .toLowerCase() || 'pinterest-image';
+
+                    a.download = `${safeName}.${ext}`;
+
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+
+                    setTimeout(() => {
+                        URL.revokeObjectURL(blobUrl);
+                    }, 1000);
+
+                    alert(
+                        'SUCCESS: The image was fetched directly by your browser without using the Vercel download proxy.'
+                    );
+
+                } catch (error) {
+                    console.error('DIRECT DOWNLOAD TEST FAILED:', error);
+
+                    alert(
+                        'FAILED: Browser could not fetch the Pinterest image directly. Open DevTools Console to see the error.'
+                    );
+                }
+            }
+        
             function resetTool() {
                 urlInput.value = '';
                 currentImageUrl = '';
@@ -1652,6 +1716,10 @@
                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
                 <path d="M3 3v5h5" />
             </svg>
+        </button>
+
+        <button type="button" onclick="testDirectBrowserDownload()" style="margin-top:10px;padding:12px 20px;">
+            Test Direct Download
         </button>
     </div>
 
