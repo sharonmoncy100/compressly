@@ -1503,7 +1503,7 @@
             }
         }
 
-        function triggerDownload() {
+        async function triggerDownload() {
             if (!currentImageUrl) return;
 
             gtag('event', 'pinterest_image_downloaded', {
@@ -1512,17 +1512,44 @@
                 image_category: currentCategory
             });
 
-            // Directly navigate to the Pinterest CDN image.
-            // Do NOT use fetch() here because cross-origin fetch can be blocked by CORS.
-            // Do NOT use /api/pinterest-download because that sends the image through Vercel.
-            const a = document.createElement('a');
-            a.href = currentImageUrl;
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
+            const btn = document.getElementById('downloadBtn');
+            btn.textContent = 'Downloading…';
+            btn.disabled = true;
 
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+            try {
+                // Use our proxy to force download
+                const proxyUrl = `/api/pinterest-download?url=${encodeURIComponent(currentImageUrl)}`;
+                const response = await fetch(proxyUrl);
+
+                if (!response.ok) throw new Error('Download failed');
+
+                const blob = await response.blob();
+                const blobUrl = URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = blobUrl;
+
+                // Derive filename
+                const ext = currentImageUrl.split('.').pop().split('?')[0] || 'jpg';
+                const safeName = currentTitle
+                    .replace(/[^a-zA-Z0-9\s]/g, '')
+                    .trim()
+                    .replace(/\s+/g, '-')
+                    .slice(0, 40)
+                    .toLowerCase() || 'pinterest-image';
+                a.download = `${safeName}.${ext}`;
+
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(blobUrl);
+            } catch {
+                // Fallback: open in new tab
+                window.open(currentImageUrl, '_blank');
+            } finally {
+                btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/></svg> Download Image`;
+                btn.disabled = false;
+            }
         }
         function resetTool() {
             urlInput.value = '';
