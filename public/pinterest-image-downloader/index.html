@@ -522,6 +522,43 @@
             background: var(--accent-hover);
             transform: translateY(-1px);
         }
+            .btn-standard{
+
+            display:inline-flex;
+
+            align-items:center;
+
+            justify-content:center;
+
+            padding:12px 22px;
+
+            background:#2563eb;
+
+            color:white;
+
+            border:none;
+
+            border-radius:10px;
+
+            font-size:14px;
+
+            font-weight:600;
+
+            cursor:pointer;
+
+            transition:.2s;
+
+            box-shadow:0 3px 10px rgba(37,99,235,.25);
+
+            }
+
+            .btn-standard:hover{
+
+            background:#1d4ed8;
+
+            transform:translateY(-1px);
+
+            }
 
         .sticky-download {
             display: none;
@@ -1026,23 +1063,26 @@
                             <div class="result-hint">High-quality photo extracted from Pinterest. Click Download to save
                                 it to your
                                 device.</div>
-                            <div class="btn-actions">
-                                <button class="btn-download" id="downloadBtn" onclick="triggerDownload()">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                        <path
-                                            d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
-                                    </svg>
-                                    Download Image
-                                </button>
-                                <button class="btn-new" onclick="resetTool()">
-                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                                        <path d="M3 3v5h5" />
-                                    </svg>
-                                    New
-                                </button>
-                            </div>
+                                <div class="btn-actions">
+
+                                    <button class="btn-standard" id="downloadSdBtn" onclick="triggerDownload('sd')">
+
+                                        ⚡Quick Download
+
+                                    </button>
+
+                                    <button class="btn-download" id="downloadHdBtn" onclick="triggerDownload('hd')">
+
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                                        </svg>
+
+                                        Download HD
+
+                                    </button>
+
+                                </div>
                         </div>
                     </div>
                     <div id="inlineLoading"
@@ -1366,7 +1406,8 @@
     </footer>
 
     <script>
-        let currentImageUrl = '';
+        let currentHdUrl = '';
+        let currentSdUrl = '';
         let currentTitle = '';
         let currentCategory = '';
 
@@ -1462,7 +1503,8 @@
 
             showState('loading');
             fetchBtn.disabled = true;
-            currentImageUrl = '';
+            currentHdUrl = '';
+            currentSdUrl = '';
 
             try {
                 const apiUrl = `/api/pinterest?url=${encodeURIComponent(rawUrl)}`;
@@ -1474,13 +1516,14 @@
                     return;
                 }
 
-                currentImageUrl = data.imageUrl;
+                currentHdUrl = data.hdUrl;
+                currentSdUrl = data.sdUrl;
                 currentTitle = data.title || 'Pinterest Image';
                 currentCategory = data.category || 'Other';
 
                 previewImg.onload = null;
                 previewImg.onerror = null;
-                previewImg.src = currentImageUrl;
+                previewImg.src = currentHdUrl;
                 previewImg.style.display = 'block';
 
                 resultTitle.textContent = currentTitle.length > 60
@@ -1503,57 +1546,91 @@
             }
         }
 
-        async function triggerDownload() {
-            if (!currentImageUrl) return;
+            async function triggerDownload(type = 'hd') {
 
-            gtag('event', 'pinterest_image_downloaded', {
-                page: 'pinterest-image-downloader',
-                image_title: currentTitle,
-                image_category: currentCategory
-            });
+                const imageUrl =
+                    type === 'sd'
+                        ? currentSdUrl
+                        : currentHdUrl;
 
-            const btn = document.getElementById('downloadBtn');
-            btn.textContent = 'Downloading…';
-            btn.disabled = true;
+                if (!imageUrl) return;
 
-            try {
-                // Use our proxy to force download
-                const proxyUrl = `/api/pinterest-download?url=${encodeURIComponent(currentImageUrl)}`;
-                const response = await fetch(proxyUrl);
+                gtag('event', 'pinterest_image_downloaded', {
+                    page: 'pinterest-image-downloader',
+                    image_title: currentTitle,
+                    image_category: currentCategory,
+                    quality: type
+                });
 
-                if (!response.ok) throw new Error('Download failed');
+                const btn =
+                    type === 'hd'
+                        ? (document.getElementById('downloadHdBtn') ||
+                            document.getElementById('downloadHdBtnMobile'))
+                        : (document.getElementById('downloadSdBtn') ||
+                            document.getElementById('downloadSdBtnMobile'));
 
-                const blob = await response.blob();
-                const blobUrl = URL.createObjectURL(blob);
+                const oldHTML = btn.innerHTML;
 
-                const a = document.createElement('a');
-                a.href = blobUrl;
+                btn.disabled = true;
+                btn.textContent = 'Downloading...';
 
-                // Derive filename
-                const ext = currentImageUrl.split('.').pop().split('?')[0] || 'jpg';
-                const safeName = currentTitle
-                    .replace(/[^a-zA-Z0-9\s]/g, '')
-                    .trim()
-                    .replace(/\s+/g, '-')
-                    .slice(0, 40)
-                    .toLowerCase() || 'pinterest-image';
-                a.download = `${safeName}.${ext}`;
+                try {
 
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(blobUrl);
-            } catch {
-                // Fallback: open in new tab
-                window.open(currentImageUrl, '_blank');
-            } finally {
-                btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/></svg> Download Image`;
-                btn.disabled = false;
+                    const proxyUrl =
+                        `/api/pinterest-download?url=${encodeURIComponent(imageUrl)}`;
+
+                    const response = await fetch(proxyUrl);
+
+                    if (!response.ok)
+                        throw new Error();
+
+                    const blob = await response.blob();
+
+                    const blobUrl = URL.createObjectURL(blob);
+
+                    const a = document.createElement('a');
+
+                    a.href = blobUrl;
+
+                    const ext =
+                        imageUrl.split('.').pop().split('?')[0] || 'jpg';
+
+                    const safeName =
+                        currentTitle
+                            .replace(/[^a-zA-Z0-9\s]/g, '')
+                            .trim()
+                            .replace(/\s+/g, '-')
+                            .slice(0, 40)
+                            .toLowerCase() || 'pinterest-image';
+
+                    a.download =
+                        `${safeName}.${ext}`;
+
+                    document.body.appendChild(a);
+
+                    a.click();
+
+                    document.body.removeChild(a);
+
+                    URL.revokeObjectURL(blobUrl);
+
+                } catch {
+
+                    window.open(imageUrl, '_blank');
+
+                } finally {
+
+                    btn.innerHTML = oldHTML;
+
+                    btn.disabled = false;
+
+                }
+
             }
-        }
         function resetTool() {
             urlInput.value = '';
-            currentImageUrl = '';
+            currentHdUrl = '';
+            currentSdUrl = '';
             currentTitle = '';
             previewImg.onload = null;
             previewImg.onerror = null;
@@ -1590,19 +1667,16 @@
     </script>
 
     <div class="sticky-download hidden" id="stickyBar">
-        <button class="btn-download" onclick="triggerDownload()">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                <path
-                    d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
-            </svg>
-            Download Image
+        <button id="downloadSdBtnMobile" class="btn-standard" onclick="triggerDownload('sd')">
+
+            ⚡Quick Download
+
         </button>
-        <button class="btn-new" onclick="resetTool()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                <path d="M3 3v5h5" />
-            </svg>
+
+        <button id="downloadHdBtnMobile" class="btn-download" onclick="triggerDownload('hd')">
+
+            Download HD
+
         </button>
     </div>
 

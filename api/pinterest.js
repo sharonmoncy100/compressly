@@ -98,7 +98,22 @@ export default async function handler(req, res) {
         else if (t.includes('tattoo')) category = 'Tattoo';
         else if (t.includes('drawing') || t.includes('art')) category = 'Art';
 
-        return res.status(200).json({ imageUrl, title, category });
+        let hdUrl = imageUrl;
+        let sdUrl = imageUrl;
+
+        // Pinterest commonly serves these sizes
+        if (hdUrl.includes('/736x/')) {
+            sdUrl = hdUrl.replace('/736x/', '/474x/');
+        } else if (hdUrl.includes('/564x/')) {
+            sdUrl = hdUrl.replace('/564x/', '/474x/');
+        }
+
+        return res.status(200).json({
+            hdUrl,
+            sdUrl,
+            title,
+            category
+        });
     } catch (err) {
         if (err.name === 'AbortError') {
             return res.status(504).json({ error: 'Request timed out. Pinterest took too long to respond.' });
