@@ -1648,6 +1648,9 @@
                 const downloadOverlay = document.getElementById('downloadOverlay');
                 downloadOverlay.classList.add('show');
 
+                const overlayShownAt = Date.now();
+                const minimumOverlayTime = 700;
+
                 gtag('event', 'pinterest_image_downloaded', {
                     page: 'pinterest-image-downloader',
                     image_title: currentTitle,
@@ -1655,16 +1658,7 @@
                     quality: type
                 });
 
-                    const isMobile = window.innerWidth <= 640;
-
-                    const btn = type === 'hd'
-                        ? document.getElementById(isMobile ? 'downloadHdBtnMobile' : 'downloadHdBtn')
-                        : document.getElementById(isMobile ? 'downloadSdBtnMobile' : 'downloadSdBtn');
-
-                const oldHTML = btn.innerHTML;
-
-                btn.disabled = true;
-                btn.textContent = 'Downloading...';
+       
 
                 try {
 
@@ -1711,10 +1705,12 @@
                     window.open(imageUrl, '_blank');
                 } finally {
 
-                    btn.innerHTML = oldHTML;
-                    btn.disabled = false;
+                    const elapsed = Date.now() - overlayShownAt;
+                    const remaining = Math.max(0, minimumOverlayTime - elapsed);
 
-                    downloadOverlay.classList.remove('show');
+                    setTimeout(() => {
+                        downloadOverlay.classList.remove('show');
+                    }, remaining);
 
                 }
 
