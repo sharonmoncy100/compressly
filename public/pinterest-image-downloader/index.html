@@ -481,6 +481,39 @@
             align-self: flex-start;
         }
 
+            .result-top{
+                display:flex;
+                align-items:center;
+                justify-content:space-between;
+                gap:12px;
+                margin-bottom:10px;
+                flex-wrap:wrap;
+            }
+
+            .result-top .result-badge{
+                margin-bottom:0;
+            }
+
+            .support-link{
+                font-size:13px;
+                font-weight:600;
+                color:#2563eb;
+                text-decoration:none;
+                white-space:nowrap;
+            }
+
+            .support-link:hover{
+                text-decoration:underline;
+            }
+
+            @media (max-width:560px){
+
+                .result-top{
+                    justify-content:flex-start;
+                }
+
+            }
+
         .result-title {
             font-size: 15px;
             font-weight: 600;
@@ -1053,11 +1086,22 @@
                             <img id="previewImg" class="preview-img" alt="Pinterest image preview" />
                         </div>
                         <div class="result-info">
-                            <div class="result-badge">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
-                                </svg>
-                                Image Ready
+                            <div class="result-top">
+
+                                <div class="result-badge">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                                    </svg>
+                                    Image Ready
+                                </div>
+
+                                <a href="https://razorpay.me/@compressly" target="_blank" rel="noopener" class="support-link" onclick="gtag('event','support_tool_clicked',{
+                                    tool:'pinterest-image-downloader',
+                                    location:'result_badge'
+                                });">
+                                    Support this tool
+                                </a>
+
                             </div>
                             <div class="result-title" id="resultTitle"></div>
                             <div class="result-hint">High-quality photo extracted from Pinterest. Click Download to save
