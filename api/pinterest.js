@@ -101,11 +101,11 @@ export default async function handler(req, res) {
         let hdUrl = imageUrl;
         let sdUrl = imageUrl;
 
-        // Pinterest commonly serves these sizes
-        if (hdUrl.includes('/736x/')) {
-            sdUrl = hdUrl.replace('/736x/', '/474x/');
-        } else if (hdUrl.includes('/564x/')) {
-            sdUrl = hdUrl.replace('/564x/', '/474x/');
+        if (imageUrl.includes('/736x/')) {
+            sdUrl = imageUrl.replace('/736x/', '/564x/');
+        } else if (imageUrl.includes('/564x/')) {
+            sdUrl = imageUrl;
+            hdUrl = imageUrl.replace('/564x/', '/736x/');
         }
 
         return res.status(200).json({
