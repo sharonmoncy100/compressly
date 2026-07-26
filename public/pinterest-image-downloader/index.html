@@ -415,12 +415,32 @@
                 min-height: 480px;
             }
         }
-
+        
+        /* added animation for picture appearing */
         .result-inner {
             display: flex;
             gap: 24px;
             align-items: center;
+
+            opacity: 0;
+            transform: translateY(10px);
+            transition:
+                opacity 280ms ease,
+                transform 280ms cubic-bezier(.22, 1, .36, 1);
         }
+
+        .result-inner.reveal {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .result-inner {
+                transition: none;
+                transform: none;
+            }
+        }
+        /* end animation for picture appearing */
 
         @media (max-width: 560px) {
             .result-inner {
@@ -1529,7 +1549,10 @@
             errorState.classList.remove('show');
             resultState.classList.remove('show');
             resultState.classList.remove('active');
-            document.getElementById('resultInner').style.display = 'none';
+            const resultInner = document.getElementById('resultInner');
+
+            resultInner.classList.remove('reveal');
+            resultInner.style.display = 'none';
             document.getElementById('inlineLoading').style.display = 'none';
             document.getElementById('stickyBar').classList.add('hidden');
 
@@ -1547,8 +1570,18 @@
             if (state === 'error') errorState.classList.add('show');
             if (state === 'result') {
                 resultState.classList.add('show');
-                resultState.classList.add('active'); // ← add this
-                document.getElementById('resultInner').style.display = 'flex';
+                resultState.classList.add('active');
+
+                const resultInner = document.getElementById('resultInner');
+
+                resultInner.style.display = 'flex';
+
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(() => {
+                        resultInner.classList.add('reveal');
+                    });
+                });
+
                 document.getElementById('stickyBar').classList.remove('hidden');
             }
         }
