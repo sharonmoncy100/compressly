@@ -1923,6 +1923,7 @@ export default function App() {
               <a className="touch-link" href="/psc-photo-tool.html">Kerala PSC Photo Tool</a>
               <a className="touch-link" href="/amazon-image-resizer/">Amazon Image Resizer</a>
               <a className="touch-link" href="/pinterest-image-downloader/">Pinterest Image Downloader</a>
+              <a  className="touch-link" href="/passport-photo-maker/">Passport Size Photo Maker</a>
 
             </div>
 
