@@ -98,15 +98,79 @@ export default async function handler(req, res) {
         else if (t.includes('tattoo')) category = 'Tattoo';
         else if (t.includes('drawing') || t.includes('art')) category = 'Art';
 
+        // replace starts here
         let hdUrl = imageUrl;
         let sdUrl = imageUrl;
 
+        // Quick Download = 564x where possible
         if (imageUrl.includes('/736x/')) {
             sdUrl = imageUrl.replace('/736x/', '/564x/');
+        } else if (imageUrl.includes('/originals/')) {
+            sdUrl = imageUrl.replace('/originals/', '/564x/');
         } else if (imageUrl.includes('/564x/')) {
             sdUrl = imageUrl;
-            hdUrl = imageUrl.replace('/564x/', '/736x/');
         }
+
+
+        // --------------------------------------------------
+        // HD DOWNLOAD
+        // Try Pinterest original first.
+        // If unavailable or larger than 15 MB, use 736x.
+        // --------------------------------------------------
+
+        const MAX_ORIGINAL_SIZE = 15 * 1024 * 1024; // 15 MB
+
+        let originalUrl = imageUrl
+            .replace('/564x/', '/originals/')
+            .replace('/736x/', '/originals/');
+
+        try {
+            const originalCheck = await fetch(originalUrl, {
+                method: 'HEAD',
+                redirect: 'follow',
+                headers: {
+                    'User-Agent':
+                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36'
+                }
+            });
+
+            const contentType =
+                originalCheck.headers.get('content-type') || '';
+
+            const contentLength =
+                Number(originalCheck.headers.get('content-length') || 0);
+
+            const isImage =
+                contentType.toLowerCase().startsWith('image/');
+
+            const sizeIsSafe =
+                contentLength === 0 ||
+                contentLength <= MAX_ORIGINAL_SIZE;
+
+            if (
+                originalCheck.ok &&
+                isImage &&
+                sizeIsSafe
+            ) {
+                // Original exists and is acceptable.
+                hdUrl = originalUrl;
+
+            } else {
+                // Original missing, invalid, or too large.
+                hdUrl = imageUrl
+                    .replace('/564x/', '/736x/')
+                    .replace('/originals/', '/736x/');
+            }
+
+        } catch {
+            // Pinterest check failed.
+            // Safely fall back to 736x.
+            hdUrl = imageUrl
+                .replace('/564x/', '/736x/')
+                .replace('/originals/', '/736x/');
+        }
+        // replace ends here 
+        
 
         return res.status(200).json({
             hdUrl,
