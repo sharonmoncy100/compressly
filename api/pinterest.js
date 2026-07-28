@@ -102,12 +102,12 @@ export default async function handler(req, res) {
         let hdUrl = imageUrl;
         let sdUrl = imageUrl;
 
-        // Quick Download = 564x where possible
-        if (imageUrl.includes('/736x/')) {
-            sdUrl = imageUrl.replace('/736x/', '/564x/');
+        // Quick Download = 736x where possible
+        if (imageUrl.includes('/564x/')) {
+            sdUrl = imageUrl.replace('/564x/', '/736x/');
         } else if (imageUrl.includes('/originals/')) {
-            sdUrl = imageUrl.replace('/originals/', '/564x/');
-        } else if (imageUrl.includes('/564x/')) {
+            sdUrl = imageUrl.replace('/originals/', '/736x/');
+        } else if (imageUrl.includes('/736x/')) {
             sdUrl = imageUrl;
         }
 
