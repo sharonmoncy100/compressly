@@ -1677,7 +1677,24 @@
 
             try {
                 const apiUrl = `/api/pinterest?url=${encodeURIComponent(rawUrl)}`;
-                const res = await fetch(apiUrl);
+
+                const controller = new AbortController();
+
+                const timeout = setTimeout(
+                    () => controller.abort(),
+                    15000
+                );
+
+                let res;
+
+                try {
+                    res = await fetch(apiUrl, {
+                        signal: controller.signal
+                    });
+                } finally {
+                    clearTimeout(timeout);
+                }
+
                 const data = await res.json();
 
                 if (!res.ok || data.error) {
@@ -1724,7 +1741,17 @@
                 }
 
             } catch (err) {
-                showError('Network error. Please check your connection and try again.');
+
+                if (err.name === 'AbortError') {
+                    showError(
+                        'Pinterest took too long to respond. Please try again.'
+                    );
+                } else {
+                    showError(
+                        'Network error. Please check your connection and try again.'
+                    );
+                }
+
             } finally {
                 fetchBtn.disabled = false;
             }

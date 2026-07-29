@@ -125,14 +125,28 @@ export default async function handler(req, res) {
             .replace('/736x/', '/originals/');
 
         try {
-            const originalCheck = await fetch(originalUrl, {
-                method: 'HEAD',
-                redirect: 'follow',
-                headers: {
-                    'User-Agent':
-                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36'
-                }
-            });
+            const originalController = new AbortController();
+
+            const originalTimeout = setTimeout(
+                () => originalController.abort(),
+                3000
+            );
+
+            let originalCheck;
+
+            try {
+                originalCheck = await fetch(originalUrl, {
+                    method: 'HEAD',
+                    redirect: 'follow',
+                    signal: originalController.signal,
+                    headers: {
+                        'User-Agent':
+                            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36'
+                    }
+                });
+            } finally {
+                clearTimeout(originalTimeout);
+            }
 
             const contentType =
                 originalCheck.headers.get('content-type') || '';
