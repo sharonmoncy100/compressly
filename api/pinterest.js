@@ -55,20 +55,13 @@ export default async function handler(req, res) {
 
         clearTimeout(timeout);
 
-        console.log("Pinterest Status:", response.status);
-        console.log("Pinterest URL:", response.url);
-
-        const text = await response.text();
-
-        console.log(text.substring(0, 800));
-
         if (!response.ok) {
-            return res.status(502).json({
-                error: "Pinterest returned " + response.status
-            });
+            return res
+                .status(502)
+                .json({ error: 'Could not reach Pinterest. Please try again.' });
         }
 
-        const html = text;
+        const html = await response.text();
 
         // Try og:image (two attribute orders)
         const ogMatch =
