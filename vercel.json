@@ -11,5 +11,15 @@
       "destination": "https://www.compressly.in/:path*",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/compress-image",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/compress-image/",
+      "destination": "/index.html"
+    }
   ]
 }

@@ -10,7 +10,11 @@ export default function Header({
     return (
         <header className="header-wrap">
             <div className="header-inner flex items-center justify-between mb-3 w-full">
-                <div className="header-left flex items-center gap-3">
+                <a
+                    className="header-left flex items-center gap-3"
+                    href="/"
+                    aria-label="Compressly - home"
+                >
                     <img
                         src={Icon64}
                         srcSet={`${Icon64} 64w, ${Icon128} 128w`}
@@ -21,7 +25,7 @@ export default function Header({
 
 
                     <span className="compressly-title">Compressly</span>
-                </div>
+                </a>
 
                 {showThemeToggle && (
                     <button
