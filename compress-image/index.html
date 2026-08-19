@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Disable GA on localhost -->
+<script>
+  const allowedHosts = ["compressly.in", "www.compressly.in"];
+
+  if (!allowedHosts.includes(location.hostname)) {
+    window['ga-disable-G-K9Z1H2JLZQ'] = true;
+  }
+</script>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-K9Z1H2JLZQ'); // auto page_view = ON
+</script>
+
+<link rel="canonical" href="https://www.compressly.in/compress-image/" />
+
+<meta charset="utf-8" />
+
+<meta name="google-adsense-account" content="ca-pub-4484955491622612">
+
+<!-- Mobile + scaling -->
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="preload" href="/fonts/Inter-VariableFont.woff2" as="font" type="font/woff2" crossorigin />
+
+<!-- Title (SEO optimized) -->
+<title>Free Online Image Compressor (JPG, PNG, WebP, HEIC) - Compressly</title>
+
+<!-- Description (very important for Google) -->
+<meta name="description"
+  content="Compress JPG, PNG, WebP and HEIC images online for free. Set a quality level or a target file size - runs entirely in your browser, no uploads." />
+
+<!-- Site name for Google search results -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Free Online Image Compressor - Compressly",
+  "description": "Compress JPG, PNG, WebP and HEIC images online for free. Set a quality level or a target file size - runs entirely in your browser, no uploads.",
+  "url": "https://www.compressly.in/compress-image/",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "Compressly",
+    "url": "https://www.compressly.in/"
+  }
+}
+</script>
+
+<!-- Keywords (Google uses lightly, but good to add) -->
+<meta name="keywords"
+  content="image compressor, compress image online, reduce image size, jpg compressor, png compressor, webp compressor, heic compressor, compress image to 100kb, compress photo, online compression tool" />
+<!-- Favicon -->
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon-64.png">
+
+<!-- Open Graph (OG) -->
+<meta property="og:title" content="Free Online Image Compressor - Compressly" />
+<meta property="og:description" content="Compress JPG, PNG, WebP and HEIC images online for free, entirely in your browser - no uploads." />
+<meta property="og:image" content="https://www.compressly.in/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:url" content="https://www.compressly.in/compress-image/" />
+<meta property="og:type" content="website" />
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Free Online Image Compressor - Compressly" />
+<meta name="twitter:description" content="Compress JPG, PNG, WebP and HEIC images online for free, entirely in your browser - no uploads." />
+<meta name="twitter:image" content="https://www.compressly.in/og-image.png" />
+
+<!-- Theme color (browser UI color) -->
+<meta name="theme-color" content="#ffffff" />
+
+</head>
+
+<body>
+
+  <!-- React app root -->
+  <div id="root"></div>
+
+  <!-- Modal portal root (IMPORTANT) -->
+  <div id="modal-root"></div>
+
+  <!-- Vite entry -->
+  <script type="module" src="/src/compressor-main.jsx"></script>
+</body>
+
+</html>

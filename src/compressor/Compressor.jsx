@@ -1055,32 +1055,6 @@ export default function App() {
 
 
 
-    // index.html is shared between "/" and "/compress-image/" (both routes
-    // render off the same static file), so without this the compressor page
-    // inherits the homepage's title/description/canonical - Google was
-    // reading both pages as declaring the homepage canonical.
-    useEffect(() => {
-        const canonicalUrl = "https://www.compressly.in/compress-image/";
-        const title = "Free Online Image Compressor (JPG, PNG, WebP, HEIC) - Compressly";
-        const description =
-            "Compress JPG, PNG, WebP and HEIC images online for free. Set a quality level or a target file size - runs entirely in your browser, no uploads.";
-
-        document.title = title;
-
-        const setMeta = (selector, attr, value) => {
-            const el = document.querySelector(selector);
-            if (el) el.setAttribute(attr, value);
-        };
-
-        setMeta('link[rel="canonical"]', "href", canonicalUrl);
-        setMeta('meta[name="description"]', "content", description);
-        setMeta('meta[property="og:title"]', "content", title);
-        setMeta('meta[property="og:description"]', "content", description);
-        setMeta('meta[property="og:url"]', "content", canonicalUrl);
-        setMeta('meta[name="twitter:title"]', "content", title);
-        setMeta('meta[name="twitter:description"]', "content", description);
-    }, []);
-
     // Pre-decode images for instant modal open (reduces INP)
     // Pre-decode images for instant modal open (reduces INP)
     const decodedURLs = useRef(new Set());
