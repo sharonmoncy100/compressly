@@ -1,0 +1,17 @@
+/* Minimal reset shared by every route. Route-specific styling
+   (index.css's Tailwind layers + compressor UI, HomePage.css) is
+   loaded only by the component that actually needs it. */
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}

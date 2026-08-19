@@ -6,6 +6,7 @@ import { SpeedInsights } from "@vercel/speed-insights/react";
 import Header from "../components/Header";
 import Uploader from "../components/Uploader";
 import { createPortal } from "react-dom";
+import "../index.css";
 
 
 
