@@ -377,6 +377,65 @@
             color: var(--text-muted);
         }
 
+        /* ── RATING HERO (the primary, upfront ask) ── */
+        .rating-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 6px 0 4px;
+        }
+
+        .rating-hero-label {
+            font-size: 13.5px;
+            font-weight: 650;
+            color: var(--text);
+            margin-bottom: 16px;
+        }
+
+        .star-rating-input--lg {
+            gap: 6px;
+        }
+
+        .star-rating-input--lg .star-btn {
+            padding: 5px;
+        }
+
+        .star-rating-input--lg .star-btn svg {
+            width: 38px;
+            height: 38px;
+        }
+
+        .rating-hero .rating-hint {
+            margin-top: 14px;
+            font-size: 13.5px;
+            font-weight: 550;
+            color: var(--text-secondary);
+        }
+
+        /* ── PROGRESSIVE REVEAL (comment + name + submit) ── */
+        .extra-fields {
+            display: grid;
+            grid-template-rows: 0fr;
+            opacity: 0;
+            margin-top: 0;
+            transition:
+                grid-template-rows 0.4s ease,
+                opacity 0.3s ease,
+                margin-top 0.4s ease;
+        }
+
+        .extra-fields-inner {
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .extra-fields.revealed {
+            grid-template-rows: 1fr;
+            opacity: 1;
+            margin-top: 26px;
+        }
+
         .submit-button {
             width: 100%;
             min-height: 46px;
@@ -797,6 +856,11 @@
             white-space: pre-wrap;
         }
 
+        .feedback-quote--empty {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
         .feedback-user {
             display: flex;
             align-items: center;
@@ -1157,82 +1221,88 @@
             <div class="card feedback-card">
 
                 <div class="card-header">
-                    <h2 class="card-title">Share your feedback</h2>
+                    <h2 class="card-title">Rate your experience</h2>
 
                     <p class="card-description">
-                        A quick comment is enough. Tell us what worked or what we could improve.
+                        One tap is all it takes. A comment or your name is welcome, but never required.
                     </p>
                 </div>
 
 
                 <form id="feedbackForm">
 
-                    <div class="form-group">
+                    <div class="rating-hero">
+                        <div class="rating-hero-label" id="ratingLabel">How would you rate Compressly?</div>
 
-                        <div class="form-label-row">
-                            <label for="name">Your name</label>
-                        </div>
-
-                        <input type="text" id="name" class="input" maxlength="40" autocomplete="name"
-                            placeholder="e.g. Rahul" required>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <div class="form-label-row">
-
-                            <label for="comment">Your feedback</label>
-
-                            <span class="optional">
-                                500 characters max
-                            </span>
-
-                        </div>
-
-                        <textarea id="comment" class="input" maxlength="500"
-                            placeholder="What did you like? Is there anything we could make better?"
-                            required></textarea>
-
-                        <div class="textarea-footer">
-                            <span class="character-count" id="characterCount">
-                                0 / 500
-                            </span>
-                        </div>
-
-                    </div>
-
-
-                    <div class="form-group">
-
-                        <div class="form-label-row">
-                            <label id="ratingLabel">Your rating</label>
-                        </div>
-
-                        <div class="star-rating-input" id="ratingInput" role="radiogroup" aria-labelledby="ratingLabel">
+                        <div class="star-rating-input star-rating-input--lg" id="ratingInput" role="radiogroup"
+                            aria-labelledby="ratingLabel">
                         </div>
 
                         <div class="rating-hint" id="ratingHint">Tap a star to rate your experience</div>
-
                     </div>
 
 
-                    <button type="submit" class="submit-button" id="submitButton">
+                    <div class="extra-fields" id="extraFields">
+                        <div class="extra-fields-inner">
 
-                        <span id="submitButtonText">
-                            Submit feedback
-                        </span>
+                            <div class="form-group">
 
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
-                            <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
+                                <div class="form-label-row">
 
-                    </button>
+                                    <label for="comment" id="commentLabel">Add a comment</label>
+
+                                    <span class="optional">
+                                        Optional
+                                    </span>
+
+                                </div>
+
+                                <textarea id="comment" class="input" maxlength="500"
+                                    placeholder="What did you like? Is there anything we could make better?"></textarea>
+
+                                <div class="textarea-footer">
+                                    <span class="character-count" id="characterCount">
+                                        0 / 500
+                                    </span>
+                                </div>
+
+                            </div>
 
 
-                    <div class="form-message" id="formMessage"></div>
+                            <div class="form-group">
+
+                                <div class="form-label-row">
+                                    <label for="name">Your name</label>
+
+                                    <span class="optional">
+                                        Optional
+                                    </span>
+                                </div>
+
+                                <input type="text" id="name" class="input" maxlength="40" autocomplete="name"
+                                    placeholder="Leave blank to stay anonymous">
+
+                            </div>
+
+
+                            <button type="submit" class="submit-button" id="submitButton">
+
+                                <span id="submitButtonText">
+                                    Submit feedback
+                                </span>
+
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none">
+                                    <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+
+                            </button>
+
+
+                            <div class="form-message" id="formMessage"></div>
+
+                        </div>
+                    </div>
 
                 </form>
 
@@ -1512,6 +1582,9 @@
         const ratingHint =
             document.getElementById("ratingHint");
 
+        const extraFields =
+            document.getElementById("extraFields");
+
         const loadMoreWrap =
             document.getElementById("loadMoreWrap");
 
@@ -1573,6 +1646,21 @@
             5: "Excellent"
         };
 
+        // Swaps the comment placeholder to match the tone of the rating -
+        // the same trick Play Store / App Store prompts use so a 1-star
+        // tap doesn't get met with "What did you like?"
+        const COMMENT_PROMPTS = {
+            1: "What went wrong? We'd like to fix it.",
+            2: "What went wrong? We'd like to fix it.",
+            3: "What could we improve?",
+            4: "What did you like?",
+            5: "What did you like?"
+        };
+
+        function updateCommentPrompt(rating) {
+            commentInput.placeholder = COMMENT_PROMPTS[rating] || COMMENT_PROMPTS[3];
+        }
+
         function paintRatingInput(count) {
 
             [...ratingInputEl.children].forEach((btn, idx) => {
@@ -1602,6 +1690,8 @@
 
                 btn.addEventListener("click", () => {
 
+                    const firstSelection = selectedRating === 0;
+
                     selectedRating = i;
                     paintRatingInput(i);
 
@@ -1611,6 +1701,12 @@
                     [...ratingInputEl.children].forEach((b, idx) => {
                         b.setAttribute("aria-checked", idx < i ? "true" : "false");
                     });
+
+                    updateCommentPrompt(i);
+
+                    if (firstSelection) {
+                        extraFields.classList.add("revealed");
+                    }
 
                 });
 
@@ -1816,15 +1912,17 @@
                 ? `<div class="feedback-stars" aria-label="Rated ${data.rating} out of 5 stars">${starsMarkup(data.rating, 15)}</div>`
                 : "";
 
+            const quoteHtml = safeComment.trim().length > 0
+                ? `<p class="feedback-quote">${safeComment}</p>`
+                : `<p class="feedback-quote feedback-quote--empty">Left a rating without a comment.</p>`;
+
             return `
 
                 <article class="feedback-item">
 
                     ${starsHtml}
 
-                    <p class="feedback-quote">
-                        ${safeComment}
-                    </p>
+                    ${quoteHtml}
 
                     <div class="feedback-user">
 
@@ -2010,11 +2108,14 @@
                 event.preventDefault();
 
 
-                const name =
+                const rawName =
                     nameInput.value.trim();
 
                 const comment =
                     commentInput.value.trim();
+
+                const name =
+                    rawName.length > 0 ? rawName : "Anonymous";
 
 
                 formMessage.className =
@@ -2036,13 +2137,10 @@
                 }
 
 
-                if (
-                    name.length < 1 ||
-                    name.length > 40
-                ) {
+                if (rawName.length > 40) {
 
                     showMessage(
-                        "Please enter a name between 1 and 40 characters.",
+                        "Name must be 40 characters or fewer.",
                         "error"
                     );
 
@@ -2051,13 +2149,10 @@
                 }
 
 
-                if (
-                    comment.length < 2 ||
-                    comment.length > 500
-                ) {
+                if (comment.length > 500) {
 
                     showMessage(
-                        "Your feedback must be between 2 and 500 characters.",
+                        "Your comment must be 500 characters or fewer.",
                         "error"
                     );
 
@@ -2109,6 +2204,8 @@
                     buildRatingInput();
                     ratingHint.textContent =
                         "Tap a star to rate your experience";
+                    updateCommentPrompt(3);
+                    extraFields.classList.remove("revealed");
 
 
                     showMessage(
