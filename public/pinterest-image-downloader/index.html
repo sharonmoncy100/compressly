@@ -644,13 +644,21 @@
             font-weight: 600;
             cursor: pointer;
             text-decoration: none;
-            transition: all .2s;
+            transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
             box-shadow: 0 3px 10px rgba(230, 0, 35, .3);
         }
 
         .btn-download:hover {
             background: var(--accent-hover);
             transform: translateY(-1px);
+        }
+
+        /* Hardcoded instead of relying on the SVG's fill="currentColor" -
+           on some Windows/Chromium setups, resolving currentColor through
+           CSS inheritance on every paint frame during this button's hover
+           transition shows a transient black flash on the icon. */
+        .btn-download svg {
+            fill: #fff;
         }
             .btn-standard{
 
@@ -1311,7 +1319,7 @@
 
                                     <button class="btn-download" id="downloadHdBtn" onclick="triggerDownload('hd')">
 
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
                                             <path
                                                 d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
                                         </svg>
