@@ -482,28 +482,43 @@
             cursor: not-allowed;
         }
 
+        /* Always occupies its final size (via visibility, not display) so
+           showing/hiding it never changes the card's height - on mobile the
+           Support Compressly card sits directly beneath this form, and a
+           height change here used to yank it upward the moment the message
+           disappeared, registering as real Lighthouse CLS. */
         .form-message {
-            display: none;
+            display: flex;
+            visibility: hidden;
             align-items: flex-start;
             gap: 9px;
 
             margin-top: 15px;
             padding: 11px 13px;
+            min-height: 64px;
 
             border-radius: 10px;
             font-size: 13px;
             line-height: 1.5;
         }
 
+        .form-message.success,
+        .form-message.error {
+            visibility: visible;
+        }
+
         .form-message.success {
-            display: flex;
             color: #116b49;
             background: var(--green-soft);
             border: 1px solid #caeddf;
         }
 
+        .form-message.success svg {
+            flex: 0 0 auto;
+            margin-top: 1px;
+        }
+
         .form-message.error {
-            display: flex;
             color: #a83232;
             background: var(--danger-soft);
             border: 1px solid #f3d1d1;
@@ -2313,6 +2328,8 @@
                     }
 
 
+                    const submittedRating = selectedRating;
+
                     feedbackForm.reset();
 
                     characterCount.textContent =
@@ -2323,9 +2340,10 @@
                     ratingHint.textContent =
                         "Tap a star to rate your experience";
                     updateCommentPrompt(3);
-                    extraFields.classList.remove("revealed");
 
-
+                    // extraFields is never collapsed again once opened - the
+                    // message below stays in the same, already-reserved
+                    // spot, so nothing above or below it moves.
                     showMessage(
                         "Thank you! Your feedback has been submitted.",
                         "success"
@@ -2342,7 +2360,7 @@
                             {
                                 page:
                                     "compressly-feedback",
-                                rating: selectedRating
+                                rating: submittedRating
                             }
                         );
 
@@ -2395,8 +2413,12 @@
             type
         ) {
 
-            formMessage.textContent =
-                message;
+            const icon = type === "success"
+                ? `<svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+                : "";
+
+            formMessage.innerHTML =
+                `${icon}<span>${escapeHTML(message)}</span>`;
 
             formMessage.className =
                 `form-message ${type}`;
