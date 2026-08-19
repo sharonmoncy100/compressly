@@ -714,6 +714,10 @@
             color: var(--text-muted);
         }
 
+        #avgStarsDisplay {
+            min-height: 18px;
+        }
+
         .rating-summary-bars {
             flex: 1;
             display: flex;
@@ -964,25 +968,6 @@
             color: var(--text-muted);
         }
 
-        .loader {
-            width: 22px;
-            height: 22px;
-
-            border: 2px solid #e3e0fa;
-            border-top-color: var(--accent);
-            border-radius: 50%;
-
-            margin-bottom: 12px;
-
-            animation: spin 0.75s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
         .feedback-status strong {
             color: var(--text-secondary);
             font-size: 13px;
@@ -991,6 +976,47 @@
 
         .feedback-status span {
             font-size: 11.5px;
+        }
+
+        /* ── SKELETON LOADERS (reserve real content's footprint so
+           swapping placeholder → Firebase data doesn't shift the page) ── */
+        .skeleton {
+            background: linear-gradient(90deg, #edeef1 25%, #f6f7f9 37%, #edeef1 63%);
+            background-size: 400% 100%;
+            animation: skeleton-shimmer 1.4s ease infinite;
+            border-radius: 6px;
+        }
+
+        @keyframes skeleton-shimmer {
+            0% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0 50%;
+            }
+        }
+
+        .skeleton-stars {
+            width: 78px;
+            height: 15px;
+            margin-bottom: 10px;
+        }
+
+        .skeleton-line {
+            height: 10px;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            flex: 0 0 auto;
+        }
+
+        .skeleton-card .feedback-user {
+            align-items: center;
         }
 
 
@@ -1428,7 +1454,33 @@
                     <div class="rating-summary-count" id="totalReviewsText">Loading…</div>
                 </div>
 
-                <div class="rating-summary-bars" id="ratingBars"></div>
+                <div class="rating-summary-bars" id="ratingBars">
+                    <div class="bar-row">
+                        <span class="bar-label">5 star</span>
+                        <span class="bar-track"><span class="bar-fill" style="width:0%"></span></span>
+                        <span class="bar-pct">–</span>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">4 star</span>
+                        <span class="bar-track"><span class="bar-fill" style="width:0%"></span></span>
+                        <span class="bar-pct">–</span>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">3 star</span>
+                        <span class="bar-track"><span class="bar-fill" style="width:0%"></span></span>
+                        <span class="bar-pct">–</span>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">2 star</span>
+                        <span class="bar-track"><span class="bar-fill" style="width:0%"></span></span>
+                        <span class="bar-pct">–</span>
+                    </div>
+                    <div class="bar-row">
+                        <span class="bar-label">1 star</span>
+                        <span class="bar-track"><span class="bar-fill" style="width:0%"></span></span>
+                        <span class="bar-pct">–</span>
+                    </div>
+                </div>
 
             </div>
 
@@ -1451,17 +1503,49 @@
 
             <div class="feedback-grid" id="feedbackList">
 
-                <div class="feedback-status">
+                <article class="feedback-item skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-stars"></div>
+                    <div class="skeleton skeleton-line" style="width:92%"></div>
+                    <div class="skeleton skeleton-line" style="width:78%"></div>
+                    <div class="skeleton skeleton-line" style="width:55%;margin-bottom:0;"></div>
+                    <div class="feedback-user">
+                        <div class="skeleton skeleton-avatar"></div>
+                        <div style="flex:1">
+                            <div class="skeleton skeleton-line" style="width:70px;height:10px;margin-bottom:6px;">
+                            </div>
+                            <div class="skeleton skeleton-line" style="width:50px;height:8px;margin-bottom:0;"></div>
+                        </div>
+                    </div>
+                </article>
 
-                    <div class="loader"></div>
+                <article class="feedback-item skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-stars"></div>
+                    <div class="skeleton skeleton-line" style="width:85%"></div>
+                    <div class="skeleton skeleton-line" style="width:65%;margin-bottom:0;"></div>
+                    <div class="feedback-user">
+                        <div class="skeleton skeleton-avatar"></div>
+                        <div style="flex:1">
+                            <div class="skeleton skeleton-line" style="width:70px;height:10px;margin-bottom:6px;">
+                            </div>
+                            <div class="skeleton skeleton-line" style="width:50px;height:8px;margin-bottom:0;"></div>
+                        </div>
+                    </div>
+                </article>
 
-                    <strong>Loading feedback</strong>
-
-                    <span>
-                        Just a moment…
-                    </span>
-
-                </div>
+                <article class="feedback-item skeleton-card" aria-hidden="true">
+                    <div class="skeleton skeleton-stars"></div>
+                    <div class="skeleton skeleton-line" style="width:95%"></div>
+                    <div class="skeleton skeleton-line" style="width:88%"></div>
+                    <div class="skeleton skeleton-line" style="width:40%;margin-bottom:0;"></div>
+                    <div class="feedback-user">
+                        <div class="skeleton skeleton-avatar"></div>
+                        <div style="flex:1">
+                            <div class="skeleton skeleton-line" style="width:70px;height:10px;margin-bottom:6px;">
+                            </div>
+                            <div class="skeleton skeleton-line" style="width:50px;height:8px;margin-bottom:0;"></div>
+                        </div>
+                    </div>
+                </article>
 
             </div>
 
@@ -1709,6 +1793,22 @@
 
                     if (firstSelection) {
                         extraFields.classList.add("revealed");
+
+                        // On mobile the stars can fill the whole screen, so
+                        // without this a tap can look/feel like the entire
+                        // interaction - nothing visibly changes below the
+                        // fold, so people tap a star and leave. Once the
+                        // reveal animation finishes, nudge the newly-visible
+                        // comment/submit fields into view so it's obvious
+                        // there's more to the form.
+                        extraFields.addEventListener(
+                            "transitionend",
+                            function onRevealed(event) {
+                                if (event.propertyName !== "grid-template-rows") return;
+                                extraFields.removeEventListener("transitionend", onRevealed);
+                                extraFields.scrollIntoView({ behavior: "smooth", block: "nearest" });
+                            }
+                        );
                     }
 
                 });
@@ -1959,6 +2059,27 @@
            LOAD FEEDBACK (sorted + paginated)
         ---------------------------------------------------------- */
 
+        // Same shape/size as a real feedback-item card, so swapping loading →
+        // loaded content doesn't jump the page around (reused from the
+        // skeleton cards already sitting in the static HTML on first paint).
+        const SKELETON_CARD_HTML = `
+            <article class="feedback-item skeleton-card" aria-hidden="true">
+                <div class="skeleton skeleton-stars"></div>
+                <div class="skeleton skeleton-line" style="width:90%"></div>
+                <div class="skeleton skeleton-line" style="width:70%"></div>
+                <div class="skeleton skeleton-line" style="width:50%;margin-bottom:0;"></div>
+                <div class="feedback-user">
+                    <div class="skeleton skeleton-avatar"></div>
+                    <div style="flex:1">
+                        <div class="skeleton skeleton-line" style="width:70px;height:10px;margin-bottom:6px;"></div>
+                        <div class="skeleton skeleton-line" style="width:50px;height:8px;margin-bottom:0;"></div>
+                    </div>
+                </div>
+            </article>
+        `;
+
+        const SKELETON_GRID_HTML = SKELETON_CARD_HTML.repeat(3);
+
         const PAGE_SIZE = 9;
 
         let currentSort = "recent"; // 'recent' | 'top'
@@ -1994,13 +2115,7 @@
                 lastVisible = null;
                 loadedCount = 0;
                 reachedEnd = false;
-                feedbackList.innerHTML = `
-                    <div class="feedback-status">
-                        <div class="loader"></div>
-                        <strong>Loading feedback</strong>
-                        <span>Just a moment…</span>
-                    </div>
-                `;
+                feedbackList.innerHTML = SKELETON_GRID_HTML;
                 loadMoreWrap.classList.remove("show");
             } else {
                 loadMoreBtn.disabled = true;
