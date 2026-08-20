@@ -542,13 +542,18 @@
         .result-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             font-size: 12px;
             font-weight: 600;
-            color: var(--success);
+            color: var(--fg);
             margin-bottom: 10px;
             align-self: flex-start;
             cursor: default;
+        }
+
+        .result-badge svg {
+            color: var(--success);
+            flex-shrink: 0;
         }
 
             .result-top{
@@ -568,10 +573,10 @@
             .support-link{
                 display:inline-flex;
                 align-items:center;
-                gap:5px;
+                gap:6px;
                 font-size:12px;
                 font-weight:600;
-                color:#92610e;
+                color:var(--fg);
                 text-decoration:none;
                 white-space:nowrap;
                 background:#fffbeb;
@@ -592,14 +597,13 @@
             .support-link__stars{
                 display:inline-flex;
                 align-items:center;
-                gap:1px;
                 color:#f5a623;
                 flex-shrink:0;
             }
 
             .support-link__stars svg{
-                width:10px;
-                height:10px;
+                width:13px;
+                height:13px;
                 fill:currentColor;
             }
 
@@ -1284,8 +1288,8 @@
                             <div class="result-top">
 
                                 <div class="result-badge">
-                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                                     </svg>
                                     Image Ready
                                 </div>
@@ -1295,10 +1299,6 @@
                                         location:'result_badge'
                                     });">
                                         <span class="support-link__stars" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                                             <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
                                         </span>
                                         Rate this tool
