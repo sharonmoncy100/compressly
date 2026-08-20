@@ -22,6 +22,10 @@
         gtag('event', 'psc_tool_opened', { page: 'psc-photo-tool' });
     </script>
 
+    <meta name="google-adsense-account" content="ca-pub-4484955491622612">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4484955491622612"
+        crossorigin="anonymous"></script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -978,6 +982,26 @@
             margin-bottom: 16px;
         }
 
+        /* Ad slot */
+        .ad-slot {
+            max-width: 780px;
+            width: 100%;
+            margin: 32px auto 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: auto;
+        }
+
+        .ad-slot-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
         /* Info section */
         .info-section {
             margin-top: 40px;
@@ -1419,6 +1443,16 @@
                 </button>
             </div>
             </div>
+
+            <!-- Ad -->
+            <div class="ad-slot">
+                <span class="ad-slot-label">Advertisement</span>
+                <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px"
+                    data-ad-client="ca-pub-4484955491622612" data-ad-slot="8888965309"></ins>
+            </div>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
 
             <!-- Info Section -->
             <div class="info-section" id="infoSection">
