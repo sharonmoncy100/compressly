@@ -57,27 +57,58 @@ export default {
         }
 
         try {
-            const controller = new AbortController();
-            const timeout = setTimeout(() => controller.abort(), 9000);
+            const MAX_ATTEMPTS = 3;
+            let html = null;
+            let lastError = null;
 
-            const response = await fetch(decoded, {
-                signal: controller.signal,
-                headers: {
-                    'User-Agent':
-                        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-                    Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                    'Accept-Language': 'en-US,en;q=0.9',
-                    'Cache-Control': 'no-cache',
-                },
-            });
+            for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
+                const controller = new AbortController();
+                const timeout = setTimeout(() => controller.abort(), 9000);
 
-            clearTimeout(timeout);
+                try {
+                    const response = await fetch(decoded, {
+                        signal: controller.signal,
+                        headers: {
+                            'User-Agent':
+                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                            'Accept-Language': 'en-US,en;q=0.9',
+                            'Cache-Control': 'no-cache',
+                        },
+                    });
 
-            if (!response.ok) {
-                return new Response(JSON.stringify({ error: 'Could not reach Pinterest. Please try again.' }), { status: 502, headers });
+                    if (!response.ok) {
+                        lastError = { status: 502, message: 'Could not reach Pinterest. Please try again.' };
+                        continue;
+                    }
+
+                    const candidateHtml = await response.text();
+
+                    // Pinterest occasionally serves its generic share page instead of
+                    // the real pin (more often when the request comes from a
+                    // datacenter/cloud IP range it doesn't trust yet). Detect that
+                    // sentinel and retry rather than surfacing it as a real result.
+                    if (candidateHtml.includes('facebook_share_image.png')) {
+                        lastError = { status: 502, message: 'Could not reach Pinterest. Please try again.' };
+                        continue;
+                    }
+
+                    html = candidateHtml;
+                    break;
+                } catch (err) {
+                    if (err.name === 'AbortError') {
+                        lastError = { status: 504, message: 'Request timed out. Pinterest took too long to respond.' };
+                    } else {
+                        throw err;
+                    }
+                } finally {
+                    clearTimeout(timeout);
+                }
             }
 
-            const html = await response.text();
+            if (!html) {
+                return new Response(JSON.stringify({ error: lastError?.message || 'Could not reach Pinterest. Please try again.' }), { status: lastError?.status || 502, headers });
+            }
 
             // Try og:image (two attribute orders)
             const ogMatch =
