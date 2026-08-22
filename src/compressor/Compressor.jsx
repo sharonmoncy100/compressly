@@ -2,7 +2,6 @@
 // Minimal, lazy-loaded heic2any usage. If browser natively supports HEIC (createImageBitmap or <img>), we use that first.
 
 import React, { useRef, useState, useEffect } from "react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
 import Header from "../components/Header";
 import Uploader from "../components/Uploader";
 import { createPortal } from "react-dom";
@@ -1930,8 +1929,6 @@ export default function App() {
                         </div>
 
                     </div>
-
-                    <SpeedInsights sampleRate={0.2} />
                 </footer>
 
             </div> {/* end page-shell */}
