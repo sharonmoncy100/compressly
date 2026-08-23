@@ -447,11 +447,22 @@
   margin-top: 30px;
 }
 
+.hp-hero__lead {
+  order: 1;
+}
+
 .hp-hero__aside {
+  order: 2;
   padding: 22px 24px 8px;
   background: var(--hp-surface);
   border: 1px solid var(--hp-rule);
   border-radius: 8px;
+}
+
+.hp-hero__ad {
+  order: 3;
+  grid-column: 1 / -1;
+  margin-top: 8px;
 }
 
 .hp-hero__asideTitle {
@@ -1056,7 +1067,12 @@
   }
 
   .hp-hero__aside {
+    order: 3;
     max-width: 520px;
+  }
+
+  .hp-hero__ad {
+    order: 2;
   }
 
   .hp-feature {

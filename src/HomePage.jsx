@@ -346,6 +346,10 @@ export default function HomePage() {
                             </div>
                         </div>
 
+                        <div className="hp-hero__ad" aria-label="Advertisement">
+                            <AdSlot />
+                        </div>
+
                         <aside className="hp-hero__aside" aria-labelledby="hp-quick-title">
                             <h2 className="hp-hero__asideTitle" id="hp-quick-title">
                                 Common starting points
@@ -460,16 +464,6 @@ export default function HomePage() {
                                 </li>
                             ))}
                         </ul>
-                    </div>
-                </section>
-
-                {/* -------------------------------------------------------
-            AD
-        -------------------------------------------------------- */}
-
-                <section className="hp-section" aria-label="Advertisement">
-                    <div className="hp-shell">
-                        <AdSlot />
                     </div>
                 </section>
 
