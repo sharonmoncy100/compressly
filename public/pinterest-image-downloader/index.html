@@ -1610,7 +1610,9 @@
             try {
                 const text = await navigator.clipboard.readText();
                 urlInput.value = text;
-                urlInput.focus();
+                // No focus() here on purpose - the URL is already filled in and
+                // visible, and focusing would pop the mobile keyboard for no
+                // reason since the next action is tapping "Get Image", not typing.
             } catch {
                 // Clipboard permission denied — focus input so user can paste manually
                 urlInput.focus();
