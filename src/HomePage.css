@@ -442,17 +442,17 @@
 
 .hp-hero__text {
   max-width: 54ch;
-  margin-top: 22px;
+  margin-top: 12px;
   font-size: 17px;
-  line-height: 1.7;
+  line-height: 1.55;
   color: var(--hp-ink-2);
 }
 
 .hp-hero__actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 30px;
+  gap: 10px;
+  margin-top: 16px;
 }
 
 .hp-hero__lead {
@@ -1178,16 +1178,20 @@
   }
 
   .hp-hero__text {
-    font-size: 16px;
+    font-size: 15px;
+    line-height: 1.5;
   }
 
   .hp-hero__actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 8px;
+    margin-top: 14px;
   }
 
   .hp-hero__actions .hp-btn {
     width: 100%;
+    padding: 10px 20px;
   }
 
   .hp-hero__aside {
