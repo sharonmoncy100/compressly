@@ -28,7 +28,7 @@
 
   --hp-shell: 1140px;
   --hp-gutter: 28px;
-  --hp-header-h: 62px;
+  --hp-header-h: 50px;
 
   --hp-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
@@ -413,7 +413,7 @@
 ================================================================== */
 
 .hp-hero {
-  padding: 76px 0 72px;
+  padding: 28px 0 32px;
 }
 
 .hp-hero__inner {
@@ -425,8 +425,8 @@
 
 .hp-hero__title {
   font-family: var(--hp-serif);
-  font-size: clamp(33px, 4.6vw, 52px);
-  line-height: 1.1;
+  font-size: clamp(26px, 3.8vw, 40px);
+  line-height: 1.15;
   letter-spacing: -0.032em;
   font-weight: 600;
   color: var(--hp-ink);
@@ -1054,7 +1054,7 @@
   }
 
   .hp-hero {
-    padding: 60px 0 56px;
+    padding: 20px 0 24px;
   }
 
   .hp-hero__inner {
@@ -1125,7 +1125,7 @@
   }
 
   .hp-hero {
-    padding: 46px 0 44px;
+    padding: 16px 0 20px;
   }
 
   .hp-sectionHead {
