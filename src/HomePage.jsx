@@ -34,33 +34,6 @@ function BrandMark() {
    mount, guarded against React StrictMode's double-invoke in dev.
 ------------------------------------------------------------------- */
 
-function AdSlot() {
-    const pushedRef = useRef(false);
-
-    useEffect(() => {
-        if (pushedRef.current) return;
-        pushedRef.current = true;
-
-        try {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-        } catch {
-            // AdSense script blocked or not loaded yet - fail silently.
-        }
-    }, []);
-
-    return (
-        <div className="hp-ad">
-            <span className="hp-ad__label">Advertisement</span>
-            <ins
-                className="adsbygoogle"
-                style={{ display: "inline-block", width: "300px", height: "250px" }}
-                data-ad-client="ca-pub-4484955491622612"
-                data-ad-slot="8888965309"
-            />
-        </div>
-    );
-}
-
 function AdSlotSmall() {
     const pushedRef = useRef(false);
 
@@ -340,8 +313,6 @@ export default function HomePage() {
                 </div>
             </header>
 
-            <AdSlotSmall />
-
             <main id="main">
                 {/* -------------------------------------------------------
             HERO
@@ -374,10 +345,6 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        <div className="hp-hero__ad" aria-label="Advertisement">
-                            <AdSlot />
-                        </div>
-
                         <aside className="hp-hero__aside" aria-labelledby="hp-quick-title">
                             <h2 className="hp-hero__asideTitle" id="hp-quick-title">
                                 Common starting points
@@ -393,6 +360,16 @@ export default function HomePage() {
                                 ))}
                             </ul>
                         </aside>
+                    </div>
+                </section>
+
+                {/* -------------------------------------------------------
+            AD
+        -------------------------------------------------------- */}
+
+                <section className="hp-section hp-section--ad" aria-label="Advertisement">
+                    <div className="hp-shell">
+                        <AdSlotSmall />
                     </div>
                 </section>
 
