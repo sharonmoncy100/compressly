@@ -28,7 +28,7 @@
 
   --hp-shell: 1140px;
   --hp-gutter: 28px;
-  --hp-header-h: 50px;
+  --hp-header-h: 56px;
 
   --hp-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
@@ -356,6 +356,13 @@
   overflow-x: auto;
 }
 
+/* Collapse the whole slot (label included) instead of leaving an empty
+   reserved box when AdSense has no fill for this impression. */
+.hp-ad:has(ins[data-ad-status="unfilled"]),
+.hp-adSmall:has(ins[data-ad-status="unfilled"]) {
+  display: none;
+}
+
 .hp-ad__label {
   font-size: 11px;
   font-weight: 700;
@@ -363,6 +370,13 @@
   text-transform: uppercase;
   color: var(--hp-faint);
   margin-bottom: 12px;
+}
+
+.hp-adSmall {
+  display: flex;
+  justify-content: center;
+  overflow-x: auto;
+  padding: 6px var(--hp-gutter);
 }
 
 .hp-sectionHead {
@@ -413,7 +427,7 @@
 ================================================================== */
 
 .hp-hero {
-  padding: 28px 0 32px;
+  padding: 40px 0 44px;
 }
 
 .hp-hero__inner {
@@ -1054,7 +1068,7 @@
   }
 
   .hp-hero {
-    padding: 20px 0 24px;
+    padding: 32px 0 36px;
   }
 
   .hp-hero__inner {
@@ -1064,6 +1078,10 @@
 
   .hp-hero__title br {
     display: none;
+  }
+
+  .hp-hero__text {
+    max-width: none;
   }
 
   .hp-hero__aside {
@@ -1125,7 +1143,7 @@
   }
 
   .hp-hero {
-    padding: 16px 0 20px;
+    padding: 24px 0 28px;
   }
 
   .hp-sectionHead {

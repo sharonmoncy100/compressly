@@ -61,6 +61,32 @@ function AdSlot() {
     );
 }
 
+function AdSlotSmall() {
+    const pushedRef = useRef(false);
+
+    useEffect(() => {
+        if (pushedRef.current) return;
+        pushedRef.current = true;
+
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch {
+            // AdSense script blocked or not loaded yet - fail silently.
+        }
+    }, []);
+
+    return (
+        <div className="hp-adSmall">
+            <ins
+                className="adsbygoogle"
+                style={{ display: "inline-block", width: "320px", height: "50px" }}
+                data-ad-client="ca-pub-4484955491622612"
+                data-ad-slot="8680568194"
+            />
+        </div>
+    );
+}
+
 function ArrowIcon() {
     return (
         <svg
@@ -313,6 +339,8 @@ export default function HomePage() {
                     </nav>
                 </div>
             </header>
+
+            <AdSlotSmall />
 
             <main id="main">
                 {/* -------------------------------------------------------
