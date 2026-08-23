@@ -349,29 +349,28 @@
   background: var(--hp-band);
 }
 
-.hp-section--ad {
-  padding: 20px 0;
-  border-top: 0;
-}
-
-/* Collapse the slot instead of leaving an empty reserved box when
-   AdSense has no fill for this impression. */
-.hp-adSmall:has(ins[data-ad-status="unfilled"]) {
-  display: none;
-}
-
 .hp-adSmall {
+  order: 3;
+  grid-column: 1 / -1;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   overflow-x: auto;
   max-width: 460px;
-  margin: 0 auto;
-  padding: 14px;
+  margin: 8px auto 0;
+  padding: 10px 14px;
   background: var(--hp-surface);
   border: 1px solid var(--hp-rule);
   border-radius: 10px;
   box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+}
+
+.hp-adSmall__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--hp-faint);
+  margin-bottom: 6px;
 }
 
 .hp-sectionHead {
@@ -1074,7 +1073,12 @@
   }
 
   .hp-hero__aside {
+    order: 3;
     max-width: 520px;
+  }
+
+  .hp-adSmall {
+    order: 2;
   }
 
   .hp-feature {

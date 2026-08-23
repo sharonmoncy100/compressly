@@ -50,6 +50,7 @@ function AdSlotSmall() {
 
     return (
         <div className="hp-adSmall">
+            <span className="hp-adSmall__label">Advertisement</span>
             <ins
                 className="adsbygoogle"
                 style={{ display: "inline-block", width: "320px", height: "50px" }}
@@ -345,6 +346,8 @@ export default function HomePage() {
                             </div>
                         </div>
 
+                        <AdSlotSmall />
+
                         <aside className="hp-hero__aside" aria-labelledby="hp-quick-title">
                             <h2 className="hp-hero__asideTitle" id="hp-quick-title">
                                 Common starting points
@@ -360,16 +363,6 @@ export default function HomePage() {
                                 ))}
                             </ul>
                         </aside>
-                    </div>
-                </section>
-
-                {/* -------------------------------------------------------
-            AD
-        -------------------------------------------------------- */}
-
-                <section className="hp-section hp-section--ad" aria-label="Advertisement">
-                    <div className="hp-shell">
-                        <AdSlotSmall />
                     </div>
                 </section>
 
