@@ -63,8 +63,17 @@ export default async function handler(req, res) {
 
         const html = await response.text();
 
+        // og:image/og:title always live inside <head>, near the top of the
+        // document - scan a leading slice first (much less regex work than
+        // the full page, which can be several hundred KB) and only fall back
+        // to scanning the whole thing if it wasn't found there, so results
+        // stay identical to before in every case.
+        const headSlice = html.slice(0, 30000);
+
         // Try og:image (two attribute orders)
         const ogMatch =
+            headSlice.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+            headSlice.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i) ||
             html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
             html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
 
@@ -78,7 +87,10 @@ export default async function handler(req, res) {
 
 
         // Extract title if available
-        const titleMatch = html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
+        const titleMatch =
+            headSlice.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
+            headSlice.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i) ||
+            html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
             html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
         const title = titleMatch ? titleMatch[1].trim() : 'Pinterest Image';
 
