@@ -126,7 +126,47 @@ export default async function handler(req, res) {
         }
 
         const imageUrl = oembedJson.thumbnail_url;
-        const title = (oembedJson.title || '').trim() || 'Pinterest Image';
+        let title = (oembedJson.title || '').trim();
+
+        // oEmbed's title only reflects what the pinner themselves typed as
+        // a caption, which is frequently left blank. When that happens,
+        // fall back to a light fetch of the page's <head> for Pinterest's
+        // own generated og:title - richer, and only worth the extra
+        // request for this minority of cases.
+        if (!title) {
+            try {
+                const titleController = new AbortController();
+                const titleTimeout = setTimeout(() => titleController.abort(), 5000);
+
+                let titleRes;
+                try {
+                    titleRes = await fetch(canonicalUrl, {
+                        signal: titleController.signal,
+                        headers: {
+                            'User-Agent': USER_AGENT,
+                            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                        },
+                    });
+                } finally {
+                    clearTimeout(titleTimeout);
+                }
+
+                if (titleRes.ok) {
+                    const html = await titleRes.text();
+                    const headSlice = html.slice(0, 30000);
+                    const titleMatch =
+                        headSlice.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
+                        headSlice.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i) ||
+                        html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
+                        html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
+                    if (titleMatch) title = titleMatch[1].trim();
+                }
+            } catch {
+                // Fallback fetch failed - keep the default below.
+            }
+        }
+
+        title = title || 'Pinterest Image';
 
         let category = 'Other';
 
