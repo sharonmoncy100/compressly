@@ -1,12 +1,3 @@
-const USER_AGENT =
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
-
-// Swaps whatever size segment an i.pinimg.com URL currently has
-// (236x, 564x, 736x, originals, ...) for the one we actually want.
-function withImageSize(imageUrl, size) {
-    return imageUrl.replace(/\/(\d+x|originals)\//, `/${size}/`);
-}
-
 export default async function handler(req, res) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
@@ -48,85 +39,60 @@ export default async function handler(req, res) {
     }
 
     try {
-        // --------------------------------------------------
-        // Resolve short pin.it links to their canonical URL.
-        // A HEAD request only reads the redirect chain's Location
-        // headers - it never downloads the pin page itself.
-        // --------------------------------------------------
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 9000);
 
-        let resolvedUrl = decoded;
-        const isShortLink = hostname === 'pin.it' || hostname === 'www.pin.it';
+        const response = await fetch(decoded, {
+            signal: controller.signal,
+            headers: {
+                'User-Agent':
+                    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Cache-Control': 'no-cache',
+            },
+        });
 
-        if (isShortLink) {
-            const redirectController = new AbortController();
-            const redirectTimeout = setTimeout(() => redirectController.abort(), 6000);
+        clearTimeout(timeout);
 
-            try {
-                const redirectRes = await fetch(decoded, {
-                    method: 'HEAD',
-                    redirect: 'follow',
-                    signal: redirectController.signal,
-                    headers: { 'User-Agent': USER_AGENT },
-                });
-                resolvedUrl = redirectRes.url;
-            } finally {
-                clearTimeout(redirectTimeout);
-            }
+        if (!response.ok) {
+            return res
+                .status(502)
+                .json({ error: 'Could not reach Pinterest. Please try again.' });
         }
 
-        // Pull out the numeric pin ID and rebuild a clean canonical URL.
-        // oEmbed rejects share-link URLs carrying invite_code/sender/sfo
-        // tracking params, so this strips down to /pin/<id>/ regardless of
-        // what form the link arrived in.
-        const pinIdMatch = resolvedUrl.match(/\/pin\/(?:[^/]*--)?(\d+)(?:\/|$)/);
+        const html = await response.text();
 
-        if (!pinIdMatch) {
+        // og:image/og:title always live inside <head>, near the top of the
+        // document - scan a leading slice first (much less regex work than
+        // the full page, which can be several hundred KB) and only fall back
+        // to scanning the whole thing if it wasn't found there, so results
+        // stay identical to before in every case.
+        const headSlice = html.slice(0, 30000);
+
+        // Try og:image (two attribute orders)
+        const ogMatch =
+            headSlice.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+            headSlice.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i) ||
+            html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
+            html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
+
+        if (!ogMatch || !ogMatch[1]) {
             return res
                 .status(404)
                 .json({ error: 'Could not find an image in this Pinterest URL. Make sure the pin is public.' });
         }
 
-        const canonicalUrl = `https://www.pinterest.com/pin/${pinIdMatch[1]}/`;
+        let imageUrl = ogMatch[1];
 
-        // --------------------------------------------------
-        // Pinterest's own oEmbed endpoint - the same mechanism it exposes
-        // for third-party embeds (e.g. WordPress auto-embeds). Returns a
-        // small JSON payload instead of the full ~1.3MB rendered page.
-        // --------------------------------------------------
 
-        const oembedController = new AbortController();
-        const oembedTimeout = setTimeout(() => oembedController.abort(), 9000);
-
-        let oembedRes;
-
-        try {
-            oembedRes = await fetch(
-                `https://www.pinterest.com/oembed.json?url=${encodeURIComponent(canonicalUrl)}`,
-                {
-                    signal: oembedController.signal,
-                    headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
-                }
-            );
-        } finally {
-            clearTimeout(oembedTimeout);
-        }
-
-        if (!oembedRes.ok) {
-            return res
-                .status(404)
-                .json({ error: 'Could not find an image in this Pinterest URL. Make sure the pin is public.' });
-        }
-
-        const oembedJson = await oembedRes.json();
-
-        if (!oembedJson.thumbnail_url) {
-            return res
-                .status(404)
-                .json({ error: 'Could not find an image in this Pinterest URL. Make sure the pin is public.' });
-        }
-
-        const imageUrl = oembedJson.thumbnail_url;
-        const title = (oembedJson.title || '').trim() || 'Pinterest Image';
+        // Extract title if available
+        const titleMatch =
+            headSlice.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
+            headSlice.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i) ||
+            html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
+            html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
+        const title = titleMatch ? titleMatch[1].trim() : 'Pinterest Image';
 
         let category = 'Other';
 
@@ -144,7 +110,19 @@ export default async function handler(req, res) {
         else if (t.includes('tattoo')) category = 'Tattoo';
         else if (t.includes('drawing') || t.includes('art')) category = 'Art';
 
-        const sdUrl = withImageSize(imageUrl, '736x');
+        // replace starts here
+        let hdUrl = imageUrl;
+        let sdUrl = imageUrl;
+
+        // Quick Download = 736x where possible
+        if (imageUrl.includes('/564x/')) {
+            sdUrl = imageUrl.replace('/564x/', '/736x/');
+        } else if (imageUrl.includes('/originals/')) {
+            sdUrl = imageUrl.replace('/originals/', '/736x/');
+        } else if (imageUrl.includes('/736x/')) {
+            sdUrl = imageUrl;
+        }
+
 
         // --------------------------------------------------
         // HD DOWNLOAD
@@ -154,13 +132,17 @@ export default async function handler(req, res) {
 
         const MAX_ORIGINAL_SIZE = 15 * 1024 * 1024; // 15 MB
 
-        const originalUrl = withImageSize(imageUrl, 'originals');
-
-        let hdUrl;
+        let originalUrl = imageUrl
+            .replace('/564x/', '/originals/')
+            .replace('/736x/', '/originals/');
 
         try {
             const originalController = new AbortController();
-            const originalTimeout = setTimeout(() => originalController.abort(), 3000);
+
+            const originalTimeout = setTimeout(
+                () => originalController.abort(),
+                3000
+            );
 
             let originalCheck;
 
@@ -169,29 +151,52 @@ export default async function handler(req, res) {
                     method: 'HEAD',
                     redirect: 'follow',
                     signal: originalController.signal,
-                    headers: { 'User-Agent': USER_AGENT },
+                    headers: {
+                        'User-Agent':
+                            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36'
+                    }
                 });
             } finally {
                 clearTimeout(originalTimeout);
             }
 
-            const contentType = originalCheck.headers.get('content-type') || '';
-            const contentLength = Number(originalCheck.headers.get('content-length') || 0);
-            const isImage = contentType.toLowerCase().startsWith('image/');
-            const sizeIsSafe = contentLength === 0 || contentLength <= MAX_ORIGINAL_SIZE;
+            const contentType =
+                originalCheck.headers.get('content-type') || '';
 
-            if (originalCheck.ok && isImage && sizeIsSafe) {
+            const contentLength =
+                Number(originalCheck.headers.get('content-length') || 0);
+
+            const isImage =
+                contentType.toLowerCase().startsWith('image/');
+
+            const sizeIsSafe =
+                contentLength === 0 ||
+                contentLength <= MAX_ORIGINAL_SIZE;
+
+            if (
+                originalCheck.ok &&
+                isImage &&
+                sizeIsSafe
+            ) {
                 // Original exists and is acceptable.
                 hdUrl = originalUrl;
+
             } else {
                 // Original missing, invalid, or too large.
-                hdUrl = sdUrl;
+                hdUrl = imageUrl
+                    .replace('/564x/', '/736x/')
+                    .replace('/originals/', '/736x/');
             }
+
         } catch {
             // Pinterest check failed.
             // Safely fall back to 736x.
-            hdUrl = sdUrl;
+            hdUrl = imageUrl
+                .replace('/564x/', '/736x/')
+                .replace('/originals/', '/736x/');
         }
+        // replace ends here
+
 
         return res.status(200).json({
             hdUrl,
