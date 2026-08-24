@@ -1,7 +1,21 @@
 const ALLOWED_ORIGINS = ['https://www.compressly.in', 'https://compressly.in'];
 
+const USER_AGENT =
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36';
+
+// Matches the Cache-Control Pinterest's own oEmbed responses already carry
+// (max-age=259200) - a pin's image/title essentially never change, so this
+// is just piggybacking on the freshness window Pinterest itself signals.
+const CACHE_TTL_SECONDS = 259200; // 3 days
+
+// Swaps whatever size segment an i.pinimg.com URL currently has
+// (236x, 564x, 736x, originals, ...) for the one we actually want.
+function withImageSize(imageUrl, size) {
+    return imageUrl.replace(/\/(\d+x|originals)\//, `/${size}/`);
+}
+
 export default {
-    async fetch(request) {
+    async fetch(request, env, ctx) {
         const origin = request.headers.get('Origin');
         const allowOrigin = ALLOWED_ORIGINS.includes(origin) ? origin : ALLOWED_ORIGINS[0];
 
@@ -56,87 +70,123 @@ export default {
             return new Response(JSON.stringify({ error: 'Please enter a valid Pinterest URL.' }), { status: 400, headers });
         }
 
+        // Cache the resolved result under the exact input URL the user gave
+        // (short link or canonical - whichever it was). A pin.it slug always
+        // resolves to the same pin forever, so once we've paid the cost of
+        // resolving it, repeats never need to touch Pinterest's redirect
+        // service again - the one part of this pipeline that's shown
+        // instability under volume.
+        const cache = caches.default;
+        const cacheKey = new Request(
+            `https://pinterest-metadata-cache.internal/v1?input=${encodeURIComponent(decoded)}`,
+            { method: 'GET' }
+        );
+
+        const cachedResponse = await cache.match(cacheKey);
+        if (cachedResponse) {
+            const cachedBody = await cachedResponse.json();
+            return new Response(JSON.stringify(cachedBody), { status: 200, headers });
+        }
+
         try {
-            const MAX_ATTEMPTS = 3;
-            let html = null;
-            let lastError = null;
+            // --------------------------------------------------
+            // Resolve short pin.it links to their canonical URL.
+            // A HEAD request only reads the redirect chain's Location
+            // headers - it never downloads the pin page itself.
+            //
+            // This step alone (not oEmbed) has shown intermittent failures
+            // under load, so it gets a few cheap retries: each attempt is
+            // just a HEAD request (no body downloaded either way), so
+            // retrying costs next to nothing in CPU or bandwidth even when
+            // every attempt fails.
+            // --------------------------------------------------
 
-            for (let attempt = 1; attempt <= MAX_ATTEMPTS; attempt++) {
-                const controller = new AbortController();
-                const timeout = setTimeout(() => controller.abort(), 9000);
+            let resolvedUrl = decoded;
+            const isShortLink = hostname === 'pin.it' || hostname === 'www.pin.it';
+            let pinIdMatch = null;
 
-                try {
-                    const response = await fetch(decoded, {
-                        signal: controller.signal,
-                        headers: {
-                            'User-Agent':
-                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-                            Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                            'Accept-Language': 'en-US,en;q=0.9',
-                            'Cache-Control': 'no-cache',
-                        },
-                    });
+            if (isShortLink) {
+                const MAX_REDIRECT_ATTEMPTS = 3;
 
-                    if (!response.ok) {
-                        lastError = { status: 502, message: 'Could not reach Pinterest. Please try again.' };
-                        continue;
+                for (let attempt = 1; attempt <= MAX_REDIRECT_ATTEMPTS; attempt++) {
+                    const redirectController = new AbortController();
+                    const redirectTimeout = setTimeout(() => redirectController.abort(), 6000);
+
+                    try {
+                        const redirectRes = await fetch(decoded, {
+                            method: 'HEAD',
+                            redirect: 'follow',
+                            signal: redirectController.signal,
+                            headers: { 'User-Agent': USER_AGENT },
+                        });
+                        resolvedUrl = redirectRes.url;
+                    } catch {
+                        // Network-level failure on this attempt - fall through to retry.
+                    } finally {
+                        clearTimeout(redirectTimeout);
                     }
 
-                    const candidateHtml = await response.text();
+                    pinIdMatch = resolvedUrl.match(/\/pin\/(?:[^/]*--)?(\d+)(?:\/|$)/);
+                    if (pinIdMatch) break;
 
-                    // Pinterest occasionally serves its generic share page instead of
-                    // the real pin (more often when the request comes from a
-                    // datacenter/cloud IP range it doesn't trust yet). Detect that
-                    // sentinel and retry rather than surfacing it as a real result.
-                    if (candidateHtml.includes('facebook_share_image.png')) {
-                        lastError = { status: 502, message: 'Could not reach Pinterest. Please try again.' };
-                        continue;
+                    if (attempt < MAX_REDIRECT_ATTEMPTS) {
+                        // A short gap does nothing here - testing showed the
+                        // failure is a brief penalty window that doesn't
+                        // clear in under a second, so attempts bunched close
+                        // together just hit the same wall repeatedly. This
+                        // needs real spacing to land in a different window.
+                        await new Promise((resolve) => setTimeout(resolve, 2500));
                     }
-
-                    html = candidateHtml;
-                    break;
-                } catch (err) {
-                    if (err.name === 'AbortError') {
-                        lastError = { status: 504, message: 'Request timed out. Pinterest took too long to respond.' };
-                    } else {
-                        throw err;
-                    }
-                } finally {
-                    clearTimeout(timeout);
                 }
+            } else {
+                // Pull out the numeric pin ID and rebuild a clean canonical URL.
+                // oEmbed rejects share-link URLs carrying invite_code/sender/sfo
+                // tracking params, so this strips down to /pin/<id>/ regardless of
+                // what form the link arrived in.
+                pinIdMatch = resolvedUrl.match(/\/pin\/(?:[^/]*--)?(\d+)(?:\/|$)/);
             }
 
-            if (!html) {
-                return new Response(JSON.stringify({ error: lastError?.message || 'Could not reach Pinterest. Please try again.' }), { status: lastError?.status || 502, headers });
-            }
-
-            // og:image/og:title always live inside <head>, near the top of the
-            // document - scan a leading slice first (much less regex work than
-            // the full page, which can be 1MB+) and only fall back to scanning
-            // the whole thing if it wasn't found there, so results stay
-            // identical to before in every case.
-            const headSlice = html.slice(0, 30000);
-
-            // Try og:image (two attribute orders)
-            const ogMatch =
-                headSlice.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
-                headSlice.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i) ||
-                html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i) ||
-                html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i);
-
-            if (!ogMatch || !ogMatch[1]) {
+            if (!pinIdMatch) {
                 return new Response(JSON.stringify({ error: 'Could not find an image in this Pinterest URL. Make sure the pin is public.' }), { status: 404, headers });
             }
 
-            let imageUrl = ogMatch[1];
+            const canonicalUrl = `https://www.pinterest.com/pin/${pinIdMatch[1]}/`;
 
-            // Extract title if available
-            const titleMatch =
-                headSlice.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
-                headSlice.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i) ||
-                html.match(/<meta[^>]+property=["']og:title["'][^>]+content=["']([^"']+)["']/i) ||
-                html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:title["']/i);
-            const title = titleMatch ? titleMatch[1].trim() : 'Pinterest Image';
+            // --------------------------------------------------
+            // Pinterest's own oEmbed endpoint - the same mechanism it exposes
+            // for third-party embeds (e.g. WordPress auto-embeds). Returns a
+            // small JSON payload instead of the full ~1.3MB rendered page.
+            // --------------------------------------------------
+
+            const oembedController = new AbortController();
+            const oembedTimeout = setTimeout(() => oembedController.abort(), 9000);
+
+            let oembedRes;
+
+            try {
+                oembedRes = await fetch(
+                    `https://www.pinterest.com/oembed.json?url=${encodeURIComponent(canonicalUrl)}`,
+                    {
+                        signal: oembedController.signal,
+                        headers: { 'User-Agent': USER_AGENT, Accept: 'application/json' },
+                    }
+                );
+            } finally {
+                clearTimeout(oembedTimeout);
+            }
+
+            if (!oembedRes.ok) {
+                return new Response(JSON.stringify({ error: 'Could not find an image in this Pinterest URL. Make sure the pin is public.' }), { status: 404, headers });
+            }
+
+            const oembedJson = await oembedRes.json();
+
+            if (!oembedJson.thumbnail_url) {
+                return new Response(JSON.stringify({ error: 'Could not find an image in this Pinterest URL. Make sure the pin is public.' }), { status: 404, headers });
+            }
+
+            const imageUrl = oembedJson.thumbnail_url;
+            const title = (oembedJson.title || '').trim() || 'Pinterest Image';
 
             let category = 'Other';
 
@@ -154,17 +204,7 @@ export default {
             else if (t.includes('tattoo')) category = 'Tattoo';
             else if (t.includes('drawing') || t.includes('art')) category = 'Art';
 
-            let hdUrl = imageUrl;
-            let sdUrl = imageUrl;
-
-            // Quick Download = 736x where possible
-            if (imageUrl.includes('/564x/')) {
-                sdUrl = imageUrl.replace('/564x/', '/736x/');
-            } else if (imageUrl.includes('/originals/')) {
-                sdUrl = imageUrl.replace('/originals/', '/736x/');
-            } else if (imageUrl.includes('/736x/')) {
-                sdUrl = imageUrl;
-            }
+            const sdUrl = withImageSize(imageUrl, '736x');
 
             // --------------------------------------------------
             // HD DOWNLOAD
@@ -174,17 +214,13 @@ export default {
 
             const MAX_ORIGINAL_SIZE = 15 * 1024 * 1024; // 15 MB
 
-            let originalUrl = imageUrl
-                .replace('/564x/', '/originals/')
-                .replace('/736x/', '/originals/');
+            const originalUrl = withImageSize(imageUrl, 'originals');
+
+            let hdUrl;
 
             try {
                 const originalController = new AbortController();
-
-                const originalTimeout = setTimeout(
-                    () => originalController.abort(),
-                    3000
-                );
+                const originalTimeout = setTimeout(() => originalController.abort(), 3000);
 
                 let originalCheck;
 
@@ -193,52 +229,46 @@ export default {
                         method: 'HEAD',
                         redirect: 'follow',
                         signal: originalController.signal,
-                        headers: {
-                            'User-Agent':
-                                'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36'
-                        }
+                        headers: { 'User-Agent': USER_AGENT },
                     });
                 } finally {
                     clearTimeout(originalTimeout);
                 }
 
-                const contentType =
-                    originalCheck.headers.get('content-type') || '';
+                const contentType = originalCheck.headers.get('content-type') || '';
+                const contentLength = Number(originalCheck.headers.get('content-length') || 0);
+                const isImage = contentType.toLowerCase().startsWith('image/');
+                const sizeIsSafe = contentLength === 0 || contentLength <= MAX_ORIGINAL_SIZE;
 
-                const contentLength =
-                    Number(originalCheck.headers.get('content-length') || 0);
-
-                const isImage =
-                    contentType.toLowerCase().startsWith('image/');
-
-                const sizeIsSafe =
-                    contentLength === 0 ||
-                    contentLength <= MAX_ORIGINAL_SIZE;
-
-                if (
-                    originalCheck.ok &&
-                    isImage &&
-                    sizeIsSafe
-                ) {
+                if (originalCheck.ok && isImage && sizeIsSafe) {
                     // Original exists and is acceptable.
                     hdUrl = originalUrl;
-
                 } else {
                     // Original missing, invalid, or too large.
-                    hdUrl = imageUrl
-                        .replace('/564x/', '/736x/')
-                        .replace('/originals/', '/736x/');
+                    hdUrl = sdUrl;
                 }
-
             } catch {
                 // Pinterest check failed.
                 // Safely fall back to 736x.
-                hdUrl = imageUrl
-                    .replace('/564x/', '/736x/')
-                    .replace('/originals/', '/736x/');
+                hdUrl = sdUrl;
             }
 
-            return new Response(JSON.stringify({ hdUrl, sdUrl, title, category }), { status: 200, headers });
+            const resultBody = { hdUrl, sdUrl, title, category };
+
+            ctx.waitUntil(
+                cache.put(
+                    cacheKey,
+                    new Response(JSON.stringify(resultBody), {
+                        status: 200,
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Cache-Control': `public, max-age=${CACHE_TTL_SECONDS}`,
+                        },
+                    })
+                )
+            );
+
+            return new Response(JSON.stringify(resultBody), { status: 200, headers });
         } catch (err) {
             if (err.name === 'AbortError') {
                 return new Response(JSON.stringify({ error: 'Request timed out. Pinterest took too long to respond.' }), { status: 504, headers });
