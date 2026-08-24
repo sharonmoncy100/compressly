@@ -1830,13 +1830,27 @@
                     const ext =
                         imageUrl.split('.').pop().split('?')[0] || 'jpg';
 
-                    const safeName =
+                    const titleBasedName =
                         currentTitle
                             .replace(/[^a-zA-Z0-9\s]/g, '')
                             .trim()
                             .replace(/\s+/g, '-')
                             .slice(0, 40)
-                            .toLowerCase() || 'pinterest-image';
+                            .toLowerCase();
+
+                    // A blank/generic title would otherwise name every such
+                    // download identically ("pinterest-image.jpg"), which is
+                    // what makes browsers pile up "(2).jpg", "(3).jpg" and
+                    // prompt "download again?" on repeat visits. Fall back to
+                    // a short, unique-per-image suffix pulled from
+                    // Pinterest's own CDN filename instead.
+                    let safeName = titleBasedName;
+
+                    if (!safeName || safeName === 'pinterest-image') {
+                        const hashMatch = imageUrl.match(/([a-f0-9]{6,})\.[a-zA-Z0-9]+(?:\?|$)/i);
+                        const uniquePart = hashMatch ? hashMatch[1].slice(0, 8) : Date.now().toString(36);
+                        safeName = `pinterest-image-${uniquePart}`;
+                    }
 
                     a.download =
                         `${safeName}.${ext}`;
