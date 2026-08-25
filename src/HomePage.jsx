@@ -28,39 +28,6 @@ function BrandMark() {
     );
 }
 
-/* ------------------------------------------------------------------
-   Ad slot - fixed 300x250 so the space is reserved before the ad
-   script even loads (no CLS). The push() only needs to run once per
-   mount, guarded against React StrictMode's double-invoke in dev.
-------------------------------------------------------------------- */
-
-function AdSlotSmall() {
-    const pushedRef = useRef(false);
-
-    useEffect(() => {
-        if (pushedRef.current) return;
-        pushedRef.current = true;
-
-        try {
-            (window.adsbygoogle = window.adsbygoogle || []).push({});
-        } catch {
-            // AdSense script blocked or not loaded yet - fail silently.
-        }
-    }, []);
-
-    return (
-        <div className="hp-adSmall">
-            <span className="hp-adSmall__label">Advertisement</span>
-            <ins
-                className="adsbygoogle"
-                style={{ display: "inline-block", width: "320px", height: "50px" }}
-                data-ad-client="ca-pub-4484955491622612"
-                data-ad-slot="8680568194"
-            />
-        </div>
-    );
-}
-
 function ArrowIcon() {
     return (
         <svg
@@ -345,8 +312,6 @@ export default function HomePage() {
                                 </a>
                             </div>
                         </div>
-
-                        <AdSlotSmall />
 
                         <aside className="hp-hero__aside" aria-labelledby="hp-quick-title">
                             <h2 className="hp-hero__asideTitle" id="hp-quick-title">

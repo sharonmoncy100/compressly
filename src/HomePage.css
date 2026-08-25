@@ -349,30 +349,6 @@
   background: var(--hp-band);
 }
 
-.hp-adSmall {
-  order: 3;
-  grid-column: 1 / -1;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 8px;
-  padding: 10px 14px;
-  background: var(--hp-surface);
-  border: 1px solid var(--hp-rule);
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
-}
-
-.hp-adSmall__label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  color: var(--hp-faint);
-  margin-bottom: 6px;
-}
-
 .hp-sectionHead {
   max-width: 620px;
   margin-bottom: 40px;
@@ -1075,10 +1051,6 @@
   .hp-hero__aside {
     order: 3;
     max-width: 520px;
-  }
-
-  .hp-adSmall {
-    order: 2;
   }
 
   .hp-feature {
