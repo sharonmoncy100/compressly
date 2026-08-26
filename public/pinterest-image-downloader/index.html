@@ -357,6 +357,18 @@
         .loading-text {
             font-size: 14px;
             color: var(--muted);
+            transition: opacity 220ms ease, transform 220ms ease;
+        }
+
+        .loading-text.swap {
+            opacity: 0;
+            transform: translateY(4px);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .loading-text {
+                transition: none;
+            }
         }
 
         .error-state {
@@ -1284,7 +1296,7 @@
                     <div id="inlineLoading"
                         style="text-align:center;padding:32px 0;display:flex;align-items:center;justify-content:center;min-height:180px;display:none;">
                         <div class="spinner-ring"></div>
-                        <div class="loading-text">Fetching image from Pinterest…</div>
+                        <div class="loading-text">Reaching the pin…</div>
                     </div>
                 </div>
 
@@ -1639,6 +1651,45 @@
                 urlInput.select();
             }
         }
+        const LOADING_STAGES = [
+            'Reaching the pin…',
+            'Reading the page…',
+            'Locating the full-size image…',
+            'Almost there…',
+        ];
+        let loadingStageTimer = null;
+
+        function startLoadingStages() {
+            const el = document.querySelector('#inlineLoading .loading-text');
+            if (!el) return;
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            let i = 0;
+            el.textContent = LOADING_STAGES[0];
+            el.classList.remove('swap');
+
+            function next() {
+                i++;
+                if (i >= LOADING_STAGES.length) return;
+                if (reduceMotion) {
+                    el.textContent = LOADING_STAGES[i];
+                } else {
+                    el.classList.add('swap');
+                    setTimeout(() => {
+                        el.textContent = LOADING_STAGES[i];
+                        el.classList.remove('swap');
+                    }, 220);
+                }
+                loadingStageTimer = setTimeout(next, 750);
+            }
+
+            loadingStageTimer = setTimeout(next, 750);
+        }
+
+        function stopLoadingStages() {
+            clearTimeout(loadingStageTimer);
+            loadingStageTimer = null;
+        }
+
         function showState(state) {
             errorState.classList.remove('show');
             resultState.classList.remove('show');
@@ -1649,12 +1700,14 @@
             resultInner.style.display = 'none';
             document.getElementById('inlineLoading').style.display = 'none';
             document.getElementById('stickyBar').classList.add('hidden');
+            stopLoadingStages();
 
             if (state === 'loading') {
                 resultState.classList.add('show');
                 resultState.classList.add('active'); // ← add this
 
                 document.getElementById('inlineLoading').style.display = 'block';
+                startLoadingStages();
                 if (window.innerWidth < 768) {
                     setTimeout(() => {
                         resultState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
