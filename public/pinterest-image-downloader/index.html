@@ -1070,10 +1070,8 @@
         footer {
             background: var(--card);
             border-top: 1px solid var(--border);
-            padding: 24px 16px;
+            padding: 28px 16px 24px;
             text-align: center;
-            font-size: 13px;
-            color: var(--muted);
         }
 
         footer a {
@@ -1083,6 +1081,21 @@
 
         footer a:hover {
             text-decoration: underline;
+        }
+
+        .footer-disclaimer {
+            max-width: 640px;
+            margin: 0 auto 16px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        .footer-legal {
+            font-size: 13px;
+            color: var(--muted);
         }
 
         .hidden {
@@ -1580,11 +1593,18 @@
     </main>
 
     <footer>
-        © 2026 <a href="https://www.compressly.in">Compressly</a> ·
-        <a href="/pinterest-privacy/">Privacy</a> ·
-        <a href="/terms.html">Terms</a> ·
-        <a href="/dmca/">Copyright &amp; DMCA</a> ·
-        <a href="/contact.html">Contact</a>
+        <p class="footer-disclaimer">
+            Compressly is an independent platform and is not affiliated,
+            associated, authorised, endorsed by, or in any way officially
+            connected with Pinterest.com.
+        </p>
+        <p class="footer-legal">
+            © 2026 <a href="https://www.compressly.in">Compressly</a> ·
+            <a href="/pinterest-privacy/">Privacy</a> ·
+            <a href="/terms.html">Terms</a> ·
+            <a href="/dmca/">Copyright &amp; DMCA</a> ·
+            <a href="/contact.html">Contact</a>
+        </p>
     </footer>
 
     <script>
