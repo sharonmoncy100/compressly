@@ -1772,11 +1772,28 @@
             fetchBtn.disabled = false;
         }
 
+        // People often paste a whole forwarded message ("check this out
+        // https://pin.it/abc123 so cute") rather than a bare link -
+        // pull just the URL-shaped part out instead of requiring the
+        // field to contain nothing else. Falls back to the trimmed
+        // input untouched if nothing URL-shaped is found, so existing
+        // validation still runs and reports the same error as before.
+        function extractPinterestUrl(text) {
+            const match = text.match(/https?:\/\/[^\s"'<>]*(?:pin\.it|pinterest\.(?:com|in|co\.uk|ca))[^\s"'<>]*/i);
+            if (!match) return text.trim();
+            return match[0].replace(/[.,!?)\]]+$/, '');
+        }
+
         async function fetchImage() {
-            const rawUrl = urlInput.value.trim();
-            if (!rawUrl) {
+            const pastedText = urlInput.value.trim();
+            if (!pastedText) {
                 showError('Please paste a Pinterest URL first.');
                 return;
+            }
+
+            const rawUrl = extractPinterestUrl(pastedText);
+            if (rawUrl !== pastedText) {
+                urlInput.value = rawUrl;
             }
 
             let isPinterest = false;
