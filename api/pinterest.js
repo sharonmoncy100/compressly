@@ -85,6 +85,15 @@ export default async function handler(req, res) {
 
         let imageUrl = ogMatch[1];
 
+        // Pinterest serves this exact generic branding image as og:image
+        // for pages with no real content - deleted pins, private pins,
+        // invalid IDs. Without this check we'd hand it back as a
+        // "successful" result instead of a clear error.
+        if (imageUrl.includes('s.pinimg.com/images/facebook_share_image')) {
+            return res
+                .status(404)
+                .json({ error: "We couldn't fetch this pin. It might be deleted, private, or Pinterest is having issues right now. Please try again later." });
+        }
 
         // Extract title if available
         const titleMatch =
