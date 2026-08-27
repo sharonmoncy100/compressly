@@ -373,7 +373,7 @@
 
         .error-state {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             gap: 8px;
             padding: 14px 16px;
             background: #fff1f2;
@@ -399,6 +399,11 @@
             padding: 14px 16px;
             margin-top: 16px;
             border: 1px solid #fecdd3;
+        }
+
+        .error-state svg {
+            flex-shrink: 0;
+            margin-top: 1px;
         }
 
         /* Result */
@@ -1298,6 +1303,17 @@
                         <div class="spinner-ring"></div>
                         <div class="loading-text">Reaching the pin…</div>
                     </div>
+                    <div id="inlineError" style="text-align:center;padding:32px 16px;min-height:180px;display:none;">
+                        <div
+                            style="display:inline-flex;align-items:flex-start;gap:8px;max-width:420px;text-align:left;background:#fff1f2;border:1px solid #fecdd3;border-radius:10px;padding:14px 16px;color:#be123c;font-size:14px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"
+                                style="flex-shrink:0;margin-top:1px;">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                            </svg>
+                            <span id="inlineErrorMsg">Something went wrong.</span>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Trust strip -->
@@ -1691,6 +1707,13 @@
         }
 
         function showState(state) {
+            // If a fetch was already in flight (resultState was already
+            // reserving space for the spinner/photo), an error should
+            // swap into that same reserved space rather than collapsing
+            // it - collapsing a ~220-480px box and popping open a small
+            // one elsewhere at the same moment is a large layout shift.
+            const wasActive = resultState.classList.contains('active');
+
             errorState.classList.remove('show');
             resultState.classList.remove('show');
             resultState.classList.remove('active');
@@ -1699,6 +1722,7 @@
             resultInner.classList.remove('reveal');
             resultInner.style.display = 'none';
             document.getElementById('inlineLoading').style.display = 'none';
+            document.getElementById('inlineError').style.display = 'none';
             document.getElementById('stickyBar').classList.add('hidden');
             stopLoadingStages();
 
@@ -1714,7 +1738,15 @@
                     }, 50);
                 }
             }
-            if (state === 'error') errorState.classList.add('show');
+            if (state === 'error') {
+                if (wasActive) {
+                    resultState.classList.add('show');
+                    resultState.classList.add('active');
+                    document.getElementById('inlineError').style.display = 'block';
+                } else {
+                    errorState.classList.add('show');
+                }
+            }
             if (state === 'result') {
                 resultState.classList.add('show');
                 resultState.classList.add('active');
@@ -1735,6 +1767,7 @@
 
         function showError(msg) {
             document.getElementById('errorMsg').textContent = msg;
+            document.getElementById('inlineErrorMsg').textContent = msg;
             showState('error');
             fetchBtn.disabled = false;
         }
