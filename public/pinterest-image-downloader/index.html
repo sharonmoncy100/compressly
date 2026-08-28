@@ -1689,6 +1689,7 @@
         urlInput.addEventListener('input', updateInputButtons);
 
         function clearUrl() {
+            resetResultDisplay();
             urlInput.value = '';
             updateInputButtons();
             urlInput.focus();
@@ -1697,6 +1698,7 @@
         async function pasteUrl() {
             try {
                 const text = await navigator.clipboard.readText();
+                resetResultDisplay();
                 urlInput.value = text;
                 updateInputButtons();
                 // Explicitly NOT focused - the URL is already filled in and
@@ -2046,9 +2048,16 @@
                 }
 
             }
-        function resetTool() {
-            urlInput.value = '';
-            updateInputButtons();
+        // Shared by the "Prepare Another" button, ×, and Paste - collapses
+        // an already-shown result back to blank and scrolls to top so the
+        // ad gets a fresh chance to be seen. Safe from a CLS standpoint
+        // ONLY because every caller runs this synchronously inside its own
+        // click handler (never after an await/network response) - that
+        // keeps it inside the browser's "direct reaction to input"
+        // exemption window, same reason the original loading-box growth
+        // never counted against CLS either.
+        function resetResultDisplay() {
+            if (!resultState.classList.contains('active')) return; // nothing showing, nothing to do
             currentHdUrl = '';
             currentSdUrl = '';
             currentTitle = '';
@@ -2059,8 +2068,14 @@
             document.getElementById('resultTitle').textContent = '';
             showState(null);
             resultState.classList.remove('active');
-            urlInput.focus();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetTool() {
+            urlInput.value = '';
+            updateInputButtons();
+            resetResultDisplay();
+            urlInput.focus();
         }
 
         function toggleFaq(btn) {
