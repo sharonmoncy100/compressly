@@ -281,6 +281,11 @@
             color: #94a3b8;
         }
 
+        .clear-url-btn:hover {
+            background: #f1f5f9 !important;
+            color: #64748b !important;
+        }
+
         .btn-fetch {
             display: inline-flex;
             align-items: center;
@@ -1222,7 +1227,14 @@
                         <input type="url" class="url-input" id="urlInput"
                             placeholder="Paste Pinterest URL - e.g. https://pinterest.com/pin/..." autocomplete="off"
                             autocorrect="off" spellcheck="false" enterkeyhint="go"
-                            style="padding-right:72px;width:100%;" />
+                            style="padding-right:112px;width:100%;" />
+                        <button id="clearUrlBtn" onclick="clearUrl()" aria-label="Clear"
+                            class="clear-url-btn"
+                            style="display:none;position:absolute;right:74px;top:50%;transform:translateY(-50%);width:32px;height:32px;padding:0;align-items:center;justify-content:center;color:#94a3b8;background:transparent;border:none;border-radius:50%;cursor:pointer;">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                                <path d="M18 6 6 18M6 6l12 12" />
+                            </svg>
+                        </button>
                         <button onclick="pasteUrl()"
                             style="position:absolute;right:8px;top:50%;transform:translateY(-50%);padding:5px 10px;font-size:12px;font-weight:600;color:var(--accent);background:#fff1f2;border:1px solid #fecdd3;border-radius:6px;cursor:pointer;white-space:nowrap;">
                             Paste
@@ -1654,13 +1666,37 @@
             if (e.key === 'Enter') fetchImage();
         });
 
+        const clearUrlBtn = document.getElementById('clearUrlBtn');
+
+        // Single place deciding whether the × should be visible - covers
+        // typing and manual long-press paste automatically via the
+        // 'input' listener below, and is called explicitly wherever the
+        // field's value is set from JS (which doesn't fire 'input' on
+        // its own).
+        function updateClearBtn() {
+            clearUrlBtn.style.display = urlInput.value ? 'flex' : 'none';
+        }
+
+        urlInput.addEventListener('input', updateClearBtn);
+
+        function clearUrl() {
+            urlInput.value = '';
+            updateClearBtn();
+            urlInput.focus();
+        }
+
         async function pasteUrl() {
             try {
                 const text = await navigator.clipboard.readText();
                 urlInput.value = text;
-                // No focus() here on purpose - the URL is already filled in and
+                updateClearBtn();
+                // Explicitly NOT focused - the URL is already filled in and
                 // visible, and focusing would pop the mobile keyboard for no
-                // reason since the next action is tapping "Get Image", not typing.
+                // reason since the next action is tapping "Get Image", not
+                // typing. blur() guards against the field ever holding focus
+                // from an earlier manual tap, which is what was causing the
+                // red focus ring to flash briefly on a second Paste tap.
+                urlInput.blur();
             } catch {
                 // Clipboard permission denied — focus input so user can paste manually
                 urlInput.focus();
@@ -2003,6 +2039,7 @@
             }
         function resetTool() {
             urlInput.value = '';
+            updateClearBtn();
             currentHdUrl = '';
             currentSdUrl = '';
             currentTitle = '';
