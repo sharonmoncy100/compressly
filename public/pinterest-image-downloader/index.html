@@ -1869,6 +1869,16 @@
             }
 
             showState('loading');
+            const loadingShownAt = Date.now();
+            // 450, not 700 like triggerDownload()'s overlay - kept safely
+            // under the ~500ms "recent input" window browsers use to
+            // exempt layout shifts from CLS. A normal (non-cached) fetch
+            // already takes 1.5s+ regardless, so this only actually
+            // matters for cache hits - keeping it under 500ms means even
+            // an unusually tall image on a cache hit still reveals inside
+            // the exempt window, same as it always did before this delay
+            // existed.
+            const minimumLoadingTime = 450;
             fetchBtn.disabled = true;
             currentHdUrl = '';
             currentSdUrl = '';
@@ -1929,14 +1939,19 @@
                     ? currentTitle.slice(0, 60) + '…'
                     : currentTitle;
 
-                showState('result');
-                fetchBtn.disabled = false;
+                const elapsed = Date.now() - loadingShownAt;
+                const remaining = Math.max(0, minimumLoadingTime - elapsed);
 
-                if (window.innerWidth < 768) {
-                    setTimeout(() => {
-                        resultState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                    }, 100);
-                }
+                setTimeout(() => {
+                    showState('result');
+                    fetchBtn.disabled = false;
+
+                    if (window.innerWidth < 768) {
+                        setTimeout(() => {
+                            resultState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        }, 100);
+                    }
+                }, remaining);
 
             } catch (err) {
 
@@ -1950,9 +1965,13 @@
                     );
                 }
 
-            } finally {
-                fetchBtn.disabled = false;
             }
+            // No finally re-enabling the button here on purpose - every
+            // error path already re-enables it via showError(), and the
+            // success path re-enables it itself inside the delayed
+            // setTimeout above. Re-enabling unconditionally here would
+            // race ahead of that delay and let a second click through
+            // before the first result has even appeared.
         }
 
             async function triggerDownload(type = 'hd') {
