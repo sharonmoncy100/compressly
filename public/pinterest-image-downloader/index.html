@@ -284,16 +284,24 @@
             color: #94a3b8;
         }
 
+        /* decorative, not a real caret - hidden on focus/text, see updateFakeCaret() */
+        @keyframes fakeCaretBlink {
+            0%, 50% { opacity: 1; }
+            50.01%, 100% { opacity: 0; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #fakeCaret {
+                animation: none;
+            }
+        }
+
         .clear-url-btn:hover {
             background: #e2e8f0 !important;
             color: #475569 !important;
         }
 
-        /* Once there's already text, Paste shrinks to an icon-only circle
-           (same size/shape as ×) instead of the text pill - still one tap,
-           just reclaims the space the "Paste" label doesn't need anymore
-           once the field isn't empty, so more of the actual URL stays
-           visible before ellipsis kicks in. */
+        /* icon-only once there's text, same slot as × - reclaims space for the URL */
         #pasteBtn.compact {
             right: 8px !important;
             width: 32px !important;
@@ -686,10 +694,7 @@
             transform: translateY(-1px);
         }
 
-        /* Hardcoded instead of relying on the SVG's fill="currentColor" -
-           on some Windows/Chromium setups, resolving currentColor through
-           CSS inheritance on every paint frame during this button's hover
-           transition shows a transient black flash on the icon. */
+        /* hardcoded, not currentColor - flashes black on hover on some Windows/Chromium setups otherwise */
         .btn-download svg {
             fill: #fff;
         }
@@ -1247,6 +1252,8 @@
                             placeholder="Paste Pinterest URL - e.g. https://pinterest.com/pin/..." autocomplete="off"
                             autocorrect="off" spellcheck="false" enterkeyhint="go"
                             style="padding-right:78px;width:100%;" />
+                        <span id="fakeCaret" aria-hidden="true"
+                            style="position:absolute;left:18px;top:50%;transform:translateY(-50%);width:1px;height:16px;background:#334155;pointer-events:none;animation:fakeCaretBlink 1s step-end infinite;"></span>
                         <button id="clearUrlBtn" onclick="clearUrl()" aria-label="Clear"
                             class="clear-url-btn"
                             style="display:none;position:absolute;right:50px;top:50%;transform:translateY(-50%);width:32px;height:32px;padding:0;align-items:center;justify-content:center;color:#64748b;background:#eef1f5;border:none;border-radius:50%;cursor:pointer;">
@@ -1687,16 +1694,20 @@
 
         const clearUrlBtn = document.getElementById('clearUrlBtn');
         const pasteBtn = document.getElementById('pasteBtn');
+        const fakeCaret = document.getElementById('fakeCaret');
+
+        // empty + unfocused only - real caret takes over on focus
+        function updateFakeCaret() {
+            fakeCaret.style.display = (!urlInput.value && document.activeElement !== urlInput) ? 'block' : 'none';
+        }
+        urlInput.addEventListener('focus', updateFakeCaret);
+        urlInput.addEventListener('blur', updateFakeCaret);
+
         const PASTE_LABEL_HTML = 'Paste';
         const PASTE_ICON_HTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`;
 
-        // Changing padding-right while there's already long, overflowing
-        // text visible makes the text look like it's being chewed away
-        // right-to-left as the transition plays - fine for typing (grows
-        // one character at a time, nothing to sweep) or clearing (field
-        // goes empty, nothing overflowing left to sweep), but jarring for
-        // an actual paste, which drops a full long URL in at once. So
-        // paste applies the padding change instantly instead of animated.
+        // instant on paste - animating padding while a long URL is already
+        // sitting there makes the text look like it's sweeping away
         function setPaddingRight(px, instant) {
             if (!instant) {
                 urlInput.style.paddingRight = px;
@@ -1705,37 +1716,25 @@
             const prevTransition = urlInput.style.transition;
             urlInput.style.transition = 'none';
             urlInput.style.paddingRight = px;
-            urlInput.offsetHeight; // force the browser to apply 'none' before we restore it
+            urlInput.offsetHeight; // flush 'none' before restoring
             urlInput.style.transition = prevTransition;
         }
 
-        // Paste stays available always, even with existing text, so
-        // one-tap "replace with a freshly copied link" keeps working -
-        // it just shrinks to an icon-only circle (same as ×) once
-        // there's already content, since the "Paste" label isn't needed
-        // once the field isn't empty - that reclaims real width for the
-        // URL text itself. × still only shows once there's something to
-        // clear. The placeholder-cutoff problem only ever happens while
-        // the field is empty (that's the only time a placeholder even
-        // renders), and that's exactly when × is hidden - so the reserved
-        // space shrinks to fit just the Paste pill while empty, and only
-        // widens once there's real text, which isn't a placeholder
-        // anymore and has nothing left to truncate. Covers typing and
-        // manual long-press paste automatically via the 'input' listener
-        // below, and is called explicitly wherever the field's value is
-        // set from JS (which doesn't fire 'input' on its own).
+        // Paste stays visible always (one-tap replace), just shrinks to an
+        // icon once there's text. × only shows once there's something to
+        // clear. Also called manually wherever value is set from JS, since
+        // that doesn't fire 'input' on its own.
         function updateInputButtons(instant) {
             const hasText = !!urlInput.value;
             clearUrlBtn.style.display = hasText ? 'flex' : 'none';
             pasteBtn.classList.toggle('compact', hasText);
             pasteBtn.innerHTML = hasText ? PASTE_ICON_HTML : PASTE_LABEL_HTML;
             setPaddingRight(hasText ? '90px' : '78px', instant);
+            updateFakeCaret();
         }
 
         urlInput.addEventListener('input', (e) => {
-            // A native long-press paste gets the same instant treatment
-            // as the Paste button, for the same reason - only typing
-            // (character by character, nothing to sweep) stays animated.
+            // native long-press paste gets the same instant treatment as the button
             updateInputButtons(e.inputType === 'insertFromPaste');
         });
 
@@ -1743,7 +1742,10 @@
             resetResultDisplay();
             urlInput.value = '';
             updateInputButtons();
-            urlInput.focus();
+            // desktop only - on mobile the keyboard would cover what we just scrolled up for
+            if (window.innerWidth >= 768) {
+                urlInput.focus();
+            }
         }
 
         async function pasteUrl() {
@@ -1752,15 +1754,11 @@
                 resetResultDisplay();
                 urlInput.value = text;
                 updateInputButtons(true);
-                // Explicitly NOT focused - the URL is already filled in and
-                // visible, and focusing would pop the mobile keyboard for no
-                // reason since the next action is tapping "Get Image", not
-                // typing. blur() guards against the field ever holding focus
-                // from an earlier manual tap, which is what was causing the
-                // red focus ring to flash briefly on a second Paste tap.
+                // not focused - avoids popping the keyboard; blur() also stops
+                // the focus ring flashing on a second paste
                 urlInput.blur();
             } catch {
-                // Clipboard permission denied — focus input so user can paste manually
+                // clipboard permission denied - let them paste manually
                 urlInput.focus();
                 urlInput.select();
             }
@@ -1805,11 +1803,7 @@
         }
 
         function showState(state) {
-            // If a fetch was already in flight (resultState was already
-            // reserving space for the spinner/photo), an error should
-            // swap into that same reserved space rather than collapsing
-            // it - collapsing a ~220-480px box and popping open a small
-            // one elsewhere at the same moment is a large layout shift.
+            // reuse the reserved box for post-fetch errors instead of collapsing it - avoids a big layout jump
             const wasActive = resultState.classList.contains('active');
 
             errorState.classList.remove('show');
@@ -1870,12 +1864,8 @@
             fetchBtn.disabled = false;
         }
 
-        // People often paste a whole forwarded message ("check this out
-        // https://pin.it/abc123 so cute") rather than a bare link -
-        // pull just the URL-shaped part out instead of requiring the
-        // field to contain nothing else. Falls back to the trimmed
-        // input untouched if nothing URL-shaped is found, so existing
-        // validation still runs and reports the same error as before.
+        // pulls the link out of a forwarded message/caption instead of
+        // requiring a bare URL; falls back untouched if nothing matches
         function extractPinterestUrl(text) {
             const match = text.match(/https?:\/\/[^\s"'<>]*(?:pin\.it|pinterest\.(?:com|in|co\.uk|ca))[^\s"'<>]*/i);
             if (!match) return text.trim();
@@ -1921,14 +1911,7 @@
 
             showState('loading');
             const loadingShownAt = Date.now();
-            // 450, not 700 like triggerDownload()'s overlay - kept safely
-            // under the ~500ms "recent input" window browsers use to
-            // exempt layout shifts from CLS. A normal (non-cached) fetch
-            // already takes 1.5s+ regardless, so this only actually
-            // matters for cache hits - keeping it under 500ms means even
-            // an unusually tall image on a cache hit still reveals inside
-            // the exempt window, same as it always did before this delay
-            // existed.
+            // under 500ms on purpose - stays inside the CLS "recent input" window
             const minimumLoadingTime = 450;
             fetchBtn.disabled = true;
             currentHdUrl = '';
@@ -2017,12 +2000,8 @@
                 }
 
             }
-            // No finally re-enabling the button here on purpose - every
-            // error path already re-enables it via showError(), and the
-            // success path re-enables it itself inside the delayed
-            // setTimeout above. Re-enabling unconditionally here would
-            // race ahead of that delay and let a second click through
-            // before the first result has even appeared.
+            // no finally re-enable here - would race ahead of the delayed
+            // setTimeout above and let a second click through early
         }
 
             async function triggerDownload(type = 'hd') {
@@ -2078,12 +2057,8 @@
                             .slice(0, 40)
                             .toLowerCase();
 
-                    // A blank/generic title would otherwise name every such
-                    // download identically ("pinterest-image.jpg"), which is
-                    // what makes browsers pile up "(2).jpg", "(3).jpg" and
-                    // prompt "download again?" on repeat visits. Fall back to
-                    // a short, unique-per-image suffix pulled from
-                    // Pinterest's own CDN filename instead.
+                    // avoids every untitled download landing on the same name
+                    // ("(2).jpg", "(3).jpg" pileup) - fall back to the CDN filename
                     let safeName = titleBasedName;
 
                     if (!safeName || safeName === 'pinterest-image') {
@@ -2118,14 +2093,9 @@
                 }
 
             }
-        // Shared by the "Prepare Another" button, ×, and Paste - collapses
-        // an already-shown result back to blank and scrolls to top so the
-        // ad gets a fresh chance to be seen. Safe from a CLS standpoint
-        // ONLY because every caller runs this synchronously inside its own
-        // click handler (never after an await/network response) - that
-        // keeps it inside the browser's "direct reaction to input"
-        // exemption window, same reason the original loading-box growth
-        // never counted against CLS either.
+        // shared by Prepare Another / × / Paste - resets the result and
+        // scrolls to top. Keep callers synchronous with the click (no
+        // await first) to stay inside the CLS exemption window.
         function resetResultDisplay() {
             if (!resultState.classList.contains('active')) return; // nothing showing, nothing to do
             currentHdUrl = '';
