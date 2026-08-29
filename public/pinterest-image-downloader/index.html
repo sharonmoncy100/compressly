@@ -280,6 +280,16 @@
             box-shadow: 0 0 0 3px rgba(230, 0, 35, .08);
         }
 
+        /* ellipsis is only for the at-rest view - the moment a touch/click
+           lands (before focus even settles, which is what a drag-to-scroll
+           gesture needs), native scrolling should show real characters
+           instead of a confusing "…" mid-pan. Toggled via pointerdown in
+           JS rather than relying on :focus, since a drag can start before
+           focus is officially in place. */
+        .url-input.interacting {
+            text-overflow: clip;
+        }
+
         .url-input::placeholder {
             color: #94a3b8;
         }
@@ -293,6 +303,15 @@
         @media (prefers-reduced-motion: reduce) {
             #fakeCaret {
                 animation: none;
+            }
+        }
+
+        /* mobile only - on desktop a physical keyboard needs no visual
+           "you can type" hint, and could actually mislead someone into
+           thinking the field already has real focus */
+        @media (min-width: 768px) {
+            #fakeCaret {
+                display: none !important;
             }
         }
 
@@ -1692,6 +1711,12 @@
             if (e.key === 'Enter') fetchImage();
         });
 
+        // pointerdown fires the instant a touch/click lands, before focus
+        // is officially settled - needed so a drag-to-scroll gesture gets
+        // real characters instead of the at-rest ellipsis from the first frame
+        urlInput.addEventListener('pointerdown', () => urlInput.classList.add('interacting'));
+        urlInput.addEventListener('blur', () => urlInput.classList.remove('interacting'));
+
         const clearUrlBtn = document.getElementById('clearUrlBtn');
         const pasteBtn = document.getElementById('pasteBtn');
         const fakeCaret = document.getElementById('fakeCaret');
@@ -1741,7 +1766,7 @@
         function clearUrl() {
             resetResultDisplay();
             urlInput.value = '';
-            updateInputButtons();
+            updateInputButtons(true);
             // desktop only - on mobile the keyboard would cover what we just scrolled up for
             if (window.innerWidth >= 768) {
                 urlInput.focus();
