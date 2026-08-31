@@ -444,14 +444,15 @@
 
 .hp-hero__visual {
   display: block;
-  width: auto;
+  /* width-driven with height:auto - the browser can reserve this box's
+     size immediately from the width/height HTML attributes before the
+     image loads. Sizing by max-height instead (as this was before) left
+     the box's size undetermined until the image actually loaded, which
+     is what caused the measured shift below it. 370px width ~= 400px
+     tall at this image's 900:977 ratio - same visual size as before. */
+  width: 100%;
+  max-width: 370px;
   height: auto;
-  /* sized by height, not width - keeps it close to the lead column's
-     height (title + text + buttons) instead of a fixed pixel width, and
-     large enough that the fine print on the mockup ("96 KB", "150 x 300")
-     stays legible */
-  max-height: 400px;
-  max-width: 100%;
   border-radius: 10px;
 }
 
