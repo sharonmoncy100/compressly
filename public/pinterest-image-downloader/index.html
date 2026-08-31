@@ -795,19 +795,28 @@
             }
         }
 
+        /* always mounted at opacity:0 rather than display:none - toggling
+           opacity is compositor-only (no layout/paint on the input's
+           critical path), display:none->flex was forcing a synchronous
+           full-viewport layout+paint inside the click handler and was the
+           worst INP offender on the page */
         .download-overlay {
             position: fixed;
             inset: 0;
             background: rgba(15, 23, 42, 0.35);
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             z-index: 1000;
             padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity .15s ease;
         }
 
         .download-overlay.show {
-            display: flex;
+            opacity: 1;
+            pointer-events: auto;
         }
 
         .download-modal {
@@ -2050,6 +2059,7 @@
 
                 const downloadOverlay = document.getElementById('downloadOverlay');
                 downloadOverlay.classList.add('show');
+                downloadOverlay.removeAttribute('aria-hidden');
 
                 const overlayShownAt = Date.now();
                 const minimumOverlayTime = 700;
@@ -2123,6 +2133,7 @@
 
                     setTimeout(() => {
                         downloadOverlay.classList.remove('show');
+                        downloadOverlay.setAttribute('aria-hidden', 'true');
                     }, remaining);
 
                 }
@@ -2190,7 +2201,7 @@
         </button>
     </div>
 
-    <div class="download-overlay" id="downloadOverlay">
+    <div class="download-overlay" id="downloadOverlay" aria-hidden="true">
         <div class="download-modal">
             <div class="download-spinner"></div>
             <div class="download-modal-title">Downloading image…</div>
