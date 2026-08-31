@@ -348,12 +348,18 @@
             transition: all .2s;
             white-space: nowrap;
             box-shadow: 0 4px 12px rgba(0, 0, 0, .2);
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .btn-fetch:hover {
-            background: #1e293b;
-            box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
-            transform: translateY(-1px);
+        /* hover: hover - keeps touch taps from leaving the button stuck in
+           its darker "hover" shade (touch has no pointer to move away and
+           clear it, so it reads as dim/disabled until the user taps elsewhere) */
+        @media (hover: hover) {
+            .btn-fetch:hover {
+                background: #1e293b;
+                box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
+                transform: translateY(-1px);
+            }
         }
 
         .btn-fetch:active {
@@ -706,11 +712,14 @@
             text-decoration: none;
             transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
             box-shadow: 0 3px 10px rgba(230, 0, 35, .3);
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .btn-download:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
+        @media (hover: hover) {
+            .btn-download:hover {
+                background: var(--accent-hover);
+                transform: translateY(-1px);
+            }
         }
 
         /* hardcoded, not currentColor - flashes black on hover on some Windows/Chromium setups otherwise */
@@ -745,14 +754,15 @@
 
             box-shadow:0 3px 10px rgba(37,99,235,.25);
 
+            -webkit-tap-highlight-color: transparent;
+
             }
 
-            .btn-standard:hover{
-
-            background:#1d4ed8;
-
-            transform:translateY(-1px);
-
+            @media (hover: hover) {
+                .btn-standard:hover{
+                    background:#1d4ed8;
+                    transform:translateY(-1px);
+                }
             }
 
         .sticky-download {
