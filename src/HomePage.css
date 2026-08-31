@@ -437,49 +437,22 @@
 
 .hp-hero__aside {
   order: 2;
-  padding: 22px 24px 8px;
-  background: var(--hp-surface);
-  border: 1px solid var(--hp-rule);
-  border-radius: 8px;
-}
-
-.hp-hero__asideTitle {
-  font-family: var(--hp-sans);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  color: var(--hp-faint);
-  margin-bottom: 6px;
-}
-
-.hp-quick__link {
   display: flex;
-  flex-direction: column;
-  gap: 3px;
-  padding: 14px 0;
-  border-bottom: 1px solid var(--hp-rule);
+  align-items: flex-start;
+  justify-content: center;
 }
 
-.hp-quick li:last-child .hp-quick__link {
-  border-bottom: 0;
-}
-
-.hp-quick__need {
-  font-size: 14px;
-  line-height: 1.45;
-  color: var(--hp-muted);
-}
-
-.hp-quick__tool {
-  font-size: 14.5px;
-  font-weight: 600;
-  color: var(--hp-accent);
-}
-
-.hp-quick__link:hover .hp-quick__tool {
-  text-decoration: underline;
-  text-underline-offset: 2px;
+.hp-hero__visual {
+  display: block;
+  width: auto;
+  height: auto;
+  /* sized by height, not width - keeps it close to the lead column's
+     height (title + text + buttons) instead of a fixed pixel width, and
+     large enough that the fine print on the mockup ("96 KB", "150 x 300")
+     stays legible */
+  max-height: 400px;
+  max-width: 100%;
+  border-radius: 10px;
 }
 
 /* ==================================================================
@@ -1170,9 +1143,6 @@
     padding: 10px 20px;
   }
 
-  .hp-hero__aside {
-    padding: 18px 18px 6px;
-  }
 
   .hp-feature {
     padding: 22px 18px;

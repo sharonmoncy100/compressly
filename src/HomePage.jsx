@@ -313,21 +313,17 @@ export default function HomePage() {
                             </div>
                         </div>
 
-                        <aside className="hp-hero__aside" aria-labelledby="hp-quick-title">
-                            <h2 className="hp-hero__asideTitle" id="hp-quick-title">
-                                Common starting points
-                            </h2>
-                            <ul className="hp-quick">
-                                {TASK_ROUTES.slice(0, 4).map((item) => (
-                                    <li key={item.href}>
-                                        <a className="hp-quick__link" href={item.href}>
-                                            <span className="hp-quick__need">{item.need}</span>
-                                            <span className="hp-quick__tool">{item.tool}</span>
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </aside>
+                        <div className="hp-hero__aside">
+                            {/* above the fold - eager, not lazy, so it doesn't compete
+                                for priority behind an unnecessary lazy-load heuristic */}
+                            <img
+                                className="hp-hero__visual"
+                                src="/hero-photo-mockup.webp"
+                                width="900"
+                                height="977"
+                                alt="A portrait photo accepted at 96 KB and 150 x 300 pixels, showing the kind of size and dimension requirement Compressly's tools help you meet"
+                            />
+                        </div>
                     </div>
                 </section>
 
