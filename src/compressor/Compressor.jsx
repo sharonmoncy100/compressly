@@ -1051,6 +1051,11 @@ export default function App() {
     const [hasAnimatedScrollCue, setHasAnimatedScrollCue] = useState(false);
     const [shouldAnimateScrollCue, setShouldAnimateScrollCue] = useState(false);
     const [showComparison, setShowComparison] = useState(false);
+    // counts real compressions this page view - the ad slot only ever
+    // renders/requests on the first one, see handleResultBlob() and the
+    // adsbygoogle push effect below (AdSense policy: an ad must not be
+    // re-requested off a same-page action like recompressing a file)
+    const [resultCount, setResultCount] = useState(0);
 
 
 
@@ -1184,6 +1189,7 @@ export default function App() {
         if (outURL) URL.revokeObjectURL(outURL);
         const url = URL.createObjectURL(blob);
         setOutURL(url);
+        setResultCount((c) => c + 1);
         setOutSize(blob.size);
         const actualMime = blob.type || preferredMime || "image/jpeg";
         setOutMime(actualMime);
@@ -1533,18 +1539,26 @@ export default function App() {
                     const resultSection = document.getElementById("compressed-result");
 
                     if (resultSection) {
-                        if (window.innerWidth < 1024) {
-                            // Mobile / tablet → full scroll to result
-                            resultSection.scrollIntoView({ behavior: "smooth", block: "start" });
-                        } else {
-                            const rect = resultSection.getBoundingClientRect();
-                            const offset = rect.top - 100; // leave some space from top
-                            window.scrollBy({
-                                top: offset,
-                                behavior: "smooth"
-                            });
+                        // baseline: bring the result card near the top, small
+                        // margin so the "Compressed Result" heading stays visible
+                        const topMargin = window.innerWidth < 1024 ? 12 : 60;
+                        const cardRect = resultSection.getBoundingClientRect();
+                        let scrollAmount = cardRect.top - topMargin;
+
+                        // extend the scroll (never shorten it) so the before/after
+                        // comparison peeks into view too, instead of stopping at
+                        // the download button/ad - comparison-wrap always occupies
+                        // its layout space even before its reveal animation runs,
+                        // so its position is safe to measure here
+                        const comparisonEl = document.querySelector(".comparison-wrap");
+                        if (comparisonEl) {
+                            const peek = 70; // px of the comparison section we want visible
+                            const cmpRect = comparisonEl.getBoundingClientRect();
+                            const neededForPeek = cmpRect.top - (window.innerHeight - peek);
+                            scrollAmount = Math.max(scrollAmount, neededForPeek);
                         }
 
+                        window.scrollBy({ top: scrollAmount, behavior: "smooth" });
                     }
                 }
 
@@ -1591,18 +1605,19 @@ export default function App() {
         }
     }
 
-    // the <ins> only enters the DOM once a result exists (empty-state has no
-    // ad slot) - push exactly when that happens, so a fresh <ins> from a
-    // later reset+recompress cycle gets its own push too
-    const hasResult = !!outURL;
+    // only the first compression of the page view shows/requests an ad -
+    // AdSense policy prohibits re-requesting an ad off a same-page action
+    // (recompressing isn't a real new pageview), so later results in this
+    // session render with no ad slot at all rather than a fresh/duplicate one
+    const showAdSlot = resultCount === 1;
     useEffect(() => {
-        if (!hasResult) return;
+        if (!showAdSlot) return;
         try {
             (window.adsbygoogle = window.adsbygoogle || []).push({});
         } catch {
             // adsbygoogle not ready yet (blocked/slow network) - nothing to recover, just don't crash the tool
         }
-    }, [hasResult]);
+    }, [showAdSlot]);
 
     return (
         <div
@@ -1829,12 +1844,15 @@ export default function App() {
 
                                         {/* fixed 300x250 box, reserved at exact ad size up front -
                                             the ins itself never resizes on load, so it can't shift
-                                            the comparison section below it */}
-                                        <div className="ad-slot">
-                                            <span className="ad-slot-label">Advertisement</span>
-                                            <ins className="adsbygoogle" style={{ display: "inline-block", width: 300, height: 250 }}
-                                                data-ad-client="ca-pub-4484955491622612" data-ad-slot="8888965309"></ins>
-                                        </div>
+                                            the comparison section below it. First result only, see
+                                            showAdSlot above. */}
+                                        {showAdSlot && (
+                                            <div className="ad-slot">
+                                                <span className="ad-slot-label">Advertisement</span>
+                                                <ins className="adsbygoogle" style={{ display: "inline-block", width: 300, height: 250 }}
+                                                    data-ad-client="ca-pub-4484955491622612" data-ad-slot="8888965309"></ins>
+                                            </div>
+                                        )}
 
                                         {/* ===============================
       BEFORE / AFTER COMPARISON
