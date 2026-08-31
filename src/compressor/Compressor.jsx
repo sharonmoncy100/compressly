@@ -1591,6 +1591,18 @@ export default function App() {
         }
     }
 
+    // the <ins> only enters the DOM once a result exists (empty-state has no
+    // ad slot) - push exactly when that happens, so a fresh <ins> from a
+    // later reset+recompress cycle gets its own push too
+    const hasResult = !!outURL;
+    useEffect(() => {
+        if (!hasResult) return;
+        try {
+            (window.adsbygoogle = window.adsbygoogle || []).push({});
+        } catch {
+            // adsbygoogle not ready yet (blocked/slow network) - nothing to recover, just don't crash the tool
+        }
+    }, [hasResult]);
 
     return (
         <div
@@ -1813,6 +1825,15 @@ export default function App() {
                                                     </a>
                                                 </div>
                                             </div>
+                                        </div>
+
+                                        {/* fixed 300x250 box, reserved at exact ad size up front -
+                                            the ins itself never resizes on load, so it can't shift
+                                            the comparison section below it */}
+                                        <div className="ad-slot">
+                                            <span className="ad-slot-label">Advertisement</span>
+                                            <ins className="adsbygoogle" style={{ display: "inline-block", width: 300, height: 250 }}
+                                                data-ad-client="ca-pub-4484955491622612" data-ad-slot="8888965309"></ins>
                                         </div>
 
                                         {/* ===============================
