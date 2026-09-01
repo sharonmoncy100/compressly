@@ -745,7 +745,7 @@ export default function HomePage() {
                                 <span className="hp-brand__word">Compressly</span>
                             </a>
                             <p className="hp-footer__tagline">
-                                Small tools for getting images to the size and shape something
+                                Tools for getting images to the size and shape something
                                 else is asking for.
                             </p>
                         </div>
