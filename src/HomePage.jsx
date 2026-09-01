@@ -767,13 +767,10 @@ export default function HomePage() {
                             </div>
 
                             <div className="hp-footer__col">
-                                <h2 className="hp-footer__heading">Photos &amp; listings</h2>
+                                <h2 className="hp-footer__heading">Global Tools</h2>
                                 <ul>
                                     <li>
                                         <a href="/passport-photo-maker/">Passport Photo Maker</a>
-                                    </li>
-                                    <li>
-                                        <a href="/psc-photo-tool.html">Kerala PSC Photo Tool</a>
                                     </li>
                                     <li>
                                         <a href="/amazon-image-resizer/">Amazon Image Resizer</a>
@@ -782,6 +779,24 @@ export default function HomePage() {
                                         <a href="/pinterest-image-downloader/">
                                             Pinterest Image Downloader
                                         </a>
+                                    </li>
+                                    <li>
+                                        <a href="/signature-maker/">Signature Maker</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <div className="hp-footer__col">
+                                <h2 className="hp-footer__heading">India Exam Tools</h2>
+                                <ul>
+                                    <li>
+                                        <a href="/psc-photo-tool.html">Kerala PSC Photo Tool</a>
+                                    </li>
+                                    <li>
+                                        <a href="/mpsc-photo-resizer/">MPSC Photo Resizer</a>
+                                    </li>
+                                    <li>
+                                        <a href="/ssc-photo-resizer/">SSC Photo Resizer</a>
                                     </li>
                                 </ul>
                             </div>
