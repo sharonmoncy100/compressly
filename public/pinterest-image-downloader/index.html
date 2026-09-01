@@ -93,6 +93,12 @@
             .header-inner {
                 padding: 0 16px;
             }
+
+            /* trimmed from the 16px desktop value - frees a bit of
+               vertical space above the fold so the tool + ad sit higher */
+            header {
+                padding: 10px 0;
+            }
         }
 
         .brand {
@@ -110,6 +116,13 @@
             height: 32px;
             flex-shrink: 0;
             display: block;
+        }
+
+        @media (max-width: 768px) {
+            .brand svg {
+                width: 26px;
+                height: 26px;
+            }
         }
 
         .nav-menu {
@@ -203,6 +216,16 @@
         .hero {
             padding: 16px 16px 12px;
             text-align: center;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                /* less side padding gives the h1/p more width to wrap
+                   into before dropping a word to the next line - less
+                   top/bottom for the same vertical-space goal as the
+                   header trim above */
+                padding: 12px 8px 8px;
+            }
         }
 
         .hero h1 {
