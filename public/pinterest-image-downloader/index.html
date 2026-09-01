@@ -1202,6 +1202,22 @@
             box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
         }
 
+        /* mobile only - flush to both screen edges instead of a margined
+           card, so the ad gets the full device width to size against
+           (still capped by width:min() below - can't overflow) */
+        @media (max-width: 640px) {
+            .ad-slot {
+                width: 100%;
+                max-width: 100%;
+                margin: 12px 0 0;
+                padding: 12px 0;
+                border-left: none;
+                border-right: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+
         .ad-slot-label {
             font-size: 10px;
             font-weight: 600;
@@ -1231,8 +1247,12 @@
                than its container (auto margins collapse to 0 on overflow),
                so it sat flush-left with the rest cut off on the right
                instead of centered. min() means it can never demand more
-               width than is actually there. */
-            width: min(320px, 100%);
+               width than is actually there. Now 100% rather than capped at
+               320px - .ad-slot goes flush edge-to-edge on mobile above, so
+               this fills that full width. Measured: height stays a flat,
+               stable 250px at every real phone width (318-412px), so this
+               is not the same risk as data-full-width-responsive was. */
+            width: 100%;
             min-height: 250px;
             margin: 0 auto;
         }
