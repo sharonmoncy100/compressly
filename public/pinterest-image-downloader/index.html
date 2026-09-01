@@ -1211,6 +1211,42 @@
             margin-bottom: 8px;
         }
 
+        /* ── RESPONSIVE AD SLOT ──
+           data-ad-format="auto" needs a parent with a real width to size
+           against - width is fixed (not just max-width) per breakpoint,
+           and min-height is reserved to match. Deliberately NOT using
+           data-full-width-responsive: with it, the ad ignores this
+           wrapper's width entirely and expands edge-to-edge to the
+           viewport instead, resolving to a near-square box as tall as
+           the screen is wide (measured: 320-414px tall on real phone
+           widths) - both a bigger CLS target and a much more intrusive
+           ad presence than intended. Without it, the ad actually respects
+           this width and resolves to a stable, moderate size regardless
+           of the exact device width - measured at 250px on mobile and
+           280px on desktop across every breakpoint tested. */
+        .ad-slot__responsive {
+            width: 320px;
+            min-height: 250px;
+            margin: 0 auto;
+            /* no overflow:hidden here - the outer .ad-slot's overflow-x:auto
+               is the safety net if a device is narrower than 320px, cropping
+               instead would just hide part of the ad */
+        }
+
+        @media (min-width: 640px) {
+            .ad-slot__responsive {
+                width: 468px;
+                min-height: 280px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .ad-slot__responsive {
+                width: 728px;
+                min-height: 280px;
+            }
+        }
+
         /* End ad slot */
 
     </style>
@@ -1413,11 +1449,15 @@
         </div>
     </div>
 
-    <!-- Ad -->
+    <!-- Ad - responsive, width fixed per breakpoint, height reserved via
+         min-height so it resolving its real size doesn't shift "How to
+         Download" below it -->
     <div class="ad-slot">
         <span class="ad-slot-label">Advertisement</span>
-        <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px"
-            data-ad-client="ca-pub-4484955491622612" data-ad-slot="8888965309"></ins>
+        <div class="ad-slot__responsive">
+            <ins class="adsbygoogle" style="display:block;width:100%"
+                data-ad-client="ca-pub-4484955491622612" data-ad-slot="1195742105" data-ad-format="auto"></ins>
+        </div>
     </div>
     <script>
         (adsbygoogle = window.adsbygoogle || []).push({});
