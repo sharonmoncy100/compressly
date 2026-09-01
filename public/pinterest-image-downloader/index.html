@@ -1225,24 +1225,28 @@
            of the exact device width - measured at 250px on mobile and
            280px on desktop across every breakpoint tested. */
         .ad-slot__responsive {
-            width: 320px;
+            /* min(), not a bare fixed width - a hard 320px overflowed on a
+               device/webview whose real available width came in narrower
+               than expected, and margin:auto can't center something wider
+               than its container (auto margins collapse to 0 on overflow),
+               so it sat flush-left with the rest cut off on the right
+               instead of centered. min() means it can never demand more
+               width than is actually there. */
+            width: min(320px, 100%);
             min-height: 250px;
             margin: 0 auto;
-            /* no overflow:hidden here - the outer .ad-slot's overflow-x:auto
-               is the safety net if a device is narrower than 320px, cropping
-               instead would just hide part of the ad */
         }
 
         @media (min-width: 640px) {
             .ad-slot__responsive {
-                width: 468px;
+                width: min(468px, 100%);
                 min-height: 280px;
             }
         }
 
         @media (min-width: 1024px) {
             .ad-slot__responsive {
-                width: 728px;
+                width: min(728px, 100%);
                 min-height: 280px;
             }
         }
