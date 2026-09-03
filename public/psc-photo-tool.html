@@ -1034,12 +1034,28 @@
 
         .info-text {
             font-size: 14px;
-            color: var(--muted);
+            color: var(--fg);
             line-height: 1.6;
             margin-bottom: 12px;
         }
 
         .info-text:last-child {
+            margin-bottom: 0;
+        }
+
+        .tips-list {
+            margin: 0 0 0 20px;
+            padding: 0;
+            font-size: 14px;
+            color: var(--fg);
+            line-height: 1.6;
+        }
+
+        .tips-list li {
+            margin-bottom: 8px;
+        }
+
+        .tips-list li:last-child {
             margin-bottom: 0;
         }
 
@@ -1371,6 +1387,31 @@
                     All processing happens locally in your browser. Your image is never uploaded or stored on any
                     server.
                 </p>
+            </div>
+
+            <!-- Rejection Tips Section -->
+            <div class="info-section" id="tipsSection">
+                <div class="info-title">How to Avoid Photo Rejection on the Kerala PSC Portal</div>
+                <p class="info-text">
+                    A large share of Thulasi photo uploads get rejected before the application is even reviewed, and
+                    the most common reason given is <strong>"Face Not at the Center."</strong> The portal wants your
+                    face straight and centered - not tilted to one side. Your face should fill most of the photo,
+                    not look small or far away (roughly the top 70-80% of the frame). Take the photo against a plain
+                    white or light-colored wall, with no shadows on your face or in the background.
+                </p>
+                <p class="info-text">
+                    This is exactly what the crop grid in this tool is for. When you crop your photo, the 3×3 grid
+                    lines work like the rule-of-thirds guide in a camera app - line your eyes and the center of your
+                    face up against them before continuing, so the crop you confirm is already centered instead of
+                    guessing.
+                </p>
+                <ul class="tips-list">
+                    <li>Keep your face straight and centered using the crop grid, not tilted or off to one side.</li>
+                    <li>Use a plain, light-colored background - avoid patterns, shadows, or busy rooms.</li>
+                    <li>Keep both ears and a neutral expression visible; avoid caps, sunglasses, or heavy filters.</li>
+                    <li>Add the name and date stamp with this tool's optional stamp step - Thulasi can reject an
+                        application outright if a photo is missing it.</li>
+                </ul>
             </div>
         </div>
     </main>
@@ -2053,6 +2094,7 @@
             backBtn.classList.toggle('hidden', step === 1);  // ✅ Show back button on all steps except step 1
             document.getElementById('resetBtn').classList.toggle('hidden', step !== 5);
             document.getElementById('infoSection').classList.toggle('hidden', step !== 1);
+            document.getElementById('tipsSection').classList.toggle('hidden', step !== 1);
 
             // Update step indicator
             for (let i = 1; i <= 4; i++) {
