@@ -70,7 +70,7 @@
         .breadcrumb {
             font-size: 13px;
             color: #6b7280;
-            margin-bottom: 10px;
+            margin-bottom: 6px;
         }
 
         .breadcrumb a {
@@ -87,7 +87,7 @@
             font-size: 26px;
             font-weight: 700;
             line-height: 1.25;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             color: #0f1724;
         }
 
@@ -141,18 +141,24 @@
 
         /* ===== CTA Button ===== */
         .cta {
-            display: inline-block;
-            padding: 12px 24px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
             background: linear-gradient(135deg, #0b66d1 0%, #0952a5 100%);
             color: #ffffff;
             border-radius: 10px;
             text-decoration: none;
             font-weight: 600;
             font-size: 15px;
-            margin-top: 8px;
-            margin-bottom: 8px;
+            margin-top: 6px;
+            margin-bottom: 6px;
             box-shadow: 0 4px 12px rgba(11, 102, 209, 0.25);
             transition: all 0.2s ease;
+        }
+
+        .cta svg {
+            flex-shrink: 0;
         }
 
         .cta:hover {
@@ -282,7 +288,14 @@
         /* ===== Responsive ===== */
         @media (max-width: 640px) {
             .wrap {
-                padding: 24px 16px;
+                /* top was 24px, more than desktop's 16px - backwards for
+                   getting the ad higher on the one device it matters most
+                   on. Bottom stays generous, that's just page-end spacing. */
+                padding: 10px 16px 24px;
+            }
+
+            .site-header {
+                padding: 7px 16px;
             }
 
             h1 {
@@ -330,11 +343,16 @@
             Large JPG files are often rejected by government forms, exam portals, job applications and official upload
             systems that enforce strict file size limits. Compressly helps you compress any large JPG image to exactly
             <strong>50KB</strong> or <strong>100KB</strong> without losing important details or making the image
-            unusable. You can compress any large images to small sizes. The entire process happens in your browser, so your photos never leave your device. It's fast,
-            secure and completely free.
+            unusable.
         </p>
 
-        <a class="cta" href="https://www.compressly.in/compress-image/">Compress now →</a>
+        <a class="cta" href="https://www.compressly.in/compress-image/">
+            Compress now
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h13M12 5l7 7-7 7" />
+            </svg>
+        </a>
 
         <div class="ad-slot">
             <span class="ad-slot-label">Advertisement</span>
@@ -344,6 +362,11 @@
         <script>
             (adsbygoogle = window.adsbygoogle || []).push({});
         </script>
+
+        <p>
+            You can compress any large images to small sizes. The entire process happens in your browser, so your
+            photos never leave your device. It's fast, secure and completely free.
+        </p>
 
         <div class="info-box">
             <p>
@@ -565,7 +588,13 @@
             size for government forms, job applications or exam uploads, Compressly makes it simple, fast and private.
         </p>
 
-        <a class="cta" href="https://www.compressly.in/compress-image/">Compress now →</a>
+        <a class="cta" href="https://www.compressly.in/compress-image/">
+            Compress now
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"
+                stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 12h13M12 5l7 7-7 7" />
+            </svg>
+        </a>
 
         <p style="margin-top: 24px; font-size: 14px; color: #6b7280;">
             No account needed. No file uploads. Works on all devices. Completely free.
