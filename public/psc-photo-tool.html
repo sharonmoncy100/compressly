@@ -960,6 +960,25 @@
             flex-direction: column;
             align-items: center;
             overflow-x: auto;
+            /* overflow-x:auto alone makes the UA compute overflow-y as
+               auto too (CSS quirk), so a 1-2px sub-pixel rounding overflow
+               from the ad iframe was enough to show a permanent vertical
+               scrollbar down the right side. Pin it shut. */
+            overflow-y: hidden;
+        }
+
+        /* mobile only - break out of .container's side padding so the ad
+           spans the full device width edge-to-edge, same treatment as the
+           Pinterest tool. -12px exactly cancels .container's 12px side
+           padding at this breakpoint. */
+        @media (max-width: 640px) {
+            .ad-slot {
+                width: auto;
+                max-width: none;
+                margin-left: -12px;
+                margin-right: -12px;
+                padding: 12px 0;
+            }
         }
 
         .ad-slot-label {
@@ -969,6 +988,32 @@
             text-transform: uppercase;
             color: var(--muted);
             margin-bottom: 8px;
+        }
+
+        /* Responsive ad box - width fixed per breakpoint (not just
+           max-width) so data-ad-format="auto" has a real width to size
+           against, height reserved via min-height so its resolving
+           doesn't shift the info section below it. Deliberately no
+           data-full-width-responsive - that ignores this width and
+           expands to a near-square box as tall as the screen is wide. */
+        .ad-slot__responsive {
+            width: 100%;
+            min-height: 250px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 640px) {
+            .ad-slot__responsive {
+                width: min(468px, 100%);
+                min-height: 280px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .ad-slot__responsive {
+                width: min(728px, 100%);
+                min-height: 280px;
+            }
         }
 
         /* Info section */
@@ -1302,8 +1347,10 @@
             <!-- Ad -->
             <div class="ad-slot">
                 <span class="ad-slot-label">Advertisement</span>
-                <ins class="adsbygoogle" style="display:inline-block;width:300px;height:250px"
-                    data-ad-client="ca-pub-4484955491622612" data-ad-slot="8888965309"></ins>
+                <div class="ad-slot__responsive">
+                    <ins class="adsbygoogle" style="display:block;width:100%"
+                        data-ad-client="ca-pub-4484955491622612" data-ad-slot="8888965309" data-ad-format="auto"></ins>
+                </div>
             </div>
             <script>
                 (adsbygoogle = window.adsbygoogle || []).push({});
