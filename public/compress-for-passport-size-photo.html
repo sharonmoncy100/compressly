@@ -138,7 +138,13 @@
             letter-spacing: 0.06em;
             text-transform: uppercase;
             color: var(--muted);
-            margin-bottom: 8px;
+            /* Real mobile browsers (not desktop's mobile emulation, which
+               can't fully reproduce this) sometimes render the ad's own
+               first line of text taller/tighter inside its 50px box than
+               desktop testing shows - can't reach into that cross-origin
+               iframe to fix it directly, so give it more outside breathing
+               room instead of the site's usual 8px ad-label gap. */
+            margin-bottom: 18px;
         }
 
         .ad-slot__banner {
