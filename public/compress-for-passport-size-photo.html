@@ -7,9 +7,30 @@
 
     <title>Compress Passport Photo to Required KB Size - Compressly</title>
     <meta name="description"
-        content="Compress passport photos to meet file size limits like 100 KB or 200 KB used by Indian portals. Browser-only, private and fast." />
+        content="Compress and prepare a passport photo for Indian portals: automatic background removal, correct 35x45mm sizing and file size reduced to fit limits like 100 KB or 200 KB." />
     <link rel="canonical" href="https://www.compressly.in/compress-for-passport-size-photo.html" />
     <meta name="robots" content="index, follow" />
+
+    <script>
+        const allowedHosts = ["compressly.in", "www.compressly.in"];
+
+        if (!allowedHosts.includes(location.hostname)) {
+            window['ga-disable-G-K9Z1H2JLZQ'] = true;
+        }
+    </script>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-K9Z1H2JLZQ"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-K9Z1H2JLZQ', { anonymize_ip: true });
+        gtag('event', 'passport_size_page_opened', { page: 'compress-for-passport-size-photo' });
+    </script>
+
+    <meta name="google-adsense-account" content="ca-pub-4484955491622612">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4484955491622612"
+        crossorigin="anonymous"></script>
 
     <style>
         :root {
@@ -34,6 +55,12 @@
             align-items: center;
             padding: 16px;
             border-bottom: 1px solid rgba(15, 23, 42, .08);
+        }
+
+        @media (max-width:640px) {
+            .site-header {
+                padding: 10px 16px;
+            }
         }
 
         .brand {
@@ -87,42 +114,118 @@
 
         .hero p {
             margin: 0;
-            color: var(--muted);
+            color: var(--fg);
             font-size: 15px;
         }
 
-        .hero-badge {
-            display: inline-flex;
+        /* Ad slot - fixed 320x50 unit. It's a hard-coded size (not
+           data-ad-format="auto"), so the browser reserves exactly 320x50
+           up front and there's no CLS risk from it resolving later.
+           overflow-x:auto on the wrapper is a safety net only: on a
+           device narrower than 320px of available content width, the ad
+           itself scrolls inside its own box instead of forcing the whole
+           page wider (a real bug fixed elsewhere on this site earlier). */
+        .ad-slot {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 6px;
-            margin-top: 10px;
-            padding: 6px 12px;
-            border-radius: 999px;
+            margin: 14px 0 0;
+        }
+
+        .ad-slot-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .ad-slot__banner {
+            width: 100%;
+            max-width: 320px;
+            min-height: 50px;
+            overflow-x: auto;
+            overflow-y: hidden;
+        }
+
+        /* Spec table */
+        .spec-table-wrap {
+            overflow-x: auto;
+            margin: 12px 0;
+        }
+
+        .spec-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .spec-table th,
+        .spec-table td {
+            text-align: left;
+            padding: 10px 12px;
+            border-bottom: 1px solid rgba(15, 23, 42, .08);
+            vertical-align: top;
+        }
+
+        .spec-table th {
+            width: 34%;
+            color: var(--fg);
+            font-weight: 600;
             background: #f8fafc;
-            border: 1px solid rgba(148, 163, 184, .4);
-            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .spec-table td {
             color: var(--muted);
         }
 
-        .hero-badge .dot {
-            width: 4px;
-            height: 4px;
-            border-radius: 50%;
-            background: #9ca3af;
+        .spec-table tr:last-child th,
+        .spec-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .faq-item {
+            margin-bottom: 16px;
+        }
+
+        .faq-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-item h3 {
+            font-size: 15px;
+            margin: 0 0 4px;
+            color: var(--fg);
+        }
+
+        .faq-item p {
+            margin: 0;
         }
 
         .cta-row {
             margin-top: 14px;
             display: flex;
-            gap: 10px;
+            gap: 16px;
             flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .cta-option {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            flex: 1 1 220px;
         }
 
         .btn {
+            display: block;
             padding: 9px 16px;
             border-radius: 999px;
             font-weight: 600;
             text-decoration: none;
+            text-align: center;
             font-size: 14px;
             border: 1px solid transparent;
         }
@@ -133,10 +236,17 @@
             border-color: var(--accent);
         }
 
-        .btn-ghost {
-            background: #fff;
-            color: var(--fg);
-            border: 1px solid rgba(148, 163, 184, .8);
+        .btn-secondary {
+            background: #0d9488;
+            color: #fff;
+            border-color: #0d9488;
+        }
+
+        .cta-hint {
+            margin: 0;
+            font-size: 12.5px;
+            color: var(--muted);
+            line-height: 1.5;
         }
 
         /* Main content */
@@ -160,7 +270,7 @@
         p,
         li {
             font-size: 15px;
-            color: var(--muted);
+            color: var(--fg);
         }
 
         ul,
@@ -188,10 +298,17 @@
             padding: 7px 12px;
             border-radius: 999px;
             background: #eef2ff;
+            border: 1px solid rgba(11, 102, 209, .12);
             font-weight: 600;
             font-size: 13px;
             color: #0f1724;
             text-decoration: none;
+            transition: background .15s, border-color .15s;
+        }
+
+        .chip:hover {
+            background: #e0e7ff;
+            border-color: rgba(11, 102, 209, .3);
         }
 
         /* Footer */
@@ -219,8 +336,13 @@
                 flex-direction: column;
             }
 
-            .btn {
-                text-align: center;
+            .cta-option {
+                /* flex:1 1 220px is sized for the desktop row (equal-width
+                   220px-minimum columns) - in a column layout the main axis
+                   is vertical, so that same rule would set a 220px minimum
+                   HEIGHT per option instead, opening a big gap under each
+                   button. Let each option size to its own content instead. */
+                flex: 0 0 auto;
             }
         }
     </style>
@@ -245,69 +367,169 @@
         <section class="hero">
             <h1>Compress passport photo to required KB size</h1>
             <p>
-                Reduce passport photo file size to meet upload limits such as 100 KB or 200 KB
-                used by Indian passport and visa portals. Private and browser based.
+                Every camera today shoots photos at 3-5 MB or larger - but portals that
+                process thousands of applications a day simply can't store files that large.
+                That's why they cap uploads at a small KB limit instead. The upside: a photo
+                between 50 KB and 100 KB still looks sharp on screen, so nothing is lost visually
+                - portals just get faster uploads and lighter storage, without compromising on
+                quality.
             </p>
 
-            <div class="hero-badge">
-                <span>Fast</span><span class="dot"></span>
-                <span>Private</span><span class="dot"></span>
-                <span>No upload</span>
+            <div class="cta-row">
+                <div class="cta-option">
+                    <a class="btn btn-primary" href="/passport-photo-maker/">Passport Photo Maker</a>
+                    <p class="cta-hint">
+                        Click this if you want to upload a photo from your gallery, change its
+                        background and get a brand-new passport size photo.
+                    </p>
+                </div>
+                <div class="cta-option">
+                    <a class="btn btn-secondary" href="/compress-image/">Compress Photo</a>
+                    <p class="cta-hint">
+                        Click this if you already have a ready passport size photo and just want
+                        to compress it to the size you need.
+                    </p>
+                </div>
             </div>
 
-            <div class="cta-row">
-                <a class="btn btn-primary" href="/passport-photo-maker/">Passport Photo Maker</a>
-                <a class="btn btn-ghost" href="/compress-image-to-100kb.html">Compress Photo</a>
+            <div class="ad-slot">
+                <span class="ad-slot-label">Advertisement</span>
+                <div class="ad-slot__banner">
+                    <ins class="adsbygoogle" style="display:inline-block;width:320px;height:50px"
+                        data-ad-client="ca-pub-4484955491622612" data-ad-slot="8680568194"></ins>
+                </div>
             </div>
+            <script>
+                (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
         </section>
 
         <main>
 
             <section class="card">
-                <h2>Typical passport photo file size limits</h2>
-                <ul>
-                    <li><strong>Common limits:</strong> 100 KB or 200 KB</li>
-                    <li><strong>Format:</strong> JPEG or JPG is widely accepted</li>
-                    <li><strong>Background and dimensions:</strong> Must already match portal rules</li>
-                </ul>
+                <h2>What is a "passport size photo"?</h2>
+                <p>
+                    In India, "passport size photo" is used as a general term for a small, formal
+                    ID-style photo or studio photo - not only for an actual passport application. It's the same phrase
+                    people use when a photo is needed for an exam admit card, a job application form, a
+                    school or college admission form, or a government ID. This passport size photo
+                    compressor and Passport Photo Maker works for all of these - you don't need to be applying for a
+                    passport to use it.
+                </p>
+                <div class="spec-table-wrap">
+                    <table class="spec-table">
+                        <tbody>
+                            <tr>
+                                <th>Typical size</th>
+                                <td>35 × 45 mm - the standard "passport size" format used across most
+                                    Indian forms and portals</td>
+                            </tr>
+                            <tr>
+                                <th>Format</th>
+                                <td>JPEG</td>
+                            </tr>
+                            <tr>
+                                <th>Common KB limits</th>
+                                <td>Exam and job forms often ask for 20-100 KB; many general portals use
+                                    a flat 100 KB or 200 KB limit - check your specific form for the
+                                    exact number</td>
+                            </tr>
+                            <tr>
+                                <th>Background</th>
+                                <td>Plain white or light-colored, evenly lit, no shadows</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="note">
+                    Applying for a specific exam or portal? Compressly has dedicated tools for
+                    <a href="/compress-image-for-exam-forms.html">exam forms (JEE, NEET, university)</a>
+                    and <a href="/psc-photo-tool.html">Kerala PSC and other state PSC exams</a>, sized to
+                    match exactly what that portal expects.
+                </p>
             </section>
 
             <section class="card">
-                <h2>How to prepare a passport photo before compression</h2>
+                <h2>How the Passport Photo Maker prepares your photo</h2>
                 <ol>
-                    <li>Ensure the photo already meets the required size and background rules.</li>
-                    <li>Upload the image to Compressly.</li>
-                    <li>Select a target KB value and compress.</li>
-                    <li>Download and upload to the portal.</li>
+                    <li>Upload any clear, front-facing photo - the background doesn't need to be white or
+                        plain already.</li>
+                    <li>The background is automatically detected and replaced with plain white - the
+                        standard requirement for exam, job and passport-style photos alike.</li>
+                    <li>Your face is cropped and centered into the 35 × 45 mm passport-size format.</li>
+                    <li>Set your target file size (commonly 100 KB or 200 KB) and download - ready to
+                        upload to your form or portal.</li>
                 </ol>
 
                 <div class="note">
-                    <strong>Important:</strong> Compressly only reduces file size.
-                    It does not change image dimensions or background.
+                    <strong>How this actually works:</strong> Cropping, resizing and compression happen
+                    locally in your browser. Background removal is the one step that uses a secure server
+                    call, since separating a person from their background needs more processing power than
+                    a browser can handle alone.
                 </div>
             </section>
 
             <section class="card">
-                <h2>Portal tips</h2>
+                <h2>Tips for exam, job and passport-style photos</h2>
                 <ul>
                     <li>Use simple filenames without spaces.</li>
-                    <li>Check clarity after compression.</li>
-                    <li>Avoid screenshots or scanned photos.</li>
+                    <li>Check clarity and sharpness after compression - a heavily compressed photo can
+                        look blurry right at the KB limit.</li>
+                    <li>Avoid screenshots or scanned photos - upload the original photo file for the
+                        cleanest result.</li>
+                    <li>Avoid white or very light-colored clothing, since it can blend into a white
+                        background.</li>
+                    <li>Applying for an actual passport? Remove glasses first - the current rules don't
+                        permit them, even with a valid prescription. Most exam and job forms are more
+                        flexible about this.</li>
                 </ul>
             </section>
 
             <section class="card">
                 <h2>FAQ</h2>
-                <p><strong>Does DPI matter?</strong><br />
-                    DPI is usually ignored by portals. File size and clarity matter more.</p>
 
-                <p><strong>My photo meets KB limits but is rejected.</strong><br />
-                    The portal may require a specific background or framing.</p>
+                <div class="faq-item">
+                    <h3>Is a "passport size photo" the same as an actual passport application photo?</h3>
+                    <p>Not necessarily. In India the term is used generally for any small, formal photo -
+                        exam admit cards, job applications and school forms all ask for a "passport size
+                        photo" without meaning an actual passport application. This tool works for all of
+                        them.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Does DPI matter?</h3>
+                    <p>DPI is usually ignored by portals. File size, dimensions and clarity matter more.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>My photo meets the KB limit but is still rejected.</h3>
+                    <p>The form may require a specific background or framing. Use the Passport Photo
+                        Maker's automatic background removal and cropping to fix both at once, not just
+                        the file size.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>Is my photo uploaded to a server?</h3>
+                    <p>Resizing and compression happen entirely in your browser. If you use the automatic
+                        background removal feature, that part of the image is sent securely to our server
+                        to run the background-removal model, and the result is sent back to your browser.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>I need this for an actual Indian passport application - where do the exact rules apply?</h3>
+                    <p>Passport applications have their own strict specification, including a February
+                        2026 rule change and a no-glasses rule. See our
+                        <a href="/compress-passport-photo-india.html">dedicated passport application
+                            guide</a> for the full, current requirements.</p>
+                </div>
             </section>
 
             <section class="card">
                 <h2>Related tools</h2>
                 <div class="chips">
+                    <a class="chip" href="/compress-image-for-exam-forms.html">Exam Forms (JEE, NEET)</a>
+                    <a class="chip" href="/psc-photo-tool.html">Kerala PSC Photo</a>
+                    <a class="chip" href="/compress-passport-photo-india.html">Actual Passport Application</a>
                     <a class="chip" href="/compress-image-to-50kb.html">Compress to 50 KB</a>
                     <a class="chip" href="/compress-jpg-online.html">Compress JPG</a>
                     <a class="chip" href="/compress-png-online.html">Compress PNG</a>
@@ -326,6 +548,25 @@
             <a href="/contact.html">Contact</a>
         </div>
     </footer>
+
+    <script type="application/ld+json">
+    {
+    "@context":"https://schema.org",
+    "@type":"FAQPage",
+    "mainEntity":[
+    {"@type":"Question","name":"Is a \"passport size photo\" the same as an actual passport application photo?",
+    "acceptedAnswer":{"@type":"Answer","text":"Not necessarily. In India the term is used generally for any small, formal photo - exam admit cards, job applications and school forms all ask for a \"passport size photo\" without meaning an actual passport application. This tool works for all of them."}},
+    {"@type":"Question","name":"Does DPI matter?",
+    "acceptedAnswer":{"@type":"Answer","text":"DPI is usually ignored by portals. File size, dimensions and clarity matter more."}},
+    {"@type":"Question","name":"My photo meets the KB limit but is still rejected.",
+    "acceptedAnswer":{"@type":"Answer","text":"The form may require a specific background or framing. Use the Passport Photo Maker's automatic background removal and cropping to fix both at once, not just the file size."}},
+    {"@type":"Question","name":"Is my photo uploaded to a server?",
+    "acceptedAnswer":{"@type":"Answer","text":"Resizing and compression happen entirely in your browser. If you use the automatic background removal feature, that part of the image is sent securely to our server to run the background-removal model, and the result is sent back to your browser."}},
+    {"@type":"Question","name":"I need this for an actual Indian passport application - where do the exact rules apply?",
+    "acceptedAnswer":{"@type":"Answer","text":"Passport applications have their own strict specification, including a February 2026 rule change and a no-glasses rule. See our dedicated passport application guide for the full, current requirements."}}
+    ]
+    }
+    </script>
 
 </body>
 
