@@ -900,11 +900,13 @@
             gap: 10px;
         }
 
-        @media (max-width: 640px) {
-            .btn-actions {
-                display: none;
-            }
-        }
+        /* Used to be hidden on mobile in favor of the fixed sticky bar -
+           now shown everywhere instead. The sticky bar is a permanently
+           fixed-height bottom bar, which would eat into the exact screen
+           space we're now trying to use to get the ad-slot below it into
+           view alongside the result - a persistent overlay working
+           against that goal on every screen size. In-flow buttons take
+           only the space they need and scroll away naturally. */
 
         /* ── TRUST STRIP ── */
         .trust-strip {
@@ -1209,36 +1211,23 @@
             display: none !important;
         }
 
-        /* ── AD SLOT ── */
+        /* ── AD SLOT ──
+           Lives inside the result reveal now (see HTML), not as its own
+           floating card between page sections - it only exists once
+           there's a real result to show it alongside (AdSense doesn't
+           allow a large ad to be the first thing shown before that). A
+           top divider is enough to set it apart from the buttons above
+           it; it doesn't need its own card chrome since it's already
+           inside .tool-card's border/padding/shadow. */
         .ad-slot {
-            max-width: 780px;
-            width: calc(100% - 32px);
-            margin: 12px auto 0;
-            padding: 12px 16px;
+            width: 100%;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: auto;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
-        }
-
-        /* mobile only - flush to both screen edges instead of a margined
-           card, so the ad gets the full device width to size against
-           (still capped by width:min() below - can't overflow) */
-        @media (max-width: 640px) {
-            .ad-slot {
-                width: 100%;
-                max-width: 100%;
-                margin: 12px 0 0;
-                padding: 12px 0;
-                border-left: none;
-                border-right: none;
-                border-radius: 0;
-                box-shadow: none;
-            }
         }
 
         .ad-slot-label {
@@ -1270,11 +1259,12 @@
                than its container (auto margins collapse to 0 on overflow),
                so it sat flush-left with the rest cut off on the right
                instead of centered. min() means it can never demand more
-               width than is actually there. Now 100% rather than capped at
-               320px - .ad-slot goes flush edge-to-edge on mobile above, so
-               this fills that full width. Measured: height stays a flat,
-               stable 250px at every real phone width (318-412px), so this
-               is not the same risk as data-full-width-responsive was. */
+               width than is actually there. 100% fills .ad-slot's own width,
+               which is now .tool-card's padded content width (the ad is
+               embedded in the result, not edge-to-edge). Measured: height
+               stays a flat, stable 250px at every real phone width
+               (318-412px), so this is not the same risk as
+               data-full-width-responsive was. */
             width: 100%;
             min-height: 250px;
             margin: 0 auto;
@@ -1432,9 +1422,6 @@
 
                             </div>
                             <div class="result-title" id="resultTitle"></div>
-                            <div class="result-hint">High-quality photo extracted from Pinterest. Click Download to save
-                                it to your
-                                device.</div>
                                 <div class="btn-actions">
 
                                     <button class="btn-standard" id="downloadSdBtn" onclick="triggerDownload('sd')">
@@ -1454,6 +1441,18 @@
 
                                     </button>
 
+                                </div>
+
+                                <!-- Ad lives inside the result reveal on purpose - AdSense policy
+                                     doesn't allow a large ad to be the first thing shown before the
+                                     user has gotten any real content, so it only exists once there's
+                                     an actual result to show it alongside. -->
+                                <div class="ad-slot">
+                                    <span class="ad-slot-label">Advertisement</span>
+                                    <div class="ad-slot__responsive">
+                                        <ins class="adsbygoogle" style="display:block;width:100%"
+                                            data-ad-client="ca-pub-4484955491622612" data-ad-slot="1195742105" data-ad-format="auto"></ins>
+                                    </div>
                                 </div>
                         </div>
                     </div>
@@ -1495,20 +1494,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Ad - responsive, width fixed per breakpoint, height reserved via
-         min-height so it resolving its real size doesn't shift "How to
-         Download" below it -->
-    <div class="ad-slot">
-        <span class="ad-slot-label">Advertisement</span>
-        <div class="ad-slot__responsive">
-            <ins class="adsbygoogle" style="display:block;width:100%"
-                data-ad-client="ca-pub-4484955491622612" data-ad-slot="1195742105" data-ad-format="auto"></ins>
-        </div>
-    </div>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
 
     <main>
     
@@ -1803,6 +1788,7 @@
         let currentSdUrl = '';
         let currentTitle = '';
         let currentCategory = '';
+        let resultAdPushed = false;
 
         const urlInput = document.getElementById('urlInput');
         const fetchBtn = document.getElementById('fetchBtn');
@@ -1984,7 +1970,15 @@
                     });
                 });
 
-                document.getElementById('stickyBar').classList.remove('hidden');
+                // The ad-slot lives inside this now-visible container, so
+                // only push it once it's actually measurable (pushing
+                // while display:none reports zero width to AdSense).
+                // Gated to once per page view - a second "Get Image" click
+                // should not re-request the ad.
+                if (!resultAdPushed) {
+                    resultAdPushed = true;
+                    (adsbygoogle = window.adsbygoogle || []).push({});
+                }
             }
         }
 
@@ -2113,7 +2107,21 @@
 
                     if (window.innerWidth < 768) {
                         setTimeout(() => {
-                            resultState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            // Try to bring the ad-slot into view along with
+                            // the download buttons, without scrolling so
+                            // far that the buttons themselves go off the
+                            // top of the screen - the download CTA stays
+                            // the priority, the ad rides along as far as
+                            // there's genuinely room for it.
+                            const btnRect = document.querySelector('.btn-actions').getBoundingClientRect();
+                            const adSlotEl = document.querySelector('.ad-slot');
+                            const adBottom = adSlotEl ? adSlotEl.getBoundingClientRect().bottom : btnRect.bottom;
+
+                            const scrollForAd = window.scrollY + adBottom - window.innerHeight + 16;
+                            const scrollCapForButtons = window.scrollY + btnRect.top - 12;
+                            const target = Math.max(0, Math.min(scrollForAd, scrollCapForButtons));
+
+                            window.scrollTo({ top: target, behavior: 'smooth' });
                         }, 100);
                     }
                 }, remaining);
