@@ -608,9 +608,7 @@
         @media (max-width: 560px) {
             .preview-wrap {
                 width: 100%;
-                /* Shrunk from 320px to free up room below the buttons for
-                   an anchor ad to sit without covering them. */
-                height: 240px;
+                height: 320px;
             }
         }
 
@@ -722,6 +720,13 @@
             word-break: break-word;
         }
 
+        .result-hint {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 18px;
+            line-height: 1.5;
+        }
+
         .btn-download {
             display: inline-flex;
             align-items: center;
@@ -788,6 +793,36 @@
             .btn-standard:hover {
                 background: #1d4ed8;
                 transform: translateY(-1px);
+            }
+        }
+
+        .sticky-download {
+            display: none;
+        }
+
+        @media (max-width: 640px) {
+            .sticky-download {
+                display: flex;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 12px 16px;
+                background: var(--card);
+                border-top: 1px solid var(--border);
+                box-shadow: 0 -4px 16px rgba(0, 0, 0, .08);
+                z-index: 300;
+                gap: 10px;
+                align-items: center;
+            }
+
+            .sticky-download.hidden {
+                display: none !important;
+            }
+
+            .sticky-download .btn-download {
+                flex: 1;
+                justify-content: center;
             }
         }
 
@@ -873,26 +908,8 @@
             gap: 10px;
         }
 
-        /* Shown on all screens now - no more sticky bottom bar on mobile.
-           flex:1 on each button (mobile only) keeps them side by side and
-           sharing the row's width evenly instead of wrapping/stacking -
-           desktop keeps its natural inline width. */
         @media (max-width: 640px) {
             .btn-actions {
-                flex-wrap: nowrap;
-            }
-
-            .btn-actions .btn-standard,
-            .btn-actions .btn-download {
-                flex: 1;
-                justify-content: center;
-            }
-
-            /* The icon was pushing "Download HD" onto two lines on
-               narrow screens, making this button visibly taller than
-               "Standard Quality" next to it. Text-only on mobile keeps
-               both buttons the same height. */
-            .btn-actions .btn-icon {
                 display: none;
             }
         }
@@ -1200,6 +1217,92 @@
             display: none !important;
         }
 
+        /* ── AD SLOT ── */
+        .ad-slot {
+            max-width: 780px;
+            width: calc(100% - 32px);
+            margin: 12px auto 0;
+            padding: 12px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
+        }
+
+        /* mobile only - flush to both screen edges instead of a margined
+           card, so the ad gets the full device width to size against
+           (still capped by width:min() below - can't overflow) */
+        @media (max-width: 640px) {
+            .ad-slot {
+                width: 100%;
+                max-width: 100%;
+                margin: 12px 0 0;
+                padding: 12px 0;
+                border-left: none;
+                border-right: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
+        }
+
+        .ad-slot-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+
+        /* ── RESPONSIVE AD SLOT ──
+           data-ad-format="auto" needs a parent with a real width to size
+           against - width is fixed (not just max-width) per breakpoint,
+           and min-height is reserved to match. Deliberately NOT using
+           data-full-width-responsive: with it, the ad ignores this
+           wrapper's width entirely and expands edge-to-edge to the
+           viewport instead, resolving to a near-square box as tall as
+           the screen is wide (measured: 320-414px tall on real phone
+           widths) - both a bigger CLS target and a much more intrusive
+           ad presence than intended. Without it, the ad actually respects
+           this width and resolves to a stable, moderate size regardless
+           of the exact device width - measured at 250px on mobile and
+           280px on desktop across every breakpoint tested. */
+        .ad-slot__responsive {
+            /* min(), not a bare fixed width - a hard 320px overflowed on a
+               device/webview whose real available width came in narrower
+               than expected, and margin:auto can't center something wider
+               than its container (auto margins collapse to 0 on overflow),
+               so it sat flush-left with the rest cut off on the right
+               instead of centered. min() means it can never demand more
+               width than is actually there. Now 100% rather than capped at
+               320px - .ad-slot goes flush edge-to-edge on mobile above, so
+               this fills that full width. Measured: height stays a flat,
+               stable 250px at every real phone width (318-412px), so this
+               is not the same risk as data-full-width-responsive was. */
+            width: 100%;
+            min-height: 250px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 640px) {
+            .ad-slot__responsive {
+                width: min(468px, 100%);
+                min-height: 280px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .ad-slot__responsive {
+                width: min(728px, 100%);
+                min-height: 280px;
+            }
+        }
+
+        /* End ad slot */
     </style>
 
     <script type="application/ld+json">
@@ -1340,6 +1443,9 @@
 
                             </div>
                             <div class="result-title" id="resultTitle"></div>
+                            <div class="result-hint">High-quality photo extracted from Pinterest. Click Download to save
+                                it to your
+                                device.</div>
                             <div class="btn-actions">
 
                                 <button class="btn-standard" id="downloadSdBtn" onclick="triggerDownload('sd')">
@@ -1350,7 +1456,7 @@
 
                                 <button class="btn-download" id="downloadHdBtn" onclick="triggerDownload('hd')">
 
-                                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
                                         <path
                                             d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
                                     </svg>
@@ -1401,10 +1507,19 @@
         </div>
     </div>
 
-    <!-- No in-page ad here anymore - using AdSense Anchor ads instead
-         (Auto ads, toggled in the AdSense dashboard). The adsbygoogle.js
-         loader script in <head> is all that's needed on the page's end;
-         Anchor ads inject and manage themselves. -->
+    <!-- Ad - responsive, width fixed per breakpoint, height reserved via
+         min-height so it resolving its real size doesn't shift "How to
+         Download" below it -->
+    <div class="ad-slot">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-slot__responsive">
+            <ins class="adsbygoogle" style="display:block;width:100%" data-ad-client="ca-pub-4484955491622612"
+                data-ad-slot="1195742105" data-ad-format="auto"></ins>
+        </div>
+    </div>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
 
     <main>
 
@@ -1842,6 +1957,7 @@
             resultInner.style.display = 'none';
             document.getElementById('inlineLoading').style.display = 'none';
             document.getElementById('inlineError').style.display = 'none';
+            document.getElementById('stickyBar').classList.add('hidden');
             stopLoadingStages();
 
             if (state === 'loading') {
@@ -1878,6 +1994,8 @@
                         resultInner.classList.add('reveal');
                     });
                 });
+
+                document.getElementById('stickyBar').classList.remove('hidden');
             }
         }
 
@@ -2006,19 +2124,7 @@
 
                     if (window.innerWidth < 768) {
                         setTimeout(() => {
-                            // Scroll so the buttons sit with genuine empty
-                            // space below them, not flush against the
-                            // bottom edge - that space is what an anchor ad
-                            // needs to sit in without covering the buttons.
-                            // Reads the buttons' real position after the
-                            // title text is already set, so a 1-line vs
-                            // 2-line title naturally shifts this correctly
-                            // without any special-casing.
-                            const RESERVED_FOR_ANCHOR = 90;
-                            const btnRect = document.querySelector('.btn-actions').getBoundingClientRect();
-                            const target = window.scrollY + btnRect.bottom - window.innerHeight + RESERVED_FOR_ANCHOR;
-
-                            window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
+                            resultState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         }, 100);
                     }
                 }, remaining);
@@ -2178,6 +2284,20 @@
             }
         });
     </script>
+
+    <div class="sticky-download hidden" id="stickyBar">
+        <button id="downloadSdBtnMobile" class="btn-standard" onclick="triggerDownload('sd')">
+
+            Standard Quality
+
+        </button>
+
+        <button id="downloadHdBtnMobile" class="btn-download" onclick="triggerDownload('hd')">
+
+            Download HD
+
+        </button>
+    </div>
 
     <div class="download-overlay" id="downloadOverlay" aria-hidden="true">
         <div class="download-modal">
