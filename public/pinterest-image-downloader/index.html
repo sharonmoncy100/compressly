@@ -608,7 +608,9 @@
         @media (max-width: 560px) {
             .preview-wrap {
                 width: 100%;
-                height: 320px;
+                /* Shrunk from 320px to free up room below the buttons for
+                   an anchor ad to sit without covering them. */
+                height: 240px;
             }
         }
 
@@ -884,6 +886,14 @@
             .btn-actions .btn-download {
                 flex: 1;
                 justify-content: center;
+            }
+
+            /* The icon was pushing "Download HD" onto two lines on
+               narrow screens, making this button visibly taller than
+               "Standard Quality" next to it. Text-only on mobile keeps
+               both buttons the same height. */
+            .btn-actions .btn-icon {
+                display: none;
             }
         }
 
@@ -1340,7 +1350,7 @@
 
                                 <button class="btn-download" id="downloadHdBtn" onclick="triggerDownload('hd')">
 
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+                                    <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="#fff">
                                         <path
                                             d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
                                     </svg>
@@ -1996,7 +2006,19 @@
 
                     if (window.innerWidth < 768) {
                         setTimeout(() => {
-                            resultState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            // Scroll so the buttons sit with genuine empty
+                            // space below them, not flush against the
+                            // bottom edge - that space is what an anchor ad
+                            // needs to sit in without covering the buttons.
+                            // Reads the buttons' real position after the
+                            // title text is already set, so a 1-line vs
+                            // 2-line title naturally shifts this correctly
+                            // without any special-casing.
+                            const RESERVED_FOR_ANCHOR = 90;
+                            const btnRect = document.querySelector('.btn-actions').getBoundingClientRect();
+                            const target = window.scrollY + btnRect.bottom - window.innerHeight + RESERVED_FOR_ANCHOR;
+
+                            window.scrollTo({ top: Math.max(0, target), behavior: 'smooth' });
                         }, 100);
                     }
                 }, remaining);
