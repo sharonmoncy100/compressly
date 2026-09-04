@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" type="image/png" href="/favicon-64.png" />
-         
+
     <script>
         const allowedHosts = ["compressly.in", "www.compressly.in"];
         if (!allowedHosts.includes(location.hostname)) {
@@ -319,8 +319,16 @@
 
         /* decorative, not a real caret - hidden on focus/text, see updateFakeCaret() */
         @keyframes fakeCaretBlink {
-            0%, 50% { opacity: 1; }
-            50.01%, 100% { opacity: 0; }
+
+            0%,
+            50% {
+                opacity: 1;
+            }
+
+            50.01%,
+            100% {
+                opacity: 0;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -507,7 +515,7 @@
                 min-height: 480px;
             }
         }
-        
+
         /* added animation for picture appearing */
         .result-inner {
             display: flex;
@@ -532,6 +540,7 @@
                 transform: none;
             }
         }
+
         /* end animation for picture appearing */
 
         @media (max-width: 560px) {
@@ -562,12 +571,10 @@
             content: "";
             position: absolute;
             inset: 0;
-            background: linear-gradient(
-                90deg,
-                #f1f5f9 25%,
-                #e2e8f0 50%,
-                #f1f5f9 75%
-            );
+            background: linear-gradient(90deg,
+                    #f1f5f9 25%,
+                    #e2e8f0 50%,
+                    #f1f5f9 75%);
             background-size: 200% 100%;
             animation: previewShimmer 1.3s infinite linear;
         }
@@ -641,64 +648,64 @@
             flex-shrink: 0;
         }
 
-            .result-top{
-                display:flex;
-                align-items:center;
-                justify-content:space-between;
-                gap:12px;
-                margin-bottom:10px;
-                flex-wrap:wrap;
+        .result-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .result-top .result-badge {
+            margin-bottom: 0;
+            align-self: center;
+        }
+
+        .support-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--fg);
+            text-decoration: none;
+            white-space: nowrap;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            border-radius: 999px;
+            padding: 3px 10px;
+            transition: background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+        }
+
+        .support-link:hover {
+            background: #fef3c7;
+            border-color: #fbbf24;
+            text-decoration: none;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(245, 166, 35, .25);
+        }
+
+        .support-link__stars {
+            display: inline-flex;
+            align-items: center;
+            color: #f5a623;
+            flex-shrink: 0;
+        }
+
+        .support-link__stars svg {
+            width: 13px;
+            height: 13px;
+            fill: currentColor;
+        }
+
+        @media (max-width:560px) {
+
+            .result-top {
+                justify-content: flex-start;
             }
 
-            .result-top .result-badge{
-                margin-bottom:0;
-                align-self:center;
-            }
-
-            .support-link{
-                display:inline-flex;
-                align-items:center;
-                gap:6px;
-                font-size:12px;
-                font-weight:600;
-                color:var(--fg);
-                text-decoration:none;
-                white-space:nowrap;
-                background:#fffbeb;
-                border:1px solid #fde68a;
-                border-radius:999px;
-                padding:3px 10px;
-                transition:background .15s ease, border-color .15s ease, transform .15s ease, box-shadow .15s ease;
-            }
-
-            .support-link:hover{
-                background:#fef3c7;
-                border-color:#fbbf24;
-                text-decoration:none;
-                transform:translateY(-1px);
-                box-shadow:0 2px 6px rgba(245,166,35,.25);
-            }
-
-            .support-link__stars{
-                display:inline-flex;
-                align-items:center;
-                color:#f5a623;
-                flex-shrink:0;
-            }
-
-            .support-link__stars svg{
-                width:13px;
-                height:13px;
-                fill:currentColor;
-            }
-
-            @media (max-width:560px){
-
-                .result-top{
-                    justify-content:flex-start;
-                }
-
-            }
+        }
 
         .result-title {
             font-size: 15px;
@@ -749,44 +756,45 @@
         .btn-download svg {
             fill: #fff;
         }
-            .btn-standard{
 
-            display:inline-flex;
+        .btn-standard {
 
-            align-items:center;
+            display: inline-flex;
 
-            justify-content:center;
+            align-items: center;
 
-            padding:12px 22px;
+            justify-content: center;
 
-            background:#2563eb;
+            padding: 12px 22px;
 
-            color:white;
+            background: #2563eb;
 
-            border:none;
+            color: white;
 
-            border-radius:10px;
+            border: none;
 
-            font-size:14px;
+            border-radius: 10px;
 
-            font-weight:600;
+            font-size: 14px;
 
-            cursor:pointer;
+            font-weight: 600;
 
-            transition:.2s;
+            cursor: pointer;
 
-            box-shadow:0 3px 10px rgba(37,99,235,.25);
+            transition: .2s;
+
+            box-shadow: 0 3px 10px rgba(37, 99, 235, .25);
 
             -webkit-tap-highlight-color: transparent;
 
-            }
+        }
 
-            @media (hover: hover) {
-                .btn-standard:hover{
-                    background:#1d4ed8;
-                    transform:translateY(-1px);
-                }
+        @media (hover: hover) {
+            .btn-standard:hover {
+                background: #1d4ed8;
+                transform: translateY(-1px);
             }
+        }
 
         .sticky-download {
             display: none;
@@ -900,13 +908,11 @@
             gap: 10px;
         }
 
-        /* Used to be hidden on mobile in favor of the fixed sticky bar -
-           now shown everywhere instead. The sticky bar is a permanently
-           fixed-height bottom bar, which would eat into the exact screen
-           space we're now trying to use to get the ad-slot below it into
-           view alongside the result - a persistent overlay working
-           against that goal on every screen size. In-flow buttons take
-           only the space they need and scroll away naturally. */
+        @media (max-width: 640px) {
+            .btn-actions {
+                display: none;
+            }
+        }
 
         /* ── TRUST STRIP ── */
         .trust-strip {
@@ -1211,23 +1217,36 @@
             display: none !important;
         }
 
-        /* ── AD SLOT ──
-           Lives inside the result reveal now (see HTML), not as its own
-           floating card between page sections - it only exists once
-           there's a real result to show it alongside (AdSense doesn't
-           allow a large ad to be the first thing shown before that). A
-           top divider is enough to set it apart from the buttons above
-           it; it doesn't need its own card chrome since it's already
-           inside .tool-card's border/padding/shadow. */
+        /* ── AD SLOT ── */
         .ad-slot {
-            width: 100%;
-            margin-top: 18px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border);
+            max-width: 780px;
+            width: calc(100% - 32px);
+            margin: 12px auto 0;
+            padding: 12px 16px;
             display: flex;
             flex-direction: column;
             align-items: center;
             overflow-x: auto;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, .07);
+        }
+
+        /* mobile only - flush to both screen edges instead of a margined
+           card, so the ad gets the full device width to size against
+           (still capped by width:min() below - can't overflow) */
+        @media (max-width: 640px) {
+            .ad-slot {
+                width: 100%;
+                max-width: 100%;
+                margin: 12px 0 0;
+                padding: 12px 0;
+                border-left: none;
+                border-right: none;
+                border-radius: 0;
+                box-shadow: none;
+            }
         }
 
         .ad-slot-label {
@@ -1259,12 +1278,11 @@
                than its container (auto margins collapse to 0 on overflow),
                so it sat flush-left with the rest cut off on the right
                instead of centered. min() means it can never demand more
-               width than is actually there. 100% fills .ad-slot's own width,
-               which is now .tool-card's padded content width (the ad is
-               embedded in the result, not edge-to-edge). Measured: height
-               stays a flat, stable 250px at every real phone width
-               (318-412px), so this is not the same risk as
-               data-full-width-responsive was. */
+               width than is actually there. Now 100% rather than capped at
+               320px - .ad-slot goes flush edge-to-edge on mobile above, so
+               this fills that full width. Measured: height stays a flat,
+               stable 250px at every real phone width (318-412px), so this
+               is not the same risk as data-full-width-responsive was. */
             width: 100%;
             min-height: 250px;
             margin: 0 auto;
@@ -1285,7 +1303,6 @@
         }
 
         /* End ad slot */
-
     </style>
 
     <script type="application/ld+json">
@@ -1319,7 +1336,7 @@
       }
     }
     </script>
-   
+
 </head>
 
 <body>
@@ -1365,10 +1382,10 @@
                             style="padding-right:78px;width:100%;" />
                         <span id="fakeCaret" aria-hidden="true"
                             style="position:absolute;left:18px;top:50%;transform:translateY(-50%);width:1px;height:16px;background:#334155;pointer-events:none;animation:fakeCaretBlink 1s step-end infinite;"></span>
-                        <button id="clearUrlBtn" onclick="clearUrl()" aria-label="Clear"
-                            class="clear-url-btn"
+                        <button id="clearUrlBtn" onclick="clearUrl()" aria-label="Clear" class="clear-url-btn"
                             style="display:none;position:absolute;right:50px;top:50%;transform:translateY(-50%);width:32px;height:32px;padding:0;align-items:center;justify-content:center;color:#64748b;background:#eef1f5;border:none;border-radius:50%;cursor:pointer;">
-                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+                            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2.4" stroke-linecap="round">
                                 <path d="M18 6 6 18M6 6l12 12" />
                             </svg>
                         </button>
@@ -1405,55 +1422,50 @@
 
                                 <div class="result-badge">
                                     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                                        <path
+                                            d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                                     </svg>
                                     Image Ready
                                 </div>
 
-                                    <a href="/feedback/" class="support-link" onclick="gtag('event','support_tool_clicked',{
+                                <a href="/feedback/" class="support-link" onclick="gtag('event','support_tool_clicked',{
                                         tool:'pinterest-image-downloader',
                                         location:'result_badge'
                                     });">
-                                        <span class="support-link__stars" aria-hidden="true">
-                                            <svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-                                        </span>
-                                        Rate this tool
-                                    </a>
+                                    <span class="support-link__stars" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <path
+                                                d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                        </svg>
+                                    </span>
+                                    Rate this tool
+                                </a>
 
                             </div>
                             <div class="result-title" id="resultTitle"></div>
-                                <div class="btn-actions">
+                            <div class="result-hint">High-quality photo extracted from Pinterest. Click Download to save
+                                it to your
+                                device.</div>
+                            <div class="btn-actions">
 
-                                    <button class="btn-standard" id="downloadSdBtn" onclick="triggerDownload('sd')">
+                                <button class="btn-standard" id="downloadSdBtn" onclick="triggerDownload('sd')">
 
-                                        Standard Quality
+                                    Standard Quality
 
-                                    </button>
+                                </button>
 
-                                    <button class="btn-download" id="downloadHdBtn" onclick="triggerDownload('hd')">
+                                <button class="btn-download" id="downloadHdBtn" onclick="triggerDownload('hd')">
 
-                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
-                                            <path
-                                                d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
-                                        </svg>
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="#fff">
+                                        <path
+                                            d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z" />
+                                    </svg>
 
-                                        Download HD
+                                    Download HD
 
-                                    </button>
+                                </button>
 
-                                </div>
-
-                                <!-- Ad lives inside the result reveal on purpose - AdSense policy
-                                     doesn't allow a large ad to be the first thing shown before the
-                                     user has gotten any real content, so it only exists once there's
-                                     an actual result to show it alongside. -->
-                                <div class="ad-slot">
-                                    <span class="ad-slot-label">Advertisement</span>
-                                    <div class="ad-slot__responsive">
-                                        <ins class="adsbygoogle" style="display:block;width:100%"
-                                            data-ad-client="ca-pub-4484955491622612" data-ad-slot="1195742105" data-ad-format="auto"></ins>
-                                    </div>
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div id="inlineLoading"
@@ -1495,8 +1507,22 @@
         </div>
     </div>
 
+    <!-- Ad - responsive, width fixed per breakpoint, height reserved via
+         min-height so it resolving its real size doesn't shift "How to
+         Download" below it -->
+    <div class="ad-slot">
+        <span class="ad-slot-label">Advertisement</span>
+        <div class="ad-slot__responsive">
+            <ins class="adsbygoogle" style="display:block;width:100%" data-ad-client="ca-pub-4484955491622612"
+                data-ad-slot="1195742105" data-ad-format="auto"></ins>
+        </div>
+    </div>
+    <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    </script>
+
     <main>
-    
+
         <!-- HOW TO -->
         <div class="section">
             <h2 class="section-title">How to Download Pinterest Images</h2>
@@ -1788,7 +1814,6 @@
         let currentSdUrl = '';
         let currentTitle = '';
         let currentCategory = '';
-        let resultAdPushed = false;
 
         const urlInput = document.getElementById('urlInput');
         const fetchBtn = document.getElementById('fetchBtn');
@@ -1970,15 +1995,7 @@
                     });
                 });
 
-                // The ad-slot lives inside this now-visible container, so
-                // only push it once it's actually measurable (pushing
-                // while display:none reports zero width to AdSense).
-                // Gated to once per page view - a second "Get Image" click
-                // should not re-request the ad.
-                if (!resultAdPushed) {
-                    resultAdPushed = true;
-                    (adsbygoogle = window.adsbygoogle || []).push({});
-                }
+                document.getElementById('stickyBar').classList.remove('hidden');
             }
         }
 
@@ -2107,21 +2124,7 @@
 
                     if (window.innerWidth < 768) {
                         setTimeout(() => {
-                            // Try to bring the ad-slot into view along with
-                            // the download buttons, without scrolling so
-                            // far that the buttons themselves go off the
-                            // top of the screen - the download CTA stays
-                            // the priority, the ad rides along as far as
-                            // there's genuinely room for it.
-                            const btnRect = document.querySelector('.btn-actions').getBoundingClientRect();
-                            const adSlotEl = document.querySelector('.ad-slot');
-                            const adBottom = adSlotEl ? adSlotEl.getBoundingClientRect().bottom : btnRect.bottom;
-
-                            const scrollForAd = window.scrollY + adBottom - window.innerHeight + 16;
-                            const scrollCapForButtons = window.scrollY + btnRect.top - 12;
-                            const target = Math.max(0, Math.min(scrollForAd, scrollCapForButtons));
-
-                            window.scrollTo({ top: target, behavior: 'smooth' });
+                            resultState.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                         }, 100);
                     }
                 }, remaining);
@@ -2143,97 +2146,97 @@
             // setTimeout above and let a second click through early
         }
 
-            async function triggerDownload(type = 'hd') {
+        async function triggerDownload(type = 'hd') {
 
-                const imageUrl =
-                    type === 'sd'
-                        ? currentSdUrl
-                        : currentHdUrl;
+            const imageUrl =
+                type === 'sd'
+                    ? currentSdUrl
+                    : currentHdUrl;
 
-                if (!imageUrl) return;
+            if (!imageUrl) return;
 
-                const downloadOverlay = document.getElementById('downloadOverlay');
-                downloadOverlay.classList.add('show');
-                downloadOverlay.removeAttribute('aria-hidden');
+            const downloadOverlay = document.getElementById('downloadOverlay');
+            downloadOverlay.classList.add('show');
+            downloadOverlay.removeAttribute('aria-hidden');
 
-                const overlayShownAt = Date.now();
-                const minimumOverlayTime = 700;
+            const overlayShownAt = Date.now();
+            const minimumOverlayTime = 700;
 
-                gtag('event', 'pinterest_image_downloaded', {
-                    page: 'pinterest-image-downloader',
-                    image_title: currentTitle,
-                    image_category: currentCategory,
-                    quality: type
-                });
+            gtag('event', 'pinterest_image_downloaded', {
+                page: 'pinterest-image-downloader',
+                image_title: currentTitle,
+                image_category: currentCategory,
+                quality: type
+            });
 
-       
 
-                try {
 
-                    const proxyUrl =
-                          `https://pin-download.sharonmoncy100.workers.dev/?url=${encodeURIComponent(imageUrl)}`;
+            try {
 
-                    const response = await fetch(proxyUrl);
+                const proxyUrl =
+                    `https://pin-download.sharonmoncy100.workers.dev/?url=${encodeURIComponent(imageUrl)}`;
 
-                    if (!response.ok)
-                        throw new Error();
+                const response = await fetch(proxyUrl);
 
-                    const blob = await response.blob();
+                if (!response.ok)
+                    throw new Error();
 
-                    const blobUrl = URL.createObjectURL(blob);
+                const blob = await response.blob();
 
-                    const a = document.createElement('a');
+                const blobUrl = URL.createObjectURL(blob);
 
-                    a.href = blobUrl;
+                const a = document.createElement('a');
 
-                    const ext =
-                        imageUrl.split('.').pop().split('?')[0] || 'jpg';
+                a.href = blobUrl;
 
-                    const titleBasedName =
-                        currentTitle
-                            .replace(/[^a-zA-Z0-9\s]/g, '')
-                            .trim()
-                            .replace(/\s+/g, '-')
-                            .slice(0, 40)
-                            .toLowerCase();
+                const ext =
+                    imageUrl.split('.').pop().split('?')[0] || 'jpg';
 
-                    // avoids every untitled download landing on the same name
-                    // ("(2).jpg", "(3).jpg" pileup) - fall back to the CDN filename
-                    let safeName = titleBasedName;
+                const titleBasedName =
+                    currentTitle
+                        .replace(/[^a-zA-Z0-9\s]/g, '')
+                        .trim()
+                        .replace(/\s+/g, '-')
+                        .slice(0, 40)
+                        .toLowerCase();
 
-                    if (!safeName || safeName === 'pinterest-image') {
-                        const hashMatch = imageUrl.match(/([a-f0-9]{6,})\.[a-zA-Z0-9]+(?:\?|$)/i);
-                        const uniquePart = hashMatch ? hashMatch[1].slice(0, 8) : Date.now().toString(36);
-                        safeName = `pinterest-image-${uniquePart}`;
-                    }
+                // avoids every untitled download landing on the same name
+                // ("(2).jpg", "(3).jpg" pileup) - fall back to the CDN filename
+                let safeName = titleBasedName;
 
-                    a.download =
-                        `${safeName}.${ext}`;
-
-                    document.body.appendChild(a);
-
-                    a.click();
-
-                    document.body.removeChild(a);
-
-                    URL.revokeObjectURL(blobUrl);
-
-                } catch {
-
-                    window.open(imageUrl, '_blank');
-                } finally {
-
-                    const elapsed = Date.now() - overlayShownAt;
-                    const remaining = Math.max(0, minimumOverlayTime - elapsed);
-
-                    setTimeout(() => {
-                        downloadOverlay.classList.remove('show');
-                        downloadOverlay.setAttribute('aria-hidden', 'true');
-                    }, remaining);
-
+                if (!safeName || safeName === 'pinterest-image') {
+                    const hashMatch = imageUrl.match(/([a-f0-9]{6,})\.[a-zA-Z0-9]+(?:\?|$)/i);
+                    const uniquePart = hashMatch ? hashMatch[1].slice(0, 8) : Date.now().toString(36);
+                    safeName = `pinterest-image-${uniquePart}`;
                 }
 
+                a.download =
+                    `${safeName}.${ext}`;
+
+                document.body.appendChild(a);
+
+                a.click();
+
+                document.body.removeChild(a);
+
+                URL.revokeObjectURL(blobUrl);
+
+            } catch {
+
+                window.open(imageUrl, '_blank');
+            } finally {
+
+                const elapsed = Date.now() - overlayShownAt;
+                const remaining = Math.max(0, minimumOverlayTime - elapsed);
+
+                setTimeout(() => {
+                    downloadOverlay.classList.remove('show');
+                    downloadOverlay.setAttribute('aria-hidden', 'true');
+                }, remaining);
+
             }
+
+        }
         // shared by Prepare Another / × / Paste - resets the result and
         // scrolls to top. Keep callers synchronous with the click (no
         // await first) to stay inside the CLS exemption window.
