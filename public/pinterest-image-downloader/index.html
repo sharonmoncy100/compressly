@@ -73,31 +73,27 @@
         header {
             background: var(--card);
             border-bottom: 1px solid var(--border);
-            padding: 16px 0;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
         }
 
+        /* Vertical padding lives on .header-inner, not on <header>, so the
+           mobile drawer below it can sit flush against the bottom border. */
         .header-inner {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 32px;
+            padding: 14px 32px;
             display: flex;
             align-items: center;
             justify-content: space-between;
+            gap: 16px;
         }
 
         @media (max-width: 768px) {
             .header-inner {
-                padding: 0 16px;
-            }
-
-            /* trimmed from the 16px desktop value - frees a bit of
-               vertical space above the fold so the tool + ad sit higher */
-            header {
-                padding: 10px 0;
+                padding: 10px 16px;
             }
         }
 
@@ -109,6 +105,7 @@
             color: var(--fg);
             font-weight: 700;
             font-size: 18px;
+            letter-spacing: -0.2px;
         }
 
         .brand svg {
@@ -125,91 +122,264 @@
             }
         }
 
-        .nav-menu {
-            display: flex;
-            gap: 24px;
-        }
-
-        .nav-menu a {
-            text-decoration: none;
-            font-size: 14px;
-            color: var(--muted);
-            font-weight: 500;
-            transition: color .2s;
-        }
-
-        .nav-menu a:hover {
-            color: var(--accent);
-        }
-
-        .menu-toggle {
-            display: none;
-            width: 28px;
-            height: 22px;
+        /* ── DESKTOP NAV ── */
+        /* The panel is anchored to the whole nav rather than to the Tools
+           button, so its right edge lines up with the header content edge
+           instead of overhanging past it. */
+        .nav-desktop {
             position: relative;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 2px;
+        }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
             background: none;
             border: none;
+            cursor: pointer;
+            transition: color .18s ease, background-color .18s ease;
         }
 
-        .menu-toggle span {
+        .nav-link:hover,
+        .nav-link:focus-visible {
+            color: var(--fg);
+            background: #f1f5f9;
+        }
+
+        .nav-chevron {
+            width: 15px;
+            height: 15px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform .22s ease;
+        }
+
+        .nav-trigger[aria-expanded="true"] {
+            color: var(--fg);
+            background: #f1f5f9;
+        }
+
+        .nav-trigger[aria-expanded="true"] .nav-chevron {
+            transform: rotate(180deg);
+        }
+
+        .nav-panel {
             position: absolute;
-            width: 100%;
-            height: 3px;
-            background: var(--fg);
-            left: 0;
-            transition: all .3s ease;
+            top: calc(100% + 12px);
+            right: 0;
+            width: 520px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            box-shadow: 0 18px 44px rgba(15, 23, 42, .13);
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+        }
+
+        /* display:grid above would otherwise beat the UA [hidden] rule */
+        .nav-panel[hidden] {
+            display: none;
+        }
+
+        .nav-panel a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color .16s ease;
+        }
+
+        .nav-panel a:hover,
+        .nav-panel a:focus-visible {
+            background: #f1f5f9;
+        }
+
+        .nav-panel__name {
+            display: block;
+            font-size: 14.5px;
+            font-weight: 600;
+            color: var(--fg);
+            line-height: 1.3;
+        }
+
+        .nav-panel__desc {
+            display: block;
+            margin-top: 2px;
+            font-size: 12.5px;
+            font-weight: 400;
+            color: var(--muted);
+            line-height: 1.4;
+        }
+
+        /* ── BURGER ── */
+        .nav-burger {
+            display: none;
+            position: relative;
+            width: 40px;
+            height: 40px;
+            margin-right: -8px;
+            padding: 0;
+            background: none;
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+        }
+
+        .nav-burger span {
+            position: absolute;
+            left: 11px;
+            width: 18px;
+            height: 2px;
             border-radius: 2px;
+            background: var(--fg);
+            transition: top .22s ease, opacity .16s ease, transform .22s ease;
         }
 
-        .menu-toggle span:nth-child(1) {
-            top: 0;
+        .nav-burger span:nth-child(1) {
+            top: 14px;
         }
 
-        .menu-toggle span:nth-child(2) {
-            top: 9px;
+        .nav-burger span:nth-child(2) {
+            top: 19px;
         }
 
-        .menu-toggle span:nth-child(3) {
-            bottom: 0;
+        .nav-burger span:nth-child(3) {
+            top: 24px;
         }
 
-        .menu-toggle.active span:nth-child(1) {
+        .nav-burger[aria-expanded="true"] span:nth-child(1) {
+            top: 19px;
             transform: rotate(45deg);
-            top: 9px;
         }
 
-        .menu-toggle.active span:nth-child(2) {
+        .nav-burger[aria-expanded="true"] span:nth-child(2) {
             opacity: 0;
         }
 
-        .menu-toggle.active span:nth-child(3) {
+        .nav-burger[aria-expanded="true"] span:nth-child(3) {
+            top: 19px;
             transform: rotate(-45deg);
-            bottom: 10px;
+        }
+
+        /* ── MOBILE DRAWER ── */
+        .nav-scrim {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, .35);
+            z-index: 90;
+        }
+
+        .mobile-nav {
+            display: none;
+            border-top: 1px solid var(--border);
+            background: var(--card);
+            padding: 4px 16px 12px;
+            max-height: calc(100vh - 58px);
+            overflow-y: auto;
+        }
+
+        .mnav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            width: 100%;
+            padding: 14px 4px;
+            font: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--fg);
+            text-align: left;
+            text-decoration: none;
+            background: none;
+            border: none;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .mobile-nav nav> :last-child {
+            border-bottom: none;
+        }
+
+        .mnav-chevron {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            fill: none;
+            stroke: var(--muted);
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: transform .22s ease;
+        }
+
+        .mnav-item[aria-expanded="true"] .mnav-chevron {
+            transform: rotate(180deg);
+        }
+
+        .mnav-sub {
+            display: grid;
+            gap: 2px;
+            margin: 6px 0 10px 6px;
+            padding-left: 12px;
+            border-left: 2px solid var(--border);
+        }
+
+        .mnav-sub[hidden] {
+            display: none;
+        }
+
+        .mnav-sub a {
+            padding: 11px 8px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--muted);
+            text-decoration: none;
+        }
+
+        .mnav-sub a:active {
+            background: #f1f5f9;
         }
 
         @media (max-width: 768px) {
-            .nav-menu {
-                position: absolute;
-                top: 64px;
-                right: 16px;
-                background: var(--card);
-                border: 1px solid var(--border);
-                border-radius: 10px;
-                padding: 16px;
-                flex-direction: column;
-                gap: 12px;
-                box-shadow: 0 8px 24px rgba(0, 0, 0, .1);
+            .nav-desktop {
                 display: none;
             }
 
-            .nav-menu.show {
-                display: flex;
-            }
-
-            .menu-toggle {
+            .nav-burger {
                 display: block;
             }
+
+            .mobile-nav.show {
+                display: block;
+            }
+
+            .nav-scrim.show {
+                display: block;
+            }
+        }
+
+        /* The sticky header would otherwise cover the heading that the
+           "How to" nav link jumps to. */
+        #how-to {
+            scroll-margin-top: 76px;
         }
 
         /* ── HERO ── */
@@ -1361,17 +1531,76 @@
                 </svg>
                 <span>Compressly</span>
             </a>
-            <nav class="nav-menu" id="navMenu">
-                <a href="/compress-image/">Image Compressor</a>
-                <a href="/psc-photo-tool.html">PSC Photo Tool</a>
-                <a href="/mpsc-photo-resizer/">MPSC Photo Resizer</a>
-                <a href="https://www.compressly.in/about.html">About</a>
+            <nav class="nav-desktop" aria-label="Primary">
+                <div class="nav-dropdown">
+                    <button type="button" class="nav-link nav-trigger" id="toolsTrigger" aria-expanded="false"
+                        aria-controls="toolsPanel" aria-haspopup="true">
+                        Tools
+                        <svg class="nav-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <path d="M6 9l6 6 6-6" />
+                        </svg>
+                    </button>
+                    <div class="nav-panel" id="toolsPanel" hidden>
+                        <a href="/compress-image/">
+                            <span class="nav-panel__name">Image Compressor</span>
+                            <span class="nav-panel__desc">Any photo down to a target size</span>
+                        </a>
+                        <a href="/passport-photo-maker/">
+                            <span class="nav-panel__name">Passport Photo Maker</span>
+                            <span class="nav-panel__desc">35 × 45 mm, background removed</span>
+                        </a>
+                        <a href="/psc-photo-tool.html">
+                            <span class="nav-panel__name">PSC Photo Tool</span>
+                            <span class="nav-panel__desc">Kerala PSC photo and signature</span>
+                        </a>
+                        <a href="/ssc-photo-resizer/">
+                            <span class="nav-panel__name">SSC Photo Resizer</span>
+                            <span class="nav-panel__desc">CGL and CHSL photo and signature</span>
+                        </a>
+                        <a href="/mpsc-photo-resizer/">
+                            <span class="nav-panel__name">MPSC Photo Resizer</span>
+                            <span class="nav-panel__desc">Exact size, 50 KB JPEG</span>
+                        </a>
+                        <a href="/signature-maker/">
+                            <span class="nav-panel__name">Signature Maker</span>
+                            <span class="nav-panel__desc">Draw and download as PNG</span>
+                        </a>
+                    </div>
+                </div>
+                <a class="nav-link" href="#how-to">How to</a>
+                <a class="nav-link" href="https://www.compressly.in/about.html">About us</a>
             </nav>
-            <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+
+            <button type="button" class="nav-burger" id="menuToggle" aria-label="Open menu" aria-expanded="false"
+                aria-controls="mobileNav">
                 <span></span><span></span><span></span>
             </button>
         </div>
+
+        <div class="mobile-nav" id="mobileNav">
+            <nav aria-label="Mobile">
+                <button type="button" class="mnav-item" id="mToolsTrigger" aria-expanded="false"
+                    aria-controls="mToolsPanel">
+                    <span>Tools</span>
+                    <svg class="mnav-chevron" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 9l6 6 6-6" />
+                    </svg>
+                </button>
+                <div class="mnav-sub" id="mToolsPanel" hidden>
+                    <a href="/compress-image/">Image Compressor</a>
+                    <a href="/passport-photo-maker/">Passport Photo Maker</a>
+                    <a href="/psc-photo-tool.html">PSC Photo Tool</a>
+                    <a href="/ssc-photo-resizer/">SSC Photo Resizer</a>
+                    <a href="/mpsc-photo-resizer/">MPSC Photo Resizer</a>
+                    <a href="/signature-maker/">Signature Maker</a>
+                </div>
+                <a class="mnav-item" href="#how-to">How to</a>
+                <a class="mnav-item" href="https://www.compressly.in/about.html">About us</a>
+            </nav>
+        </div>
     </header>
+
+    <div class="nav-scrim" id="navScrim" aria-hidden="true"></div>
 
     <!-- ── HERO + TOOL ── -->
     <div class="hero">
@@ -1519,7 +1748,7 @@
     <main>
 
         <!-- HOW TO -->
-        <div class="section">
+        <div class="section" id="how-to">
             <h2 class="section-title">How to Download Pinterest Images</h2>
             <p class="section-sub">Three simple steps - done in under 10 seconds.</p>
             <div class="steps-grid">
@@ -2265,19 +2494,74 @@
         }
 
         // Header menu
-        const menuToggle = document.getElementById('menuToggle');
-        const navMenu = document.getElementById('navMenu');
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            navMenu.classList.toggle('show');
-            menuToggle.classList.toggle('active');
-        });
-        document.addEventListener('click', (e) => {
-            if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
-                navMenu.classList.remove('show');
-                menuToggle.classList.remove('active');
+        (function () {
+            const burger = document.getElementById('menuToggle');
+            const drawer = document.getElementById('mobileNav');
+            const scrim = document.getElementById('navScrim');
+            const toolsTrigger = document.getElementById('toolsTrigger');
+            const toolsPanel = document.getElementById('toolsPanel');
+            const mToolsTrigger = document.getElementById('mToolsTrigger');
+            const mToolsPanel = document.getElementById('mToolsPanel');
+
+            function setDropdown(open) {
+                toolsTrigger.setAttribute('aria-expanded', String(open));
+                toolsPanel.hidden = !open;
             }
-        });
+
+            function setDrawer(open) {
+                burger.setAttribute('aria-expanded', String(open));
+                burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+                drawer.classList.toggle('show', open);
+                scrim.classList.toggle('show', open);
+                document.body.style.overflow = open ? 'hidden' : '';
+            }
+
+            function setMobileTools(open) {
+                mToolsTrigger.setAttribute('aria-expanded', String(open));
+                mToolsPanel.hidden = !open;
+            }
+
+            toolsTrigger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setDropdown(toolsTrigger.getAttribute('aria-expanded') !== 'true');
+            });
+
+            burger.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setDrawer(burger.getAttribute('aria-expanded') !== 'true');
+            });
+
+            mToolsTrigger.addEventListener('click', () => {
+                setMobileTools(mToolsTrigger.getAttribute('aria-expanded') !== 'true');
+            });
+
+            scrim.addEventListener('click', () => setDrawer(false));
+
+            // The "How to" link scrolls within this page, so the drawer has to
+            // get out of the way rather than stay open over the destination.
+            drawer.querySelectorAll('a').forEach(a => {
+                a.addEventListener('click', () => setDrawer(false));
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!toolsPanel.contains(e.target) && !toolsTrigger.contains(e.target)) setDropdown(false);
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key !== 'Escape') return;
+                setDropdown(false);
+                if (burger.getAttribute('aria-expanded') === 'true') {
+                    setDrawer(false);
+                    burger.focus();
+                }
+            });
+
+            // Widening past the breakpoint hides the drawer in CSS, but the
+            // body scroll lock would survive it, so close properly instead.
+            window.matchMedia('(min-width: 769px)').addEventListener('change', (e) => {
+                if (e.matches) setDrawer(false);
+            });
+        })();
     </script>
 
     <div class="sticky-download hidden" id="stickyBar">
