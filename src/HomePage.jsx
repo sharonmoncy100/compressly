@@ -59,28 +59,16 @@ const NAV_LINKS = [
 
 const SPECIALISED_TOOLS = [
     {
-        name: "Compress to 100 KB",
-        href: "/compress-image-to-100kb.html",
-        blurb:
-            "Some upload forms reject anything over 100 KB and give no explanation why. This works backwards from that limit, adjusting quality until the file fits underneath it."
-    },
-    {
-        name: "Compress JPG",
-        href: "/compress-jpg-online.html",
-        blurb:
-            "A narrower version of the main compressor for photos that are already JPG and only need to be made lighter - no format conversion, no extra decisions."
-    },
-    {
         name: "Kerala PSC Photo Tool",
         href: "/psc-photo-tool.html",
         blurb:
-            "PSC applications specify photo dimensions and file size together, and a photo that satisfies one often fails the other. This handles both constraints at once."
+            "PSC applications specifies a particular photo dimension and file size. Our tool handles both at once. Also, you will be able to put your name and date on the photo with the help of our tool, as the form asks for."
     },
     {
         name: "Passport Photo Maker",
         href: "/passport-photo-maker/",
         blurb:
-            "Produces 35 × 45 mm passport and visa photos: the background is removed, the face is framed to the proportions these documents expect, and you pick a plain backdrop."
+            "Produces 35 × 45 mm passport and visa photos: the background is removed, the face is framed to the proportions these documents expect, and you pick a background color you like."
     },
     {
         name: "Amazon Image Resizer",
@@ -93,6 +81,18 @@ const SPECIALISED_TOOLS = [
         href: "/pinterest-image-downloader/",
         blurb:
             "The image shown on a pin is a scaled-down preview. Paste the pin link to retrieve the larger original the uploader actually submitted."
+    },
+    {
+        name: "SSC Photo Resizer",
+        href: "/ssc-photo-resizer/",
+        blurb:
+            "SSC forms ask for a photo and a signature separately, each with its own dimensions and file size limit. Our tool helps to resize both CGL and CHSL application images."
+    },
+    {
+        name: "MPSC Photo Resizer",
+        href: "/mpsc-photo-resizer/",
+        blurb:
+            "MPSC applications specify an exact pixel size, a KB limit and JPEG as the only accepted format. Our tool helps to resize your MPSC application photo to meet all three requirements."
     }
 ];
 
@@ -101,11 +101,6 @@ const TASK_ROUTES = [
         need: "A file is too large for an upload form",
         tool: "Image Compressor",
         href: "/compress-image/"
-    },
-    {
-        need: "The form specifies a maximum of 100 KB",
-        tool: "Compress to 100 KB",
-        href: "/compress-image-to-100kb.html"
     },
     {
         need: "You are applying through Kerala PSC",
@@ -344,10 +339,10 @@ export default function HomePage() {
                             <div className="hp-feature__body">
                                 <h3 className="hp-feature__title">Image Compressor</h3>
                                 <p className="hp-feature__text">
-                                    The general-purpose tool, and the right choice unless you know
-                                    you need one of the others. Set a quality level or a target
-                                    file size, compare the result against the original before you
-                                    commit, and rename the file on the way out.
+                                    This general-purpose tool lets you compress an image to a specific size.
+                                    Adjust the quality level or enter a target
+                                    file size, compare the result with the original,
+                                    and rename the file before downloading it.
                                 </p>
 
                                 <dl className="hp-specs">
@@ -756,12 +751,6 @@ export default function HomePage() {
                                 <ul>
                                     <li>
                                         <a href="/compress-image/">Image Compressor</a>
-                                    </li>
-                                    <li>
-                                        <a href="/compress-image-to-100kb.html">Compress to 100 KB</a>
-                                    </li>
-                                    <li>
-                                        <a href="/compress-jpg-online.html">Compress JPG</a>
                                     </li>
                                 </ul>
                             </div>
